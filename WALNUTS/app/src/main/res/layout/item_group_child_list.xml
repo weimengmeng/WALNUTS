@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="2dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="@dimen/head"
+                android:layout_height="@dimen/head"
+                android:src="@drawable/head"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="刘建设的建设"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/normal"
+                android:textColor="@color/gray"
+                android:layout_weight="0.5"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="职业的小逗比"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small"
+                android:layout_weight="0.5"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="@dimen/line_height"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:text="回复@王丽丽：谢谢"
+        android:textColor="@color/gray"
+        android:typeface="sans"
+        android:textScaleX="1"
+        android:textSize="@dimen/normal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:paddingLeft="@dimen/margin"
+            android:text="回复 1"
+            android:textColor="@color/tip"
+            android:textSize="@dimen/small">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:paddingLeft="@dimen/padding"
+            android:text="举报"
+            android:textColor="@color/red"
+            android:textSize="@dimen/small">
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center|right"
+            android:paddingRight="@dimen/margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding"
+                android:text="立即回复"
+                android:textColor="@color/tip"
+                android:textSize="@dimen/small"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:alpha="0.15"></View>
+</LinearLayout>

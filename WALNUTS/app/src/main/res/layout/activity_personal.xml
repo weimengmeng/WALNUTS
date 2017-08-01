@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.liuguangqiang.swipeback.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:id="@+id/lv_back"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/top"></include>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:background="@drawable/background_layout_div"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="名称"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="刘建设"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="性别"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_sex"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="男"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="签名"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_message"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="我是一只小小鸟"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:background="@drawable/background_layout_div"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="行业"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_vocation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="化工"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="地区"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_province"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:drawableRight="@drawable/select"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="江苏省"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="城市"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_city"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:drawableRight="@drawable/select"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="南京市"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="职位"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_position"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:drawableRight="@drawable/select"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="区域销售经理"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="公司"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_company"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text="巴斯夫上海有限公司"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+</com.liuguangqiang.swipeback.SwipeBackLayout>

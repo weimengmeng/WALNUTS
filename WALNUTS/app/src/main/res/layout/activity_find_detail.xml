@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/top"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_left">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_layout_div"
+            android:padding="@dimen/padding_left"
+            android:text="工业项目需要喝酒吗？"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/large" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_left"
+            android:text="回答"
+            android:textColor="@color/txt_color"
+            android:textSize="@dimen/big" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_layout_div">
+
+            <include layout="@layout/item_group"></include>
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_layout_div"
+            android:padding="@dimen/padding_left"
+            android:text="查看其他回答\n..."
+            android:gravity="center"
+            android:textColor="@color/txt_color"
+            android:textSize="@dimen/large" />
+    </LinearLayout>
+</LinearLayout>

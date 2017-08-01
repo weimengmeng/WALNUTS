@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:id="@+id/img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_back_select"
+            android:layout_margin="@dimen/margin"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:gravity="center"
+            android:text="核桃是一个专业的销售社区\n详实的信息便于您沟通交流"
+            android:textColor="@color/login"
+            android:textSize="@dimen/large" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_head"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_big"
+            android:scaleType="centerCrop"
+            android:src="@drawable/uphead" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:background="@null"
+            android:layout_marginTop="@dimen/padding"
+            android:gravity="center|bottom"
+            android:hint="请输入名字"
+            android:maxLength="8"
+            android:inputType="textPersonName"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.1"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txt_province"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="请选择省份"
+                android:drawableRight="@drawable/select"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:alpha="0.1"
+                android:background="@color/gray"></View>
+
+            <TextView
+                android:id="@+id/txt_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="请选择地区"
+                android:drawableRight="@drawable/select"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.1"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txt_vocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="请选择行业"
+                android:drawableRight="@drawable/select"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:alpha="0.1"
+                android:background="@color/gray"></View>
+
+            <TextView
+                android:id="@+id/txt_sex"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="请选择性别"
+                android:drawableRight="@drawable/select"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.1"
+            android:background="@color/gray" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/small"
+                android:textColor="@color/txt_color"
+                android:text="完成注册代表您已阅读并同意"/>
+            <TextView
+                android:id="@+id/txt_agreement"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:textColor="@color/yellow"
+                android:textSize="@dimen/normal"
+                android:text="《核桃使用协议》"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/yellow"
+        android:text="@string/ok"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/big" />
+</RelativeLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.njjd.utils.GradationScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:scrollbarThumbVertical="@drawable/scrollbar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_big"
+            android:orientation="vertical" >
+            <LinearLayout
+                android:id="@+id/lv_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/login"
+                android:paddingLeft="@dimen/padding_left"
+                android:paddingTop="@dimen/margin"
+                android:paddingBottom="@dimen/padding_left"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txt_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/largest"
+                    android:textStyle="bold"
+                    android:text="商务谈判"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+关注标签"
+                    android:typeface="sans"
+                    android:paddingTop="@dimen/padding"
+                    android:paddingBottom="@dimen/padding"
+                    android:layout_marginTop="@dimen/_top"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/small"
+                    android:background="@drawable/txt_shape_white"/>
+            </LinearLayout>
+            <com.njjd.utils.MyListView
+                android:id="@+id/listview"
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </com.njjd.utils.MyListView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="1000dp"
+                android:text="+关注标签"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small"
+                android:typeface="sans"
+                android:background="@drawable/txt_shape_white"/>
+        </LinearLayout>
+    </com.njjd.utils.GradationScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/top"></include>
+    </LinearLayout>
+</RelativeLayout>

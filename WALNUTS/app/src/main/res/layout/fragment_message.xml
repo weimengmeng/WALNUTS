@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/top"></include>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/margin">
+        <LinearLayout
+            android:id="@+id/lv_inform"
+            android:background="@drawable/background_layout_div"
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/padding_left"
+            android:paddingBottom="@dimen/padding_left"
+            android:layout_height="wrap_content">
+    <include layout="@layout/layout_mes_common"></include>
+            </LinearLayout>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/list_mes"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="0dip"
+        android:listSelector="@android:color/transparent"
+        android:background="@drawable/background_layout_div"/>
+    </LinearLayout>
+</LinearLayout>

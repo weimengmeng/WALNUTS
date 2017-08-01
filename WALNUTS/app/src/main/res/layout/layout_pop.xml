@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_marginRight="@dimen/margin"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_layout_div"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lv_top"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:drawableRight="@drawable/btn_sel"
+            android:textSize="@dimen/normal"
+            android:drawablePadding="@dimen/margin_big"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:padding="@dimen/padding"
+            android:text="热度排序" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.15"
+        android:background="@color/actionsheet_gray"></View>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lv_time"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal"
+            android:padding="@dimen/padding"
+            android:layout_marginLeft="5dp"
+            android:text="时间排序" />
+    </LinearLayout>
+</LinearLayout>

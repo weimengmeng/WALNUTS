@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/banner" />
+        <com.njjd.utils.MyListView
+            android:id="@+id/list_index"
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            android:dividerHeight="0dp"
+            android:divider="#00000000"
+            android:listSelector="@android:color/transparent"
+            android:layout_height="match_parent"
+       ></com.njjd.utils.MyListView>
+    </LinearLayout>
+</LinearLayout>

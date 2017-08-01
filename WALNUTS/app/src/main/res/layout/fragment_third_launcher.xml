@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/wel_bg3"
+        android:scaleType="centerCrop"/>
+    <RelativeLayout
+        android:id="@+id/rl_receive_apicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/iv_receive_apicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/introbg7" />
+
+        <ImageView
+            android:id="@+id/iv_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:src="@drawable/introbg9"
+             />
+    </RelativeLayout>
+</RelativeLayout>

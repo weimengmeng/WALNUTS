@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/radio"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:button="@null"
+    android:drawableBottom="@drawable/selector_btn_line"
+    android:gravity="center"
+    android:onClick="onClick"
+    android:paddingRight="@dimen/padding_top"
+    android:text="全部"
+    android:textColor="@drawable/selector_btn_top"
+    android:textSize="@dimen/normal" />

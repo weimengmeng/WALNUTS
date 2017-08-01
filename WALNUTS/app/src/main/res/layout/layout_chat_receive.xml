@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3分钟前"
+        android:textColor="@color/txt_color"
+        android:gravity="center"
+        android:textSize="@dimen/small"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <LinearLayout android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="@dimen/head_big"
+                android:layout_height="@dimen/head_big"
+                android:src="@drawable/head"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/chat_receiver"
+            android:text="你好你好你好你好你好你好你好你好"
+            android:layout_height="wrap_content" />
+
+        <View android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

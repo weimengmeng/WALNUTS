@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">核桃社区</string>
+    <string name="hot">最热</string>
+    <string name="lasted">最新</string>
+    <string name="btn_login">立即登录</string>
+    <string name="forget_pwd">忘记密码?</string>
+    <string name="no_account">没有账号?</string>
+    <string name="register">立即注册</string>
+    <string name="next">下一步</string>
+    <string name="conform">确认修改</string>
+    <string name="ok">完成注册</string>
+    <string name="tip">验证码将通过短信发送至您的手机</string>
+    <string name="send">重新发送(20s)</string>
+    <string name="send_txt">发送</string>
+    <string name="skip">跳过</string>
+    <string name="enter">进入</string>
+    <string name="code">验证码已发送至手机: %1$s</string>
+</resources>
