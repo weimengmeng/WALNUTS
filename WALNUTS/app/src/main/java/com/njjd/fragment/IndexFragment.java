@@ -171,9 +171,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }else{
                 banner.setVisibility(View.GONE);
             }
-            list1.add(new QuestionEntity("1",i+"喝酒不要开车1","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26"));
-            list1.add(new QuestionEntity("2","喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要","树大根深过如果如果如果特惠","","hhah","80","30",0,"2017-7-26"));
-            list1.add(new QuestionEntity("3","喝酒不要开车3","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg,http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","","10","70",0,"2017-7-26"));
+            list1.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
             final IndexQuestionAdapter questionAdapter=new IndexQuestionAdapter(context,list1);
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);

@@ -22,9 +22,11 @@ public class QuestionEntity implements Serializable{
     private String answerNum;//评论人数
     private int isFocus;//是否关注
     private String dateTime;//发布时间
-    @Generated(hash = 2051848772)
-    public QuestionEntity(String questionId, String title, String content, String photo,
-            String pic, String focusNum, String answerNum, int isFocus, String dateTime) {
+    private String tag;
+    @Generated(hash = 1659159985)
+    public QuestionEntity(String questionId, String title, String content,
+            String photo, String pic, String focusNum, String answerNum,
+            int isFocus, String dateTime, String tag) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
@@ -34,6 +36,7 @@ public class QuestionEntity implements Serializable{
         this.answerNum = answerNum;
         this.isFocus = isFocus;
         this.dateTime = dateTime;
+        this.tag = tag;
     }
     @Generated(hash = 98121125)
     public QuestionEntity() {
@@ -91,5 +94,11 @@ public class QuestionEntity implements Serializable{
     }
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+    public String getTag() {
+        return this.tag;
+    }
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

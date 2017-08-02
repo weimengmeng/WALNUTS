@@ -11,6 +11,10 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.njjd.domain.ProvinceEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -57,11 +61,13 @@ public class SuccessActivity extends BaseActivity {
     @BindView(R.id.txt_sex)
     TextView txtSex;
     private List<String> provinces=new ArrayList<>();
+    private List<ProvinceEntity> provinceEntities=new ArrayList<>();
+    private List<ProvinceEntity> cityEntities=new ArrayList<>();
     private List<String> citys=new ArrayList<>();
     private List<String> industrys1=new ArrayList<>();
     private List<List<String>> industrys2=new ArrayList<>();
     private OptionsPickerView<String> provincePickview,cityPickview,industryPickview,sexPickview;
-    private int provinceId=0,cityId=0,industryId=0;
+    private String provinceId="",cityId="",industryId="",provinceCode="";
     @BindView(R.id.img_back)
     LinearLayout imgBack;
     private String path="";//头像地址
@@ -91,7 +97,7 @@ public class SuccessActivity extends BaseActivity {
             path=SPUtils.get(this,"thirdHead","").toString();
         }
         getProvinces();
-//        getIndustry();
+        getIndustry();
     }
 
     @Override
@@ -103,15 +109,21 @@ public class SuccessActivity extends BaseActivity {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>(){
             @Override
             public void onNext(Object o) {
+                JsonArray array= JSONUtils.getAsJsonArray(o);
+                JsonObject object=null;
+                ProvinceEntity entity;
+                for(int i=0;i<array.size();i++) {
+                    object = array.get(i).getAsJsonObject();
+                    entity = new ProvinceEntity(object.get("id").getAsString(), object.get("name").getAsString(), object.get("code").getAsString());
+                    provinceEntities.add(entity);
+                    provinces.add(object.get("name").getAsString());
+                }
                 provincePickview=new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
                     @Override
                     public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                        if(options1==0){
-                            ToastUtils.showShortToast(SuccessActivity.this, "选择无效地址");
-                            return;
-                        }
-                        provinceId=options1;
-                        ToastUtils.showShortToast(SuccessActivity.this, provinces.get(options1));
+                        provinceId=provinceEntities.get(options1).getId();
+                        provinceCode=provinceEntities.get(options1).getCode();
+                        txtProvince.setText(provinceEntities.get(options1).getName());
                     }
                 }).build();
                 provincePickview.setPicker(provinces);
@@ -119,36 +131,26 @@ public class SuccessActivity extends BaseActivity {
         }, this,false, false), map);
         HttpManager.getInstance().provinceList(postEntity);
     }
-    private void getIndustry(){
+    private void getcitys(String code){
         Map<String,String> map=new HashMap<>();
+        map.put("code",code);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>(){
             @Override
             public void onNext(Object o) {
-                industryPickview=new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
-                    @Override
-                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                        ToastUtils.showShortToast(SuccessActivity.this, industrys1.get(options1)+"  "+industrys2.get(options1).get(options2));
-                    }
-                }).build();
-                industryPickview.setPicker(industrys1,industrys2);
-            }
-        }, this,false, false), map);
-        HttpManager.getInstance().industryList(postEntity);
-    }
-    private void getcitys(){
-        Map<String,String> map=new HashMap<>();
-        map.put("code",provinceId+"");
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>(){
-            @Override
-            public void onNext(Object o) {
+                JsonArray array= JSONUtils.getAsJsonArray(o);
+                JsonObject object=null;
+                ProvinceEntity entity;
+                for(int i=0;i<array.size();i++) {
+                    object = array.get(i).getAsJsonObject();
+                    entity = new ProvinceEntity(object.get("id").getAsString(), object.get("name").getAsString(), object.get("code").getAsString());
+                    cityEntities.add(entity);
+                    citys.add(object.get("name").getAsString());
+                }
                 cityPickview=new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
                     @Override
                     public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                        if(options1==0){
-                            ToastUtils.showShortToast(SuccessActivity.this, "选择无效地址");
-                            return;
-                        }
-                        ToastUtils.showShortToast(SuccessActivity.this, citys.get(options1));
+                        cityId=cityEntities.get(options1).getId();
+                        txtCity.setText(cityEntities.get(options1).getName());
                     }
                 }).build();
                 cityPickview.setPicker(citys);
@@ -156,6 +158,50 @@ public class SuccessActivity extends BaseActivity {
             }
         }, this,false, false), map);
         HttpManager.getInstance().cityList(postEntity);
+    }
+    private void getIndustry(){
+        //选项1
+        industrys1.add("广东");
+        industrys1.add("湖南");
+        industrys1.add("广西");
+        //选项2
+        ArrayList<String> options2Items_01 = new ArrayList<>();
+        options2Items_01.add("广州");
+        options2Items_01.add("佛山");
+        options2Items_01.add("东莞");
+        options2Items_01.add("珠海");
+        ArrayList<String> options2Items_02 = new ArrayList<>();
+        options2Items_02.add("长沙");
+        options2Items_02.add("岳阳");
+        options2Items_02.add("株洲");
+        options2Items_02.add("衡阳");
+        ArrayList<String> options2Items_03 = new ArrayList<>();
+        options2Items_03.add("桂林");
+        options2Items_03.add("玉林");
+        industrys2.add(options2Items_01);
+        industrys2.add(options2Items_02);
+        industrys2.add(options2Items_03);
+        industryPickview=new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                        ToastUtils.showShortToast(SuccessActivity.this, industrys1.get(options1)+"  "+industrys2.get(options1).get(options2));
+                    }
+                }).build();
+                industryPickview.setPicker(industrys1,industrys2);
+//        Map<String,String> map=new HashMap<>();
+//        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>(){
+//            @Override
+//            public void onNext(Object o) {
+//                industryPickview=new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
+//                    @Override
+//                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
+//                        ToastUtils.showShortToast(SuccessActivity.this, industrys1.get(options1)+"  "+industrys2.get(options1).get(options2));
+//                    }
+//                }).build();
+//                industryPickview.setPicker(industrys1,industrys2);
+//            }
+//        }, this,false, false), map);
+//        HttpManager.getInstance().industryList(postEntity);
     }
     @OnClick({R.id.img_back,R.id.img_head, R.id.txt_province, R.id.txt_city, R.id.txt_vocation, R.id.txt_sex, R.id.txt_agreement, R.id.btn_submit})
     public void onViewClicked(View view) {
@@ -168,18 +214,19 @@ public class SuccessActivity extends BaseActivity {
                 ImageSelectorActivity.start(this,1,2, true, true, true);
                 break;
             case R.id.txt_province:
-//                provincePickview.show();
+                provincePickview.show();
                 break;
             case R.id.txt_city:
-                if(provinceId==0){
+                if("".equals(provinceId)||"".equals(provinceCode)){
                     ToastUtils.showShortToast(SuccessActivity.this, "请先选择有效省份");
                     return ;
                 }
                 citys.clear();
-//                getcitys();
+                cityEntities.clear();
+                getcitys(provinceCode);
                 break;
             case R.id.txt_vocation:
-//                industryPickview.show();
+                industryPickview.show();
                 break;
             case R.id.txt_sex:
                 sexPickview.show();
@@ -189,15 +236,15 @@ public class SuccessActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_submit:
-                if(path.equals("")){
+                if(path.equals("")&&file==null){
                     ToastUtils.showShortToast(this,"请先选择头像");
                     return;
                 }
-                if(provinceId==0||cityId==0){
-                    ToastUtils.showShortToast(this,"请选择地区");
-                    return;
+                if("".equals(provinceId)||"".equals(provinceCode)||"".equals(cityId)){
+                    ToastUtils.showShortToast(SuccessActivity.this, "请先选择地区");
+                    return ;
                 }
-                if(industryId==0){
+                if("".equals(industryId)){
                     ToastUtils.showShortToast(this,"请选择行业");
                     return;
                 }
@@ -250,6 +297,7 @@ public class SuccessActivity extends BaseActivity {
                         String str = response.body().string();
                         LogUtils.d("lfq", response.message() + " , body " + str);
                         ToastUtils.showShortToast(SuccessActivity.this,"完善成功");
+                        finish();
 
                     } else {
                         LogUtils.d("lfq", response.message() + " error : body " + response.body().string());
@@ -261,6 +309,8 @@ public class SuccessActivity extends BaseActivity {
     @Override
     public void onNext(Object o) {
         super.onNext(o);
+        ToastUtils.showShortToast(SuccessActivity.this,"完善成功");
+        finish();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

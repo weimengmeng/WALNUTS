@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,10 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.StringUtil;
+import com.njjd.application.AppAplication;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BasePopupWindow;
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -29,6 +33,7 @@ import com.njjd.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,7 +42,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/12.
  */
 
-public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTimerCountDownListener{
+public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTimerCountDownListener {
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_phone_code)
@@ -51,11 +56,12 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
     @BindView(R.id.btn_get_code)
     TimeCountDown btnGetCode;
     private EditText etVerify;
-    private ImageView imgCode;
+    private WebView web;
     View lvImgcode;
+    private ImageView imageView;
     BasePopupWindow popupWindow;
     LayoutInflater inflater;
-    private String code;
+    private String code = "";
     String temp;
 
     @Override
@@ -71,17 +77,13 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         popupWindow.setContentView(lvImgcode);
         ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
         etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
-        imgCode = (ImageView) lvImgcode.findViewById(R.id.img_code);
-        imgCode.setOnClickListener(new View.OnClickListener() {
+        web=(WebView) lvImgcode.findViewById(R.id.web);
+        imageView=(ImageView) lvImgcode.findViewById(R.id.btn_resend);
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Glide.with(RegisterActivity.this)
-                        .load(HttpManager.BASE_URL + "getVerify?num=" + (int) (Math.random() * 10000) + "&phone=" + etPhone.getText().toString().trim())
-                        .centerCrop()
-                        .thumbnail(0.5f)
-                        .dontAnimate()
-                        .skipMemoryCache(true)
-                        .into(imgCode);
+                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
+                LogUtils.d("点击一次");
             }
         });
         etVerify.addTextChangedListener(new TextWatcher() {
@@ -105,11 +107,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                 }
             }
         });
-//        ok.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
         btnGetCode.setOnTimerCountDownListener(this);
     }
 
@@ -126,63 +123,62 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     ToastUtils.showShortToast(this, "请输入正确的手机号");
                     return;
                 }
-                if(etPhoneCode.getText().toString().trim().equals("")){
+                if (etPhoneCode.getText().toString().trim().equals("")) {
                     ToastUtils.showShortToast(this, "请输入短信验证码");
                     return;
                 }
-                verifyPhone();
-//                btnGetCode.initTimer();
+                SPUtils.put(RegisterActivity.this, "phoneNumber", etPhone.getText().toString().trim());
+                Intent intent = null;
+                if (getIntent().getIntExtra("isFind", 0) == 0) {
+                    intent = new Intent(RegisterActivity.this, SetPasswordActivity.class);
+                    intent.putExtra("bind", getIntent().getIntExtra("bind", 0));
+                    intent.putExtra("code", etPhoneCode.getText().toString().trim());
+                } else {
+                    intent = new Intent(RegisterActivity.this, ChangePwdActivity.class);
+                }
+                startActivity(intent);
+                finish();
+//                verifyPhone();
                 break;
             case R.id.btn_get_code:
                 if (!StringUtil.isPhoneNumber(etPhone.getText().toString().trim())) {
                     ToastUtils.showShortToast(this, "请输入正确的手机号");
                     return;
                 }
-                if("".equals(code)) {
-                    popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                    popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-                    Glide.with(this)
-                            .load(HttpManager.BASE_URL + "getVerify?num=" + (int) (Math.random() * 10000) + "&phone=" + etPhone.getText().toString().trim())
-                            .centerCrop()
-                            .thumbnail(0.5f)
-                            .dontAnimate()
-                            .skipMemoryCache(true)
-                            .into(imgCode);
-                }else{
-                    getPhoneCode();
-                }
+                popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
                 break;
             case R.id.img_back:
                 finish();
                 break;
         }
     }
+//    private void verifyPhone() {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("phone", etPhone.getText().toString().trim());
+//        map.put("imgcode", etPhoneCode.getText().toString().trim());
+//        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(verifyPhoneListener, this, false, false), map);
+//        HttpManager.getInstance().verifyPhone(postEntity);
+//    }
 
-    private void verifyPhone() {
-        Map<String, String> map = new HashMap<>();
-        map.put("phone", etPhone.getText().toString().trim());
-        map.put("imgcode", etPhoneCode.getText().toString().trim());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(verifyPhoneListener, this, false, false), map);
-        HttpManager.getInstance().verifyPhone(postEntity);
-    }
-
-    HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
-        @Override
-        public void onNext(Object o) {
-            if (o != null)
-                LogUtils.d(o.toString());
-            SPUtils.put(RegisterActivity.this, "phoneNumber", etPhone.getText().toString().trim());
-            Intent intent = null;
-            if (getIntent().getIntExtra("isFind", 0) == 0) {
-                intent = new Intent(RegisterActivity.this, SetPasswordActivity.class);
-                intent.putExtra("bind", getIntent().getIntExtra("bind", 0));
-            } else {
-                intent = new Intent(RegisterActivity.this, ChangePwdActivity.class);
-            }
-            startActivity(intent);
-            finish();
-        }
-    };
+//    HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
+//        @Override
+//        public void onNext(Object o) {
+//            if (o != null)
+//                LogUtils.d(o.toString());
+//            SPUtils.put(RegisterActivity.this, "phoneNumber", etPhone.getText().toString().trim());
+//            Intent intent = null;
+//            if (getIntent().getIntExtra("isFind", 0) == 0) {
+//                intent = new Intent(RegisterActivity.this, SetPasswordActivity.class);
+//                intent.putExtra("bind", getIntent().getIntExtra("bind", 0));
+//            } else {
+//                intent = new Intent(RegisterActivity.this, ChangePwdActivity.class);
+//            }
+//            startActivity(intent);
+//            finish();
+//        }
+//    };
 
     private void getPhoneCode() {
         Map<String, String> map = new HashMap<>();
@@ -197,6 +193,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
     public void onNext(Object o) {
         super.onNext(o);
         btnGetCode.initTimer();
+        ToastUtils.showShortToast(this, "已发送");
     }
 
     @Override

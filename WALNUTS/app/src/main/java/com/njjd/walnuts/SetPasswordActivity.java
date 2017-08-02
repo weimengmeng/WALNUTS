@@ -33,6 +33,7 @@ public class SetPasswordActivity extends BaseActivity {
     EditText etCode;
     @BindView(R.id.img_back)
     LinearLayout imgBack;
+    private String phoneCode="";
     @Override
     public int bindLayout() {
         return R.layout.activity_setpassword;
@@ -40,6 +41,7 @@ public class SetPasswordActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+
         ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
     }
 
@@ -47,8 +49,9 @@ public class SetPasswordActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("phone", SPUtils.get(this, "phoneNumber", "").toString());
         map.put("pwd", etPwd.getText().toString().trim());
-        map.put("code", etCode.getText().toString().trim());
+        map.put("invitation_code", etCode.getText().toString().trim());
         map.put("device_token",SPUtils.get(this,"deviceToken","").toString());
+        map.put("code",getIntent().getStringExtra("code"));
         map.put("register_type", 1+"");
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
@@ -59,7 +62,6 @@ public class SetPasswordActivity extends BaseActivity {
         super.onNext(o);
         JsonObject object= JSONUtils.getAsJsonObject(o);
         SPUtils.put(this,"userId",object.get("uid").getAsString());
-        SPUtils.put(this,"token",object.get("token").getAsString());
         Intent intent=new Intent(this,SuccessActivity.class);
         intent.putExtra("bind",getIntent().getIntExtra("bind",0));
         startActivity(intent);

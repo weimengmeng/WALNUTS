@@ -113,7 +113,8 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         } else if (e instanceof ConnectException) {
             Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "错误" + e.toString(), Toast.LENGTH_SHORT).show();
+            String[] strings=e.toString().split(":");
+            Toast.makeText(context, strings[1], Toast.LENGTH_SHORT).show();
         }
         if (isShow)
             dismissProgressDialog();

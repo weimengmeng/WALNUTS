@@ -195,9 +195,9 @@ public class temp extends BaseFragment implements View.OnClickListener, BGARefre
                 ToastUtils.showShortToast(context, "你点击了：" + position);
             }
         });
-        tempList.add(new QuestionEntity("1","喝酒不要开车1","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26"));
-        tempList.add(new QuestionEntity("2","喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要","树大根深过如果如果如果特惠","","hhah","80","30",0,"2017-7-26"));
-        tempList.add(new QuestionEntity("3","喝酒不要开车3","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg,http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","","10","70",0,"2017-7-26"));
+        tempList.add(new QuestionEntity("1","喝酒不要开车1","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26",""));
+        tempList.add(new QuestionEntity("2","喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要","树大根深过如果如果如果特惠","","hhah","80","30",0,"2017-7-26",""));
+        tempList.add(new QuestionEntity("3","喝酒不要开车3","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg,http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","","10","70",0,"2017-7-26",""));
         questionAdapter=new IndexQuestionAdapter(context,tempList);
         list.setAdapter(questionAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
