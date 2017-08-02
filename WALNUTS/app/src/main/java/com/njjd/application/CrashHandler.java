@@ -33,11 +33,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
         if(arg1.toString().contains("SSLSocketFactory")){
            return;
         }
-        try {
-            throw new Exception(arg1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ToastUtils.showShortToast(context,arg1.toString());
+//        try {
+//            throw new Exception(arg1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         ToastUtils.showShortToast(context,arg1.toString());
 //        android.os.Process.killProcess(android.os.Process.myPid());
     }

@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showShortToast(LoginActivity.this, "授权成功");
                 LogUtils.d(map.toString());
                 thirdMap = map;
-//                doThirdLogin((share_media == SHARE_MEDIA.QQ ? 0 : share_media == SHARE_MEDIA.WEIXIN ? 1 : 2), map);
+                doThirdLogin((share_media == SHARE_MEDIA.QQ ? 1 : share_media == SHARE_MEDIA.WEIXIN ? 2 : 3), map);
             }
 
             @Override
@@ -102,9 +102,13 @@ public class LoginActivity extends BaseActivity {
             case R.id.btn_close:
                 break;
             case R.id.btn_login:
-//                doLogin();
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
+                    ToastUtils.showShortToast(this,"请输入账号和密码");
+                    return;
+                }
+                doLogin();
+//                intent = new Intent(this, MainActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.btn_sina:
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, authListener);
@@ -120,10 +124,10 @@ public class LoginActivity extends BaseActivity {
 
     private void doLogin() {
         Map<String, String> map = new HashMap<>();
-        map.put("phone", "");
-        map.put("pwd", "");
+        map.put("phone", etPhone.getText().toString().trim());
+        map.put("pwd", etPwd.getText().toString().trim());
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().userLogin(postEntity);
     }
 
@@ -131,7 +135,25 @@ public class LoginActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         JsonObject json = JSONUtils.getAsJsonObject(o);
-    }
+        LogUtils.d(json.toString());
+
+        // introduction=null,
+        // token=0e181cfaef7b59f6cd4df09190250dd3,, stat=1.0,
+        SPUtils.put(LoginActivity.this, "userId", json.get("uid").getAsString());
+        SPUtils.put(LoginActivity.this, "head", json.get("headimg").getAsString());
+        SPUtils.put(LoginActivity.this, "name", json.get("uname").getAsString());
+        SPUtils.put(LoginActivity.this, "province", json.get("province").getAsString());
+        SPUtils.put(LoginActivity.this, "city", json.get("city").getAsString());
+//        SPUtils.put(LoginActivity.this, "company", json.get("company").getAsString());
+        SPUtils.put(LoginActivity.this, "position", json.get("position").getAsString());
+        SPUtils.put(LoginActivity.this, "industry", json.get("industry").getAsString());
+        SPUtils.put(LoginActivity.this, "token", json.get("token").getAsString());
+        SPUtils.put(LoginActivity.this, "message", json.get("introduction").getAsString());
+        SPUtils.put(LoginActivity.this, "isBind", json.get("idBind").getAsString());
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+//        finish();
+        }
 
     private void doThirdLogin(int type, Map<String, String> result) {
         //0 qq 1 wechat  2 sina
@@ -140,18 +162,20 @@ public class LoginActivity extends BaseActivity {
         map.put("logintype", "" + type);
         map.put("uuid", result.get("uid"));
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, this, false, false), map);
+        LogUtils.d("---------->"+map.toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, this, true, false), map);
         HttpManager.getInstance().thirdLogin(postEntity);
     }
 
     HttpOnNextListener thirdLoginListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            LogUtils.d(o.toString());
             Intent intent;
             JsonObject json = JSONUtils.getAsJsonObject(o);
-            SPUtils.put(LoginActivity.this, "userId", json.get("uid").getAsString());
-            if (json.get("isBind").getAsString().equals("0")) {
+            if(json.toString().contains("uuid")){
+                //用户未绑定
+                SPUtils.put(LoginActivity.this, "uuid", json.get("uuid").getAsString());
+                SPUtils.put(LoginActivity.this, "logintype", json.get("logintype").getAsString());
                 SPUtils.put(LoginActivity.this, "thirdName", thirdMap.get("name"));
                 SPUtils.put(LoginActivity.this, "thirdSex", thirdMap.get("gender"));
                 SPUtils.put(LoginActivity.this, "thirdHead", thirdMap.get("iconurl"));
@@ -159,21 +183,22 @@ public class LoginActivity extends BaseActivity {
                 SPUtils.put(LoginActivity.this, "thirdProvince", thirdMap.get("province"));
                 intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 intent.putExtra("bind",1);
+                startActivity(intent);
+                ToastUtils.showShortToast(LoginActivity.this,"请先绑定手机号");
             } else {
-                SPUtils.put(LoginActivity.this, "head", json.get("head").getAsString());
-                SPUtils.put(LoginActivity.this, "name", json.get("name").getAsString());
+                SPUtils.put(LoginActivity.this, "head", json.get("headimg").getAsString());
+                SPUtils.put(LoginActivity.this, "name", json.get("uname").getAsString());
                 SPUtils.put(LoginActivity.this, "province", json.get("province").getAsString());
                 SPUtils.put(LoginActivity.this, "city", json.get("city").getAsString());
                 SPUtils.put(LoginActivity.this, "company", json.get("company").getAsString());
                 SPUtils.put(LoginActivity.this, "position", json.get("position").getAsString());
                 SPUtils.put(LoginActivity.this, "industry", json.get("industry").getAsString());
                 SPUtils.put(LoginActivity.this, "token", json.get("token").getAsString());
-                SPUtils.put(LoginActivity.this, "message", json.get("message").getAsString());
-                SPUtils.put(LoginActivity.this, "isBind", json.get("idBind").getAsString());
+                SPUtils.put(LoginActivity.this, "message", json.get("introduction").getAsString());
                 intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-            startActivity(intent);
-            finish();
         }
     };
 

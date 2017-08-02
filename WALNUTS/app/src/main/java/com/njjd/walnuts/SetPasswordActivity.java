@@ -53,6 +53,10 @@ public class SetPasswordActivity extends BaseActivity {
         map.put("device_token",SPUtils.get(this,"deviceToken","").toString());
         map.put("code",getIntent().getStringExtra("code"));
         map.put("register_type", 1+"");
+        if (getIntent().getIntExtra("bind", 0) == 1) {
+            map.put("uuid", SPUtils.get(this,"uuid","").toString());
+            map.put("logintye",SPUtils.get(this,"logintype","").toString());
+        }
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().userRegister(postEntity);
@@ -65,6 +69,7 @@ public class SetPasswordActivity extends BaseActivity {
         Intent intent=new Intent(this,SuccessActivity.class);
         intent.putExtra("bind",getIntent().getIntExtra("bind",0));
         startActivity(intent);
+        finish();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +92,6 @@ public class SetPasswordActivity extends BaseActivity {
                     return;
                 }
                 userRegister();
-//                Intent intent=new Intent(this,SuccessActivity.class);
-//                intent.putExtra("bind",getIntent().getIntExtra("bind",0));
-//                startActivity(intent);
                 break;
         }
     }

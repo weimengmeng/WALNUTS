@@ -91,12 +91,9 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
@@ -109,7 +106,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         });
         btnGetCode.setOnTimerCountDownListener(this);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,7 +201,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
     @Override
     public void onCountDownStart() {
         temp = getResources().getString(R.string.code);
-        temp = String.format(temp, "15295532262");
+        temp = String.format(temp, etPhone.getText().toString().trim());
         txtTip.setText(temp);
         txtTip.setVisibility(View.VISIBLE);
         btnGetCode.setEnabled(false);

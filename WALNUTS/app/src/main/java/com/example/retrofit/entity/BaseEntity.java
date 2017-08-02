@@ -36,8 +36,10 @@ public abstract class BaseEntity<T> implements Func1<HttpResult<T>,T> {
 
     @Override
     public T call(HttpResult<T> httpResult) {
-        Log.d("BaseEntity",httpResult.toString());
         if (httpResult.getResultCode() != 0) {
+            if(httpResult.getResultMsg().equals("未绑定手机号")){
+                return httpResult.getResultData();
+            }
             throw new HttpTimeException(httpResult.getResultMsg());
         }
         return httpResult.getResultData();

@@ -4,6 +4,7 @@ import com.example.retrofit.entity.BaseEntity;
 import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.util.MyGsonConverter;
 import com.example.retrofit.util.UploadFileRequestBody;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;

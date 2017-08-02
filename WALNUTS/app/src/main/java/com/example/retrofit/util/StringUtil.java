@@ -22,7 +22,7 @@ public class StringUtil {
 	 */
 
 	public static boolean isPhoneNumber(String s) {
-		return s != null && s.matches("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+		return s != null && s.matches("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
 	}
 
 	/**

@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -27,40 +28,41 @@ public class LoadingDialog extends Dialog {
 
 
     private ImageView iv_route;
-    private TextView detail_tv;
-    private TextView tv_point;
+//    private TextView detail_tv;
     private RotateAnimation mAnim;
 
 
-    private Handler handler = new Handler() {
-        private int num = 0;
-
-
-        public void handleMessage(android.os.Message msg) {
-            if (msg.what == CHANGE_TITLE_WHAT) {
-                StringBuilder builder = new StringBuilder();
-                if (num >= MAX_SUFFIX_NUMBER) {
-                    num = 0;
-                }
-                num++;
-                for (int i = 0; i < num; i++) {
-                    builder.append(SUFFIX);
-                }
-                tv_point.setText(builder.toString());
-                if (isShowing()) {
-                    handler.sendEmptyMessageDelayed(CHANGE_TITLE_WHAT, CHNAGE_TITLE_DELAYMILLIS);
-                }
-                else {
-                    num = 0;
-                }
-            }
-        };
-    };
+//    private Handler handler = new Handler() {
+//        private int num = 0;
+//
+//
+//        public void handleMessage(android.os.Message msg) {
+//            if (msg.what == CHANGE_TITLE_WHAT) {
+//                StringBuilder builder = new StringBuilder();
+//                if (num >= MAX_SUFFIX_NUMBER) {
+//                    num = 0;
+//                }
+//                num++;
+//                for (int i = 0; i < num; i++) {
+//                    builder.append(SUFFIX);
+//                }
+//                tv_point.setText(builder.toString());
+//                if (isShowing()) {
+//                    handler.sendEmptyMessageDelayed(CHANGE_TITLE_WHAT, CHNAGE_TITLE_DELAYMILLIS);
+//                }
+//                else {
+//                    num = 0;
+//                }
+//            }
+//        };
+//    };
 
 
     public LoadingDialog(Context context) {
         super(context, R.style.MyDialogStyle);
         init();
+       getWindow().setDimAmount(0f);//
+
     }
 
 
@@ -73,8 +75,8 @@ public class LoadingDialog extends Dialog {
     private void init() {
         setContentView(R.layout.view_dialog);
         iv_route = (ImageView) findViewById(R.id.iv_route);
-        detail_tv = (TextView) findViewById(R.id.detail_tv);
-        tv_point = (TextView) findViewById(R.id.tv_point);
+//        detail_tv = (TextView) findViewById(R.id.detail_tv);
+//        tv_point = (TextView) findViewById(R.id.tv_point);
         initAnim();
 //        getWindow().setWindowAnimations(R.anim.alpha_in);
     }
@@ -93,7 +95,7 @@ public class LoadingDialog extends Dialog {
     @Override
     public void show() {//在要用到的地方调用这个方法
         iv_route.startAnimation(mAnim);
-        handler.sendEmptyMessage(CHANGE_TITLE_WHAT);
+//        handler.sendEmptyMessage(CHANGE_TITLE_WHAT);
         super.show();
     }
 
@@ -107,12 +109,12 @@ public class LoadingDialog extends Dialog {
 
     @Override
     public void setTitle(CharSequence title) {
-        if (TextUtils.isEmpty(title)) {
-            detail_tv.setText("正在加载");
-        }
-        else {
-            detail_tv.setText(title);
-        }
+//        if (TextUtils.isEmpty(title)) {
+//            detail_tv.setText("");
+//        }
+//        else {
+//            detail_tv.setText(title);
+//        }
     }
 
 
