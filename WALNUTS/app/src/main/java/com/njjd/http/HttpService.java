@@ -22,7 +22,7 @@ import rx.Observable;
  */
 public interface HttpService {
     /**
-     * 用户模块 注册、登录、图形验证码、手机验证码、完善信息、第三方登录
+     * 用户模块 注册、登录、图形验 证码、手机验证码、完善信息、第三方登录
      * @param params
      * @return
      */
