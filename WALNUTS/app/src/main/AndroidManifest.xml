@@ -50,7 +50,8 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SuccessActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".TagActivity"
             android:screenOrientation="portrait"></activity>

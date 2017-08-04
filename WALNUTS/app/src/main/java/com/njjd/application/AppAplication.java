@@ -5,6 +5,8 @@ import android.app.Notification;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.njjd.db.DBHelper;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.squareup.leakcanary.LeakCanary;
@@ -35,9 +37,10 @@ public class AppAplication extends Application {
         context = this.getApplicationContext();
         mRefWatcher = LeakCanary.install(this);
         replaceSystemDefaultFont(this, fontPath);
-        CrashHandler handler = CrashHandler.getInstance();
-        handler.init(getApplicationContext());
-        Thread.setDefaultUncaughtExceptionHandler(handler);
+//        CrashHandler handler = CrashHandler.getInstance();
+//        handler.init(getApplicationContext());
+//        Thread.setDefaultUncaughtExceptionHandler(handler);
+        CommonUtils.init(context);
         /**
          * 友盟登录、分享
          */
@@ -88,24 +91,14 @@ public class AppAplication extends Application {
     }
 
     private void replaceTypefaceField(String fieldName, Object value) {
-
         try {
-
             Field defaultField = Typeface.class.getDeclaredField(fieldName);
-
             defaultField.setAccessible(true);
-
             defaultField.set(null, value);
-
         } catch (NoSuchFieldException e) {
-
             e.printStackTrace();
-
         } catch (IllegalAccessException e) {
-
             e.printStackTrace();
-
         }
-
     }
 }

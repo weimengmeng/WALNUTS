@@ -38,7 +38,7 @@
             android:inputType="textPassword"
             android:gravity="center|bottom"
             android:hint="请输入新密码（不少于六位）"
-            android:textColor="@color/txt_color"
+            android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
 
         <View
@@ -56,7 +56,7 @@
             android:gravity="center|bottom"
             android:hint="请再次输入新密码"
             android:inputType="textPassword"
-            android:textColor="@color/txt_color"
+            android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
 
         <View

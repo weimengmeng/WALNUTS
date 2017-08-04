@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.retrofit.exception.HttpTimeException;
 import com.njjd.application.AppAplication;
+import com.njjd.utils.LogUtils;
 
 import java.io.File;
 import java.util.Map;
@@ -21,7 +22,7 @@ public abstract class BaseEntity<T> implements Func1<HttpResult<T>,T> {
     /**
      * 获取传递参数
      */
-    public abstract Map<String,String> getParams();
+    public abstract Map<String,Object> getParams();
     /**
      * 获取上传文件
      */
@@ -36,10 +37,8 @@ public abstract class BaseEntity<T> implements Func1<HttpResult<T>,T> {
 
     @Override
     public T call(HttpResult<T> httpResult) {
+        LogUtils.d(httpResult.toString());
         if (httpResult.getResultCode() != 0) {
-            if(httpResult.getResultMsg().equals("未绑定手机号")){
-                return httpResult.getResultData();
-            }
             throw new HttpTimeException(httpResult.getResultMsg());
         }
         return httpResult.getResultData();

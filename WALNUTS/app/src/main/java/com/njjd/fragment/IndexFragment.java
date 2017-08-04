@@ -106,7 +106,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void lazyInitData() {
-        //获取导航栏分类、广告图、问题
+        //获取问题
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

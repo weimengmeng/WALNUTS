@@ -15,14 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.signature.StringSignature;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.example.retrofit.util.StringUtil;
-import com.njjd.application.AppAplication;
+import com.google.gson.JsonObject;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BasePopupWindow;
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -33,7 +31,6 @@ import com.njjd.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,8 +74,8 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         popupWindow.setContentView(lvImgcode);
         ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
         etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
-        web=(WebView) lvImgcode.findViewById(R.id.web);
-        imageView=(ImageView) lvImgcode.findViewById(R.id.btn_resend);
+        web = (WebView) lvImgcode.findViewById(R.id.web);
+        imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,9 +88,11 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
@@ -101,11 +100,13 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     popupWindow.dismiss();
                     getPhoneCode();
                     etVerify.setText("");
+                    etPhone.setEnabled(false);
                 }
             }
         });
         btnGetCode.setOnTimerCountDownListener(this);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,18 +124,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     ToastUtils.showShortToast(this, "请输入短信验证码");
                     return;
                 }
-                SPUtils.put(RegisterActivity.this, "phoneNumber", etPhone.getText().toString().trim());
-                Intent intent = null;
-                if (getIntent().getIntExtra("isFind", 0) == 0) {
-                    intent = new Intent(RegisterActivity.this, SetPasswordActivity.class);
-                    intent.putExtra("bind", getIntent().getIntExtra("bind", 0));
-                    intent.putExtra("code", etPhoneCode.getText().toString().trim());
-                } else {
-                    intent = new Intent(RegisterActivity.this, ChangePwdActivity.class);
-                }
-                startActivity(intent);
-                finish();
-//                verifyPhone();
+                verifyPhone();
                 break;
             case R.id.btn_get_code:
                 if (!StringUtil.isPhoneNumber(etPhone.getText().toString().trim())) {
@@ -150,34 +140,35 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                 break;
         }
     }
-//    private void verifyPhone() {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("phone", etPhone.getText().toString().trim());
-//        map.put("imgcode", etPhoneCode.getText().toString().trim());
-//        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(verifyPhoneListener, this, false, false), map);
-//        HttpManager.getInstance().verifyPhone(postEntity);
-//    }
+    private void verifyPhone() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", etPhone.getText().toString().trim());
+        map.put("code", etPhoneCode.getText().toString().trim());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(verifyPhoneListener, this, false, false), map);
+        HttpManager.getInstance().verifyPhone(postEntity);
+    }
 
-//    HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
-//        @Override
-//        public void onNext(Object o) {
-//            if (o != null)
-//                LogUtils.d(o.toString());
-//            SPUtils.put(RegisterActivity.this, "phoneNumber", etPhone.getText().toString().trim());
-//            Intent intent = null;
-//            if (getIntent().getIntExtra("isFind", 0) == 0) {
-//                intent = new Intent(RegisterActivity.this, SetPasswordActivity.class);
-//                intent.putExtra("bind", getIntent().getIntExtra("bind", 0));
-//            } else {
-//                intent = new Intent(RegisterActivity.this, ChangePwdActivity.class);
-//            }
-//            startActivity(intent);
-//            finish();
-//        }
-//    };
+    HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            LogUtils.d(o.toString());
+            SPUtils.put(RegisterActivity.this, "phoneNumber", etPhone.getText().toString().trim());
+            Intent intent = null;
+            if (getIntent().getIntExtra("isFind", 0) == 0) {
+                intent = new Intent(RegisterActivity.this, SetPasswordActivity.class);
+                intent.putExtra("bind", getIntent().getIntExtra("bind", 0));
+            } else {
+                intent = new Intent(RegisterActivity.this, ChangePwdActivity.class);
+                intent.putExtra("phone", etPhone.getText().toString().trim());
+            }
+            intent.putExtra("code", etPhoneCode.getText().toString().trim());
+            startActivity(intent);
+            finish();
+        }
+    };
 
     private void getPhoneCode() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());
         map.put("imgcode", code);
         LogUtils.d(map.toString());
@@ -188,9 +179,66 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
     @Override
     public void onNext(Object o) {
         super.onNext(o);
-        btnGetCode.initTimer();
-        ToastUtils.showShortToast(this, "已发送");
+        JsonObject object = JSONUtils.getAsJsonObject(o);
+        if (object.get("code").getAsString().equals("1.0")) {
+            if (getIntent().getIntExtra("isFind", 0) == 0) {
+                if (getIntent().getIntExtra("bind", 0) == 1) {
+                    authBind();
+                }else{
+                    ToastUtils.showShortToast(this,"手机号已注册");
+                }
+            } else {
+                btnGetCode.initTimer();
+                ToastUtils.showShortToast(this, "已发送");
+            }
+        } else {
+            btnGetCode.initTimer();
+            ToastUtils.showShortToast(this, "已发送");
+        }
     }
+
+    private void authBind() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uuid", SPUtils.get(this, "uuid", "").toString());
+        map.put("logintye", SPUtils.get(this, "logintype", "").toString());
+        map.put("code", code);
+        map.put("phone", etPhone.getText().toString().trim());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(bindListener, this, false, false), map);
+        HttpManager.getInstance().authBind(postEntity);
+    }
+
+    HttpOnNextListener bindListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            ToastUtils.showShortToast(RegisterActivity.this, "绑定成功");
+            Map<String, Object> map = new HashMap<>();
+            map.put("uuid", SPUtils.get(RegisterActivity.this, "uuid", "").toString());
+            map.put("logintye", SPUtils.get(RegisterActivity.this, "logintype", "").toString());
+            map.put("device_token", SPUtils.get(RegisterActivity.this, "deviceToken", "").toString());
+            LogUtils.d("---------->" + map.toString());
+            SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, RegisterActivity.this, true, false), map);
+            HttpManager.getInstance().thirdLogin(postEntity);
+        }
+    };
+    HttpOnNextListener thirdLoginListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            Intent intent;
+            JsonObject json = JSONUtils.getAsJsonObject(o);
+            SPUtils.put(RegisterActivity.this, "head", json.get("headimg").getAsString());
+            SPUtils.put(RegisterActivity.this, "name", json.get("uname").getAsString());
+            SPUtils.put(RegisterActivity.this, "province", json.get("province").getAsString());
+            SPUtils.put(RegisterActivity.this, "city", json.get("city").getAsString());
+            SPUtils.put(RegisterActivity.this, "company", json.get("company").getAsString());
+            SPUtils.put(RegisterActivity.this, "position", json.get("position").getAsString());
+            SPUtils.put(RegisterActivity.this, "industry", json.get("industry").getAsString());
+            SPUtils.put(RegisterActivity.this, "token", json.get("token").getAsString());
+            SPUtils.put(RegisterActivity.this, "message", json.get("introduction").getAsString());
+            intent = new Intent(RegisterActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
 
     @Override
     protected void onDestroy() {

@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.utils.ToastUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.lankton.flowlayout.FlowLayout;
@@ -28,6 +31,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     TextView txtTitle;
     @BindView(R.id.lv_back)
     SwipeBackLayout lvBack;
+    private Bundle bundle;
     @Override
     public int bindLayout() {
         return R.layout.activity_askkind;
@@ -37,7 +41,9 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void initView(View view) {
         back.setText("提问");
-        txtTitle.setText("栏目");
+        txtTitle.setText("标签");
+        bundle=getIntent().getBundleExtra("question");
+        getFlags();
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lp.setMargins(25, 0, 15, 0);
         for (int i = 0; i < 10; i++) {
@@ -52,6 +58,15 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             flowlayout.addView(tv, lp);
         }
         lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
+    }
+    private void getFlags(){
+        Map<String,String> map=new HashMap<>();
+
+    }
+
+    @Override
+    public void onNext(Object o) {
+        super.onNext(o);
     }
 
     @Override

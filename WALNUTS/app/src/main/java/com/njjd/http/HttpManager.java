@@ -89,12 +89,29 @@ public class HttpManager {
         observable = httpService.userRegister(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void setNewPwd(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.setNewPwd(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void authBind(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.authBind(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void completeInfo(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.completeInfo(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
-
+    /**
+     * 社区模块
+     */
+    public void getNav(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getNav(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      *  公共模块
      * @param basePar
@@ -104,9 +121,9 @@ public class HttpManager {
         observable = httpService.provinceList(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
-    public void cityList(BaseEntity basePar) {
+    public void getSaleModel(BaseEntity basePar) {
         baseBar = basePar;
-        observable = httpService.cityList(basePar.getParams()).map(basePar);
+        observable = httpService.getSaleModel(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     public void industryList(BaseEntity basePar) {

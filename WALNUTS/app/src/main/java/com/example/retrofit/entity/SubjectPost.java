@@ -12,7 +12,7 @@ import rx.Subscriber;
 public class SubjectPost extends BaseEntity {
     //回调sub
     private Subscriber mSubscriber;
-    private Map<String,String> map;
+    private Map<String,Object> map;
     private File file;
 
     /**
@@ -20,7 +20,7 @@ public class SubjectPost extends BaseEntity {
      * @param getTopMovieOnNext
      * @param map
      */
-    public SubjectPost(Subscriber getTopMovieOnNext, Map<String,String> map) {
+    public SubjectPost(Subscriber getTopMovieOnNext, Map<String,Object> map) {
         this.mSubscriber = getTopMovieOnNext;
         this.map = map;
     }
@@ -34,7 +34,7 @@ public class SubjectPost extends BaseEntity {
         this.file = file;
     }
     @Override
-    public Map<String,String> getParams() {
+    public Map<String,Object> getParams() {
         return map;
     }
 

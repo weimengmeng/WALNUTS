@@ -46,7 +46,7 @@ public class SetPasswordActivity extends BaseActivity {
     }
 
     private void userRegister() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("phone", SPUtils.get(this, "phoneNumber", "").toString());
         map.put("pwd", etPwd.getText().toString().trim());
         map.put("invitation_code", etCode.getText().toString().trim());
@@ -57,7 +57,6 @@ public class SetPasswordActivity extends BaseActivity {
             map.put("uuid", SPUtils.get(this,"uuid","").toString());
             map.put("logintye",SPUtils.get(this,"logintype","").toString());
         }
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().userRegister(postEntity);
     }

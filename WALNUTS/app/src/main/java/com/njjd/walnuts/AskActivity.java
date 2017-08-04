@@ -39,12 +39,12 @@ public class AskActivity extends BaseActivity {
     EditText etTitle;
     @BindView(R.id.et_content2)
     EditText etContent;
-    private File file;
     private GridView gw;
     private List<Map<String, Object>> datas;
     private GridViewAddImgesAdpter gridViewAddImgesAdpter;
     @BindView(R.id.lv_back)
     SwipeBackLayout lvBack;
+    private  ArrayList<String> images;
     @Override
     public int bindLayout() {
         return R.layout.activity_ask;
@@ -80,7 +80,21 @@ public class AskActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_submit:
-              startActivity(new Intent(this,AskKindActivity.class));
+                if(etTitle.getText().toString().equals("")){
+                    ToastUtils.showShortToast(this,"请输入问题标题");
+                    return;
+                }
+                if(etContent.getText().toString().equals("")){
+                    ToastUtils.showShortToast(this,"请输入问题描述");
+                    return;
+                }
+                Intent intent=new Intent(this,AskKindActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("title",etTitle.getText().toString().trim());
+                bundle.putString("content",etContent.getText().toString().trim());
+                bundle.putStringArrayList("imgs",images);
+                intent.putExtra("question",bundle);
+                startActivity(intent);
                 break;
         }
     }
@@ -93,8 +107,7 @@ public class AskActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
-            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-            file = new File(images.get(0));
+            images= (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
             for (int i = 0; i < images.size(); i++) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("path", images.get(i));
@@ -102,7 +115,6 @@ public class AskActivity extends BaseActivity {
             }
             gridViewAddImgesAdpter.setMaxImages(9);
             gridViewAddImgesAdpter.notifyDataSetChanged();
-
         }
     }
 }

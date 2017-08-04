@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="请选择省份"
+                android:text="选择地区"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
@@ -87,12 +87,12 @@
                 android:background="@color/gray"></View>
 
             <TextView
-                android:id="@+id/txt_city"
+                android:id="@+id/txt_sale"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="请选择地区"
+                android:text="销售模式"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="请选择行业"
+                android:text="选择行业"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:text="请选择性别"
+                android:text="选择性别"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
