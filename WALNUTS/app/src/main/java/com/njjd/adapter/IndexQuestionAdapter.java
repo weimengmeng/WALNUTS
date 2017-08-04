@@ -103,7 +103,6 @@ public class IndexQuestionAdapter extends BaseAdapter {
                 });
             }
         }
-        LogUtils.d("dsafdsfsjdfkasdf---------->");
         return convertView;
     }
 

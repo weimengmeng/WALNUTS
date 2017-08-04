@@ -182,7 +182,6 @@ public class IndexDetailActivity extends BaseActivity implements MyScrollView.On
                 break;
         }
     }
-
     @Override
     public void onScroll(int scrollY) {
         int mBuyLayout2ParentTop = Math.max(scrollY, lvTop.getTop());

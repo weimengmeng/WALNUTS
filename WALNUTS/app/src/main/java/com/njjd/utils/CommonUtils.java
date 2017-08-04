@@ -1,6 +1,7 @@
 package com.njjd.utils;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -12,6 +13,11 @@ import com.njjd.db.DBHelper;
 import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.walnuts.BindActivity;
+import com.njjd.walnuts.MainActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -168,6 +174,24 @@ public class CommonUtils {
             }
         }, mContext, false, false), map);
         HttpManager.getInstance().getNav(postEntity);
+    }
+    public static void initData(JSONObject json){
+        try {
+            SPUtils.put(mContext, "phoneNumber", json.isNull("phone") ? "" : json.getString("phone"));
+            SPUtils.put(mContext, "pwd", json.isNull("pwd") ? "" : json.getString("pwd"));
+            SPUtils.put(mContext, "head", json.isNull("head") ? "" : json.getString("head"));
+            SPUtils.put(mContext, "name", json.isNull("name") ? "" : json.getString("name"));
+            SPUtils.put(mContext, "province", json.isNull("province_id") ? "" : json.getString("province_id"));
+            SPUtils.put(mContext, "city", json.isNull("city_id") ? "" : json.getString("city_id"));
+//              SPUtils.put(BindActivity.this, "company", json.isNull("company").getAsString());
+            SPUtils.put(mContext, "position", json.isNull("position") ? "" : json.getString("position"));
+            SPUtils.put(mContext, "industry", json.isNull("industry_id") ? "" : json.getString("industry_id"));
+            SPUtils.put(mContext, "sales", json.isNull("sales_id") ? "" : json.getString("sales_id"));
+            SPUtils.put(mContext, "token", json.getString("token"));
+            SPUtils.put(mContext, "message", json.isNull("introduction") ? "" : json.getString("introduction"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     public List<String> getProvincesList(){
         return provinces;

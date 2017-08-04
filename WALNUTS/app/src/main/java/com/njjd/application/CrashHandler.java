@@ -39,7 +39,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        ToastUtils.showShortToast(context,arg1.toString());
 //        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

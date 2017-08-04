@@ -84,9 +84,19 @@ public class HttpManager {
         observable = httpService.verifyPhone(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void checkInvitation(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.checkInvitation(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void userRegister(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.userRegister(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void checkPhone(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.checkPhone(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     public void setNewPwd(BaseEntity basePar) {
@@ -137,14 +147,14 @@ public class HttpManager {
      * @param basePar
      * @param listener
      */
-    public void uploadFile(BaseEntity basePar, ProgressListener listener) {
+    public void uploadFile(BaseEntity basePar, ProgressListener listener,String uid) {
         baseBar = basePar;
         Map<String, RequestBody> map = new HashMap<>();
         if (basePar.getFile() != null) {
             UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(basePar.getFile(),listener );
-            map.put("file\"; filename=\""+basePar.getFile().getName()+"", fileRequestBody);
+            map.put("img\"; filename=\""+basePar.getFile().getName()+"", fileRequestBody);
         }
-        observable = httpService.uploadFile(map).map(basePar);
+        observable = httpService.uploadFile(map,uid).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

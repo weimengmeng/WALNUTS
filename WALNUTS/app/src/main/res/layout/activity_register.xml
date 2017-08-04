@@ -28,6 +28,7 @@
         android:padding="@dimen/margin">
 
         <TextView
+            android:id="@+id/txt_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top"
@@ -36,90 +37,57 @@
             android:textColor="@color/login"
             android:textSize="@dimen/largest" />
 
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height"
-            android:layout_marginTop="@dimen/margin_big"
-            android:background="@null"
-            android:gravity="center|bottom"
-            android:hint="请输入手机号"
-            android:inputType="phone"
-            android:maxLength="11"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/normal" />
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_marginTop="@dimen/margin_big"
+                android:background="@null"
+                android:gravity="center|bottom"
+                android:hint="请输入手机号"
+                android:layout_marginLeft="@dimen/margin"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="-5dp"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
             android:alpha="0.1"
             android:background="@color/gray" />
-        <LinearLayout
-            android:layout_marginTop="@dimen/margin"
+        <EditText
+            android:id="@+id/et_invite_code"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:background="@null"
+            android:gravity="center|bottom"
+            android:hint="请输入邀请码"
+            android:inputType="number"
+            android:maxLength="6"
             android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/et_phone_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height"
-                    android:background="@null"
-                    android:gravity="center|bottom"
-                    android:hint="短信验证码"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/normal" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:alpha="0.1"
-                    android:background="@color/gray" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:orientation="vertical">
-                <com.njjd.utils.TimeCountDown
-                    android:id="@+id/btn_get_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/background_button_div"
-                    android:text="获取验证码"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/normal" />
-            </LinearLayout>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/txt_tip"
+        <View
             android:layout_width="match_parent"
-            android:textSize="@dimen/small"
-            android:textColor="@color/txt_color"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:text="@string/code"/>
+            android:layout_height="1dp"
+            android:alpha="0.1"
+            android:layout_marginTop="-5dp"
+            android:background="@color/gray" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_next"
+    <com.njjd.utils.TimeCountDown
+        android:id="@+id/btn_get_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/yellow"
-        android:text="@string/next"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/big" />
+        android:text="获取验证码"
+        android:textColor="@color/white"
+        android:textSize="@dimen/normal" />
 </RelativeLayout>

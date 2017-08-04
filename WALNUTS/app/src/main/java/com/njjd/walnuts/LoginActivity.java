@@ -9,14 +9,20 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,15 +91,15 @@ public class LoginActivity extends BaseActivity {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.txt_misspwd:
-                intent = new Intent(this, RegisterActivity.class);
-                intent.putExtra("isFind",1);
+                intent = new Intent(this, ForgetPwdActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.txt_register:
                 intent = new Intent(this, RegisterActivity.class);
-                intent.putExtra("bind",0);
-                intent.putExtra("isFind",0);
+                intent.putExtra("bind", 0);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_close:
                 break;
@@ -105,6 +111,7 @@ public class LoginActivity extends BaseActivity {
 //                doLogin();
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_sina:
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, authListener);
@@ -130,35 +137,26 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onNext(Object o) {
         super.onNext(o);
-        JsonObject json = JSONUtils.getAsJsonObject(o);
-        LogUtils.d(json.toString());
-
-        // introduction=null,
-        // token=0e181cfaef7b59f6cd4df09190250dd3,, stat=1.0,
-        SPUtils.put(LoginActivity.this, "userId", json.get("uid").getAsString());
-        SPUtils.put(LoginActivity.this, "head", json.get("headimg").getAsString());
-        SPUtils.put(LoginActivity.this, "name", json.get("uname").getAsString());
-        SPUtils.put(LoginActivity.this, "province", json.get("province").getAsString());
-        SPUtils.put(LoginActivity.this, "city", json.get("city").getAsString());
-//        SPUtils.put(LoginActivity.this, "company", json.get("company").getAsString());
-        SPUtils.put(LoginActivity.this, "position", json.get("position").getAsString());
-        SPUtils.put(LoginActivity.this, "industry", json.get("industry").getAsString());
-        SPUtils.put(LoginActivity.this, "token", json.get("token").getAsString());
-        SPUtils.put(LoginActivity.this, "message", json.get("introduction").getAsString());
-        SPUtils.put(LoginActivity.this, "isBind", json.get("idBind").getAsString());
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-//        finish();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls(); //重点
+        Gson gson = gsonBuilder.create();
+        try {
+            CommonUtils.initData(new JSONObject(gson.toJson(o)));
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
 
     private void doThirdLogin(int type, Map<String, String> result) {
         //0 qq 1 wechat  2 sina
-        //{uid=353DD23F3BCED8DD283BD5104EDDD1A5, ret=0, is_yellow_year_vip=0, accessToken=0708D873B69FDF530B2F06534CFCA9B8, expiration=1508982165007, unionid=, yellow_vip_level=0, expires_in=1508982165007, iconurl=http://q.qlogo.cn/qqapp/1106091328/353DD23F3BCED8DD283BD5104EDDD1A5/100, msg=, city=南京, vip=0, level=0, name=奋斗的青年, province=江苏, is_yellow_vip=0, gender=男, openid=353DD23F3BCED8DD283BD5104EDDD1A5, screen_name=奋斗的青年, profile_image_url=http://q.qlogo.cn/qqapp/1106091328/353DD23F3BCED8DD283BD5104EDDD1A5/100, access_token=0708D873B69FDF530B2F06534CFCA9B8}
         Map<String, Object> map = new HashMap<>();
         map.put("logintype", "" + type);
         map.put("uuid", result.get("uid"));
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
-        LogUtils.d("---------->"+map.toString());
+        LogUtils.d("---------->" + map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, this, true, false), map);
         HttpManager.getInstance().thirdLogin(postEntity);
     }
@@ -167,33 +165,35 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onNext(Object o) {
             Intent intent;
-            JsonObject json = JSONUtils.getAsJsonObject(o);
-            if(json.toString().contains("uuid")){
-                //用户未绑定
-                SPUtils.put(LoginActivity.this, "uuid", json.get("uuid").getAsString());
-                SPUtils.put(LoginActivity.this, "logintype", json.get("logintype").getAsString());
-                SPUtils.put(LoginActivity.this, "thirdName", thirdMap.get("name"));
-                SPUtils.put(LoginActivity.this, "thirdSex", thirdMap.get("gender"));
-                SPUtils.put(LoginActivity.this, "thirdHead", thirdMap.get("iconurl"));
-                SPUtils.put(LoginActivity.this, "thirdCity", thirdMap.get("city"));
-                SPUtils.put(LoginActivity.this, "thirdProvince", thirdMap.get("province"));
-                intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.putExtra("bind",1);
-                startActivity(intent);
-                ToastUtils.showShortToast(LoginActivity.this,"请先绑定手机号");
-            } else {
-                SPUtils.put(LoginActivity.this, "head", json.get("headimg").getAsString());
-                SPUtils.put(LoginActivity.this, "name", json.get("uname").getAsString());
-                SPUtils.put(LoginActivity.this, "province", json.get("province").getAsString());
-                SPUtils.put(LoginActivity.this, "city", json.get("city").getAsString());
-                SPUtils.put(LoginActivity.this, "company", json.get("company").getAsString());
-                SPUtils.put(LoginActivity.this, "position", json.get("position").getAsString());
-                SPUtils.put(LoginActivity.this, "industry", json.get("industry").getAsString());
-                SPUtils.put(LoginActivity.this, "token", json.get("token").getAsString());
-                SPUtils.put(LoginActivity.this, "message", json.get("introduction").getAsString());
-                intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+//            JsonObject json = JSONUtils.getAsJsonObject(o);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONObject json = null;
+            try {
+                json = new JSONObject(gson.toJson(o));
+                if (json.toString().contains("uuid")) {
+                    //用户未绑定
+                    SPUtils.put(LoginActivity.this, "uuid", json.isNull("uuid") ? "" : json.getString("uuid"));
+                    SPUtils.put(LoginActivity.this, "logintype", json.isNull("logintype") ? "" : json.getString("logintype"));
+                    SPUtils.put(LoginActivity.this, "thirdName", thirdMap.get("name"));
+                    SPUtils.put(LoginActivity.this, "thirdSex", thirdMap.get("gender"));
+                    SPUtils.put(LoginActivity.this, "thirdHead", thirdMap.get("iconurl"));
+                    SPUtils.put(LoginActivity.this, "thirdCity", thirdMap.get("city"));
+                    SPUtils.put(LoginActivity.this, "thirdProvince", thirdMap.get("province"));
+                    intent = new Intent(LoginActivity.this, BindActivity.class);
+                    intent.putExtra("bind", 1);
+                    startActivity(intent);
+                    finish();
+                    ToastUtils.showShortToast(LoginActivity.this, "请先绑定手机号");
+                } else {
+                    CommonUtils.initData(new JSONObject(gson.toJson(o)));
+                    intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     };

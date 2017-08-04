@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonObject;
@@ -29,11 +31,15 @@ import butterknife.OnClick;
 public class SetPasswordActivity extends BaseActivity {
     @BindView(R.id.et_pwd)
     EditText etPwd;
+    @BindView(R.id.et_confirm_pwd)
+    EditText etConfirmPwd;
     @BindView(R.id.et_code)
     EditText etCode;
     @BindView(R.id.img_back)
     LinearLayout imgBack;
-    private String phoneCode="";
+    @BindView(R.id.txt_tip)
+    TextView txtTip;
+    private String temp;
     @Override
     public int bindLayout() {
         return R.layout.activity_setpassword;
@@ -41,21 +47,22 @@ public class SetPasswordActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-
         ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
+        temp = getResources().getString(R.string.code);
+        temp = String.format(temp, getIntent().getStringExtra("phone"));
+        txtTip.setText(temp);
+        txtTip.setVisibility(View.VISIBLE);
     }
-
     private void userRegister() {
         Map<String, Object> map = new HashMap<>();
-        map.put("phone", SPUtils.get(this, "phoneNumber", "").toString());
+        map.put("phone", getIntent().getStringExtra("phone"));
         map.put("pwd", etPwd.getText().toString().trim());
-        map.put("invitation_code", etCode.getText().toString().trim());
         map.put("device_token",SPUtils.get(this,"deviceToken","").toString());
-        map.put("code",getIntent().getStringExtra("code"));
+        map.put("code",etCode.getText().toString().trim());
         map.put("register_type", 1+"");
         if (getIntent().getIntExtra("bind", 0) == 1) {
             map.put("uuid", SPUtils.get(this,"uuid","").toString());
-            map.put("logintye",SPUtils.get(this,"logintype","").toString());
+            map.put("logintype",SPUtils.get(this,"logintype","").toString());
         }
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().userRegister(postEntity);
@@ -64,7 +71,9 @@ public class SetPasswordActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         JsonObject object= JSONUtils.getAsJsonObject(o);
+        SPUtils.put(this,"phoneNumber",getIntent().getStringExtra("phone"));
         SPUtils.put(this,"userId",object.get("uid").getAsString());
+        SPUtils.put(this,"pwd",etPwd.getText().toString().trim());
         Intent intent=new Intent(this,SuccessActivity.class);
         intent.putExtra("bind",getIntent().getIntExtra("bind",0));
         startActivity(intent);
@@ -87,11 +96,31 @@ public class SetPasswordActivity extends BaseActivity {
                     return;
                 }
                 if(etCode.getText().toString().trim().equals("")){
-                    ToastUtils.showShortToast(this,"请输入邀请码");
+                    ToastUtils.showShortToast(this,"请输入短信验证码");
                     return;
                 }
-                userRegister();
+                if(!etConfirmPwd.getText().toString().trim().equals(etPwd.getText().toString().trim())){
+                    ToastUtils.showShortToast(this,"密码不一致");
+                    return;
+                }
+                verifyPhone();
                 break;
         }
     }
+    private void verifyPhone() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", getIntent().getStringExtra("phone"));
+        map.put("code", etCode.getText().toString().trim());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(verifyPhoneListener, this, false, false), map);
+        HttpManager.getInstance().verifyPhone(postEntity);
+    }
+
+    HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            LogUtils.d(o.toString());
+            SPUtils.put(SetPasswordActivity.this, "phoneNumber", getIntent().getStringExtra("phone"));
+            userRegister();
+        }
+    };
 }

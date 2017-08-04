@@ -13,6 +13,8 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.domain.CommonEntity;
@@ -24,6 +26,9 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.yongchun.library.view.ImageSelectorActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,20 +61,20 @@ public class SuccessActivity extends BaseActivity {
     private List<String> provinces;
     private List<CommonEntity> provinceEntities;
     //城市二级菜单
-    private List<List<CommonEntity>> cityList ;
-    private List<List<String>> cityEntities ;
+    private List<List<CommonEntity>> cityList;
+    private List<List<String>> cityEntities;
     //行业一级菜单
-    private List<String> industrys1 ;
-    private List<CommonEntity> industryList1 ;
+    private List<String> industrys1;
+    private List<CommonEntity> industryList1;
     //行业二级菜单
     private List<List<String>> industrys2;
     private List<List<CommonEntity>> industryList2;
     //销售模式一级菜单
-    private List<String> sales ;
-    private List<CommonEntity> saleList ;
+    private List<String> sales;
+    private List<CommonEntity> saleList;
 
     private OptionsPickerView<String> provincePickview, salePickview, industryPickview, sexPickview;
-    private String provinceId = "", cityId = "", industryId = "",modelId="";
+    private String provinceId = "", cityId = "", industryId = "", modelId = "";
     @BindView(R.id.img_back)
     LinearLayout imgBack;
     private String path = "";//头像地址
@@ -82,36 +87,37 @@ public class SuccessActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-//        ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
-//        if (getIntent().getIntExtra("bind", 0) == 1) {
-//            //绑定账号情况，预先设置第三方的头像性别等
-//            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
-//            etName.setText(SPUtils.get(this, "thirdName", "").toString());
-//            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
-//            path = SPUtils.get(this, "thirdHead", "").toString();
-//        }
+        ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
+        if (getIntent().getIntExtra("bind", 0) == 1) {
+            //绑定账号情况，预先设置第三方的头像性别等
+            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
+            etName.setText(SPUtils.get(this, "thirdName", "").toString());
+            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
+            path = SPUtils.get(this, "thirdHead", "").toString();
+        }
         setPickView();
     }
-    private void setPickView(){
-        provinces= CommonUtils.getInstance().getProvincesList();
-        provinceEntities=CommonUtils.getInstance().getProvinceEntities();
-        cityEntities=CommonUtils.getInstance().getCityEntities();
-        cityList=CommonUtils.getInstance().getCityList();
-        industrys1=CommonUtils.getInstance().getIndustrys1();
-        industrys2=CommonUtils.getInstance().getIndustrys2();
-        industryList1=CommonUtils.getInstance().getIndustryList1();
-        industryList2=CommonUtils.getInstance().getIndustryList2();
-        sales=CommonUtils.getInstance().getSales();
-        saleList=CommonUtils.getInstance().getSaleList();
+
+    private void setPickView() {
+        provinces = CommonUtils.getInstance().getProvincesList();
+        provinceEntities = CommonUtils.getInstance().getProvinceEntities();
+        cityEntities = CommonUtils.getInstance().getCityEntities();
+        cityList = CommonUtils.getInstance().getCityList();
+        industrys1 = CommonUtils.getInstance().getIndustrys1();
+        industrys2 = CommonUtils.getInstance().getIndustrys2();
+        industryList1 = CommonUtils.getInstance().getIndustryList1();
+        industryList2 = CommonUtils.getInstance().getIndustryList2();
+        sales = CommonUtils.getInstance().getSales();
+        saleList = CommonUtils.getInstance().getSaleList();
         provincePickview = new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 provinceId = provinceEntities.get(options1).getId();
-                cityId=cityList.get(options1).get(options2).getId();
-                txtProvince.setText(provinceEntities.get(options1).getName()+cityEntities.get(options1).get(options2));
+                cityId = cityList.get(options1).get(options2).getId();
+                txtProvince.setText(provinceEntities.get(options1).getName() +"-"+ cityEntities.get(options1).get(options2));
             }
         }).build();
-        provincePickview.setPicker(provinces,cityEntities);
+        provincePickview.setPicker(provinces, cityEntities);
         salePickview = new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -123,8 +129,8 @@ public class SuccessActivity extends BaseActivity {
         industryPickview = new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                txtVocation.setText(industrys1.get(options1) + "" + industrys2.get(options1).get(options2));
-                industryId=industryList2.get(options1).get(options2).getId();
+                txtVocation.setText(industrys1.get(options1) + "-" + industrys2.get(options1).get(options2));
+                industryId = industryList2.get(options1).get(options2).getId();
             }
         }).build();
         industryPickview.setPicker(industrys1, industrys2);
@@ -139,10 +145,12 @@ public class SuccessActivity extends BaseActivity {
         }).build();
         sexPickview.setPicker(sex);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @OnClick({R.id.img_back, R.id.img_head, R.id.txt_province, R.id.txt_sale, R.id.txt_vocation, R.id.txt_sex, R.id.txt_agreement, R.id.btn_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -176,19 +184,23 @@ public class SuccessActivity extends BaseActivity {
                     ToastUtils.showShortToast(this, "请先选择头像");
                     return;
                 }
-                if ("".equals(provinceId)|| "".equals(cityId)) {
+                if(etName.getText().toString().trim().equals("")){
+                    ToastUtils.showShortToast(this, "请输入姓名");
+                    return;
+                }
+                if ("".equals(provinceId) || "".equals(cityId)) {
                     ToastUtils.showShortToast(SuccessActivity.this, "请先选择地区");
                     return;
                 }
-//                if("".equals(industryId)){
-//                    ToastUtils.showShortToast(this,"请选择行业");
-//                    return;
-//                }
-//                if(file==null){
-                completeInfo();
-//                }else{
-//                    uploadFile();
-//                }
+                if("".equals(industryId)){
+                    ToastUtils.showShortToast(this,"请选择行业");
+                    return;
+                }
+                if (file == null) {
+                    completeInfo();
+                } else {
+                    uploadFile();
+                }
                 break;
         }
     }
@@ -200,7 +212,7 @@ public class SuccessActivity extends BaseActivity {
         map.put("province_id", provinceId + "");
         map.put("city_id", cityId + "");
         map.put("industry_id", industryId);
-        map.put("sales_id","0");
+        map.put("sales_id", "0");
         map.put("sex", txtSex.getText().toString().equals("男") ? "0" : "1");
         map.put("message", "");
         map.put("position", "");
@@ -214,9 +226,32 @@ public class SuccessActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         ToastUtils.showShortToast(SuccessActivity.this, "完善成功");
-        finish();
+        doLogin();
     }
-
+    private void doLogin() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone",SPUtils.get(this,"phoneNumber","").toString());
+        map.put("pwd", SPUtils.get(this,"pwd","").toString());
+        map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(longinListener, this, true, false), map);
+        HttpManager.getInstance().userLogin(postEntity);
+    }
+    HttpOnNextListener longinListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            try {
+                CommonUtils.initData(new JSONObject(gson.toJson(o)));
+                Intent intent = new Intent(SuccessActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
@@ -226,15 +261,15 @@ public class SuccessActivity extends BaseActivity {
             path = images.get(0);
         }
     }
-
     private void uploadFile() {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(upFileListener, this, true, false), file);
-        HttpManager.getInstance().uploadFile(postEntity, new MyUploadListener());
+        HttpManager.getInstance().uploadFile(postEntity, new MyUploadListener(),SPUtils.get(this, "userId", "").toString());
     }
 
     HttpOnNextListener upFileListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            LogUtils.d(o.toString());
             JsonObject object = JSONUtils.getAsJsonObject(o);
             path = object.get("path").getAsString();
             completeInfo();

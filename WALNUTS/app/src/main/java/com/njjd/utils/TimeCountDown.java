@@ -38,7 +38,7 @@ public class TimeCountDown extends Button {
     /**
      * 倒计时之后显示的文字
      */
-    private String afterCount = "秒";
+    private String afterCount = "s";
 
     /**
      * handler
@@ -78,7 +78,7 @@ public class TimeCountDown extends Button {
                         if (null != onTimerCountDownListener) {
                             onTimerCountDownListener.onCountDownLoading(mCount);
                         }
-                        setText("重新获取("+msg.arg1 + afterCount+")");
+                        setText(msg.arg1 + afterCount);
                         mCount--;
                         break;
                     case COUNT_DOWN_FINISH:

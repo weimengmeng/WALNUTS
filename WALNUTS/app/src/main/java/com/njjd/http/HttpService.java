@@ -13,7 +13,9 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.QueryName;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -45,6 +47,10 @@ public interface HttpService {
     Observable<HttpResult<Object>> authBind(@QueryMap Map<String, String> params);
     @POST("forgetPwd")
     Observable<HttpResult<Object>> setNewPwd(@QueryMap Map<String, String> params);
+    @POST("checkPhone")
+    Observable<HttpResult<Object>> checkPhone(@QueryMap Map<String, String> params);
+    @POST("getInvitation")
+    Observable<HttpResult<Object>> checkInvitation(@QueryMap Map<String, String> params);
     /**
      * 社区模块
      * 首页 获取分类、获取问题列表、获取banner
@@ -93,9 +99,9 @@ public interface HttpService {
     Observable<HttpResult<Object>> getSaleModel(@QueryMap Map<String, String> params);
     @POST("getIndustry")
     Observable<HttpResult<Object>> industryList(@QueryMap Map<String, String> params);
-    @POST("fileUpload/uploadImage")
+    @POST("uploadHeadImg")
     @Multipart
-    Observable<HttpResult<Object>> uploadFile(@PartMap Map<String, RequestBody> file);
+    Observable<HttpResult<Object>> uploadFile(@PartMap Map<String, RequestBody> file, @Query("uid") String uid);
     //当文件大时必须使用@streaming流
     @Streaming
     @GET

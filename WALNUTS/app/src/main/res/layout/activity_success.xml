@@ -34,9 +34,7 @@
             android:gravity="center"
             android:text="核桃是一个专业的销售社区\n详实的信息便于您沟通交流"
             android:textColor="@color/login"
-            android:textSize="@dimen/large" />
-
-
+            android:textSize="@dimen/large_big" />
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_head"
             android:layout_width="100dp"
@@ -45,13 +43,12 @@
             android:layout_marginTop="@dimen/margin_big"
             android:scaleType="centerCrop"
             android:src="@drawable/uphead" />
-
         <EditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height"
             android:background="@null"
-            android:layout_marginTop="@dimen/padding"
+            android:layout_marginTop="@dimen/margin"
             android:gravity="center|bottom"
             android:hint="请输入名字"
             android:maxLength="8"
