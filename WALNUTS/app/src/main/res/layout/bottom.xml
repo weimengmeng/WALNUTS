@@ -13,8 +13,8 @@
         android:background="#ffffff"
         android:paddingLeft="@dimen/padding"
         android:paddingRight="@dimen/padding"
-        android:paddingTop="@dimen/padding_left"
-        android:paddingBottom="@dimen/padding_left">
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding">
 
         <RadioButton
             android:id="@+id/radio1"

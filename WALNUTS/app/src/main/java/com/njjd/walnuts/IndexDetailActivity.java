@@ -178,7 +178,9 @@ public class IndexDetailActivity extends BaseActivity implements MyScrollView.On
                 ToastUtils.showShortToast(this, "添加关注");
                 break;
             case R.id.img_answer:
-                ToastUtils.showShortToast(this, "回答问题");
+               Intent intent=new Intent(this,AnswerActivity.class);
+                intent.putExtra("quesId",questionEntity.getQuestionId());
+                startActivity(intent);
                 break;
         }
     }

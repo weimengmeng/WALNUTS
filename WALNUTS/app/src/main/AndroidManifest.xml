@@ -12,14 +12,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-
+    <!--        android:name="com.njjd.application.AppAplication"
+-->
     <application
-        android:name="com.njjd.application.AppAplication"
-        android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
+        android:name="com.njjd.application.AppAplication"
         android:theme="@style/AppTheme">
         <activity
             android:name=".AppIntroActivity"
@@ -41,7 +41,10 @@
         <activity
             android:name=".BindActivity"
             android:screenOrientation="portrait">
-
+        </activity>
+        <activity
+            android:name=".InterestActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".MainActivity"
