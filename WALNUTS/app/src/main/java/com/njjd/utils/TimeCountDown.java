@@ -33,7 +33,7 @@ public class TimeCountDown extends Button {
     /**
      * 倒计时之前显示的文字
      */
-    private String beforeCount = "获取验证码";
+    private String beforeCount = "重发";
 
     /**
      * 倒计时之后显示的文字

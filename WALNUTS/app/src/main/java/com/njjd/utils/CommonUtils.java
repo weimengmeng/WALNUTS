@@ -8,8 +8,10 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.njjd.db.DBHelper;
 import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
+import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 
 import org.json.JSONException;
@@ -44,8 +46,8 @@ public class CommonUtils {
     private static List<String> sales = new ArrayList<>();
     private static List<CommonEntity> saleList = new ArrayList<>();
     private static IndexNavEntity entity;
-    private static List<CommonEntity> tagsList=new ArrayList<>();
-    private static List<CommonEntity> navList=new ArrayList<>();
+    private static List<TagEntity> tagsList=new ArrayList<>();
+    private static List<IndexNavEntity> navList=new ArrayList<>();
     public static void init(Context context){
         mContext=context;
         //获取省份
@@ -161,13 +163,13 @@ public class CommonUtils {
                 LogUtils.d(o.toString());
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
-                CommonEntity entity;
+                IndexNavEntity entity;
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
-                    entity=new CommonEntity(object.get("id").getAsString(),object.get("cate_name").getAsString(),"");
+                    entity=new IndexNavEntity(object.get("id").getAsString(),object.get("cate_name").getAsString());
+                    DBHelper.getInstance().getmDaoSession().getIndexNavEntityDao().insertOrReplace(entity);
                     navList.add(entity);
                 }
-//                DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace();
             }
         }, mContext, false, false), map);
         HttpManager.getInstance().getNav(postEntity);
@@ -180,19 +182,20 @@ public class CommonUtils {
                 LogUtils.d(o.toString());
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
-                CommonEntity entity;
+                TagEntity entity;
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
-                   entity=new CommonEntity(object.get("id").getAsString(),object.get("label_name").getAsString(),object.get("level").getAsString());
+                   entity=new TagEntity(object.get("id").getAsString(),object.get("label_name").getAsString(),object.get("level").getAsString());
                     tagsList.add(entity);
+                    DBHelper.getInstance().getmDaoSession().getTagEntityDao().insertOrReplace(entity);
                 }
-//               DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace();
             }
         }, mContext, false, false), map);
         HttpManager.getInstance().getTag(postEntity);
     }
     public static void initData(JSONObject json){
         try {
+            SPUtils.put(mContext,"userId",json.isNull("uid")?"":json.getString("uid"));
             SPUtils.put(mContext, "phoneNumber", json.isNull("phone") ? "" : json.getString("phone"));
             SPUtils.put(mContext, "pwd", json.isNull("pwd") ? "" : json.getString("pwd"));
             SPUtils.put(mContext, "head", json.isNull("head") ? "" : json.getString("head"));
@@ -239,7 +242,10 @@ public class CommonUtils {
     public List<List<CommonEntity>> getIndustryList2(){
         return industryList2;
     }
-    public List<CommonEntity> getTagsList(){
-        return tagsList;
+    public List<TagEntity> getTagsList(){
+        return DBHelper.getInstance().getmDaoSession().getTagEntityDao().loadAll();
+    }
+    public List<IndexNavEntity> getNavsList(){
+        return DBHelper.getInstance().getmDaoSession().getIndexNavEntityDao().loadAll();
     }
 }

@@ -31,7 +31,7 @@
             android:id="@+id/txt_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginTop="@dimen/round"
             android:gravity="center"
             android:text="忘记密码"
             android:textColor="@color/login"

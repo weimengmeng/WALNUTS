@@ -213,7 +213,7 @@ public class SuccessActivity extends BaseActivity {
         map.put("province_id", provinceId + "");
         map.put("city_id", cityId + "");
         map.put("industry_id", industryId);
-        map.put("sales_id", "0");
+        map.put("sales_id", modelId);
         map.put("sex", txtSex.getText().toString().equals("男") ? "0" : "1");
         map.put("message", "");
         map.put("position", "");

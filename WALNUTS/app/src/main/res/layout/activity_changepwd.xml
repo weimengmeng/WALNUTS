@@ -24,7 +24,7 @@
         android:padding="@dimen/margin">
 
         <TextView
-            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginTop="@dimen/round"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="重设密码"

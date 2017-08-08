@@ -6,6 +6,7 @@ import com.example.retrofit.util.MyGsonConverter;
 import com.example.retrofit.util.UploadFileRequestBody;
 import com.google.gson.Gson;
 import com.njjd.application.AppAplication;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 
 import java.io.File;
@@ -29,7 +30,7 @@ import rx.schedulers.Schedulers;
  * BASE_URL必须以“/”符号结束
  */
 public class HttpManager {
-    public static final String BASE_URL = "http://192.168.100.105/hetao_api/public/api/user/";
+    public static final String BASE_URL = "http://192.168.1.112/hetao_api/public/api/";
     /**
      * 设置超时时间，默认6s
      */
@@ -131,16 +132,25 @@ public class HttpManager {
         observable = httpService.getTag(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
-    public void pubQuestion(BaseEntity basePar, ProgressListener listener,Map<String,String> maps){
+    public void pubQuestion(BaseEntity basePar, ProgressListener listener,String uid,String token,String title,String content,String label_id){
         baseBar = basePar;
-        maps=addPublicParams(maps);
         Map<String, RequestBody> map = new HashMap<>();
         List<File> files=basePar.getFiles();
         for(int i=0;i<files.size();i++){
-            UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(basePar.getFile(),listener );
-            map.put("imgs\"; filename=\""+basePar.getFile().getName()+"", fileRequestBody);
+            UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(files.get(i),listener );
+            map.put("imgs[]\"; filename=\""+files.get(i).getName()+"", fileRequestBody);
         }
-        observable = httpService.pubQuestion(map,maps).map(basePar);
+        observable = httpService.pubQuestion(map,uid,token,title,content,label_id).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void pubQuestion2(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.pubQuestion2(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getQuestionList(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getQuestionList(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

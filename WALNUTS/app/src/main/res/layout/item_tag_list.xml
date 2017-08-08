@@ -7,8 +7,9 @@
         android:id="@+id/label_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/padding_left"
+        android:paddingLeft="@dimen/shadow"
         android:text="请选择标签"
+        android:background="@color/grey"
         android:textColor="@color/txt_color"
         android:textSize="@dimen/normal" />
 
@@ -16,7 +17,7 @@
         android:id="@+id/flowlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:padding="10dp"
+        android:background="@color/white"
+        android:padding="@dimen/shadow"
         app:lineSpacing="@dimen/margin" />
 </LinearLayout>

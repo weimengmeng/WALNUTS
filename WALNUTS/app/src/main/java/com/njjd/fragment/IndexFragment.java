@@ -22,10 +22,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
+import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.db.DBHelper;
+import com.njjd.domain.CommonEntity;
+import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
+import com.njjd.http.HttpManager;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -41,7 +48,9 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +62,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * Created by mrwim on 17/7/10.
  */
 
-public class IndexFragment extends BaseFragment implements View.OnClickListener, BGARefreshLayout.BGARefreshLayoutDelegate {
+public class IndexFragment extends BaseFragment implements View.OnClickListener, BGARefreshLayout.BGARefreshLayoutDelegate ,HttpOnNextListener{
     @BindView(R.id.img_order)
     LinearLayout imgOrder;
     @BindView(R.id.layout_refresh)
@@ -88,7 +97,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private List<QuestionEntity> tempList;
     private List<List<QuestionEntity>> lists=new ArrayList<>();
     private IndexQuestionAdapter questionAdapter;
+    private List<MyListView> listViews=new ArrayList<>();
     private List<IndexQuestionAdapter> adapterList=new ArrayList<>();
+    private List<IndexNavEntity> navList;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -102,6 +113,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         myinflater = LayoutInflater.from(context);
+        navList= CommonUtils.getInstance().getNavsList();
         ButterKnife.bind(this, view);
         return view;
     }
@@ -142,10 +154,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
     private void initTop(View view) {
         viewList = new ArrayList<>();
-        for (int i = 0; i <4; i++) {
+        for (int i = 0; i <navList.size(); i++) {
             RadioButton button = (RadioButton) myinflater.inflate(R.layout.item_radiobutton, null);
-            button.setText("精选");
-            button.setTag(i + "");
+            button.setText(navList.get(i).getName());
+            button.setTag(navList.get(i).getId());
             button.setId(i);
             button.setOnClickListener(this);
             if (i == 0) {
@@ -173,13 +185,12 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }else{
                 banner.setVisibility(View.GONE);
             }
-            list1.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
-//            DBHelper.getInstance().getNewSession().insertOrReplace(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+//            list1.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
 //                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
             final IndexQuestionAdapter questionAdapter=new IndexQuestionAdapter(context,list1);
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);
+            listViews.add(list);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -208,7 +219,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         });
         adapter = new MyPagerAdapter(viewList);
         indexPage.setAdapter(adapter);
-//        indexPage.setPageTransformer(true,new DepthPageTransformer());
         indexPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -226,7 +236,29 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         });
         indexPage.setCurrentItem(0);
         currentView=viewList.get(0);
+        tempList=lists.get(0);
+        list=listViews.get(0);
+        questionAdapter=adapterList.get(0);
+        getQuestion(navList.get(0).getId(),list,tempList,questionAdapter,"time");
+        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
+            questionAdapter.notifyDataSetChanged();
     }
+    private void getQuestion(String id,MyListView listView,List<QuestionEntity> list,IndexQuestionAdapter adapter,String sort){
+        Map<String,Object> map=new HashMap<>();
+        map.put("cate_article_id",id);
+        map.put("page",questionAdapter.getCurrentPage());
+        map.put("sort",sort);
+        map.put("keywords","");
+        SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(this,context,false,false),map);
+        HttpManager.getInstance().getQuestionList(postEntity);
+    }
+
+    @Override
+    public void onNext(Object o) {
+        LogUtils.d(o.toString());
+    }
+
     private void setpage(int page){
         //currentView=viewList.get(page);
 //        list= (MyListView) currentView.findViewById(R.id.list_index);

@@ -3,32 +3,38 @@
     android:id="@+id/lv_back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <include layout="@layout/top"></include>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/tag_list"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"></LinearLayout>
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/tag_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding"
         android:paddingLeft="@dimen/padding_left"
         android:paddingRight="@dimen/padding_left"
         android:paddingTop="@dimen/padding"
-        android:paddingBottom="@dimen/padding"
         android:weightSum="1">
 
         <TextView

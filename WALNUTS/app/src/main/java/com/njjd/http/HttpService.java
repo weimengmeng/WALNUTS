@@ -31,25 +31,25 @@ public interface HttpService {
      * @param params
      * @return
      */
-    @POST("register")
+    @POST("user/register")
     Observable<HttpResult<Object>> userRegister(@QueryMap Map<String, String> params);
-    @POST("checkSmsCode")
+    @POST("user/checkSmsCode")
     Observable<HttpResult<Object>> verifyPhone(@QueryMap Map<String, String> params);
-    @POST("login")
+    @POST("user/login")
     Observable<HttpResult<Object>> userLogin(@QueryMap Map<String, String> params);
-    @POST("sendSms")
+    @POST("user/sendSms")
     Observable<HttpResult<Object>> phoneCode(@QueryMap Map<String, String> params);
-    @POST("setUserInfo")
+    @POST("user/setUserInfo")
     Observable<HttpResult<Object>> completeInfo(@QueryMap Map<String, String> params);
-    @POST("authlogin")
+    @POST("user/authlogin")
     Observable<HttpResult<Object>> thirdLogin(@QueryMap Map<String, String> params);
-    @POST("authBind")
+    @POST("user/authBind")
     Observable<HttpResult<Object>> authBind(@QueryMap Map<String, String> params);
-    @POST("forgetPwd")
+    @POST("user/forgetPwd")
     Observable<HttpResult<Object>> setNewPwd(@QueryMap Map<String, String> params);
-    @POST("checkPhone")
+    @POST("user/checkPhone")
     Observable<HttpResult<Object>> checkPhone(@QueryMap Map<String, String> params);
-    @POST("getInvitation")
+    @POST("user/getInvitation")
     Observable<HttpResult<Object>> checkInvitation(@QueryMap Map<String, String> params);
     /**
      * 社区模块
@@ -57,32 +57,35 @@ public interface HttpService {
      * 详情 获取回答、获取评论、获取回复、回答、回复、评论、收藏回答、关注问题
      * 提问 获取标签、提问
      */
-    @POST("getCateArticle")
+    @POST("index/getCateArticle")
     Observable<HttpResult<Object>> getNav(@QueryMap Map<String, String> params);
-    @POST("getLabel")
+    @POST("index/getLabel")
     Observable<HttpResult<Object>> getTag(@QueryMap Map<String, String> params);
-    @POST("getQuestion")
+    @POST("index/getArticle")
     Observable<HttpResult<Object>> getQuestionList(@QueryMap Map<String, String> params);
-    @POST("getAnswer")
+    @POST("index/getAnswer")
     Observable<HttpResult<Object>> getAnswerList(@QueryMap Map<String, String> params);
-    @POST("getComment")
+    @POST("index/getComment")
     Observable<HttpResult<Object>> getCommentList(@QueryMap Map<String, String> params);
-    @POST("addArticle")
+    @POST("index/addArticle")
     @Multipart
-    Observable<HttpResult<Object>> pubQuestion(@PartMap Map<String, RequestBody> file,@PartMap Map<String,String> map);
-    @POST("pubAnswer")
+    Observable<HttpResult<Object>> pubQuestion(@PartMap Map<String, RequestBody> file, @Query("uid") String uid,@Query("token") String token,
+            @Query("title") String title,@Query("content") String content,@Query("label_id") String label_id);
+    @POST("index/addArticle")
+    Observable<HttpResult<Object>> pubQuestion2(@QueryMap Map<String, String> params);
+    @POST("index/pubAnswer")
     Observable<HttpResult<Object>> pubAnswer(@QueryMap Map<String, String> params);
-    @POST("pubComment")
+    @POST("index/pubComment")
     Observable<HttpResult<Object>> pubComment(@QueryMap Map<String, String> params);
-    @POST("saveAnswer")
+    @POST("index/saveAnswer")
     Observable<HttpResult<Object>> saveAnswer(@QueryMap Map<String, String> params);
-    @POST("focusQuestion")
+    @POST("index/focusQuestion")
     Observable<HttpResult<Object>> focusQuestion(@QueryMap Map<String, String> params);
-    @POST("agreeAnswer")
+    @POST("index/agreeAnswer")
     Observable<HttpResult<Object>> agreeAnswer(@QueryMap Map<String, String> params);
-    @POST("getReply")
+    @POST("index/getReply")
     Observable<HttpResult<Object>> getReplyList(@QueryMap Map<String, String> params);
-    @POST("pubReply")
+    @POST("index/pubReply")
     Observable<HttpResult<Object>> pubReply(@QueryMap Map<String, String> params);
     /**
      * 通知消息模块
@@ -94,13 +97,13 @@ public interface HttpService {
      * 公共模块 获取地址、销售模式、行业信息、上传图片
      * @return
      */
-    @POST("getCity")
+    @POST("user/getCity")
     Observable<HttpResult<Object>> provinceList(@QueryMap Map<String, String> params);
-    @POST("getSalesModel")
+    @POST("user/getSalesModel")
     Observable<HttpResult<Object>> getSaleModel(@QueryMap Map<String, String> params);
-    @POST("getIndustry")
+    @POST("user/getIndustry")
     Observable<HttpResult<Object>> industryList(@QueryMap Map<String, String> params);
-    @POST("uploadHeadImg")
+    @POST("user/uploadHeadImg")
     @Multipart
     Observable<HttpResult<Object>> uploadFile(@PartMap Map<String, RequestBody> file,
                                               @Query("uid") String uid,@Query("token") String token);

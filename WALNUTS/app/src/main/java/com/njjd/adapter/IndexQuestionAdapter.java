@@ -30,6 +30,7 @@ public class IndexQuestionAdapter extends BaseAdapter {
     private QuestionEntity temp;
     private ImageView head;
     private Typeface typeface;
+    public static int currentPage=1;
     public IndexQuestionAdapter(Context context, List<QuestionEntity> list) {
         this.context = context;
         this.list = list;
@@ -50,6 +51,14 @@ public class IndexQuestionAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
     @Override

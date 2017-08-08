@@ -44,6 +44,7 @@ public class ToastUtils {
     }
 
     private static void showToast(Context context, CharSequence msg, int duration) {
+//        new PopupView(context,msg.toString(),0);
         try {
             getToast(context);
             toast.setText(msg);

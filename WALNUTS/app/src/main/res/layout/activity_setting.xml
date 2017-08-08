@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:id="@+id/lv_back"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -157,7 +158,6 @@
                 android:layout_marginLeft="@dimen/padding"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
