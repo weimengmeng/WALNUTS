@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -13,10 +12,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by mrwim on 17/7/13.
+ * Created by mrwim on 17/8/7.
  */
 
-public class MyFocusQuestionActivity extends BaseActivity {
+public class MyFocusActivity extends BaseActivity {
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.txt_title)
@@ -34,7 +33,7 @@ public class MyFocusQuestionActivity extends BaseActivity {
     public void initView(View view) {
         ImmersedStatusbarUtils.initAfterSetContentView(this,topView);
         back.setText("我的");
-        txtTitle.setText("关注问题");
+        txtTitle.setText("我的关注");
     }
 
     @Override
@@ -42,9 +41,19 @@ public class MyFocusQuestionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick(R.id.back)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.back,R.id.radio_one, R.id.radio_two,R.id.radio_three})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.radio_one:
+                break;
+            case R.id.radio_two:
+                break;
+            case R.id.radio_three:
+                break;
+        }
     }
 
     @Override

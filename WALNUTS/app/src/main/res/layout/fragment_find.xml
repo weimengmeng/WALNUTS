@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical">
-
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
@@ -12,7 +11,6 @@
 
         <include layout="@layout/top"></include>
     </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -22,7 +20,7 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="@color/white"
         android:checkedButton="@+id/radio_hot"
         android:orientation="horizontal"
         android:weightSum="1">

@@ -3,6 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+    <ImageView
+    android:id="@+id/btn_close"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/btn_close"
+    android:paddingLeft="@dimen/shadow"
+    android:paddingTop="@dimen/margin_big"/>
+    <TextView
+        android:id="@+id/btn_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="@dimen/shadow"
+        android:text="全选"
+        android:textColor="@color/txt_color"
+        android:textSize="@dimen/big"
+        android:paddingTop="@dimen/padding_top"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,7 +28,7 @@
         android:padding="@dimen/margin_big">
 
         <TextView
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/padding_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="选取您感兴趣的话题："
@@ -24,6 +41,7 @@
             android:layout_height="wrap_content"
             android:text="(可多选)"
             android:gravity="left"
+            android:layout_marginTop="@dimen/_top"
             android:textColor="@color/txt_color"
             android:textSize="@dimen/normal"/>
         <ScrollView
@@ -52,9 +70,8 @@
                     android:drawableTop="@drawable/selector_btn_xzkh"
                     android:background="@null"
                     android:text="寻找客户"
-                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_xzkh"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
                 <RadioButton
                     android:id="@+id/btn_two"
                     android:layout_width="0dp"
@@ -65,10 +82,9 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/selector_btn_cwsk"
                     android:background="@null"
-                    android:drawablePadding="@dimen/padding"
                     android:text="财务收款"
                     android:textColor="@drawable/selector_btn_cwsk"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,9 +103,8 @@
                     android:drawableTop="@drawable/selector_btn_gttp"
                     android:background="@null"
                     android:text="沟通谈判"
-                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_gttp"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
                 <RadioButton
                     android:id="@+id/btn_four"
                     android:layout_width="0dp"
@@ -101,9 +116,8 @@
                     android:button="@null"
                     android:tag="0"
                     android:gravity="center"
-                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_bjtb"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,9 +136,8 @@
                     android:drawableTop="@drawable/selector_btn_khgl"
                     android:background="@null"
                     android:text="客户管理"
-                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_khgl"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
                 <RadioButton
                     android:button="@null"
                     android:gravity="center"
@@ -136,14 +149,13 @@
                     android:background="@null"
                     android:tag="0"
                     android:text="法律纠纷"
-                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_fljf"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin"
+                android:layout_marginBottom="@dimen/margin"
                 android:weightSum="1">
                 <RadioButton
                     android:button="@null"
@@ -155,11 +167,10 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/selector_btn_zcjh"
                     android:background="@null"
-                    android:text="职场江湖"
-                    android:drawablePadding="@dimen/padding"
+                    android:text="处理投诉"
                     android:layout_marginBottom="@dimen/margin"
                     android:textColor="@drawable/selector_btn_zcjh"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
                 <RadioButton
                     android:button="@null"
                     android:gravity="center"
@@ -170,10 +181,9 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/selector_btn_shzt"
                     android:background="@null"
-                    android:text="生活杂谈"
-                    android:drawablePadding="@dimen/padding"
+                    android:text="客情维护"
                     android:textColor="@drawable/selector_btn_shzt"
-                    android:textSize="@dimen/big"/>
+                    android:textSize="@dimen/normal"/>
             </LinearLayout>
         </LinearLayout>
         </ScrollView>
@@ -184,7 +194,7 @@
         android:layout_width="match_parent"
         android:background="@color/login"
         android:layout_height="wrap_content"
-        android:text="跳过"
+        android:text="确认"
         android:textColor="#ffffff"
         android:textSize="@dimen/big" />
 </RelativeLayout>

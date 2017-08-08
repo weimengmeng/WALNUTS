@@ -63,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_margin"
                 android:weightSum="1">
 
                 <TextView
@@ -457,7 +458,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding"
                         android:layout_weight="0.3"
-                        android:text="关注的问题"
+                        android:text="我的关注"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/normal" />
 

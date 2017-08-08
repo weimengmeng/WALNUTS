@@ -114,7 +114,7 @@ public class SuccessActivity extends BaseActivity {
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 provinceId = provinceEntities.get(options1).getId();
                 cityId = cityList.get(options1).get(options2).getId();
-                txtProvince.setText(provinceEntities.get(options1).getName() +"-"+ cityEntities.get(options1).get(options2));
+                txtProvince.setText(provinceEntities.get(options1).getName() + "-" + cityEntities.get(options1).get(options2));
             }
         }).build();
         provincePickview.setPicker(provinces, cityEntities);
@@ -184,7 +184,7 @@ public class SuccessActivity extends BaseActivity {
                     ToastUtils.showShortToast(this, "请先选择头像");
                     return;
                 }
-                if(etName.getText().toString().trim().equals("")){
+                if (etName.getText().toString().trim().equals("")) {
                     ToastUtils.showShortToast(this, "请输入姓名");
                     return;
                 }
@@ -192,8 +192,8 @@ public class SuccessActivity extends BaseActivity {
                     ToastUtils.showShortToast(SuccessActivity.this, "请先选择地区");
                     return;
                 }
-                if("".equals(industryId)){
-                    ToastUtils.showShortToast(this,"请选择行业");
+                if ("".equals(industryId)) {
+                    ToastUtils.showShortToast(this, "请选择行业");
                     return;
                 }
                 if (file == null) {
@@ -208,6 +208,7 @@ public class SuccessActivity extends BaseActivity {
     private void completeInfo() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("name", etName.getText().toString().trim());
         map.put("province_id", provinceId + "");
         map.put("city_id", cityId + "");
@@ -226,32 +227,9 @@ public class SuccessActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         ToastUtils.showShortToast(SuccessActivity.this, "完善成功");
-        doLogin();
+        startActivity(new Intent(this,InterestActivity.class));
+        finish();
     }
-    private void doLogin() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("phone",SPUtils.get(this,"phoneNumber","").toString());
-        map.put("pwd", SPUtils.get(this,"pwd","").toString());
-        map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(longinListener, this, true, false), map);
-        HttpManager.getInstance().userLogin(postEntity);
-    }
-    HttpOnNextListener longinListener=new HttpOnNextListener() {
-        @Override
-        public void onNext(Object o) {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.serializeNulls(); //重点
-            Gson gson = gsonBuilder.create();
-            try {
-                CommonUtils.initData(new JSONObject(gson.toJson(o)));
-                Intent intent = new Intent(SuccessActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
@@ -261,9 +239,11 @@ public class SuccessActivity extends BaseActivity {
             path = images.get(0);
         }
     }
+
     private void uploadFile() {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(upFileListener, this, true, false), file);
-        HttpManager.getInstance().uploadFile(postEntity, new MyUploadListener(),SPUtils.get(this, "userId", "").toString());
+        HttpManager.getInstance().uploadFile(postEntity, new MyUploadListener(),
+                SPUtils.get(this, "userId", "").toString(), SPUtils.get(this, "token", "").toString());
     }
 
     HttpOnNextListener upFileListener = new HttpOnNextListener() {

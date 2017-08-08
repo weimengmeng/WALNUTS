@@ -11,10 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.walnuts.AskActivity;
 import com.njjd.walnuts.AttentionActivity;
 import com.njjd.walnuts.MyAnswerActivity;
-import com.njjd.walnuts.MyFocusQuestionActivity;
+import com.njjd.walnuts.MyFocusActivity;
 import com.njjd.walnuts.MyQuestionActivity;
 import com.njjd.walnuts.MySaveActivity;
 import com.njjd.walnuts.PersonalActivity;
@@ -101,7 +100,7 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.lv_focus:
-                intent=new Intent(context, MyFocusQuestionActivity.class);
+                intent=new Intent(context, MyFocusActivity.class);
                 startActivity(intent);
                 break;
             case R.id.lv_save:

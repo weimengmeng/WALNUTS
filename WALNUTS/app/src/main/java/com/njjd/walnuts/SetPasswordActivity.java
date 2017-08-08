@@ -73,6 +73,7 @@ public class SetPasswordActivity extends BaseActivity {
         JsonObject object= JSONUtils.getAsJsonObject(o);
         SPUtils.put(this,"phoneNumber",getIntent().getStringExtra("phone"));
         SPUtils.put(this,"userId",object.get("uid").getAsString());
+        SPUtils.put(this,"token",object.get("token").getAsString());
         SPUtils.put(this,"pwd",etPwd.getText().toString().trim());
         Intent intent=new Intent(this,SuccessActivity.class);
         intent.putExtra("bind",getIntent().getIntExtra("bind",0));

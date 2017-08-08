@@ -57,9 +57,9 @@ public interface HttpService {
      * 详情 获取回答、获取评论、获取回复、回答、回复、评论、收藏回答、关注问题
      * 提问 获取标签、提问
      */
-    @POST("getNav")
+    @POST("getCateArticle")
     Observable<HttpResult<Object>> getNav(@QueryMap Map<String, String> params);
-    @POST("getTag")
+    @POST("getLabel")
     Observable<HttpResult<Object>> getTag(@QueryMap Map<String, String> params);
     @POST("getQuestion")
     Observable<HttpResult<Object>> getQuestionList(@QueryMap Map<String, String> params);
@@ -67,8 +67,9 @@ public interface HttpService {
     Observable<HttpResult<Object>> getAnswerList(@QueryMap Map<String, String> params);
     @POST("getComment")
     Observable<HttpResult<Object>> getCommentList(@QueryMap Map<String, String> params);
-    @POST("pubQuestion")
-    Observable<HttpResult<Object>> pubQuestion(@QueryMap Map<String, String> params);
+    @POST("addArticle")
+    @Multipart
+    Observable<HttpResult<Object>> pubQuestion(@PartMap Map<String, RequestBody> file,@PartMap Map<String,String> map);
     @POST("pubAnswer")
     Observable<HttpResult<Object>> pubAnswer(@QueryMap Map<String, String> params);
     @POST("pubComment")
@@ -101,7 +102,8 @@ public interface HttpService {
     Observable<HttpResult<Object>> industryList(@QueryMap Map<String, String> params);
     @POST("uploadHeadImg")
     @Multipart
-    Observable<HttpResult<Object>> uploadFile(@PartMap Map<String, RequestBody> file, @Query("uid") String uid);
+    Observable<HttpResult<Object>> uploadFile(@PartMap Map<String, RequestBody> file,
+                                              @Query("uid") String uid,@Query("token") String token);
     //当文件大时必须使用@streaming流
     @Streaming
     @GET

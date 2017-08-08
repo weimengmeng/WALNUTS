@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.liuguangqiang.swipeback.SwipeBackLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/top">
                 <include layout="@layout/top"></include>
             </LinearLayout>
-
             <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="match_parent"
@@ -31,17 +28,19 @@
                 android:background="@color/white"
                 android:text="工业项目需要喝酒吗？"
                 android:textColor="@color/gray"
+                android:paddingLeft="@dimen/padding_left"
                 android:textSize="@dimen/big" />
-
             <EditText
                 android:id="@+id/et_answer"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginTop="@dimen/margin"
                 android:layout_weight="1"
                 android:background="@drawable/background_layout_div"
                 android:gravity="top|left"
                 android:hint="请输入回答"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal"
                 android:padding="@dimen/padding_left" />
         </LinearLayout>
 
@@ -55,24 +54,29 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:gravity="center">
+                android:layout_weight="0.2"
+                android:paddingRight="@dimen/padding_left"
+                android:gravity="center|right">
 
                 <Button
                     android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_button_div"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingLeft="@dimen/padding_left"
+                    android:paddingRight="@dimen/padding_left"
                     android:text="提交"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/big" />
+                    android:textSize="@dimen/normal" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-</com.liuguangqiang.swipeback.SwipeBackLayout>
+</LinearLayout>

@@ -8,6 +8,7 @@ import com.njjd.application.AppAplication;
 import com.njjd.utils.LogUtils;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import rx.Subscriber;
@@ -27,6 +28,7 @@ public abstract class BaseEntity<T> implements Func1<HttpResult<T>,T> {
      * 获取上传文件
      */
     public abstract File getFile();
+    public abstract List<File> getFiles();
     /**
      * 设置回调sub
      *

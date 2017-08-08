@@ -132,6 +132,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements HttpOnNe
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+//        overridePendingTransition(R.anim.in,R.anim.out);
         MyActivityManager.getInstance().popOneActivity(this);
     }
 

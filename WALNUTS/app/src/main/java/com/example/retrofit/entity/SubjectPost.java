@@ -2,6 +2,7 @@ package com.example.retrofit.entity;
 
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import rx.Subscriber;
 
@@ -14,6 +15,7 @@ public class SubjectPost extends BaseEntity {
     private Subscriber mSubscriber;
     private Map<String,Object> map;
     private File file;
+    private List<File> files;
 
     /**
      * 用于普通请求参数
@@ -33,6 +35,15 @@ public class SubjectPost extends BaseEntity {
         this.mSubscriber = getTopMovieOnNext;
         this.file = file;
     }
+    /**
+     * 用于文件上传
+     * @param getTopMovieOnNext
+     * @param files
+     */
+    public SubjectPost(Subscriber getTopMovieOnNext,List<File> files) {
+        this.mSubscriber = getTopMovieOnNext;
+        this.files = files;
+    }
     @Override
     public Map<String,Object> getParams() {
         return map;
@@ -41,6 +52,11 @@ public class SubjectPost extends BaseEntity {
     @Override
     public File getFile() {
         return file;
+    }
+
+    @Override
+    public List<File> getFiles() {
+        return files;
     }
 
     @Override

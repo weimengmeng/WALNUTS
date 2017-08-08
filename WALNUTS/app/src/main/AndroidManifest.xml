@@ -117,7 +117,7 @@
             android:name=".MyAnswerActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".MyFocusQuestionActivity"
+            android:name=".MyFocusActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MyQuestionActivity"

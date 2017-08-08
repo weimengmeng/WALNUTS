@@ -5,8 +5,12 @@ import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.util.MyGsonConverter;
 import com.example.retrofit.util.UploadFileRequestBody;
 import com.google.gson.Gson;
+import com.njjd.application.AppAplication;
+import com.njjd.utils.SPUtils;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -122,6 +126,23 @@ public class HttpManager {
         observable = httpService.getNav(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void getTag(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getTag(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void pubQuestion(BaseEntity basePar, ProgressListener listener,Map<String,String> maps){
+        baseBar = basePar;
+        maps=addPublicParams(maps);
+        Map<String, RequestBody> map = new HashMap<>();
+        List<File> files=basePar.getFiles();
+        for(int i=0;i<files.size();i++){
+            UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(basePar.getFile(),listener );
+            map.put("imgs\"; filename=\""+basePar.getFile().getName()+"", fileRequestBody);
+        }
+        observable = httpService.pubQuestion(map,maps).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      *  公共模块
      * @param basePar
@@ -147,14 +168,14 @@ public class HttpManager {
      * @param basePar
      * @param listener
      */
-    public void uploadFile(BaseEntity basePar, ProgressListener listener,String uid) {
+    public void uploadFile(BaseEntity basePar, ProgressListener listener,String uid,String token) {
         baseBar = basePar;
         Map<String, RequestBody> map = new HashMap<>();
         if (basePar.getFile() != null) {
             UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(basePar.getFile(),listener );
             map.put("img\"; filename=\""+basePar.getFile().getName()+"", fileRequestBody);
         }
-        observable = httpService.uploadFile(map,uid).map(basePar);
+        observable = httpService.uploadFile(map,uid,token).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**
@@ -175,7 +196,7 @@ public class HttpManager {
      * @return
      */
     private Map<String,String> addPublicParams(Map<String,String> map){
-        map.put("token","");
+        map.put("token", SPUtils.get(AppAplication.getContext(),"token","").toString());
         return map;
     }
     /**

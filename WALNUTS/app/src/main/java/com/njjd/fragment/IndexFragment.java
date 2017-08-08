@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -23,13 +24,14 @@ import android.widget.TextView;
 
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
+import com.njjd.db.DBHelper;
 import com.njjd.domain.QuestionEntity;
-import com.njjd.fragment.BaseFragment;
 import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyListView;
+import com.njjd.utils.RefreshLayout;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
@@ -173,6 +175,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }
             list1.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
                     "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
+//            DBHelper.getInstance().getNewSession().insertOrReplace(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+//                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
             final IndexQuestionAdapter questionAdapter=new IndexQuestionAdapter(context,list1);
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);
@@ -204,7 +208,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         });
         adapter = new MyPagerAdapter(viewList);
         indexPage.setAdapter(adapter);
-        indexPage.setPageTransformer(true,new DepthPageTransformer());
+//        indexPage.setPageTransformer(true,new DepthPageTransformer());
         indexPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -221,6 +225,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }
         });
         indexPage.setCurrentItem(0);
+        currentView=viewList.get(0);
     }
     private void setpage(int page){
         //currentView=viewList.get(page);
@@ -257,9 +262,25 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //        });
     }
     private void initRefresh() {
+//        layoutRefresh.setColorSchemeColors(R.color.login);
+        // 设置下拉刷新监听器
+//        layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//
+//            @Override
+//            public void onRefresh() {
+//                layoutRefresh.postDelayed(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        layoutRefresh.setRefreshing(false);
+//                    }
+//                }, 2000);
+//            }
+//        });
+
         layoutRefresh.setDelegate(this);
 //        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
-        BGAMeiTuanRefreshViewHolder refreshViewHolder = new MyRefresh(context, false);
+        BGAMeiTuanRefreshViewHolder refreshViewHolder = new MyRefresh(context, true);
         // 为了增加下拉刷新头部和加载更多的通用性，提供了以下可选配置选项  -------------START
         // 设置正在加载更多时不显示加载更多控件
         // mRefreshLayout.setIsShowLoadingMoreView(false);

@@ -37,7 +37,7 @@ public class AnswerActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         back.setText("详情");
-        txtTitle.setText("回答提问");
+        txtTitle.setText("回答");
     }
 
     @Override

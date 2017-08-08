@@ -1,7 +1,6 @@
 package com.njjd.utils;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -9,12 +8,9 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.njjd.db.DBHelper;
 import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.walnuts.BindActivity;
-import com.njjd.walnuts.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +44,8 @@ public class CommonUtils {
     private static List<String> sales = new ArrayList<>();
     private static List<CommonEntity> saleList = new ArrayList<>();
     private static IndexNavEntity entity;
+    private static List<CommonEntity> tagsList=new ArrayList<>();
+    private static List<CommonEntity> navList=new ArrayList<>();
     public static void init(Context context){
         mContext=context;
         //获取省份
@@ -57,9 +55,9 @@ public class CommonUtils {
         //获取销售模式
         getSaleModel();
         //获取首页导航栏分类
-//        getNavInfo();
+        getNavInfo();
 //        //获取标签分类
-//        getTagInfo();
+        getTagInfo();
     }
     //获取单例
     public static CommonUtils getInstance() {
@@ -160,6 +158,15 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
+                LogUtils.d(o.toString());
+                JsonArray array=JSONUtils.getAsJsonArray(o);
+                JsonObject object;
+                CommonEntity entity;
+                for(int i=0;i<array.size();i++){
+                    object=array.get(i).getAsJsonObject();
+                    entity=new CommonEntity(object.get("id").getAsString(),object.get("cate_name").getAsString(),"");
+                    navList.add(entity);
+                }
 //                DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace();
             }
         }, mContext, false, false), map);
@@ -170,10 +177,19 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
-//                DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace();
+                LogUtils.d(o.toString());
+                JsonArray array=JSONUtils.getAsJsonArray(o);
+                JsonObject object;
+                CommonEntity entity;
+                for(int i=0;i<array.size();i++){
+                    object=array.get(i).getAsJsonObject();
+                   entity=new CommonEntity(object.get("id").getAsString(),object.get("label_name").getAsString(),object.get("level").getAsString());
+                    tagsList.add(entity);
+                }
+//               DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace();
             }
         }, mContext, false, false), map);
-        HttpManager.getInstance().getNav(postEntity);
+        HttpManager.getInstance().getTag(postEntity);
     }
     public static void initData(JSONObject json){
         try {
@@ -222,5 +238,8 @@ public class CommonUtils {
     }
     public List<List<CommonEntity>> getIndustryList2(){
         return industryList2;
+    }
+    public List<CommonEntity> getTagsList(){
+        return tagsList;
     }
 }

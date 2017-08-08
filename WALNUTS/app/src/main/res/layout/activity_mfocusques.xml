@@ -1,14 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="@color/grey"
+    android:orientation="vertical">
+
     <LinearLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/top">
+        android:layout_height="wrap_content">
+
         <include layout="@layout/top"></include>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:alpha="0.15"
+        android:background="@color/grey"></View>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:checkedButton="@+id/radio_one"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RadioButton
+            android:id="@+id/radio_one"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.33"
+            android:button="@null"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingRight="@dimen/padding_top"
+            android:text="关注的人"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:alpha="0.15"
+            android:background="#000000"></View>
+
+        <RadioButton
+            android:id="@+id/radio_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.33"
+            android:button="@null"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingRight="@dimen/padding_top"
+            android:text="关注的问题"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:alpha="0.15"
+            android:background="#000000"></View>
+
+        <RadioButton
+            android:id="@+id/radio_three"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.33"
+            android:button="@null"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingRight="@dimen/padding_top"
+            android:text="我的标签"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+    </RadioGroup>
+
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +99,7 @@
         android:layout_marginTop="@dimen/margin"
         android:background="@drawable/background_layout_div"
         android:orientation="vertical">
+
         <ListView
             android:id="@+id/list_ques"
             android:layout_width="match_parent"
