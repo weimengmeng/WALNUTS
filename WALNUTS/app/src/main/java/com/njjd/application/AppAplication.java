@@ -63,7 +63,7 @@ public class AppAplication extends Application {
 
             @Override
             public void onFailure(String s, String s1) {
-
+                LogUtils.d("device_token"+s+"  "+s1);
             }
         });
     }

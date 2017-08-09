@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:text="工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?"
             android:textColor="@color/gray"
             android:maxLines="2"
@@ -39,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginRight="@dimen/margin_top"
-            android:layout_marginTop="@dimen/margin"
             android:alpha="0.15"
             android:background="#000000"></View>
 
@@ -47,45 +47,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:weightSum="1">
 
             <LinearLayout
                 android:id="@+id/lv_head"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="@dimen/margin"
                 ></LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/txt_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|left"
+                android:text="300人参与讨论"
+                android:textSize="@dimen/small" />
+            <TextView
+                android:id="@+id/txt_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
-                android:weightSum="1">
-
-                <TextView
-                    android:id="@+id/txt_total"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:gravity="center_vertical|right"
-                    android:text="300人参与讨论"
-                    android:textSize="@dimen/small" />
-
-                <TextView
-                    android:id="@+id/txt_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_top"
-                    android:layout_weight="0.5"
-                    android:gravity="center|right"
-                    android:text="15分钟前"
-                    android:textSize="@dimen/small" />
-            </LinearLayout>
+                android:text="15分钟前"
+                android:textSize="@dimen/small" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

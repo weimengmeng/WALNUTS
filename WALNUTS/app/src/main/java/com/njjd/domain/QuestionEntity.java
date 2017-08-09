@@ -5,6 +5,8 @@ import org.greenrobot.greendao.annotation.Id;
 
 import java.io.Serializable;
 import org.greenrobot.greendao.annotation.Generated;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by mrwim on 17/7/26.
@@ -23,10 +25,13 @@ public class QuestionEntity implements Serializable{
     private int isFocus;//是否关注
     private String dateTime;//发布时间
     private String tag;
-    @Generated(hash = 1659159985)
-    public QuestionEntity(String questionId, String title, String content,
-            String photo, String pic, String focusNum, String answerNum,
-            int isFocus, String dateTime, String tag) {
+    private String kind;
+
+
+    @Generated(hash = 1414024746)
+    public QuestionEntity(String questionId, String title, String content, String photo,
+            String pic, String focusNum, String answerNum, int isFocus, String dateTime,
+            String tag, String kind) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
@@ -37,9 +42,29 @@ public class QuestionEntity implements Serializable{
         this.isFocus = isFocus;
         this.dateTime = dateTime;
         this.tag = tag;
+        this.kind = kind;
     }
     @Generated(hash = 98121125)
     public QuestionEntity() {
+    }
+
+
+    public QuestionEntity(JSONObject object,String kind){
+        try {
+            this.questionId=object.isNull("id")?"0":object.getString("id");
+            this.title=object.isNull("title")?"":object.getString("title");
+            this.content=object.isNull("contents")?"":object.getString("contents");
+            this.answerNum=object.isNull("answer_num")?"0":object.getString("answer_num");
+            this.focusNum=object.isNull("follow_num")?"0":object.getString("follow_num");
+            this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
+            this.photo=object.isNull("imgs")?"":object.getString("imgs");
+            this.pic=object.isNull("pic")?"":object.getString("pic");
+            this.tag="";
+            this.isFocus=0;
+            this.kind=kind;
+        }catch (JSONException e){
+
+        }
     }
     public String getQuestionId() {
         return this.questionId;
@@ -100,5 +125,11 @@ public class QuestionEntity implements Serializable{
     }
     public void setTag(String tag) {
         this.tag = tag;
+    }
+    public String getKind() {
+        return this.kind;
+    }
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 }

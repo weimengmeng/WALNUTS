@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.njjd.adapter.MyPagerAdapter;
@@ -37,13 +38,15 @@ public class FindFragment extends BaseFragment {
     CustomRadioButton radioHot;
     @BindView(R.id.radio_new)
     CustomRadioButton radioNew;
+    @BindView(R.id.button_group)
+    RadioGroup buttonGroup;
     private Context context;
-    @BindView(R.id.top)
-    LinearLayout top;
-    @BindView(R.id.back)
-    TextView back;
-    @BindView(R.id.txt_title)
-    TextView txtTitle;
+//    @BindView(R.id.top)
+//    LinearLayout top;
+//    @BindView(R.id.back)
+//    TextView back;
+//    @BindView(R.id.txt_title)
+//    TextView txtTitle;
     private List<View> viewList;
     private MyPagerAdapter adapter;
 
@@ -58,9 +61,9 @@ public class FindFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
-        back.setVisibility(View.GONE);
-        txtTitle.setText("发现");
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), buttonGroup);
+//        back.setVisibility(View.GONE);
+//        txtTitle.setText("发现");
         viewList = new ArrayList<>();
         viewList.add(view.inflate(context, R.layout.find_jinxuan, null));
         viewList.add(view.inflate(context, R.layout.find_zhuanlan, null));

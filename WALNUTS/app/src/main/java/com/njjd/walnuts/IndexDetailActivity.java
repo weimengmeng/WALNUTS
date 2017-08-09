@@ -10,16 +10,21 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.retrofit.mywidget.LoadingDialog;
+import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.adapter.AnswerReplyAdapter;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.domain.ReplyEntity;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.MyScrollView;
 import com.njjd.utils.ToastUtils;
+import com.scrollablelayout.ScrollableLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +36,19 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/12.
  */
 
-public class IndexDetailActivity extends BaseActivity implements MyScrollView.OnScrollListener{
+public class IndexDetailActivity extends BaseActivity{
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.txt_title)
     TextView txtTitle;
-    @BindView(R.id.txt_top_quesTitle)
-    TextView txtQuesTitle;
-    @BindView(R.id.lv_topTitle)
-    LinearLayout lvTopTiTle;
-    @BindView(R.id.lv_top)
-    LinearLayout lvTop;
+    @BindView(R.id.txt_quesTitle)
+    TextView quesTitle;
+    @BindView(R.id.top)
+    LinearLayout topView;
     @BindView(R.id.lv_img)
     LinearLayout lvImg;
+    @BindView(R.id.lv_root)
+    ScrollView root;
     @BindView(R.id.txt_content)
     TextView txtContent;
     @BindView(R.id.txt_answerNum)
@@ -54,8 +59,8 @@ public class IndexDetailActivity extends BaseActivity implements MyScrollView.On
     TextView txtFocus;
     @BindView(R.id.ex_list)
     ExpandableListView exListVIew;
-    @BindView(R.id.scrollView)
-    MyScrollView scrollView;
+    @BindView(R.id.scrollLayout)
+    ScrollableLayout scrollView;
     @BindView(R.id.lv_tag)
     LinearLayout lvTag;
     private QuestionEntity questionEntity;
@@ -78,16 +83,17 @@ public class IndexDetailActivity extends BaseActivity implements MyScrollView.On
 
     @Override
     public void initView(View view) {
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
         back.setText("关闭");
         txtTitle.setText("问题详情");
-        txtQuesTitle.setText(questionEntity.getTitle());
+        quesTitle.setText(questionEntity.getTitle());
         txtAnswerNum.setText("回答 " + questionEntity.getAnswerNum());
         txtFocusNum.setText("关注 " + questionEntity.getFocusNum());
         txtContent.setText(questionEntity.getContent());
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/NotoSansHans-Medium.ttf");
-        txtContent.setTypeface(typeface);
+//        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/NotoSansHans-Medium.ttf");
+//        quesTitle.setTypeface(typeface);
         inflater = LayoutInflater.from(this);
         if (!"".equals(questionEntity.getPhoto())) {
             lvImg.setVisibility(View.VISIBLE);
@@ -123,15 +129,9 @@ public class IndexDetailActivity extends BaseActivity implements MyScrollView.On
             });
             lvTag.addView(linearLayout);
         }
-        findViewById(R.id.parent_layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                onScroll(scrollView.getScrollY());
-            }
-        });
-        scrollView.setOnScrollListener(this);
+        scrollView.getHelper().setCurrentScrollableContainer(root);
+        root.smoothScrollTo(0,0);
         getAnswerList();
-        scrollView.smoothScrollTo(0, 0);
     }
 
     @Override
@@ -185,8 +185,7 @@ public class IndexDetailActivity extends BaseActivity implements MyScrollView.On
         }
     }
     @Override
-    public void onScroll(int scrollY) {
-        int mBuyLayout2ParentTop = Math.max(scrollY, lvTop.getTop());
-        lvTopTiTle.layout(getResources().getDimensionPixelSize(R.dimen.margin_small), mBuyLayout2ParentTop, lvTop.getWidth() + getResources().getDimensionPixelSize(R.dimen.margin_litter_big), lvTopTiTle.getHeight() + mBuyLayout2ParentTop);
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

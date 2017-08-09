@@ -3,5 +3,6 @@
     android:id="@+id/head"
     android:layout_width="20dp"
     android:layout_height="20dp"
+    android:layout_marginRight="@dimen/padding"
     android:scaleType="centerCrop"
     android:src="@drawable/demo" />

@@ -34,6 +34,7 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         public final static Property IsFocus = new Property(7, int.class, "isFocus", false, "IS_FOCUS");
         public final static Property DateTime = new Property(8, String.class, "dateTime", false, "DATE_TIME");
         public final static Property Tag = new Property(9, String.class, "tag", false, "TAG");
+        public final static Property Kind = new Property(10, String.class, "kind", false, "KIND");
     }
 
 
@@ -58,7 +59,8 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
                 "\"ANSWER_NUM\" TEXT," + // 6: answerNum
                 "\"IS_FOCUS\" INTEGER NOT NULL ," + // 7: isFocus
                 "\"DATE_TIME\" TEXT," + // 8: dateTime
-                "\"TAG\" TEXT);"); // 9: tag
+                "\"TAG\" TEXT," + // 9: tag
+                "\"KIND\" TEXT);"); // 10: kind
     }
 
     /** Drops the underlying database table. */
@@ -116,6 +118,11 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         if (tag != null) {
             stmt.bindString(10, tag);
         }
+ 
+        String kind = entity.getKind();
+        if (kind != null) {
+            stmt.bindString(11, kind);
+        }
     }
 
     @Override
@@ -167,6 +174,11 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         if (tag != null) {
             stmt.bindString(10, tag);
         }
+ 
+        String kind = entity.getKind();
+        if (kind != null) {
+            stmt.bindString(11, kind);
+        }
     }
 
     @Override
@@ -186,7 +198,8 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // answerNum
             cursor.getInt(offset + 7), // isFocus
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // dateTime
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // tag
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // tag
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // kind
         );
         return entity;
     }
@@ -203,6 +216,7 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         entity.setIsFocus(cursor.getInt(offset + 7));
         entity.setDateTime(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setTag(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setKind(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override

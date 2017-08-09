@@ -15,12 +15,13 @@ import com.njjd.application.AppAplication;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashMap; 
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     TextView back;
     @BindView(R.id.txt_title)
     TextView txtTitle;
+    @BindView(R.id.top)
+    LinearLayout top;
     @BindView(R.id.tag_list)
     LinearLayout tagLayout;
     private Bundle bundle;
@@ -57,6 +60,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     @SuppressWarnings("ResourceType")
     @Override
     public void initView(View view) {
+        ImmersedStatusbarUtils.initAfterSetContentView(this, top);
         back.setText("提问");
         txtTitle.setText("问题标签");
         bundle = getIntent().getBundleExtra("question");

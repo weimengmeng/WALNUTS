@@ -101,4 +101,6 @@ dependencies {
     compile files('libs/nineoldandroids-2.4.0.jar')
     compile 'org.greenrobot:greendao:3.2.2' // add library
     compile 'cn.bingoogolapple:bga-refreshlayout:+'
+    compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.0'
+    compile 'com.github.w446108264:ScrollableLayout:1.0.3'
 }

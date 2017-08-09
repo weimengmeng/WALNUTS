@@ -106,7 +106,7 @@
             android:paddingLeft="@dimen/round"
             android:paddingRight="@dimen/margin"
             android:text="项目销售"
-            android:textColor="@color/gray"
+            android:textColor="#666666"
             android:textScaleX="1"
             android:textSize="@dimen/normal"
             android:typeface="sans" />

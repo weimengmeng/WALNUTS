@@ -29,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by mrwim on 17/7/10.
  */
 
-public class MineFragment extends Fragment {
+public class MineFragment extends BaseFragment {
     @BindView(R.id.txt_change)
     TextView txtChange;
     @BindView(R.id.img_head)
@@ -56,6 +56,11 @@ public class MineFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void lazyInitData() {
+        //获取问题
     }
 
     @Override

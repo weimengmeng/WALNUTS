@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.db.DBHelper;
@@ -45,6 +47,10 @@ import com.njjd.walnuts.R;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,10 +84,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private Context context;
     @BindView(R.id.top)
     LinearLayout top;
-    @BindView(R.id.back)
-    TextView back;
-    @BindView(R.id.txt_title)
-    TextView txtTitle;
+//    @BindView(R.id.back)
+//    TextView back;
+//    @BindView(R.id.txt_title)
+//    TextView txtTitle;
     private View mainView;
     private LinearLayout layoutTop, layoutTime;
     private PopupWindow popupWindow;
@@ -89,7 +95,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private View currentView;
     private Banner banner;
     private MyListView list;
-    private List<String> images= new ArrayList<>(Arrays.asList(
+    private List<String> images= new ArrayList<>(Arrays.asList("file:///android_asset/banner.png",
             "http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg",
             "http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg",
             "http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg"));
@@ -126,8 +132,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
-        back.setVisibility(View.GONE);
-        txtTitle.setText("首页");
+//        back.setVisibility(View.GONE);
+//        txtTitle.setText("首页");
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
         layoutTop = ((LinearLayout) mainView.findViewById(R.id.lv_top));
         layoutTime = (LinearLayout) mainView.findViewById(R.id.lv_time);
@@ -170,9 +176,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             list= (MyListView) currentView.findViewById(R.id.list_index);
             banner=(Banner) currentView.findViewById(R.id.banner);
             if(i==0) {
-                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
                 banner.setIndicatorGravity(BannerConfig.RIGHT);
-                banner.setBannerTitles(titles);
+//                banner.setBannerTitles(titles);
                 banner.isAutoPlay(true);
                 banner.setDelayTime(3000);
                 banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
@@ -199,6 +205,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     bundle.putSerializable("question",list1.get(position));
                     intent.putExtra("question",bundle);
                     startActivity(intent);
+//                    getActivity().overridePendingTransition(R.anim.in,R.anim.out);
                 }
             });
             viewList.add(currentView);
@@ -227,7 +234,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onPageSelected(int position) {
                 buttonGroup.check(position);
-                currentView=viewList.get(position);
+                tempList=lists.get(position);
+                list=listViews.get(position);
+                questionAdapter=adapterList.get(position);
+                getQuestion(navList.get(position).getId(),list,tempList,questionAdapter,"time");
             }
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -235,14 +245,22 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }
         });
         indexPage.setCurrentItem(0);
-        currentView=viewList.get(0);
         tempList=lists.get(0);
         list=listViews.get(0);
         questionAdapter=adapterList.get(0);
-        getQuestion(navList.get(0).getId(),list,tempList,questionAdapter,"time");
+//        getQuestion(navList.get(0).getId(),list,tempList,questionAdapter,"time");
         tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
-            questionAdapter.notifyDataSetChanged();
+                 "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","30","20",0,"2017-7-26","电销,外访","0"));
+        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg,http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","30","20",0,"2017-7-26","电销,外访","0"));
+        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访","0"));
+        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","","http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","30","20",0,"2017-7-26","电销,外访","0"));
+        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
+                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","","","30","20",0,"2017-7-26","电销,外访","0"));
+        questionAdapter.notifyDataSetChanged();
+        questionAdapter.notifyDataSetChanged();
     }
     private void getQuestion(String id,MyListView listView,List<QuestionEntity> list,IndexQuestionAdapter adapter,String sort){
         Map<String,Object> map=new HashMap<>();
@@ -257,6 +275,25 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onNext(Object o) {
         LogUtils.d(o.toString());
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls(); //重点
+        Gson gson = gsonBuilder.create();
+        JSONArray array = null;
+        QuestionEntity entity;
+        try {
+            array=new JSONArray(gson.toJson(o));
+            for(int i=0;i<array.length();i++){
+                if(questionAdapter.getCurrentPage()==1){
+                    tempList.clear();
+                }
+                entity=new QuestionEntity(array.getJSONObject(i),indexPage.getCurrentItem()+"");
+                tempList.add(entity);
+                DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(entity);
+            }
+            questionAdapter.notifyDataSetChanged();
+        }catch (JSONException e){
+            LogUtils.d(e.toString());
+        }
     }
 
     private void setpage(int page){

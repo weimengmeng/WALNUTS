@@ -9,6 +9,7 @@
     android:gravity="center"
     android:onClick="onClick"
     android:paddingRight="@dimen/padding_top"
+    android:paddingLeft="@dimen/padding_left"
     android:text="全部"
     android:textColor="@drawable/selector_btn_top"
-    android:textSize="@dimen/normal" />
+    android:textSize="@dimen/big" />

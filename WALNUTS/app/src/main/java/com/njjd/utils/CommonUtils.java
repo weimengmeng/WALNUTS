@@ -164,6 +164,9 @@ public class CommonUtils {
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
                 IndexNavEntity entity;
+                if(array.size()<DBHelper.getInstance().getmDaoSession().getIndexNavEntityDao().loadAll().size()){
+                    DBHelper.getInstance().getmDaoSession().getIndexNavEntityDao().deleteAll();
+                }
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
                     entity=new IndexNavEntity(object.get("id").getAsString(),object.get("cate_name").getAsString());
@@ -183,6 +186,9 @@ public class CommonUtils {
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
                 TagEntity entity;
+                if(array.size()<DBHelper.getInstance().getmDaoSession().getTagEntityDao().loadAll().size()){
+                    DBHelper.getInstance().getmDaoSession().getTagEntityDao().deleteAll();
+                }
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
                    entity=new TagEntity(object.get("id").getAsString(),object.get("label_name").getAsString(),object.get("level").getAsString());

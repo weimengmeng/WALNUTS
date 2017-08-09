@@ -18,6 +18,8 @@ import com.njjd.walnuts.R;
 
 import java.util.List;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 /**
  * Created by mrwim on 17/7/26.
  */
@@ -93,6 +95,8 @@ public class IndexQuestionAdapter extends BaseAdapter {
         viewHolder.total.setText("等  " + (Integer.valueOf(temp.getAnswerNum()) + Integer.valueOf(temp.getFocusNum())) + "  人参与");
         viewHolder.createTime.setText(temp.getDateTime());
         String[] strs = temp.getPic().split(",");
+//        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+//        lp.setMargins(0, 0, 21, 0);
         if ("".equals(temp.getPic())) {
             viewHolder.lvHead.removeAllViews();
         } else {
