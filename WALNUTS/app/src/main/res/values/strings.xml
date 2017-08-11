@@ -15,4 +15,7 @@
     <string name="skip">跳过</string>
     <string name="enter">进入</string>
     <string name="code">验证码已发送至手机: %1$s</string>
+    <string name="btn_scroll_view">ScrollView demo</string>
+    <string name="btn_list_view">ListView demo</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
 </resources>

@@ -7,8 +7,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,9 +61,28 @@ public class AnswerActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_submit:
-                ToastUtils.showShortToast(this, "提交回答");
+                if(etAnswer.getText().toString().trim().equals("")){
+                    ToastUtils.showShortToast(this,"请输入回答");
+                    return;
+                }
+                pubAnswer();
                 break;
         }
+    }
+    private void pubAnswer(){
+        Map<String,Object> map=new HashMap<>();
+        map.put("article_id",getIntent().getStringExtra("quesId"));
+        map.put("uid", SPUtils.get(this,"userId",""));
+        map.put("content",etAnswer.getText().toString().trim());
+        SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(this,this,false,false),map);
+        HttpManager.getInstance().pubComment(postEntity);
+    }
+
+    @Override
+    public void onNext(Object o) {
+        super.onNext(o);
+        ToastUtils.showShortToast(this, "回答成功");
+        finish();
     }
 
     @Override

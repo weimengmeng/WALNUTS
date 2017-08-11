@@ -1,21 +1,22 @@
 package com.njjd.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
 import com.njjd.domain.ReplyEntity;
+import com.njjd.utils.DateUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.R;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -91,10 +92,22 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter {
         answerEntity=groupArray.get(groupPosition);
         holder.groupName.setText(answerEntity.getName());
         holder.groupMess.setText(answerEntity.getMessage());
+        if(answerEntity.getIsSave().equals("1")){
+            holder.groupSave.setText("取消收藏");
+        }else {
+            holder.groupSave.setText("收藏");
+        }
+        if(answerEntity.getIsPrise().equals("1")){
+            holder.groupAgree.setBackgroundResource(R.drawable.round_textview2);
+        }else{
+            holder.groupAgree.setBackgroundResource(R.drawable.background_button_div);
+        }
+        holder.groupAgree.setText(""+answerEntity.getAgree());
         holder.groupAgree.setTag(""+answerEntity.getAnwerId());
         holder.groupSave.setTag(""+answerEntity.getAnwerId());
         holder.groupReport.setTag(""+answerEntity.getAnwerId());
-        holder.groupTime.setText(answerEntity.getTime());
+        ParsePosition pos = new ParsePosition(0);
+        holder.groupTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(answerEntity.getTime(),pos)));
         holder.groupContent.setText(answerEntity.getContent());
         holder.groupAgree.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,9 +128,9 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter {
             }
         });
         if(isExpanded){
-            holder.groupOpen.setText("收起评论 "+answerEntity.getOpen());
+            holder.groupOpen.setText("收起评论 "+Float.valueOf(answerEntity.getOpen()).intValue());
         }else{
-            holder.groupOpen.setText("展开评论 "+answerEntity.getOpen());
+            holder.groupOpen.setText("展开评论 "+Float.valueOf(answerEntity.getOpen()).intValue());
         }
         return view;
     }

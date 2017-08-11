@@ -26,12 +26,29 @@ public class QuestionEntity implements Serializable{
     private String dateTime;//发布时间
     private String tag;
     private String kind;
+    private String tag_id;
 
+    public QuestionEntity(JSONObject object,String kind){
+        try {
+            this.questionId=object.isNull("id")?"0":object.getString("id");
+            this.title=object.isNull("title")?"":object.getString("title");
+            this.content=object.isNull("contents")?"":object.getString("contents");
+            this.answerNum=object.isNull("answer_num")?"0":object.getString("answer_num");
+            this.focusNum=object.isNull("follow_num")?"0":object.getString("follow_num");
+            this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
+            this.photo=object.isNull("imgs")?"":object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.pic=object.isNull("headimgs")?object.getString("authheadimg"):object.getString("headimgs");
+            this.tag="";
+            this.isFocus=0;
+            this.kind=kind;
+            this.tag_id="";
+        }catch (JSONException e){
 
-    @Generated(hash = 1414024746)
-    public QuestionEntity(String questionId, String title, String content, String photo,
-            String pic, String focusNum, String answerNum, int isFocus, String dateTime,
-            String tag, String kind) {
+        }
+    }
+    @Generated(hash = 1694501481)
+    public QuestionEntity(String questionId, String title, String content, String photo, String pic, String focusNum, String answerNum,
+            int isFocus, String dateTime, String tag, String kind, String tag_id) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
@@ -43,28 +60,19 @@ public class QuestionEntity implements Serializable{
         this.dateTime = dateTime;
         this.tag = tag;
         this.kind = kind;
+        this.tag_id = tag_id;
+    }
+    public void copy(QuestionEntity entity){
+        this.setTitle(entity.getTitle());
+        this.setContent(entity.getContent());
+        this.setIsFocus(entity.getIsFocus());
+        this.setAnswerNum(entity.getAnswerNum());
+        this.setFocusNum(entity.getFocusNum());
+        this.setPic(entity.getPic());
+        this.setPhoto(entity.getPhoto());
     }
     @Generated(hash = 98121125)
     public QuestionEntity() {
-    }
-
-
-    public QuestionEntity(JSONObject object,String kind){
-        try {
-            this.questionId=object.isNull("id")?"0":object.getString("id");
-            this.title=object.isNull("title")?"":object.getString("title");
-            this.content=object.isNull("contents")?"":object.getString("contents");
-            this.answerNum=object.isNull("answer_num")?"0":object.getString("answer_num");
-            this.focusNum=object.isNull("follow_num")?"0":object.getString("follow_num");
-            this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
-            this.photo=object.isNull("imgs")?"":object.getString("imgs");
-            this.pic=object.isNull("pic")?"":object.getString("pic");
-            this.tag="";
-            this.isFocus=0;
-            this.kind=kind;
-        }catch (JSONException e){
-
-        }
     }
     public String getQuestionId() {
         return this.questionId;
@@ -131,5 +139,11 @@ public class QuestionEntity implements Serializable{
     }
     public void setKind(String kind) {
         this.kind = kind;
+    }
+    public String getTag_id() {
+        return this.tag_id;
+    }
+    public void setTag_id(String tag_id) {
+        this.tag_id = tag_id;
     }
 }

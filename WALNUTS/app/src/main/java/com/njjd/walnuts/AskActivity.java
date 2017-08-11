@@ -1,14 +1,20 @@
 package com.njjd.walnuts;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.adapter.GridViewAddImgesAdpter;
@@ -16,7 +22,6 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ToastUtils;
 import com.yongchun.library.view.ImageSelectorActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,18 +69,44 @@ public class AskActivity extends BaseActivity {
         gw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                ImageSelectorActivity.start(AskActivity.this,10-gridViewAddImgesAdpter.getCount(), 1, true, true, true);
+//                if (Build.VERSION.SDK_INT >= 23) {
+//                    int checkCallPhonePermission = ContextCompat.checkSelfPermission(AskActivity.this,Manifest.permission_group.STORAGE);
+//                    if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+//                        ActivityCompat.requestPermissions(AskActivity.this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_CAMER);
+//                        return;
+//                    }else{
+                        ImageSelectorActivity.start(AskActivity.this,10-gridViewAddImgesAdpter.getCount(), 1, true, true, true);
+//                    }
+//                } else {
+//                    ImageSelectorActivity.start(AskActivity.this,10-gridViewAddImgesAdpter.getCount(), 1, true, true, true);
+//                }
+
             }
         });
         lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_CAMER:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Ok", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(this, "Denied", Toast.LENGTH_SHORT)
+                            .show();
+                    ActivityCompat.requestPermissions(AskActivity.this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_CAMER);
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity=this;
     }
-
     @OnClick({R.id.back,R.id.btn_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -102,6 +133,10 @@ public class AskActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -7,14 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.utils.CustomRadioButton;
 import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.VpSwipeRefreshLayout;
 import com.njjd.walnuts.R;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * Created by mrwim on 17/7/10.
@@ -33,7 +31,7 @@ public class FindFragment extends BaseFragment {
     @BindView(R.id.find_page)
     ViewPager findPage;
     @BindView(R.id.layout_refresh)
-    BGARefreshLayout layoutRefresh;
+    VpSwipeRefreshLayout layoutRefresh;
     @BindView(R.id.radio_hot)
     CustomRadioButton radioHot;
     @BindView(R.id.radio_new)

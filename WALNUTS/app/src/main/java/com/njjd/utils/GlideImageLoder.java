@@ -16,7 +16,7 @@ public class GlideImageLoder extends ImageLoader {
     private static GlideImageLoder instance;
 
     @Override
-    public void displayImage(Context context, Object path, ImageView imageView) {
+    public void displayImage(final Context context, Object path, ImageView imageView) {
         Glide.with(context).load(path).centerCrop()
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.head)

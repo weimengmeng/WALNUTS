@@ -5,22 +5,21 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -30,30 +29,20 @@ import com.google.gson.GsonBuilder;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.db.DBHelper;
-import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.DepthPageTransformer;
-import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.MyListView;
-import com.njjd.utils.RefreshLayout;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,18 +50,16 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bingoogolapple.refreshlayout.BGAMeiTuanRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * Created by mrwim on 17/7/10.
  */
 
-public class IndexFragment extends BaseFragment implements View.OnClickListener, BGARefreshLayout.BGARefreshLayoutDelegate ,HttpOnNextListener{
+public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener{
     @BindView(R.id.img_order)
     LinearLayout imgOrder;
     @BindView(R.id.layout_refresh)
-    BGARefreshLayout layoutRefresh;
+    SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.button_group)
     RadioGroup buttonGroup;
     @BindView(R.id.scrollView)
@@ -84,36 +71,21 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private Context context;
     @BindView(R.id.top)
     LinearLayout top;
-//    @BindView(R.id.back)
-//    TextView back;
-//    @BindView(R.id.txt_title)
-//    TextView txtTitle;
     private View mainView;
     private LinearLayout layoutTop, layoutTime;
     private PopupWindow popupWindow;
     private LayoutInflater myinflater;
     private View currentView;
-    private Banner banner;
-    private MyListView list;
-    private List<String> images= new ArrayList<>(Arrays.asList("file:///android_asset/banner.png",
-            "http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg",
-            "http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg",
-            "http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg"));
-    private List<String> titles=new ArrayList<>(Arrays.asList("12趁现在","嗨购5折不要停，12.12趁现在","实打实大顶顶顶顶"));
+    private RecyclerView list;
     private List<QuestionEntity> tempList;
     private List<List<QuestionEntity>> lists=new ArrayList<>();
     private IndexQuestionAdapter questionAdapter;
-    private List<MyListView> listViews=new ArrayList<>();
+    private List<RecyclerView> listViews=new ArrayList<>();
     private List<IndexQuestionAdapter> adapterList=new ArrayList<>();
     private List<IndexNavEntity> navList;
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            layoutRefresh.endRefreshing();
-        }
-    };
-
+    private String tempKind="1";
+    boolean isLoading;
+    private Handler handler = new Handler();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -125,6 +97,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void lazyInitData() {
         //获取问题
     }
@@ -132,8 +109,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
-//        back.setVisibility(View.GONE);
-//        txtTitle.setText("首页");
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
         layoutTop = ((LinearLayout) mainView.findViewById(R.id.lv_top));
         layoutTime = (LinearLayout) mainView.findViewById(R.id.lv_time);
@@ -153,7 +128,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         popupWindow.setBackgroundDrawable(new ColorDrawable(0));
         popupWindow.setFocusable(true);
         popupWindow.update();
-//        getNav();
         initRefresh();
         initTop(view);
     }
@@ -173,39 +147,53 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             final List<QuestionEntity> list1=new ArrayList<>();
             lists.add(list1);
             currentView=view.inflate(context, R.layout.layout_common_index, null);
-            list= (MyListView) currentView.findViewById(R.id.list_index);
-            banner=(Banner) currentView.findViewById(R.id.banner);
-            if(i==0) {
-                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-                banner.setIndicatorGravity(BannerConfig.RIGHT);
-//                banner.setBannerTitles(titles);
-                banner.isAutoPlay(true);
-                banner.setDelayTime(3000);
-                banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
-                banner.setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        ToastUtils.showShortToast(context, "你点击了：" + position);
-                    }
-                });
-            }else{
-                banner.setVisibility(View.GONE);
-            }
-//            list1.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-//                    "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访"));
+            list= (RecyclerView) currentView.findViewById(R.id.list_index);
             final IndexQuestionAdapter questionAdapter=new IndexQuestionAdapter(context,list1);
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            list.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    int topRowVerticalPosition =
+                            (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                    layoutRefresh.setEnabled(topRowVerticalPosition >= 0);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                    if (lastVisibleItemPosition + 1 == questionAdapter.getItemCount()) {
+                        boolean isRefreshing = layoutRefresh.isRefreshing();
+                        if (isRefreshing) {
+                            questionAdapter.notifyItemRemoved(questionAdapter.getItemCount());
+                            return;
+                        }
+                        if (!isLoading) {
+                            isLoading = true;
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    isLoading = false;
+                                }
+                            }, 1000);
+                        }
+                    }
+                }
+            });
+            list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);
             listViews.add(list);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemClick(View view, int position) {
                     Intent intent=new Intent(context, IndexDetailActivity.class);
                     Bundle bundle=new Bundle();
                     bundle.putSerializable("question",list1.get(position));
                     intent.putExtra("question",bundle);
                     startActivity(intent);
-//                    getActivity().overridePendingTransition(R.anim.in,R.anim.out);
+                    getActivity().overridePendingTransition(R.anim.in,R.anim.out);
                 }
             });
             viewList.add(currentView);
@@ -237,7 +225,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 tempList=lists.get(position);
                 list=listViews.get(position);
                 questionAdapter=adapterList.get(position);
-                getQuestion(navList.get(position).getId(),list,tempList,questionAdapter,"time");
+                tempKind=navList.get(position).getId();
+                getQuestion(tempKind,"time");
             }
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -248,26 +237,17 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         tempList=lists.get(0);
         list=listViews.get(0);
         questionAdapter=adapterList.get(0);
-//        getQuestion(navList.get(0).getId(),list,tempList,questionAdapter,"time");
-        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                 "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","30","20",0,"2017-7-26","电销,外访","0"));
-        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg,http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","30","20",0,"2017-7-26","电销,外访","0"));
-        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26","电销,外访","0"));
-        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","","http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","30","20",0,"2017-7-26","电销,外访","0"));
-        tempList.add(new QuestionEntity("1","我的销售领导和我的销售风格不一致，怎么办？","我在一家私营企业，主要是做微信商城搭建、公司网站建设的，一般都是先打电话约对方老板，然后上门去拜访。\n" +
-                "可能是过去的职业习惯，我喜欢先去把每个要电话约访的企业资料先收集好，再去打电话，我感觉这样更有效率和针对性，但是我的领导喜欢在数量上做文章，希望我每天尽可能的多打电话，朋友们你们觉得我应该怎么办？","","","30","20",0,"2017-7-26","电销,外访","0"));
-        questionAdapter.notifyDataSetChanged();
-        questionAdapter.notifyDataSetChanged();
+        tempKind=navList.get(0).getId();
+        getQuestion(tempKind,"time");
     }
-    private void getQuestion(String id,MyListView listView,List<QuestionEntity> list,IndexQuestionAdapter adapter,String sort){
+
+    private void getQuestion(String id,String sort){
         Map<String,Object> map=new HashMap<>();
         map.put("cate_article_id",id);
         map.put("page",questionAdapter.getCurrentPage());
-        map.put("sort",sort);
+        map.put("order",sort);
         map.put("keywords","");
+        LogUtils.d(map.toString());
         SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(this,context,false,false),map);
         HttpManager.getInstance().getQuestionList(postEntity);
     }
@@ -282,90 +262,69 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         QuestionEntity entity;
         try {
             array=new JSONArray(gson.toJson(o));
-            for(int i=0;i<array.length();i++){
                 if(questionAdapter.getCurrentPage()==1){
                     tempList.clear();
-                }
-                entity=new QuestionEntity(array.getJSONObject(i),indexPage.getCurrentItem()+"");
+            }
+            for(int i=0;i<array.length();i++){
+                entity=new QuestionEntity(array.getJSONObject(i),tempKind);
                 tempList.add(entity);
-                DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(entity);
+//                if(DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().hasKey(entity)){
+//                    QuestionEntity temp=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entity.getQuestionId());
+//                    temp.setTitle(entity.getTitle());
+//                    temp.setContent(entity.getContent());
+//                    temp.setIsFocus(entity.getIsFocus());
+//                    temp.setAnswerNum(entity.getAnswerNum());
+//                    temp.setFocusNum(entity.getFocusNum());
+//                    temp.setPic(entity.getPic());
+//                    temp.setPhoto(entity.getPhoto());
+//                    DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(temp);
+//                }else{
+                    DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(entity);
+//                }
             }
             questionAdapter.notifyDataSetChanged();
         }catch (JSONException e){
             LogUtils.d(e.toString());
         }
     }
-
-    private void setpage(int page){
-        //currentView=viewList.get(page);
-//        list= (MyListView) currentView.findViewById(R.id.list_index);
-//        banner=(Banner) currentView.findViewById(R.id.banner);
-//        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-//        banner.setIndicatorGravity(BannerConfig.RIGHT);
-//        banner.setBannerTitles(titles);
-//        banner.isAutoPlay(true)    ;
-//        banner.setDelayTime(3000);
-//        banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
-//        banner.setOnBannerListener(new OnBannerListener() {
-//            @Override
-//            public void OnBannerClick(int position) {
-//                ToastUtils.showShortToast(context, "你点击了：" + position);
-//            }
-//        });
-//        tempList=lists.get(page);
-//        tempList.clear();
-//        tempList.add(new QuestionEntity("1",page+"喝酒不要开车1","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg","","30","20",0,"2017-7-26"));
-//        tempList.add(new QuestionEntity("2","喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要开车2喝酒不要","树大根深过如果如果如果特惠","","hhah","80","30",0,"2017-7-26"));
-//        tempList.add(new QuestionEntity("3","喝酒不要开车3","树大根深过如果如果如果特惠树大根深过如果如果如果特惠树大根深过如果如果如果特惠","http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg,http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg","","10","70",0,"2017-7-26"));
-//        questionAdapter=new IndexQuestionAdapter(context,tempList);
-//        list.setAdapter(questionAdapter);
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent=new Intent(context, IndexDetailActivity.class);
-//                Bundle bundle=new Bundle();
-//                bundle.putSerializable("question",tempList.get(position));
-//                intent.putExtra("question",bundle);
-//                startActivity(intent);
-//            }
-//        });
-    }
     private void initRefresh() {
-//        layoutRefresh.setColorSchemeColors(R.color.login);
-        // 设置下拉刷新监听器
-//        layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//
+        layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 结束刷新
+                        getQuestion(tempKind,"time");
+                        layoutRefresh.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
+//        layoutRefresh.setRefreshListener(new BaseRefreshListener() {
 //            @Override
-//            public void onRefresh() {
-//                layoutRefresh.postDelayed(new Runnable() {
-//
+//            public void refresh() {
+//                new Handler().postDelayed(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        layoutRefresh.setRefreshing(false);
+//                        // 结束刷新
+//                        getQuestion(tempKind,"time");
+//                        layoutRefresh.finishRefresh();
+//                    }
+//                }, 2000);
+//            }
+//
+//            @Override
+//            public void loadMore() {
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 结束加载更多
+//                        layoutRefresh.finishLoadMore();
 //                    }
 //                }, 2000);
 //            }
 //        });
-
-        layoutRefresh.setDelegate(this);
-//        // 设置下拉刷新和上拉加载更多的风格     参数1：应用程序上下文，参数2：是否具有上拉加载更多功能
-        BGAMeiTuanRefreshViewHolder refreshViewHolder = new MyRefresh(context, true);
-        // 为了增加下拉刷新头部和加载更多的通用性，提供了以下可选配置选项  -------------START
-        // 设置正在加载更多时不显示加载更多控件
-        // mRefreshLayout.setIsShowLoadingMoreView(false);
-        // 设置正在加载更多时的文本
-        refreshViewHolder.setLoadingMoreText("正在加载");
-//        // 设置整个加载更多控件的背景颜色资源 id
-//        refreshViewHolder.setLoadMoreBackgroundColorRes(loadMoreBackgroundColorRes);
-//        // 设置整个加载更多控件的背景 drawable 资源 id
-//        refreshViewHolder.setLoadMoreBackgroundDrawableRes(loadMoreBackgroundDrawableRes);
-//        // 设置下拉刷新控件的背景 drawable 资源 id
-        refreshViewHolder.setRefreshViewBackgroundDrawableRes(R.drawable.app_icon1);
-        refreshViewHolder.setPullDownImageResource(R.drawable.bga_refresh_mt_pull_down);
-        refreshViewHolder.setRefreshingAnimResId(R.drawable.bga_refresh_mt_refreshing);
-        refreshViewHolder.setChangeToReleaseRefreshAnimResId(R.drawable.bga_refresh_mt_change_to_release_refresh);
-        // 设置下拉刷新和上拉加载更多的风格
-        layoutRefresh.setRefreshViewHolder(refreshViewHolder);
     }
 
 
@@ -373,17 +332,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void onViewClicked() {
         popupWindow.showAsDropDown(imgOrder, 0, 0);
     }
-
-    class MyRefresh extends BGAMeiTuanRefreshViewHolder {
-        /**
-         * @param context
-         * @param isLoadingMoreEnabled 上拉加载更多是否可用
-         */
-        public MyRefresh(Context context, boolean isLoadingMoreEnabled) {
-            super(context, isLoadingMoreEnabled);
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -400,33 +348,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         }
     }
 
-
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        LogUtils.d("刷新啦");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    handler.sendEmptyMessage(0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
-    }
-
     @Override
     public void onStop() {
         super.onStop();
-        if(banner!=null){
-            banner.stopAutoPlay();
-        }
     }
 }

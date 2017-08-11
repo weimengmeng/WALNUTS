@@ -18,11 +18,13 @@ public class AnswerEntity implements Serializable {
     private String agree;
     private String open;
     private String time;
+    private String isSave;
+    private String isPrise;
     private List<CommentEntity> commentEntityList;
 
     public AnswerEntity(String anwerId, String answerUId, String head,
                         String name, String message, String content, String agree,
-                        String open,String time) {
+                        String open,String time,String isSave,String isPrise) {
         this.anwerId = anwerId;
         this.answerUId = answerUId;
         this.head = head;
@@ -32,9 +34,27 @@ public class AnswerEntity implements Serializable {
         this.agree = agree;
         this.open = open;
         this.time=time;
+        this.isPrise=isPrise;
+        this.isSave=isSave;
     }
     public AnswerEntity(){
 
+    }
+
+    public String getIsSave() {
+        return isSave;
+    }
+
+    public void setIsSave(String isSave) {
+        this.isSave = isSave;
+    }
+
+    public String getIsPrise() {
+        return isPrise;
+    }
+
+    public void setIsPrise(String isPrise) {
+        this.isPrise = isPrise;
     }
 
     public String getAnwerId() {

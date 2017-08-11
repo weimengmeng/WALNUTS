@@ -21,7 +21,7 @@ import com.njjd.utils.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap; 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +51,8 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     private FlowLayout flowLayout;
     private TagEntity entity;
     private List<String> list = new ArrayList<>();
+    private List<FlowLayout> layoutList = new ArrayList<>();
+    private int current = 0;
 
     @Override
     public int bindLayout() {
@@ -75,6 +77,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                 ((TextView) linearLayout.findViewById(R.id.label_name)).setText(entity.getName());
                 flowLayout = (FlowLayout) linearLayout.findViewById(R.id.flowlayout);
                 tagLayout.addView(linearLayout);
+                layoutList.add(flowLayout);
             } else {
                 TextView tv = new TextView(this);
                 tv.setText(entity.getName());
@@ -131,9 +134,9 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), files);
             HttpManager.getInstance().pubQuestion(postEntity, new MyUploadListener(), SPUtils.get(this, "userId", "").toString(), SPUtils.get(AppAplication.getContext(), "token", "").toString(), bundle.getString("title"),
                     bundle.getString("content"), temp);
-        }else{
+        } else {
             Map<String, Object> map = new HashMap<>();
-            map.put("uid",SPUtils.get(this, "userId", ""));
+            map.put("uid", SPUtils.get(this, "userId", ""));
             map.put("token", SPUtils.get(this, "token", ""));
             map.put("title", bundle.getString("title"));
             map.put("content", bundle.getString("content"));
@@ -159,6 +162,8 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        FlowLayout linearLayout;
+        int temp = 0;
         if (list.contains(v.getTag())) {
             v.setBackgroundResource(R.drawable.round_textview);
             v.setPadding(25, 0, 25, 0);
@@ -168,5 +173,41 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             list.add(v.getTag().toString());
             v.setPadding(25, 0, 25, 0);
         }
+        if (current == 0) {
+            for (int i = 0; i < layoutList.size(); i++) {
+                linearLayout = layoutList.get(i);
+                for (int n = 0; n < linearLayout.getChildCount(); n++) {
+                    if (v.getTag().toString().equals(linearLayout.getChildAt(n).getTag().toString())) {
+                        temp = i;
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < layoutList.size(); i++) {
+                if (temp != i) {
+                    linearLayout = layoutList.get(i);
+                    for (int n = 0; n < linearLayout.getChildCount(); n++) {
+                        linearLayout.getChildAt(n).setEnabled(false);
+                        ((TextView) linearLayout.getChildAt(n)).setTextColor(getResources().getColor(R.color.txt_color));
+                        (linearLayout.getChildAt(n)).setBackgroundResource(R.drawable.round_textview2);
+                        (linearLayout.getChildAt(n)).setPadding(25, 0, 25, 0);
+                    }
+                }
+            }
+            current = 1;
+        }
+        if (list.size() == 0) {
+            for (int i = 0; i < layoutList.size(); i++) {
+                linearLayout = layoutList.get(i);
+                for (int n = 0; n < linearLayout.getChildCount(); n++) {
+                    linearLayout.getChildAt(n).setEnabled(false);
+                    ((TextView) linearLayout.getChildAt(n)).setTextColor(getResources().getColor(R.color.login));
+                    (linearLayout.getChildAt(n)).setBackgroundResource(R.drawable.round_textview);
+                    (linearLayout.getChildAt(n)).setPadding(25, 0, 25, 0);
+                    (linearLayout.getChildAt(n)).setEnabled(true);
+                }
+            }
+        }
+        current=0;
     }
 }

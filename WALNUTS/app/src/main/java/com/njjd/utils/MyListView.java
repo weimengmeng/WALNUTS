@@ -27,14 +27,4 @@ public class MyListView extends ListView {
                                 MeasureSpec.AT_MOST);
                  super.onMeasure(widthMeasureSpec, expandSpec);
              }
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//
-////        if (getFirstVisiblePosition() == 0 &&getChildAt(0)!=null&& getChildAt(0).getTop() == 0) {//到头部了
-////            getParent().requestDisallowInterceptTouchEvent(false);//放行触摸
-////        } else {//没有到头部
-////            getParent().requestDisallowInterceptTouchEvent(true);//拦截触摸
-////        }
-//        return super.onInterceptTouchEvent(ev);
-//    }
 }

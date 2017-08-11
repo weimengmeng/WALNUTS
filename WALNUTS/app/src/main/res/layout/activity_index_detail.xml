@@ -41,7 +41,7 @@
                 android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
                 android:layout_marginRight="@dimen/padding_left"
-                android:background="@color/white"
+                android:background="@drawable/background_with_shadow"
                 android:elevation="1dp"
                 android:text="工业项目一定要能喝酒吗?"
                 android:textColor="@color/gray"

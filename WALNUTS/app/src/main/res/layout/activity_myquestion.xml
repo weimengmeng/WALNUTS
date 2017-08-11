@@ -12,7 +12,7 @@
         <include layout="@layout/top"></include>
     </LinearLayout>
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+    <com.njjd.utils.VpSwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin"
@@ -25,6 +25,6 @@
             android:id="@+id/list_ques"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></ListView>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </com.njjd.utils.VpSwipeRefreshLayout>
 
 </LinearLayout>

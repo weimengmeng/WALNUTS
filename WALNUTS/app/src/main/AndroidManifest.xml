@@ -12,8 +12,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <!--        android:name="com.njjd.application.AppAplication"
--->
     <application
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -125,6 +123,10 @@
         <activity
             android:name=".MySaveActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.njjd.utils.ImagePagerActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".FeedBackActivity"
             android:screenOrientation="portrait"></activity>

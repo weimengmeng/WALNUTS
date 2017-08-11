@@ -43,8 +43,9 @@ public class TagActivity extends BaseActivity implements GradationScrollView.Scr
     @Override
     public void initView(View view) {
         back.setText("");
-        txtTitle.setText("商务谈判");
+        txtTitle.setText(getIntent().getStringExtra("name"));
         initListeners();
+        txtTag.setText(getIntent().getStringExtra("name"));
         txtTitle.setTextColor(Color.argb(0, 255, 255, 255));
         topView.setBackgroundColor(getResources().getColor(R.color.login));
     }

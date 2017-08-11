@@ -17,6 +17,7 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -104,14 +105,14 @@ public class LoginActivity extends BaseActivity {
             case R.id.btn_close:
                 break;
             case R.id.btn_login:
-//                if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
-//                    ToastUtils.showShortToast(this,"请输入账号和密码");
-//                    return;
-//                }
-//                doLogin();
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
+                    ToastUtils.showShortToast(this,"请输入账号和密码");
+                    return;
+                }
+                doLogin();
+//                intent = new Intent(this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
                 break;
             case R.id.btn_sina:
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, authListener);
@@ -126,6 +127,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLogin() {
+        LogUtils.d(PushAgent.getInstance(this).getRegistrationId());
+        SPUtils.put(this,"deviceToken",PushAgent.getInstance(this).getRegistrationId());
         Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());
         map.put("pwd", etPwd.getText().toString().trim());
