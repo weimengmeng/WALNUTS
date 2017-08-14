@@ -1,5 +1,8 @@
 package com.njjd.domain;
 
+import com.njjd.application.AppAplication;
+import com.njjd.utils.SPUtils;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
@@ -20,6 +23,7 @@ public class QuestionEntity implements Serializable{
     private String content;
     private String photo;//内容图片
     private String pic;//前三位参与人头像
+    private String uids;//前三位参与人uid
     private String focusNum;//关注人数
     private String answerNum;//评论人数
     private int isFocus;//是否关注
@@ -38,6 +42,7 @@ public class QuestionEntity implements Serializable{
             this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
             this.photo=object.isNull("imgs")?"":object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.pic=object.isNull("headimgs")?object.getString("authheadimg"):object.getString("headimgs");
+            this.uids=object.isNull("uids")? SPUtils.get(AppAplication.getContext(),"userId","").toString():object.getString("uids");
             this.tag="";
             this.isFocus=0;
             this.kind=kind;
@@ -46,14 +51,15 @@ public class QuestionEntity implements Serializable{
 
         }
     }
-    @Generated(hash = 1694501481)
-    public QuestionEntity(String questionId, String title, String content, String photo, String pic, String focusNum, String answerNum,
-            int isFocus, String dateTime, String tag, String kind, String tag_id) {
+    @Generated(hash = 226711368)
+    public QuestionEntity(String questionId, String title, String content, String photo, String pic, String uids, String focusNum,
+            String answerNum, int isFocus, String dateTime, String tag, String kind, String tag_id) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
         this.photo = photo;
         this.pic = pic;
+        this.uids = uids;
         this.focusNum = focusNum;
         this.answerNum = answerNum;
         this.isFocus = isFocus;
@@ -61,15 +67,6 @@ public class QuestionEntity implements Serializable{
         this.tag = tag;
         this.kind = kind;
         this.tag_id = tag_id;
-    }
-    public void copy(QuestionEntity entity){
-        this.setTitle(entity.getTitle());
-        this.setContent(entity.getContent());
-        this.setIsFocus(entity.getIsFocus());
-        this.setAnswerNum(entity.getAnswerNum());
-        this.setFocusNum(entity.getFocusNum());
-        this.setPic(entity.getPic());
-        this.setPhoto(entity.getPhoto());
     }
     @Generated(hash = 98121125)
     public QuestionEntity() {
@@ -145,5 +142,11 @@ public class QuestionEntity implements Serializable{
     }
     public void setTag_id(String tag_id) {
         this.tag_id = tag_id;
+    }
+    public String getUids() {
+        return this.uids;
+    }
+    public void setUids(String uids) {
+        this.uids = uids;
     }
 }

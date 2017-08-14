@@ -1,5 +1,7 @@
 package com.njjd.domain;
 
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,26 +11,24 @@ import java.util.List;
 
 public class CommentEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String commentId;
-    private String commentUId;//评论人ID
-    private String head;
-    private String name;
-    private String message;
-    private String content;
-    private String replyNum;
-    private String time;
+    private String commentId="";
+    private String commentUId="";//评论人ID
+    private String head="";
+    private String name="";
+    private String message="";
+    private String content="";
+    private String replyNum="";
+    private String time="";
     private List<ReplyEntity> replyEntities;
-
-    public CommentEntity(String commentId, String commentUId, String head, String name,
-                         String message, String content, String replyNum,String time) {
-        this.commentId = commentId;
-        this.commentUId = commentUId;
-        this.head = head;
-        this.name = name;
-        this.message = message;
-        this.content = content;
-        this.replyNum = replyNum;
-        this.time=time;
+    public CommentEntity(JsonObject object){
+        this.commentId=object.get("id").getAsString();
+        this.commentUId=object.get("uid").getAsString();
+        this.head=object.get("headimgs").getAsString();
+        this.name=object.get("uname").getAsString();
+        this.message=object.get("introduction").getAsString();
+        this.content=object.get("content").getAsString();
+        this.time= object.get("change_time").getAsString();
+        this.replyNum =object.get("answer_num").getAsString();
     }
     public CommentEntity(){
 

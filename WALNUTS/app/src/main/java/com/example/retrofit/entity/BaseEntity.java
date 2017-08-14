@@ -1,10 +1,6 @@
 package com.example.retrofit.entity;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.retrofit.exception.HttpTimeException;
-import com.njjd.application.AppAplication;
 import com.njjd.utils.LogUtils;
 
 import java.io.File;

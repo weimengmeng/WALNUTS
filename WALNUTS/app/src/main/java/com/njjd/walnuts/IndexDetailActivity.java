@@ -89,7 +89,7 @@ public class IndexDetailActivity extends BaseActivity {
     private ReplyEntity replyEntity;
     private AnswerReplyAdapter answerReplyAdapter;
     private List<String> list = new ArrayList<>();
-
+    private int current_group_id=0;
     @Override
     public int bindLayout() {
         return R.layout.activity_index_detail;
@@ -103,9 +103,12 @@ public class IndexDetailActivity extends BaseActivity {
         back.setText("关闭");
         txtTitle.setText("问题详情");
         quesTitle.setText(questionEntity.getTitle());
-        txtAnswerNum.setText("回答 " + questionEntity.getAnswerNum());
-        txtFocusNum.setText("关注 " + questionEntity.getFocusNum());
+        txtAnswerNum.setText("回答 " + Float.valueOf(questionEntity.getAnswerNum()).intValue());
+        txtFocusNum.setText("关注 " + Float.valueOf(questionEntity.getFocusNum()).intValue());
         txtContent.setText(questionEntity.getContent());
+        if (questionEntity.getIsFocus()== 1) {
+            txtFocus.setText("取消关注");
+        }
         inflater = LayoutInflater.from(this);
         if (!"".equals(questionEntity.getPhoto())) {
             LogUtils.d(questionEntity.getPhoto());
@@ -118,12 +121,14 @@ public class IndexDetailActivity extends BaseActivity {
                 imageView = (ImageView) relativeLayout.findViewById(R.id.img);
                 imageView.setId(i);
                 GlideImageLoder.getInstance().displayImage(this, imgs[i].replace("\"", ""), imageView);
+                final int finalI = i;
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(IndexDetailActivity.this, ImagePagerActivity.class);
                         intent.putStringArrayListExtra(
                                 ImagePagerActivity.EXTRA_IMAGE_URLS, list1);
+                        intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, finalI);
                         startActivity(intent);
                     }
                 });
@@ -139,8 +144,11 @@ public class IndexDetailActivity extends BaseActivity {
         exListVIew.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//                getComments(answerEntities.get(groupPosition).getAnwerId());
-                ToastUtils.showShortToast(IndexDetailActivity.this,answerEntities.get(groupPosition).getAnwerId());
+                if(!parent.isGroupExpanded(groupPosition)){
+                    getComments(answerEntities.get(groupPosition).getAnwerId()+"");
+                    current_group_id=groupPosition;
+                }
+//               ToastUtils.showShortToast(IndexDetailActivity.this,answerEntities.get(groupPosition).getAnwerId());
                 return false;
             }
         });
@@ -151,7 +159,6 @@ public class IndexDetailActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getArticleDetail(postEntity);
     }
@@ -172,8 +179,7 @@ public class IndexDetailActivity extends BaseActivity {
             questionEntity.setTag(object.getString("label_name"));
             questionEntity.setTag_id(object.getString("label_id"));
             if (object.getInt("stat") == 1) {
-                txtFocus.setText("已关注");
-                txtFocus.setEnabled(false);
+                txtFocus.setText("取消关注");
             }
             String[] strings = object.getString("label_name").split(",");
             String[] tags = object.getString("label_id").split(",");
@@ -200,7 +206,11 @@ public class IndexDetailActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAnswerList();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,17 +221,39 @@ public class IndexDetailActivity extends BaseActivity {
         map.put("article_id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("order", "time");
+        map.put("page",AnswerReplyAdapter.CURRENT_PAGE);
+        LogUtils.d(map.toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getAnswerListener, this, false, false), map);
+        HttpManager.getInstance().getAnswerList(postEntity);
+    }
+    HttpOnNextListener getAnswerListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            JsonArray array = JSONUtils.getAsJsonArray(o);
+            JsonObject object;
+            if(answerReplyAdapter.getCurrentPage()==1){
+                answerEntities.clear();
+            }
+            for (int i = 0; i < array.size(); i++) {
+                object = array.get(i).getAsJsonObject();
+                answerEntity = new AnswerEntity(object);
+                List<CommentEntity> commentEntities = new ArrayList<>();
+                commentEntities.add(new CommentEntity());
+                answerEntity.setCommentEntityList(commentEntities);
+                answerEntities.add(answerEntity);
+            }
+            answerReplyAdapter.notifyDataSetChanged();
+        }
+    };
+    private void getComments(String answer_id){
+        Map<String, Object> map = new HashMap<>();
+        map.put("comment_id",answer_id);
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("page","1");
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getCommentListener, this, false, false), map);
         HttpManager.getInstance().getCommentList(postEntity);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getAnswerList();
-    }
-
     HttpOnNextListener getCommentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
@@ -229,22 +261,12 @@ public class IndexDetailActivity extends BaseActivity {
             JsonObject object;
             for (int i = 0; i < array.size(); i++) {
                 object = array.get(i).getAsJsonObject();
-                answerEntity = new AnswerEntity(object.get("id").getAsString(), object.get("uid").getAsString(), object.get("headimgs").getAsString(),
-                        object.get("uname").getAsString(), object.get("introduction").getAsString(), object.get("content").getAsString(), object.get("point_num").getAsString(),
-                        object.get("answer_num").getAsString(), object.get("change_time").getAsString(),object.get("c_stat").getAsString(),object.get("p_stat").getAsString());
-                commentEntities.clear();
-                for (int j = 0; j < 3; j++) {
-                    commentEntity = new CommentEntity(j + "", j + "", "", "回答" + j,
-                            "回答签名" + j, "这个回答好，我怎么没想到呢" + j, "68" + j, (j + 3) + "分钟前");
-                    commentEntities.add(commentEntity);
-                }
-                answerEntity.setCommentEntityList(commentEntities);
-                answerEntities.add(answerEntity);
+                commentEntity = new CommentEntity(object);
+                answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
             }
             answerReplyAdapter.notifyDataSetChanged();
         }
     };
-
     @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -252,7 +274,7 @@ public class IndexDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.txt_focus:
-                ToastUtils.showShortToast(this, "添加关注");
+               addFocus();
                 break;
             case R.id.img_answer:
                 Intent intent = new Intent(this, AnswerActivity.class);
@@ -261,7 +283,26 @@ public class IndexDetailActivity extends BaseActivity {
                 break;
         }
     }
-
+    private void addFocus(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("token",SPUtils.get(this,"token",""));
+        map.put("article_id", questionEntity.getQuestionId());
+        //0 取消关注 1 关注
+        map.put("select",questionEntity.getIsFocus()==0?1:0);
+        LogUtils.d(map.toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
+        HttpManager.getInstance().focusQuestion(postEntity);
+    }
+    HttpOnNextListener focusListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            ToastUtils.showShortToast(IndexDetailActivity.this,questionEntity.getIsFocus()==0?"成功关注":"取消成功");
+            txtFocus.setText(questionEntity.getIsFocus()==0?"取消关注":"+关注问题");
+            questionEntity.setIsFocus(questionEntity.getIsFocus()==0?1:0);
+            DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(questionEntity);
+        }
+    };
     @Override
     protected void onDestroy() {
         super.onDestroy();

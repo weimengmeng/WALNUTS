@@ -2,8 +2,14 @@ package com.njjd.utils;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.njjd.walnuts.R;
 
 /**
  * Created by mrwim on 17/7/13.
@@ -13,17 +19,23 @@ public class ToastUtils {
     private static Toast toast;
 
     private static View view;
+    private static TextView mTextView;
 
     private ToastUtils() {
     }
 
-    private static void getToast(Context context) {
+    private static void getToast(Context context,CharSequence msg) {
         if (toast == null) {
             toast = new Toast(context);
         }
         if (view == null) {
-            view = Toast.makeText(context, "", Toast.LENGTH_SHORT).getView();
+            view = LayoutInflater.from(context).inflate(R.layout.toast, null);
+            //初始化布局控件
+            mTextView = (TextView) view.findViewById(R.id.message);
+            //为控件设置属性
+            mTextView.setText(msg);
         }
+        mTextView.setText(msg);
         toast.setView(view);
     }
 
@@ -44,10 +56,8 @@ public class ToastUtils {
     }
 
     private static void showToast(Context context, CharSequence msg, int duration) {
-//        new PopupView(context,msg.toString(),0);
         try {
-            getToast(context);
-            toast.setText(msg);
+            getToast(context,msg);
             toast.setDuration(duration);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
@@ -61,7 +71,7 @@ public class ToastUtils {
             if (resId == 0) {
                 return;
             }
-            getToast(context);
+            getToast(context,"");
             toast.setText(resId);
             toast.setDuration(duration);
             toast.setGravity(Gravity.CENTER, 0, 0);

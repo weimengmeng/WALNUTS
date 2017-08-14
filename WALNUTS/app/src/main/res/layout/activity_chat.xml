@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    style="@style/Width_m_Height_m">
     <LinearLayout
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
@@ -83,13 +81,9 @@
     </LinearLayout>
     <LinearLayout
         android:layout_below="@id/top"
-        android:layout_above="@id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        style="@style/Width_m_Height_m">
         <ListView
             android:id="@+id/list_chat"
-            android:layout_width="match_parent"
-            android:background="#ffffff"
-            android:layout_height="match_parent"></ListView>
+            style="@style/Width_m_Height_m"></ListView>
     </LinearLayout>
 </RelativeLayout>

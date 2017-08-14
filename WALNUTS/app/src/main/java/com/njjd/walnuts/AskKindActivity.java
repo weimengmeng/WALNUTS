@@ -16,6 +16,7 @@ import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -124,6 +125,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             }
         }
         List<String> strings = bundle.getStringArrayList("imgs");
+        LogUtils.d(strings.size());
         if (strings != null) {
             List<File> files = new ArrayList<>();
             File file;

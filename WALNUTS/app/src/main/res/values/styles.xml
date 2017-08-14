@@ -59,4 +59,16 @@
         <item name="android:windowEnterAnimation">@anim/push_in</item>
         <item name="android:windowExitAnimation">@anim/push_out</item>
     </style>
+    <style name="Width_m_Height_m">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="view_me">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/padding</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:weightSum">1</item>
+    </style>
 </resources>

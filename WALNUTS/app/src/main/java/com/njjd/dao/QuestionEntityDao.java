@@ -29,13 +29,14 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         public final static Property Content = new Property(2, String.class, "content", false, "CONTENT");
         public final static Property Photo = new Property(3, String.class, "photo", false, "PHOTO");
         public final static Property Pic = new Property(4, String.class, "pic", false, "PIC");
-        public final static Property FocusNum = new Property(5, String.class, "focusNum", false, "FOCUS_NUM");
-        public final static Property AnswerNum = new Property(6, String.class, "answerNum", false, "ANSWER_NUM");
-        public final static Property IsFocus = new Property(7, int.class, "isFocus", false, "IS_FOCUS");
-        public final static Property DateTime = new Property(8, String.class, "dateTime", false, "DATE_TIME");
-        public final static Property Tag = new Property(9, String.class, "tag", false, "TAG");
-        public final static Property Kind = new Property(10, String.class, "kind", false, "KIND");
-        public final static Property Tag_id = new Property(11, String.class, "tag_id", false, "TAG_ID");
+        public final static Property Uids = new Property(5, String.class, "uids", false, "UIDS");
+        public final static Property FocusNum = new Property(6, String.class, "focusNum", false, "FOCUS_NUM");
+        public final static Property AnswerNum = new Property(7, String.class, "answerNum", false, "ANSWER_NUM");
+        public final static Property IsFocus = new Property(8, int.class, "isFocus", false, "IS_FOCUS");
+        public final static Property DateTime = new Property(9, String.class, "dateTime", false, "DATE_TIME");
+        public final static Property Tag = new Property(10, String.class, "tag", false, "TAG");
+        public final static Property Kind = new Property(11, String.class, "kind", false, "KIND");
+        public final static Property Tag_id = new Property(12, String.class, "tag_id", false, "TAG_ID");
     }
 
 
@@ -56,13 +57,14 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
                 "\"CONTENT\" TEXT," + // 2: content
                 "\"PHOTO\" TEXT," + // 3: photo
                 "\"PIC\" TEXT," + // 4: pic
-                "\"FOCUS_NUM\" TEXT," + // 5: focusNum
-                "\"ANSWER_NUM\" TEXT," + // 6: answerNum
-                "\"IS_FOCUS\" INTEGER NOT NULL ," + // 7: isFocus
-                "\"DATE_TIME\" TEXT," + // 8: dateTime
-                "\"TAG\" TEXT," + // 9: tag
-                "\"KIND\" TEXT," + // 10: kind
-                "\"TAG_ID\" TEXT);"); // 11: tag_id
+                "\"UIDS\" TEXT," + // 5: uids
+                "\"FOCUS_NUM\" TEXT," + // 6: focusNum
+                "\"ANSWER_NUM\" TEXT," + // 7: answerNum
+                "\"IS_FOCUS\" INTEGER NOT NULL ," + // 8: isFocus
+                "\"DATE_TIME\" TEXT," + // 9: dateTime
+                "\"TAG\" TEXT," + // 10: tag
+                "\"KIND\" TEXT," + // 11: kind
+                "\"TAG_ID\" TEXT);"); // 12: tag_id
     }
 
     /** Drops the underlying database table. */
@@ -100,35 +102,40 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
             stmt.bindString(5, pic);
         }
  
+        String uids = entity.getUids();
+        if (uids != null) {
+            stmt.bindString(6, uids);
+        }
+ 
         String focusNum = entity.getFocusNum();
         if (focusNum != null) {
-            stmt.bindString(6, focusNum);
+            stmt.bindString(7, focusNum);
         }
  
         String answerNum = entity.getAnswerNum();
         if (answerNum != null) {
-            stmt.bindString(7, answerNum);
+            stmt.bindString(8, answerNum);
         }
-        stmt.bindLong(8, entity.getIsFocus());
+        stmt.bindLong(9, entity.getIsFocus());
  
         String dateTime = entity.getDateTime();
         if (dateTime != null) {
-            stmt.bindString(9, dateTime);
+            stmt.bindString(10, dateTime);
         }
  
         String tag = entity.getTag();
         if (tag != null) {
-            stmt.bindString(10, tag);
+            stmt.bindString(11, tag);
         }
  
         String kind = entity.getKind();
         if (kind != null) {
-            stmt.bindString(11, kind);
+            stmt.bindString(12, kind);
         }
  
         String tag_id = entity.getTag_id();
         if (tag_id != null) {
-            stmt.bindString(12, tag_id);
+            stmt.bindString(13, tag_id);
         }
     }
 
@@ -161,35 +168,40 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
             stmt.bindString(5, pic);
         }
  
+        String uids = entity.getUids();
+        if (uids != null) {
+            stmt.bindString(6, uids);
+        }
+ 
         String focusNum = entity.getFocusNum();
         if (focusNum != null) {
-            stmt.bindString(6, focusNum);
+            stmt.bindString(7, focusNum);
         }
  
         String answerNum = entity.getAnswerNum();
         if (answerNum != null) {
-            stmt.bindString(7, answerNum);
+            stmt.bindString(8, answerNum);
         }
-        stmt.bindLong(8, entity.getIsFocus());
+        stmt.bindLong(9, entity.getIsFocus());
  
         String dateTime = entity.getDateTime();
         if (dateTime != null) {
-            stmt.bindString(9, dateTime);
+            stmt.bindString(10, dateTime);
         }
  
         String tag = entity.getTag();
         if (tag != null) {
-            stmt.bindString(10, tag);
+            stmt.bindString(11, tag);
         }
  
         String kind = entity.getKind();
         if (kind != null) {
-            stmt.bindString(11, kind);
+            stmt.bindString(12, kind);
         }
  
         String tag_id = entity.getTag_id();
         if (tag_id != null) {
-            stmt.bindString(12, tag_id);
+            stmt.bindString(13, tag_id);
         }
     }
 
@@ -206,13 +218,14 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // content
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // photo
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // pic
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // focusNum
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // answerNum
-            cursor.getInt(offset + 7), // isFocus
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // dateTime
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // tag
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // kind
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // tag_id
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // uids
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // focusNum
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // answerNum
+            cursor.getInt(offset + 8), // isFocus
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // dateTime
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // tag
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // kind
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // tag_id
         );
         return entity;
     }
@@ -224,13 +237,14 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         entity.setContent(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setPhoto(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setPic(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setFocusNum(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setAnswerNum(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setIsFocus(cursor.getInt(offset + 7));
-        entity.setDateTime(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setTag(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setKind(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setTag_id(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setUids(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setFocusNum(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setAnswerNum(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setIsFocus(cursor.getInt(offset + 8));
+        entity.setDateTime(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setTag(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setKind(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setTag_id(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     @Override

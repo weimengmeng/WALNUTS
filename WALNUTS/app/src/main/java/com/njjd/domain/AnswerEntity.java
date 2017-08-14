@@ -1,5 +1,10 @@
 package com.njjd.domain;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,21 +26,18 @@ public class AnswerEntity implements Serializable {
     private String isSave;
     private String isPrise;
     private List<CommentEntity> commentEntityList;
-
-    public AnswerEntity(String anwerId, String answerUId, String head,
-                        String name, String message, String content, String agree,
-                        String open,String time,String isSave,String isPrise) {
-        this.anwerId = anwerId;
-        this.answerUId = answerUId;
-        this.head = head;
-        this.name = name;
-        this.message = message;
-        this.content = content;
-        this.agree = agree;
-        this.open = open;
-        this.time=time;
-        this.isPrise=isPrise;
-        this.isSave=isSave;
+    public AnswerEntity(JsonObject object){
+            this.anwerId=object.get("id").getAsString();
+            this.answerUId=object.get("uid").getAsString();
+            this.head=object.get("headimgs").getAsString();
+            this.name=object.get("uname").getAsString();
+            this.message=object.get("introduction").getAsString();
+            this.content=object.get("content").getAsString();
+            this.agree=object.get("point_num").getAsString();
+            this.open=object.get("answer_num").getAsString();
+            this.time= object.get("change_time").getAsString();
+            this.isPrise=object.get("p_stat").getAsString();
+            this.isSave=object.get("c_stat").getAsString();
     }
     public AnswerEntity(){
 

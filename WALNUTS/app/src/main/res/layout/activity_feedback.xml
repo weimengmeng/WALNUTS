@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.liuguangqiang.swipeback.SwipeBackLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
     android:id="@+id/lv_back"
-    android:layout_height="match_parent"
+    style="@style/Width_m_Height_m"
     android:background="@color/grey"
     >
     <LinearLayout
@@ -18,9 +16,8 @@
             <include layout="@layout/top"></include>
         </LinearLayout>
         <TextView
-            android:layout_width="match_parent"
             android:background="@drawable/background_layout_div"
-            android:layout_height="match_parent"
+            style="@style/Width_m_Height_m"
             android:layout_marginTop="@dimen/margin"
             android:text=""
             android:layout_marginLeft="@dimen/margin"

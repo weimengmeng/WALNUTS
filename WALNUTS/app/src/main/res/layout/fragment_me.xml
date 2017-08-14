@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/grey"
     android:weightSum="1"
-    android:orientation="vertical">
+    style="@style/Width_m_Height_m">
 
 
         <LinearLayout
+            android:id="@+id/ll_bg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"
@@ -108,10 +107,7 @@
                 android:padding="@dimen/padding">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -153,10 +149,7 @@
                     android:background="@color/txt_color"></View>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -198,10 +191,7 @@
                     android:background="@color/txt_color"></View>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -243,10 +233,7 @@
                     android:background="@color/txt_color"></View>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -288,10 +275,7 @@
                     android:background="@color/txt_color"></View>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -336,10 +320,7 @@
 
                 <LinearLayout
                     android:id="@+id/lv_question"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -379,10 +360,7 @@
 
                 <LinearLayout
                     android:id="@+id/lv_answer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -422,10 +400,7 @@
 
                 <LinearLayout
                     android:id="@+id/lv_focus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -465,10 +440,7 @@
 
                 <LinearLayout
                     android:id="@+id/lv_save"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/padding"
-                    android:weightSum="1">
+                    style="@style/view_me">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -502,14 +474,11 @@
 
             <LinearLayout
                 android:id="@+id/lv_set"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/view_me"
                 android:layout_margin="@dimen/margin"
                 android:background="@drawable/background_layout_div"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/padding"
-                android:paddingRight="@dimen/padding"
-                android:weightSum="1">
+                android:paddingRight="@dimen/padding">
 
                 <LinearLayout
                     android:layout_width="0dp"

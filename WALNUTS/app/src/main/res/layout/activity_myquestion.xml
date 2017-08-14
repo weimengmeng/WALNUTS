@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/Width_m_Height_m"
     android:background="@color/grey"
-    android:orientation="vertical">
+  >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,18 +12,15 @@
     </LinearLayout>
 
     <com.njjd.utils.VpSwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
         android:background="@drawable/background_layout_div"
-        android:orientation="vertical">
+        style="@style/Width_m_Height_m">
 
         <ListView
             android:id="@+id/list_ques"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            style="@style/Width_m_Height_m"></ListView>
     </com.njjd.utils.VpSwipeRefreshLayout>
 
 </LinearLayout>

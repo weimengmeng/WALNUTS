@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.domain.QuestionEntity;
+import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
@@ -24,6 +25,8 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +35,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     //item类型
     public static final int ITEM_TYPE_HEADER = 0;
     public static final int ITEM_TYPE_CONTENT = 1;
-    public static final int ITEM_TYPE_BOTTOM = 2;
     //模拟数据
     private List<QuestionEntity> mList;
     private Context mContext;
@@ -49,8 +51,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<String> titles = new ArrayList<>(Arrays.asList("12趁现在", "嗨购5折不要停，12.12趁现在", "实打实大顶顶顶顶"));
     private IndexQuestionAdapter.OnItemClickListener mOnItemClickListener = null;
     private int mHeaderCount = 1;//头部View个数
-    private int mBottomCount = 1;//底部View个数
-
     public IndexQuestionAdapter(Context context, List<QuestionEntity> list) {
         this.mContext = context;
         this.mList = list;
@@ -69,10 +69,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
         return mHeaderCount != 0 && position < mHeaderCount;
     }
 
-    //判断当前item是否是FooterView
-    public boolean isBottomView(int position) {
-        return mBottomCount != 0 && position >= (mHeaderCount + getContentItemCount());
-    }
 
     public int getCurrentPage() {
         return currentPage;
@@ -88,8 +84,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
         int dataItemCount = getContentItemCount();
         if (mHeaderCount != 0 && position < mHeaderCount) {
             return ITEM_TYPE_HEADER;
-        } else if (mBottomCount != 0 && position >= (mHeaderCount + dataItemCount)) {
-            return ITEM_TYPE_BOTTOM;
         } else {
             return ITEM_TYPE_CONTENT;
         }
@@ -152,10 +146,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
             ContentViewHolder vh = new ContentViewHolder(layout);
             layout.setOnClickListener(this);
             return vh;
-        } else if (viewType == ITEM_TYPE_BOTTOM) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_foot, parent,
-                    false);
-            return new FootViewHolder(view);
         }
         return null;
     }
@@ -168,7 +158,8 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
             final QuestionEntity temp = mList.get(position - mHeaderCount);
             ((ContentViewHolder) holder).title.setText(temp.getTitle());
             ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()) + "  人参与");
-            ((ContentViewHolder) holder).createTime.setText(temp.getDateTime());
+            ParsePosition pos = new ParsePosition(0);
+            ((ContentViewHolder) holder).createTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(temp.getDateTime(), pos)));
             if ("".equals(temp.getPhoto())) {
                 ((ContentViewHolder) holder).imageView.setVisibility(View.GONE);
             } else {
@@ -177,6 +168,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 GlideImageLoder.getInstance().displayImage(mContext, strings[0].replace("\"", ""), ((ContentViewHolder) holder).imageView);
             }
             String[] strs = temp.getPic().split(",");
+            String[] uids=temp.getUids().split(",");
             if ("".equals(temp.getPic())) {
                 ((ContentViewHolder) holder).lvHead.removeAllViews();
             } else {
@@ -186,13 +178,16 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 for (int i = 0; i < strs.length && i < 3; i++) {
                     layout = (LinearLayout) inflater.inflate(R.layout.layout_head, null);
                     head = (ImageView) layout.findViewById(R.id.head);
-                    head.setId(i);
                     GlideImageLoder.getInstance().displayImage(mContext, strs[i], head);
+                    head.setTag(uids[i]);
                     ((ContentViewHolder) holder).lvHead.addView(layout);
                     head.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mContext.startActivity(new Intent(mContext, PeopleInfoActivity.class));
+                            Intent intent=new Intent(mContext,PeopleInfoActivity.class);
+                            intent.putExtra("uid",head.getTag().toString());
+                            mContext.startActivity(intent);
+                            ToastUtils.showShortToast(mContext,"我是用户"+head.getTag().toString());
                         }
                     });
                 }
@@ -212,7 +207,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return mHeaderCount + getContentItemCount() + mBottomCount;
+        return mHeaderCount + getContentItemCount();
     }
 
     public static interface OnItemClickListener {

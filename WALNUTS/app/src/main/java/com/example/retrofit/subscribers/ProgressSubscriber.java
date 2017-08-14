@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.mywidget.LoadingDialog;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.ToastUtils;
 
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
@@ -109,11 +110,11 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         Context context = mActivity.get();
         if (context == null) return;
         if (e instanceof SocketTimeoutException) {
-            Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
         } else if (e instanceof ConnectException) {
-            Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
         } else {
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(context, e.toString().split(":").length<1?e.toString():e.toString().split(":")[1]);
         }
         if (isShow)
             dismissProgressDialog();

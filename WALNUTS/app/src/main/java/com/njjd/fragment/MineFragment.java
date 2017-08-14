@@ -2,15 +2,25 @@ package com.njjd.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.njjd.utils.FastBlur;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.AttentionActivity;
 import com.njjd.walnuts.MyAnswerActivity;
 import com.njjd.walnuts.MyFocusActivity;
@@ -48,6 +58,8 @@ public class MineFragment extends BaseFragment {
     TextView txtPosition;
     @BindView(R.id.txt_company)
     TextView txtCompany;
+    @BindView(R.id.ll_bg)
+    LinearLayout llbg;
     private Context context;
 
     @Override
@@ -67,8 +79,8 @@ public class MineFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), txtChange);
-    }
 
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

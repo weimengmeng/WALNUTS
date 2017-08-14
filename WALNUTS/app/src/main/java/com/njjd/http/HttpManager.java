@@ -163,9 +163,24 @@ public class HttpManager {
         observable = httpService.getArticleDetail(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void getAnswerList(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getAnswerList(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void getCommentList(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getCommentList(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void agreeOrPraise(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.agreeOrPraise(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void focusQuestion(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.focusQuestion(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

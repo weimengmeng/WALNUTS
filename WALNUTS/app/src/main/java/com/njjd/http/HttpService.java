@@ -66,6 +66,8 @@ public interface HttpService {
     @POST("index/articleDetail")
     Observable<HttpResult<Object>> getArticleDetail(@QueryMap Map<String, String> params);
     @POST("index/getCommentF")
+    Observable<HttpResult<Object>> getAnswerList(@QueryMap Map<String, String> params);
+    @POST("index/getCommentFt")
     Observable<HttpResult<Object>> getCommentList(@QueryMap Map<String, String> params);
     @POST("index/addArticle")
     @Multipart
@@ -75,12 +77,10 @@ public interface HttpService {
     Observable<HttpResult<Object>> pubQuestion2(@QueryMap Map<String, String> params);
     @POST("index/addComment")
     Observable<HttpResult<Object>> pubComment(@QueryMap Map<String, String> params);
-    @POST("index/saveAnswer")
-    Observable<HttpResult<Object>> saveAnswer(@QueryMap Map<String, String> params);
-    @POST("index/focusQuestion")
+    @POST("index/setNum")
+    Observable<HttpResult<Object>> agreeOrPraise(@QueryMap Map<String, String> params);
+    @POST("index/followArticle")
     Observable<HttpResult<Object>> focusQuestion(@QueryMap Map<String, String> params);
-    @POST("index/agreeAnswer")
-    Observable<HttpResult<Object>> agreeAnswer(@QueryMap Map<String, String> params);
     @POST("index/getReply")
     Observable<HttpResult<Object>> getReplyList(@QueryMap Map<String, String> params);
     @POST("index/pubReply")

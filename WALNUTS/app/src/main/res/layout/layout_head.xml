@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingRight="@dimen/padding"
-    >
+    android:paddingRight="@dimen/padding">
+
     <de.hdodenhof.circleimageview.CircleImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/head"
         android:layout_width="@dimen/head"
         android:layout_height="@dimen/head"
         android:scaleType="centerCrop"
-        android:src="@drawable/demo" >
+        android:src="@drawable/demo">
 
     </de.hdodenhof.circleimageview.CircleImageView>
-    </LinearLayout>
+</LinearLayout>

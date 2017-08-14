@@ -85,23 +85,23 @@ public class AskActivity extends BaseActivity {
         });
         lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_CAMER:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Ok", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(this, "Denied", Toast.LENGTH_SHORT)
-                            .show();
-                    ActivityCompat.requestPermissions(AskActivity.this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_CAMER);
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        switch (requestCode) {
+//            case REQUEST_CODE_ASK_CAMER:
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    Toast.makeText(this, "Ok", Toast.LENGTH_SHORT)
+//                            .show();
+//                } else {
+//                    Toast.makeText(this, "Denied", Toast.LENGTH_SHORT)
+//                            .show();
+//                    ActivityCompat.requestPermissions(AskActivity.this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_CAMER);
+//                }
+//                break;
+//            default:
+//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        }
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

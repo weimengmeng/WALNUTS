@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -26,8 +25,10 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
+import com.njjd.dao.QuestionEntityDao;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
@@ -55,11 +56,9 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/10.
  */
 
-public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener{
+public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener {
     @BindView(R.id.img_order)
     LinearLayout imgOrder;
-    @BindView(R.id.layout_refresh)
-    SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.button_group)
     RadioGroup buttonGroup;
     @BindView(R.id.scrollView)
@@ -72,26 +71,27 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     @BindView(R.id.top)
     LinearLayout top;
     private View mainView;
-    private LinearLayout layoutTop, layoutTime;
+    private RadioButton layoutTop, layoutTime;
     private PopupWindow popupWindow;
     private LayoutInflater myinflater;
     private View currentView;
-    private RecyclerView list;
+    private XRecyclerView list;
     private List<QuestionEntity> tempList;
-    private List<List<QuestionEntity>> lists=new ArrayList<>();
+    private List<List<QuestionEntity>> lists = new ArrayList<>();
     private IndexQuestionAdapter questionAdapter;
-    private List<RecyclerView> listViews=new ArrayList<>();
-    private List<IndexQuestionAdapter> adapterList=new ArrayList<>();
+    private List<XRecyclerView> listViews = new ArrayList<>();
+    private List<IndexQuestionAdapter> adapterList = new ArrayList<>();
     private List<IndexNavEntity> navList;
-    private String tempKind="1";
-    boolean isLoading;
+    private String tempKind = "1";
     private Handler handler = new Handler();
+    private String tempOrder = "time";
+    private boolean isLoading=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         myinflater = LayoutInflater.from(context);
-        navList= CommonUtils.getInstance().getNavsList();
+        navList = CommonUtils.getInstance().getNavsList();
         ButterKnife.bind(this, view);
         return view;
     }
@@ -105,13 +105,14 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void lazyInitData() {
         //获取问题
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
-        layoutTop = ((LinearLayout) mainView.findViewById(R.id.lv_top));
-        layoutTime = (LinearLayout) mainView.findViewById(R.id.lv_time);
+        layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
+        layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
         layoutTop.setOnClickListener(this);
         layoutTime.setOnClickListener(this);
         popupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -134,7 +135,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
     private void initTop(View view) {
         viewList = new ArrayList<>();
-        for (int i = 0; i <navList.size(); i++) {
+        for (int i = 0; i < navList.size(); i++) {
             RadioButton button = (RadioButton) myinflater.inflate(R.layout.item_radiobutton, null);
             button.setText(navList.get(i).getName());
             button.setTag(navList.get(i).getId());
@@ -144,43 +145,12 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 button.setChecked(true);
             }
             buttonGroup.addView(button);
-            final List<QuestionEntity> list1=new ArrayList<>();
+            final List<QuestionEntity> list1 = new ArrayList<>();
             lists.add(list1);
-            currentView=view.inflate(context, R.layout.layout_common_index, null);
-            list= (RecyclerView) currentView.findViewById(R.id.list_index);
-            final IndexQuestionAdapter questionAdapter=new IndexQuestionAdapter(context,list1);
+            currentView = view.inflate(context, R.layout.layout_common_index, null);
+            list = (XRecyclerView) currentView.findViewById(R.id.list_index);
+            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1);
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            list.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    int topRowVerticalPosition =
-                            (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                    layoutRefresh.setEnabled(topRowVerticalPosition >= 0);
-                }
-
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                    if (lastVisibleItemPosition + 1 == questionAdapter.getItemCount()) {
-                        boolean isRefreshing = layoutRefresh.isRefreshing();
-                        if (isRefreshing) {
-                            questionAdapter.notifyItemRemoved(questionAdapter.getItemCount());
-                            return;
-                        }
-                        if (!isLoading) {
-                            isLoading = true;
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    isLoading = false;
-                                }
-                            }, 1000);
-                        }
-                    }
-                }
-            });
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);
@@ -188,12 +158,12 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent=new Intent(context, IndexDetailActivity.class);
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("question",list1.get(position));
-                    intent.putExtra("question",bundle);
+                    Intent intent = new Intent(context, IndexDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("question", list1.get(position));
+                    intent.putExtra("question", bundle);
                     startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.in,R.anim.out);
+                    getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                 }
             });
             viewList.add(currentView);
@@ -219,36 +189,52 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
                 buttonGroup.check(position);
-                tempList=lists.get(position);
-                list=listViews.get(position);
-                questionAdapter=adapterList.get(position);
-                tempKind=navList.get(position).getId();
-                getQuestion(tempKind,"time");
+                tempList = lists.get(position);
+                list = listViews.get(position);
+                questionAdapter = adapterList.get(position);
+                tempKind = navList.get(position).getId();
+                getQuestion(tempKind, tempOrder);
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
         indexPage.setCurrentItem(0);
-        tempList=lists.get(0);
-        list=listViews.get(0);
-        questionAdapter=adapterList.get(0);
-        tempKind=navList.get(0).getId();
-        getQuestion(tempKind,"time");
+        tempList = lists.get(0);
+        list = listViews.get(0);
+        questionAdapter = adapterList.get(0);
+        tempKind = navList.get(0).getId();
+        getQuestion(tempKind, tempOrder);
+        list.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                questionAdapter.setCurrentPage(1);
+                getQuestion(tempKind, tempOrder);
+            }
+
+            @Override
+            public void onLoadMore() {
+                questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
+                getQuestion(tempKind, tempOrder);
+                isLoading=true;
+            }
+        });
     }
 
-    private void getQuestion(String id,String sort){
-        Map<String,Object> map=new HashMap<>();
-        map.put("cate_article_id",id);
-        map.put("page",questionAdapter.getCurrentPage());
-        map.put("order",sort);
-        map.put("keywords","");
+    private void getQuestion(String id, String sort) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("cate_article_id", id);
+        map.put("page", questionAdapter.getCurrentPage());
+        map.put("order", sort);
+        map.put("keywords", "");
         LogUtils.d(map.toString());
-        SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(this,context,false,false),map);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getQuestionList(postEntity);
     }
 
@@ -261,70 +247,39 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         JSONArray array = null;
         QuestionEntity entity;
         try {
-            array=new JSONArray(gson.toJson(o));
-                if(questionAdapter.getCurrentPage()==1){
-                    tempList.clear();
+            array = new JSONArray(gson.toJson(o));
+            if (questionAdapter.getCurrentPage() == 1) {
+                list.refreshComplete();
+                tempList.clear();
             }
-            for(int i=0;i<array.length();i++){
-                entity=new QuestionEntity(array.getJSONObject(i),tempKind);
+            if(isLoading){
+                isLoading=false;
+                list.loadMoreComplete();
+            }
+            for (int i = 0; i < array.length(); i++) {
+                entity = new QuestionEntity(array.getJSONObject(i), tempKind);
                 tempList.add(entity);
-//                if(DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().hasKey(entity)){
-//                    QuestionEntity temp=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entity.getQuestionId());
-//                    temp.setTitle(entity.getTitle());
-//                    temp.setContent(entity.getContent());
-//                    temp.setIsFocus(entity.getIsFocus());
-//                    temp.setAnswerNum(entity.getAnswerNum());
-//                    temp.setFocusNum(entity.getFocusNum());
-//                    temp.setPic(entity.getPic());
-//                    temp.setPhoto(entity.getPhoto());
-//                    DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(temp);
-//                }else{
+                if (DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entity.getQuestionId()) != null) {
+                    QuestionEntity temp = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entity.getQuestionId());
+                    temp.setTitle(entity.getTitle());
+                    temp.setContent(entity.getContent());
+                    temp.setIsFocus(entity.getIsFocus());
+                    temp.setAnswerNum(entity.getAnswerNum());
+                    temp.setFocusNum(entity.getFocusNum());
+                    temp.setPic(entity.getPic());
+                    temp.setPhoto(entity.getPhoto());
+                    DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(temp);
+                } else {
                     DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(entity);
-//                }
+                }
             }
             questionAdapter.notifyDataSetChanged();
-        }catch (JSONException e){
+        } catch (JSONException e) {
             LogUtils.d(e.toString());
         }
     }
+
     private void initRefresh() {
-        layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 结束刷新
-                        getQuestion(tempKind,"time");
-                        layoutRefresh.setRefreshing(false);
-                    }
-                }, 2000);
-            }
-        });
-//        layoutRefresh.setRefreshListener(new BaseRefreshListener() {
-//            @Override
-//            public void refresh() {
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // 结束刷新
-//                        getQuestion(tempKind,"time");
-//                        layoutRefresh.finishRefresh();
-//                    }
-//                }, 2000);
-//            }
-//
-//            @Override
-//            public void loadMore() {
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // 结束加载更多
-//                        layoutRefresh.finishLoadMore();
-//                    }
-//                }, 2000);
-//            }
-//        });
     }
 
 
@@ -332,14 +287,21 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void onViewClicked() {
         popupWindow.showAsDropDown(imgOrder, 0, 0);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.lv_top:
-                ToastUtils.showShortToast(context, "热度排序");
+            case R.id.rb_hot:
+                tempOrder = "hot";
+                tempList.clear();
+                getQuestion(tempKind, tempOrder);
+                popupWindow.dismiss();
                 break;
-            case R.id.lv_time:
-                ToastUtils.showShortToast(context, "时间排序");
+            case R.id.rb_time:
+                tempOrder = "time";
+                tempList.clear();
+                getQuestion(tempKind, tempOrder);
+                popupWindow.dismiss();
                 break;
             default:
                 buttonGroup.check(v.getId());
