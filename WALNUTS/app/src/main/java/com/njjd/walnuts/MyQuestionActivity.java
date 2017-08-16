@@ -1,13 +1,42 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.njjd.adapter.FocusPeopleAdapter;
+import com.njjd.adapter.FocusQuesAdapter;
+import com.njjd.adapter.FocusTagAdapter;
+import com.njjd.adapter.MyQuestionAdapter;
+import com.njjd.domain.QuestionEntity;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
+import com.njjd.utils.SPUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,8 +53,12 @@ public class MyQuestionActivity extends BaseActivity {
     @BindView(R.id.top)
     LinearLayout topView;
     @BindView(R.id.list_ques)
-    ListView listQues;
-
+    SwipeMenuListView listQues;
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refresh;
+    private MyQuestionAdapter questionAdapter;
+    private List<QuestionEntity> list=new ArrayList<>();
+    private SwipeMenuCreator creator;
     @Override
     public int bindLayout() {
         return R.layout.activity_myquestion;
@@ -36,6 +69,66 @@ public class MyQuestionActivity extends BaseActivity {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的问题");
+        creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem focusItem = new SwipeMenuItem(
+                        MyQuestionActivity.this);
+                focusItem.setBackground(R.color.red);
+                focusItem.setWidth(240);
+                focusItem.setTitle("删除");
+                focusItem.setTitleSize(16);
+                focusItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(focusItem);
+            }
+        };
+        questionAdapter=new MyQuestionAdapter(list,this);
+        listQues.setAdapter(questionAdapter);
+        listQues.setMenuCreator(creator);
+        listQues.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        MyQuestionAdapter.CURRENT_PAGE=1;
+        getMyQuestion();
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MyQuestionAdapter.CURRENT_PAGE=1;
+                getMyQuestion();
+            }
+        });
+        listQues.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // 当不滚动时
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1) {
+                        MyQuestionAdapter.CURRENT_PAGE++;
+                        getMyQuestion();
+                    }
+                }
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(listQues != null && listQues.getChildCount() > 0){
+                    boolean firstItemVisible = listQues.getFirstVisiblePosition() == 0;
+                    boolean topOfFirstItemVisible = listQues.getChildAt(0).getTop() == 0;
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                refresh.setEnabled(enable);
+            }});
+        listQues.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MyQuestionActivity.this, IndexDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("question", list.get(position));
+                intent.putExtra("question", bundle);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in, R.anim.out);
+            }
+        });
     }
 
     @Override
@@ -46,6 +139,41 @@ public class MyQuestionActivity extends BaseActivity {
     @OnClick(R.id.back)
     public void onViewClicked() {
         finish();
+    }
+    private void getMyQuestion(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("page", FocusPeopleAdapter.CURRENT_PAGE);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        HttpManager.getInstance().getUidArticle(postEntity);
+    }
+
+    @Override
+    public void onNext(Object o) {
+        super.onNext(o);
+        refresh.setRefreshing(false);
+        if(!o.toString().equals("")) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONArray array = null;
+            QuestionEntity entity;
+            JsonObject jsonObject= JSONUtils.getAsJsonObject(o);
+            try {
+                array = new JSONArray(gson.toJson(jsonObject.get("article")));
+                if (MyQuestionAdapter.CURRENT_PAGE == 1) {
+                    list.clear();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    entity = new QuestionEntity(array.getJSONObject(i), "");
+                    list.add(entity);
+                }
+                questionAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                LogUtils.d(e.toString());
+            }
+        }
     }
 
     @Override

@@ -1,13 +1,41 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.njjd.adapter.FocusPeopleAdapter;
+import com.njjd.adapter.MyQuestionAdapter;
+import com.njjd.adapter.MySaveAdapter;
+import com.njjd.domain.QuestionEntity;
+import com.njjd.domain.SaveEntity;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
+import com.njjd.utils.SPUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,7 +52,11 @@ public class MySaveActivity extends BaseActivity {
     @BindView(R.id.top)
     LinearLayout topView;
     @BindView(R.id.list_save)
-    ListView listSave;
+    SwipeMenuListView listSave;
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refresh;
+    private List<SaveEntity> list = new ArrayList<>();
+    private MySaveAdapter saveAdapter;
 
     @Override
     public int bindLayout() {
@@ -33,15 +65,96 @@ public class MySaveActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this,topView);
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的收藏");
+        saveAdapter = new MySaveAdapter(list, this);
+        listSave.setAdapter(saveAdapter);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MySaveAdapter.CURRENT_PAGE = 1;
+                getMySave();
+            }
+        });
+        listSave.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // 当不滚动时
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1) {
+                        MySaveAdapter.CURRENT_PAGE++;
+                        getMySave();
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if (listSave != null && listSave.getChildCount() > 0) {
+                    boolean firstItemVisible = listSave.getFirstVisiblePosition() == 0;
+                    boolean topOfFirstItemVisible = listSave.getChildAt(0).getTop() == 0;
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                refresh.setEnabled(enable);
+            }
+        });
+        listSave.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MySaveActivity.this, SaveDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("save", list.get(position));
+                intent.putExtra("save", bundle);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in, R.anim.out);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MySaveAdapter.CURRENT_PAGE = 1;
+        getMySave();
+    }
+
+    private void getMySave() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("page", MySaveAdapter.CURRENT_PAGE);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        HttpManager.getInstance().getUidSave(postEntity);
+    }
+
+    @Override
+    public void onNext(Object o) {
+        super.onNext(o);
+        refresh.setRefreshing(false);
+        if (!o.toString().equals("")) {
+            JsonObject object = JSONUtils.getAsJsonObject(o);
+            JsonArray array = object.get("collect").getAsJsonArray();
+            SaveEntity entity;
+            if (MySaveAdapter.CURRENT_PAGE == 1) {
+                list.clear();
+            }
+            for (int i = 0; i < array.size(); i++) {
+                entity = new SaveEntity(array.get(i).getAsJsonObject());
+                list.add(entity);
+            }
+            saveAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @OnClick(R.id.back)
     public void onViewClicked() {
         finish();

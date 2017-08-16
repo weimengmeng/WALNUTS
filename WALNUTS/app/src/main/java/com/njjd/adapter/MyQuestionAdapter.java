@@ -5,28 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.njjd.domain.FocusEntity;
 import com.njjd.domain.QuestionEntity;
+import com.njjd.http.HttpManager;
+import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.R;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 /**
- * Created by mrwim on 17/8/15.
+ * Created by mrwim on 17/8/16.
  */
 
-public class FocusQuesAdapter extends BaseAdapter {
+public class MyQuestionAdapter extends BaseAdapter{
     private List<QuestionEntity> list;
     private Context context;
     private LayoutInflater inflater;
     private QuestionEntity focusEntity;
     public static int CURRENT_PAGE = 1;
-    public FocusQuesAdapter(List<QuestionEntity> list,Context context){
+    public MyQuestionAdapter(List<QuestionEntity> list,Context context){
         this.list=list;
         this.context=context;
         inflater=LayoutInflater.from(context);
@@ -45,35 +48,40 @@ public class FocusQuesAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public static int getCurrentPage() {
-        return CURRENT_PAGE;
-    }
-
-    public static void setCurrentPage(int currentPage) {
-        CURRENT_PAGE = currentPage;
-    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHodel hodel=null;
         if(convertView==null){
             hodel=new ViewHodel();
-            convertView=inflater.inflate(R.layout.item_attention_ques,parent,false);
+            convertView=inflater.inflate(R.layout.item_ques,parent,false);
             hodel.title=(TextView)convertView.findViewById(R.id.txt_title);
-            hodel.tag=(TextView)convertView.findViewById(R.id.txt_tag);
-            hodel.date=(TextView)convertView.findViewById(R.id.txt_time);
+            hodel.content=(TextView)convertView.findViewById(R.id.txt_content);
+            hodel.image=(ImageView) convertView.findViewById(R.id.img);
+            hodel.date=(TextView)convertView.findViewById(R.id.txt_date);
             convertView.setTag(hodel);
         }else{
             hodel=(ViewHodel) convertView.getTag();
         }
         focusEntity=list.get(position);
         hodel.title.setText(focusEntity.getTitle());
-        hodel.tag.setText("销售环节");
-        hodel.date.setText(focusEntity.getDateTime());
+        ParsePosition pos = new ParsePosition(0);
+        hodel.date.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(focusEntity.getDateTime(), pos)));
+        if ("".equals(focusEntity.getPhoto())) {
+            hodel.image.setVisibility(View.GONE);
+            hodel.content.setText(focusEntity.getContent());
+            hodel.content.setVisibility(View.VISIBLE);
+        } else {
+            hodel.image.setVisibility(View.VISIBLE);
+            hodel.content.setVisibility(View.GONE);
+            String[] strings = focusEntity.getPhoto().split(",");
+            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+strings[0].replace("\"", ""), hodel.image);
+        }
         return convertView;
     }
     private class ViewHodel{
         TextView title;
-        TextView tag;
         TextView date;
+        TextView content;
+        ImageView image;
     }
 }

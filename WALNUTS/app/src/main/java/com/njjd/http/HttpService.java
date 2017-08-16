@@ -55,6 +55,15 @@ public interface HttpService {
     Observable<HttpResult<Object>> getFollowUser(@QueryMap Map<String, String> params);
     @POST("user/followUser")
     Observable<HttpResult<Object>> followUser(@QueryMap Map<String, String> params);
+    @POST("user/getUidArticle")
+    Observable<HttpResult<Object>> getUidArticle(@QueryMap Map<String, String> params);
+    @POST("user/getUidcollect")
+    Observable<HttpResult<Object>> getUidSave(@QueryMap Map<String, String> params);
+    @POST("user/getUidComment")
+    Observable<HttpResult<Object>> getUidComment(@QueryMap Map<String, String> params);
+    @POST("user/getUser")
+    Observable<HttpResult<Object>> getUserInfo(@QueryMap Map<String, String> params);
+
     /**
     @POST("user/getFollowUser")
     Observable<HttpResult<Object>> getFollowUser(@QueryMap Map<String, String> params);

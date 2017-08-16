@@ -243,7 +243,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void onNext(Object o) {
-        LogUtils.d(o.toString());
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls(); //重点
         Gson gson = gsonBuilder.create();

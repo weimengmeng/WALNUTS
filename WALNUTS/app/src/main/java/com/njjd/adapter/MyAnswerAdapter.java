@@ -5,28 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.njjd.domain.FocusEntity;
-import com.njjd.domain.QuestionEntity;
+import com.njjd.domain.MyAnswerEntity;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.walnuts.R;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 /**
- * Created by mrwim on 17/8/15.
+ * Created by mrwim on 17/8/16.
  */
 
-public class FocusQuesAdapter extends BaseAdapter {
-    private List<QuestionEntity> list;
+public class MyAnswerAdapter extends BaseAdapter{
+    private List<MyAnswerEntity> list;
     private Context context;
     private LayoutInflater inflater;
-    private QuestionEntity focusEntity;
+    private MyAnswerEntity myAnswerEntity;
     public static int CURRENT_PAGE = 1;
-    public FocusQuesAdapter(List<QuestionEntity> list,Context context){
+    public MyAnswerAdapter(List<MyAnswerEntity> list,Context context){
         this.list=list;
         this.context=context;
         inflater=LayoutInflater.from(context);
@@ -45,35 +44,34 @@ public class FocusQuesAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public static int getCurrentPage() {
-        return CURRENT_PAGE;
-    }
-
-    public static void setCurrentPage(int currentPage) {
-        CURRENT_PAGE = currentPage;
-    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHodel hodel=null;
         if(convertView==null){
             hodel=new ViewHodel();
-            convertView=inflater.inflate(R.layout.item_attention_ques,parent,false);
+            convertView=inflater.inflate(R.layout.item_my_answer,parent,false);
             hodel.title=(TextView)convertView.findViewById(R.id.txt_title);
-            hodel.tag=(TextView)convertView.findViewById(R.id.txt_tag);
-            hodel.date=(TextView)convertView.findViewById(R.id.txt_time);
+            hodel.image_photo=(ImageView) convertView.findViewById(R.id.img);
+            hodel.reply_content=(TextView)convertView.findViewById(R.id.txt_reply);
             convertView.setTag(hodel);
         }else{
             hodel=(ViewHodel) convertView.getTag();
         }
-        focusEntity=list.get(position);
-        hodel.title.setText(focusEntity.getTitle());
-        hodel.tag.setText("销售环节");
-        hodel.date.setText(focusEntity.getDateTime());
+        myAnswerEntity=list.get(position);
+        hodel.title.setText(myAnswerEntity.getTitle());
+        hodel.reply_content.setText(myAnswerEntity.getComment_content());
+        if ("".equals(myAnswerEntity.getArticle_imgs())) {
+            hodel.image_photo.setVisibility(View.GONE);
+        } else {
+            hodel.image_photo.setVisibility(View.VISIBLE);
+            String[] strings = myAnswerEntity.getArticle_imgs().split(",");
+            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+strings[0].replace("\"", ""), hodel.image_photo);
+        }
         return convertView;
     }
     private class ViewHodel{
         TextView title;
-        TextView tag;
-        TextView date;
+        ImageView image_photo;
+        TextView reply_content;
     }
 }

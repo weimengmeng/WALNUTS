@@ -1,5 +1,6 @@
 package com.njjd.domain;
 
+import com.google.gson.JsonObject;
 import com.njjd.application.AppAplication;
 import com.njjd.utils.SPUtils;
 
@@ -29,7 +30,7 @@ public class QuestionEntity implements Serializable{
     private int isFocus;//是否关注
     private String dateTime;//发布时间
     private String tag;
-    private String kind;
+    private String kind="";
     private String tag_id;
 
     public QuestionEntity(JSONObject object,String kind){
@@ -41,7 +42,7 @@ public class QuestionEntity implements Serializable{
             this.focusNum=object.isNull("follow_num")?"0":object.getString("follow_num");
             this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
             this.photo=object.isNull("imgs")?"":object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
-            this.pic=object.isNull("headimgs")?object.getString("authheadimg"):object.getString("headimgs");
+            this.pic=object.isNull("headimgs")?(object.isNull("authheadimg")?"":object.getString("authheadimg")):object.getString("headimgs");
             this.uids=object.isNull("uids")? SPUtils.get(AppAplication.getContext(),"userId","").toString():object.getString("uids");
             this.tag="";
             this.isFocus=0;
@@ -50,6 +51,20 @@ public class QuestionEntity implements Serializable{
         }catch (JSONException e){
 
         }
+    }
+    public QuestionEntity(JsonObject object){
+            this.questionId=object.get("id").getAsString();
+            this.title=object.get("title").getAsString();
+            this.content=object.get("contents").getAsString();
+            this.answerNum=object.get("answer_num").getAsString();
+            this.focusNum=object.get("follow_num").getAsString();
+            this.dateTime=object.get("add_time").getAsString();
+            this.photo=object.get("imgs").getAsString().replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.pic=object.get("headimg").getAsString();
+            this.uids="";
+            this.tag="";
+            this.isFocus=0;
+            this.tag_id="";
     }
     @Generated(hash = 226711368)
     public QuestionEntity(String questionId, String title, String content, String photo, String pic, String uids, String focusNum,

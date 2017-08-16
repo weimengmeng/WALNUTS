@@ -116,6 +116,9 @@ public class IndexDetailActivity extends BaseActivity {
             final String[] imgs = questionEntity.getPhoto().split(",");
             final ArrayList<String> list1 = new ArrayList<>();
             for (int i = 0; i < imgs.length; i++) {
+                if(!imgs[i].contains("http:")){
+                    imgs[i]=HttpManager.BASE_URL2+imgs[i];
+                }
                 list1.add(imgs[i].replace("\"", ""));
                 relativeLayout = (RelativeLayout) inflater.inflate(R.layout.layout_img, null);
                 imageView = (ImageView) relativeLayout.findViewById(R.id.img);
@@ -219,7 +222,7 @@ public class IndexDetailActivity extends BaseActivity {
 
     private void getAnswerList() {
         Map<String, Object> map = new HashMap<>();
-        map.put("article_id", questionEntity.getQuestionId());
+        map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("order", "time");
         map.put("page",AnswerReplyAdapter.CURRENT_PAGE);

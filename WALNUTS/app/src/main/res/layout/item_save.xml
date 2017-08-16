@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:background="@drawable/background_layout_div"
+        android:layout_marginTop="@dimen/margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:paddingLeft="@dimen/margin"
+                android:gravity="center|left">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_head"
+                    android:layout_width="@dimen/head_big"
+                    android:layout_height="@dimen/head_big"
+                    android:src="@drawable/head" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/padding"
+                    android:text="刘建设的建设"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/normal" />
+
+                <TextView
+                    android:id="@+id/txt_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="-2dp"
+                    android:layout_marginTop="@dimen/_margin"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:text="职业的小逗比"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center_vertical|right"
+                android:paddingRight="@dimen/margin">
+
+                <TextView
+                    android:id="@+id/txt_focus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/txt_shape"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/padding"
+                    android:paddingTop="@dimen/padding"
+                    android:text="+关注TA"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/small"
+                    android:typeface="sans"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="@dimen/_margin"
+            android:paddingLeft="@dimen/margin"
+            android:textColor="@color/gray"
+            android:textScaleX="1"
+            android:textSize="@dimen/big" />
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/post_height"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/txt_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/margin"
+            android:text=""
+            android:textColor="#666666"
+            android:textScaleX="1"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+</LinearLayout>

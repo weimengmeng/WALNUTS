@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingRight="@dimen/padding_left">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/lv_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/padding_top"
         android:paddingLeft="@dimen/round"
         android:paddingTop="@dimen/margin"
         android:weightSum="1">
@@ -88,9 +88,11 @@
                     android:id="@+id/txt_answer_message"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_margin"
                     android:layout_weight="0.5"
+                    android:gravity="center_vertical"
                     android:text="职业的小逗比"
+                    android:layout_marginLeft="-2dp"
+                    android:layout_marginTop="@dimen/_margin"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small" />
             </LinearLayout>
@@ -99,8 +101,10 @@
                 android:id="@+id/txt_time"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0.25"
                 android:text="5分钟前"
+                android:layout_marginTop="@dimen/margin"
+                android:paddingRight="@dimen/padding_top"
                 android:gravity="top|right"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small">
@@ -112,8 +116,8 @@
             android:id="@+id/txt_answer_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_margin"
             android:paddingLeft="@dimen/round"
+            android:layout_marginLeft="@dimen/padding"
             android:paddingRight="@dimen/margin"
             android:text="项目销售"
             android:textColor="#666666"
@@ -125,6 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/round"
+            android:paddingLeft="@dimen/padding"
             android:orientation="horizontal"
             android:weightSum="1">
             <TextView
@@ -173,6 +178,6 @@
             android:layout_height="1dp"
             android:alpha="0.15"
             android:layout_marginLeft="@dimen/round"
-            android:background="@color/white"></View>
+            android:background="@color/red"></View>
     </LinearLayout>
 </LinearLayout>

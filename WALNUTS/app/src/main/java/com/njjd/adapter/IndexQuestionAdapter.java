@@ -193,7 +193,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                             Intent intent=new Intent(mContext,PeopleInfoActivity.class);
                             intent.putExtra("uid",head.getTag().toString());
                             mContext.startActivity(intent);
-                            ToastUtils.showShortToast(mContext,"我是用户"+head.getTag().toString());
                         }
                     });
                 }

@@ -5,7 +5,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.njjd.adapter.MySaveAdapter;
+import com.njjd.http.HttpManager;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,7 +34,7 @@ public class PeopleInfoActivity extends BaseActivity {
     TextView txtFocusNum;
     @BindView(R.id.txt_focusedNum)
     TextView txtFocusedNum;
-
+    private String tempUser="";
     @Override
     public int bindLayout() {
         return R.layout.activity_people;
@@ -34,11 +42,22 @@ public class PeopleInfoActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+        tempUser=getIntent().getStringExtra("uid");
         getUserInfo();
     }
 
     private void getUserInfo() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("ouid",tempUser);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        HttpManager.getInstance().getUidSave(postEntity);
+    }
 
+    @Override
+    public void onNext(Object o) {
+        super.onNext(o);
     }
 
     @Override

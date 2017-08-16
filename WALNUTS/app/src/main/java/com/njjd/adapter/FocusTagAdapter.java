@@ -21,6 +21,7 @@ public class FocusTagAdapter extends BaseAdapter{
     private Context context;
     private LayoutInflater inflater;
     private FocusEntity focusEntity;
+    public static int CURRENT_PAGE = 1;
     public FocusTagAdapter(List<FocusEntity> list,Context context){
         this.list=list;
         this.context=context;
@@ -40,7 +41,13 @@ public class FocusTagAdapter extends BaseAdapter{
     public long getItemId(int position) {
         return position;
     }
+    public static int getCurrentPage() {
+        return CURRENT_PAGE;
+    }
 
+    public static void setCurrentPage(int currentPage) {
+        CURRENT_PAGE = currentPage;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
        ViewHodel hodel=null;

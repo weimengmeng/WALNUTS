@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent_layout"
     style="@style/Width_m_Height_m"
     android:background="@color/grey">
-
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include layout="@layout/top"></include>
+    <include layout="@layout/top"></include>
     </LinearLayout>
 
     <LinearLayout
-        style="@style/Width_m_Height_m"
         android:layout_below="@id/top"
-        android:layout_marginTop="1dp">
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_left">
         <com.scrollablelayout.ScrollableLayout
             android:id="@+id/scrollLayout"
-            style="@style/Width_m_Height_m">
+           android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/lv_tag"
@@ -31,11 +31,9 @@
                 android:id="@+id/txt_quesTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_left"
+                android:background="@drawable/background_with_shadow"
                 android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
-                android:layout_marginRight="@dimen/padding_left"
-                android:background="@drawable/background_with_shadow"
                 android:elevation="1dp"
                 android:text="工业项目一定要能喝酒吗?"
                 android:textColor="@color/gray"
@@ -45,11 +43,10 @@
                 android:id="@+id/lv_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <include layout="@layout/layout_detail"></include>
+                <include layout="@layout/layout_save_detail"></include>
             </ScrollView>
         </com.scrollablelayout.ScrollableLayout>
     </LinearLayout>
-
     <ImageView
         android:id="@+id/img_answer"
         android:layout_width="wrap_content"

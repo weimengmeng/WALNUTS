@@ -31,6 +31,7 @@ import rx.schedulers.Schedulers;
  */
 public class HttpManager {
     public static final String BASE_URL = "http://192.168.1.112/hetao_api/public/api/";
+    public static final String BASE_URL2 = "http://192.168.1.112/hetao_api/public/";
     /**
      * 设置超时时间，默认6s
      */
@@ -129,6 +130,21 @@ public class HttpManager {
         observable = httpService.followUser(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void getUidArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getUidArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getUidComment(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getUidComment(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getUserInfo(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getUserInfo(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      * 社区模块
      */
@@ -206,6 +222,11 @@ public class HttpManager {
     public void getFollowArticle(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getFollowArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getUidSave(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getUidSave(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

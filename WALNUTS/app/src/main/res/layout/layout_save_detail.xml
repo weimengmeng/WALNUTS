@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_layout_div"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding">
+
+        <LinearLayout
+            android:id="@+id/lv_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_content1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:lineSpacingExtra="@dimen/padding"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:text="工业项目销售工业项目销售工项目销售工业工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal"
+            android:typeface="sans" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/margin_right"
+            android:layout_marginTop="@dimen/margin"
+            android:alpha="0.15"
+            android:background="#000000"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txt_answerNum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:paddingLeft="@dimen/margin"
+                android:text="回答 26"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txt_focusNum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:paddingLeft="@dimen/padding"
+                android:text="关注 26"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center_vertical|right"
+                android:paddingRight="@dimen/margin">
+
+                <TextView
+                    android:id="@+id/txt_focus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/txt_shape"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/padding"
+                    android:paddingTop="@dimen/padding"
+                    android:text="+关注问题"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/small"
+                    android:typeface="sans"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/padding_top"
+        android:text="回答"
+        android:textColor="@color/txt_color"
+        android:textSize="@dimen/normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_margin"
+        android:background="@drawable/background_layout_div">
+
+        <include layout="@layout/item_group"></include>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@drawable/background_layout_div"
+        android:gravity="center"
+        android:text="查看其他回答\n..."
+        android:textColor="@color/txt_color"
+        android:paddingBottom="@dimen/padding"
+        android:textSize="@dimen/normal" />
+</LinearLayout>

@@ -4,42 +4,48 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical">
+
     <com.njjd.utils.SearchView
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content"></com.njjd.utils.SearchView>
+        android:layout_height="wrap_content"
+        android:visibility="gone"></com.njjd.utils.SearchView>
+
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="1">
+
         <HorizontalScrollView
             android:id="@+id/scrollView"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0.9"
-            android:scrollbars="none"
             android:background="@color/white"
-            android:layout_height="wrap_content">
+            android:scrollbars="none">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
-            <RadioGroup
-                android:id="@+id/button_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/padding">
-            </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/button_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/padding"></RadioGroup>
             </LinearLayout>
         </HorizontalScrollView>
+
         <View
             android:layout_width="1dp"
-            android:alpha="0.15"
             android:layout_height="match_parent"
+            android:alpha="0.15"
             android:background="@color/grey"></View>
+
         <LinearLayout
             android:id="@+id/img_order"
             android:layout_width="0dp"
@@ -54,13 +60,15 @@
                 android:src="@drawable/btn_cd" />
         </LinearLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:alpha="0.15"
         android:background="@color/actionsheet_gray"></View>
-            <android.support.v4.view.ViewPager
-                android:id="@+id/index_page"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/index_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 </LinearLayout>

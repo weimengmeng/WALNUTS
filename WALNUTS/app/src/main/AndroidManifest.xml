@@ -103,7 +103,7 @@
             android:name=".SetPasswordActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".FindDetailActivity"
+            android:name=".SaveDetailActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".IndexDetailActivity"
