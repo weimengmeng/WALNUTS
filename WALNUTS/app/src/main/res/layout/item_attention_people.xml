@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_div"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/padding"
+        android:orientation="horizontal"
         android:weightSum="1">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:gravity="center"
+            android:paddingTop="@dimen/margin"
             android:paddingBottom="@dimen/margin"
-            android:paddingTop="@dimen/margin">
+            android:gravity="center">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_head"
                 android:layout_width="@dimen/head_big"
                 android:layout_height="@dimen/head_big"
                 android:src="@drawable/head" />
@@ -29,26 +29,26 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/margin"
-            android:paddingTop="@dimen/margin">
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
-                android:padding="@dimen/padding"
                 android:text="通知"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/large" />
+                android:textSize="@dimen/big" />
 
             <TextView
+                android:id="@+id/txt_intro"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
-                android:padding="@dimen/padding"
+                android:layout_marginTop="@dimen/_margin"
+                android:paddingTop="@dimen/padding"
                 android:text="您的回答被评论"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
@@ -57,16 +57,19 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="right"
-            android:layout_weight="0.1">
+            android:layout_weight="0.1"
+            android:gravity="center|right">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=".\n.\n."
-                android:textStyle="bold"
+                android:layout_marginRight="@dimen/padding"
                 android:lineSpacingExtra="@dimen/space"
+                android:text=".\n.\n."
+                android:layout_marginTop="@dimen/_margin"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/largest" />
+                android:textSize="@dimen/large_big"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

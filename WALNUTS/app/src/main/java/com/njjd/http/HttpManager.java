@@ -119,6 +119,16 @@ public class HttpManager {
         observable = httpService.completeInfo(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void getFollowUser(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getFollowUser(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void followUser(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.followUser(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      * 社区模块
      */
@@ -183,10 +193,30 @@ public class HttpManager {
         observable = httpService.focusQuestion(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void focusLabel(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.followLabel(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getFollowLabel(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getFollowLabel(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getFollowArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getFollowArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      *  公共模块
      * @param basePar
      */
+    public void getBanner(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getBanner(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void provinceList(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.provinceList(basePar.getParams()).map(basePar);

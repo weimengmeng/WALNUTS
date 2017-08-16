@@ -8,8 +8,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
+import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.GradationScrollView;
 import com.njjd.utils.MyListView;
+import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,6 +42,8 @@ public class TagActivity extends BaseActivity implements GradationScrollView.Scr
     TextView txtTag;
     @BindView(R.id.top_view)
     RelativeLayout topView;
+    @BindView(R.id.txt_focus)
+    TextView txtFocus;
     private int height = 0;
 
     @Override
@@ -48,13 +59,15 @@ public class TagActivity extends BaseActivity implements GradationScrollView.Scr
         txtTag.setText(getIntent().getStringExtra("name"));
         txtTitle.setTextColor(Color.argb(0, 255, 255, 255));
         topView.setBackgroundColor(getResources().getColor(R.color.login));
+        getTagQuestion();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    private void getTagQuestion(){
+    }
     /**
      * 获取顶部图片高度后，设置滚动监听
      */
@@ -95,8 +108,30 @@ public class TagActivity extends BaseActivity implements GradationScrollView.Scr
         }
     }
 
-    @OnClick(R.id.back)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.back,R.id.txt_focus})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.back:
+                finish();
+                break;
+            case R.id.txt_focus:
+                addFocus();
+                break;
+        }
     }
+    private void addFocus(){
+        Map<String,Object> map=new HashMap<>();
+        map.put("label_id",getIntent().getStringExtra("tag_id"));
+        map.put("token", SPUtils.get(this,"token","").toString());
+        map.put("uid",SPUtils.get(this,"userId","").toString());
+        map.put("select","1");
+        SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(focusListener,this,false,false),map);
+        HttpManager.getInstance().focusLabel(postEntity);
+    }
+    HttpOnNextListener focusListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            ToastUtils.showShortToast(TagActivity.this," 关注成功");
+        }
+    };
 }

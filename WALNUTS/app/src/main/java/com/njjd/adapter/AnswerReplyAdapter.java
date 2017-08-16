@@ -13,9 +13,11 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
+import com.njjd.domain.CommonEntity;
 import com.njjd.domain.ReplyEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.DateUtils;
+import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
@@ -23,6 +25,7 @@ import com.njjd.walnuts.R;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +41,16 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
     private ReplyEntity replyEntity;
     private Context mContext;
     public static int CURRENT_PAGE = 1;
-    int temp = 1,currentid=0;
+    int temp = 1, currentid = 0;
     private AnswerEntity tempEntity;
     private TextView tempView;
-
-    public AnswerReplyAdapter(Context context, List<AnswerEntity> groupArray) {
+    private String article_id;
+    private int currentPosition = 0;
+    private String comment="";
+    public AnswerReplyAdapter(Context context, List<AnswerEntity> groupArray, String article_id) {
         mContext = context;
         this.groupArray = groupArray;
+        this.article_id = article_id;
     }
 
     public static int getCurrentPage() {
@@ -124,6 +130,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             holder.groupAgree.setBackgroundResource(R.drawable.background_button_div);
         }
         holder.groupAgree.setText("" + Float.valueOf(answerEntity.getAgree()).intValue());
+        GlideImageLoder.getInstance().displayImage(mContext,answerEntity.getHead(),holder.head);
         holder.groupAgree.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
         holder.groupSave.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
         holder.groupReport.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
@@ -133,8 +140,8 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         holder.groupAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempView=(TextView) v;
-                currentid=groupPosition;
+                tempView = (TextView) v;
+                currentid = groupPosition;
                 if (groupArray.get(groupPosition).getIsPrise().equals("0")) {
                     //认同
                     temp = 0;
@@ -149,7 +156,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         holder.groupSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempView=(TextView) v;
+                tempView = (TextView) v;
                 if (groupArray.get(groupPosition).getIsSave().equals("0")) {
                     temp = 2;
                     //收藏
@@ -176,7 +183,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View view = convertView;
         ChildHolder holder = null;
         if (view == null) {
@@ -199,15 +206,32 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             view.findViewById(R.id.ll_reply).setVisibility(View.VISIBLE);
         } else {
             view.findViewById(R.id.lv_comment).setVisibility(View.VISIBLE);
+            final TextView textView = (TextView) view.findViewById(R.id.et_comment);
+            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (textView.getText().toString().trim().equals("")) {
+                        ToastUtils.showShortToast(mContext, "请先输入评论哦");
+                        return;
+                    }
+                    currentPosition = groupPosition;
+                    addComment(groupPosition, textView.getText().toString().trim());
+                    textView.setText("");
+                }
+            });
             view.findViewById(R.id.ll_reply).setVisibility(View.GONE);
         }
-        commentEntity = groupArray.get(groupPosition).getCommentEntityList().get(childPosition);
-        holder.childName.setText(commentEntity.getName());
-        holder.childMess.setText(commentEntity.getMessage());
-        holder.childContent.setText(commentEntity.getContent());
-        holder.childTime.setText(commentEntity.getTime());
-        holder.childReplyNum.setText("回复 " + commentEntity.getReplyNum());
-        view.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+        if(childPosition!=0) {
+            commentEntity = groupArray.get(groupPosition).getCommentEntityList().get(childPosition);
+            GlideImageLoder.getInstance().displayImage(mContext,commentEntity.getHead(),holder.childHead);
+            holder.childName.setText(commentEntity.getName());
+            holder.childMess.setText(commentEntity.getMessage());
+            holder.childContent.setText(commentEntity.getContent());
+            ParsePosition pos = new ParsePosition(0);
+            holder.childTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(commentEntity.getTime(), pos)));
+            holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());
+            view.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+        }
         return view;
     }
 
@@ -248,19 +272,46 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         HttpManager.getInstance().agreeOrPraise(postEntity);
     }
 
+    private void addComment(int position, String comment) {
+        this.comment=comment;
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", article_id);
+        map.put("uid", SPUtils.get(mContext, "userId", ""));
+        map.put("content", comment);
+        map.put("comment_id", groupArray.get(position).getAnwerId());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, mContext, false, false), map);
+        HttpManager.getInstance().pubComment(postEntity);
+    }
+
+    HttpOnNextListener commentListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            commentEntity=new CommentEntity();
+            commentEntity.setContent(comment);
+            commentEntity.setHead(SPUtils.get(mContext,"head","").toString());
+            commentEntity.setName(SPUtils.get(mContext,"name","").toString());
+            commentEntity.setMessage(SPUtils.get(mContext,"message","").toString());
+            commentEntity.setReplyNum("0");
+            commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            groupArray.get(currentid).getCommentEntityList().add(1,commentEntity);
+            notifyDataSetChanged();
+            ToastUtils.showShortToast(mContext, "评论成功");
+        }
+    };
+
     @Override
     public void onNext(Object o) {
         switch (temp) {
             case 0:
                 ToastUtils.showShortToast(mContext, "认同＋1");
                 tempView.setBackgroundResource(R.drawable.background_button_div_grey);
-                tempView.setText((Integer.valueOf(tempView.getText().toString())+1)+"");
+                tempView.setText((Integer.valueOf(tempView.getText().toString()) + 1) + "");
                 groupArray.get(currentid).setIsPrise("1");
                 break;
             case 1:
                 ToastUtils.showShortToast(mContext, "认同－1");
                 tempView.setBackgroundResource(R.drawable.background_button_div);
-                tempView.setText((Integer.valueOf(tempView.getText().toString())-1)+"");
+                tempView.setText((Integer.valueOf(tempView.getText().toString()) - 1) + "");
                 groupArray.get(currentid).setIsPrise("0");
                 break;
             case 2:

@@ -9,6 +9,7 @@ import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.db.DBHelper;
+import com.njjd.domain.BannerEntity;
 import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.TagEntity;
@@ -48,6 +49,7 @@ public class CommonUtils {
     private static IndexNavEntity entity;
     private static List<TagEntity> tagsList=new ArrayList<>();
     private static List<IndexNavEntity> navList=new ArrayList<>();
+    private static List<BannerEntity> bannerList=new ArrayList<>();
     public static void init(Context context){
         mContext=context;
         //获取省份
@@ -60,6 +62,7 @@ public class CommonUtils {
         getNavInfo();
 //        //获取标签分类
         getTagInfo();
+        getBannerInfo();
     }
     //获取单例
     public static CommonUtils getInstance() {
@@ -177,6 +180,25 @@ public class CommonUtils {
         }, mContext, false, false), map);
         HttpManager.getInstance().getNav(postEntity);
     }
+    private static void getBannerInfo(){
+        Map<String,Object> map=new HashMap<>();
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
+            @Override
+            public void onNext(Object o) {
+                LogUtils.d(o.toString());
+                JsonArray array=JSONUtils.getAsJsonArray(o);
+                JsonObject object;
+                BannerEntity entity;
+                for(int i=0;i<array.size();i++){
+                    object=array.get(i).getAsJsonObject();
+//                    object.get("url").getAsString()
+                    entity=new BannerEntity(object.get("title").getAsString(),"",object.get("id").getAsString(),object.get("img").getAsString());
+                    bannerList.add(entity);
+                }
+            }
+        }, mContext, false, false), map);
+        HttpManager.getInstance().getBanner(postEntity);
+    }
     private static void getTagInfo(){
         Map<String,Object> map=new HashMap<>();
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
@@ -204,8 +226,9 @@ public class CommonUtils {
             SPUtils.put(mContext,"userId",json.isNull("uid")?"":json.getString("uid"));
             SPUtils.put(mContext, "phoneNumber", json.isNull("phone") ? "" : json.getString("phone"));
             SPUtils.put(mContext, "pwd", json.isNull("pwd") ? "" : json.getString("pwd"));
-            SPUtils.put(mContext, "head", json.isNull("head") ? "" : json.getString("head"));
-            SPUtils.put(mContext, "name", json.isNull("name") ? "" : json.getString("name"));
+            SPUtils.put(mContext, "head", json.isNull("headimg") ? "" : json.getString("headimg"));
+            SPUtils.put(mContext, "sex", json.isNull("sex") ? "0" : json.getString("sex"));
+            SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
             SPUtils.put(mContext, "province", json.isNull("province_id") ? "" : json.getString("province_id"));
             SPUtils.put(mContext, "city", json.isNull("city_id") ? "" : json.getString("city_id"));
 //              SPUtils.put(BindActivity.this, "company", json.isNull("company").getAsString());
@@ -250,6 +273,9 @@ public class CommonUtils {
     }
     public List<TagEntity> getTagsList(){
         return DBHelper.getInstance().getmDaoSession().getTagEntityDao().loadAll();
+    }
+    public List<BannerEntity> getBannerList(){
+        return bannerList;
     }
     public List<IndexNavEntity> getNavsList(){
         return DBHelper.getInstance().getmDaoSession().getIndexNavEntityDao().loadAll();

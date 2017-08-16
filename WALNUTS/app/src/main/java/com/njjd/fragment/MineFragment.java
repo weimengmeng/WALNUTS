@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.utils.FastBlur;
+import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.AttentionActivity;
 import com.njjd.walnuts.MyAnswerActivity;
 import com.njjd.walnuts.MyFocusActivity;
@@ -44,6 +47,8 @@ public class MineFragment extends BaseFragment {
     TextView txtChange;
     @BindView(R.id.img_head)
     CircleImageView imgHead;
+    @BindView(R.id.img_sex)
+    ImageView imgSex;
     @BindView(R.id.txt_name)
     TextView txtName;
     @BindView(R.id.txt_focus)
@@ -79,6 +84,13 @@ public class MineFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), txtChange);
+        txtName.setText(SPUtils.get(context,"name","").toString());
+        GlideImageLoder.getInstance().displayImage(context,SPUtils.get(context,"head","").toString(),imgHead);
+        if(SPUtils.get(context,"sex","0").toString().equals("1.0")){
+            imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
+        }else{
+            imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_boy));
+        }
 
     }
     @Override
@@ -99,13 +111,11 @@ public class MineFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.txt_focus:
-                intent=new Intent(context, AttentionActivity.class);
-                intent.putExtra("type",0);//0是我的关注的人
+                intent=new Intent(context, MyFocusActivity.class);
                 startActivity(intent);
                 break;
             case R.id.txt_focused:
                 intent=new Intent(context, AttentionActivity.class);
-                intent.putExtra("type",1);//关注我的人
                 startActivity(intent);
                 break;
             case R.id.lv_question:

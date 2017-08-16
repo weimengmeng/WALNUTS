@@ -71,7 +71,7 @@ public class AnswerActivity extends BaseActivity {
     }
     private void pubAnswer(){
         Map<String,Object> map=new HashMap<>();
-        map.put("article_id",getIntent().getStringExtra("quesId"));
+        map.put("article_id",Float.valueOf(getIntent().getStringExtra("quesId")).intValue());
         map.put("uid", SPUtils.get(this,"userId",""));
         map.put("content",etAnswer.getText().toString().trim());
         SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(this,this,false,false),map);

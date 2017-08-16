@@ -29,18 +29,27 @@
                 android:layout_width="@dimen/head_large"
                 android:layout_height="@dimen/head_large"
                 android:src="@drawable/head" />
-
-            <TextView
-                android:id="@+id/txt_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/icon_boy"
-                android:drawablePadding="@dimen/padding"
-                android:text="刘建设a"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/big"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/img_sex"
+                    android:layout_marginRight="@dimen/padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_boy"/>
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="刘建设a"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/big"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

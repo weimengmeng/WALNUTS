@@ -139,7 +139,7 @@ public class IndexDetailActivity extends BaseActivity {
         }
         scrollView.getHelper().setCurrentScrollableContainer(root);
         root.smoothScrollTo(0, 0);
-        answerReplyAdapter = new AnswerReplyAdapter(this, answerEntities);
+        answerReplyAdapter = new AnswerReplyAdapter(this, answerEntities,questionEntity.getQuestionId());
         exListVIew.setAdapter(answerReplyAdapter);
         exListVIew.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -148,7 +148,6 @@ public class IndexDetailActivity extends BaseActivity {
                     getComments(answerEntities.get(groupPosition).getAnwerId()+"");
                     current_group_id=groupPosition;
                 }
-//               ToastUtils.showShortToast(IndexDetailActivity.this,answerEntities.get(groupPosition).getAnwerId());
                 return false;
             }
         });
@@ -181,6 +180,8 @@ public class IndexDetailActivity extends BaseActivity {
             if (object.getInt("stat") == 1) {
                 txtFocus.setText("取消关注");
             }
+            txtAnswerNum.setText("回答 " + Float.valueOf(object.getString("answer_num")).intValue());
+            txtFocusNum.setText("关注 " + Float.valueOf(object.getString("follow_num")).intValue());
             String[] strings = object.getString("label_name").split(",");
             String[] tags = object.getString("label_id").split(",");
             LinearLayout linearLayout;
@@ -259,6 +260,8 @@ public class IndexDetailActivity extends BaseActivity {
         public void onNext(Object o) {
             JsonArray array = JSONUtils.getAsJsonArray(o);
             JsonObject object;
+            answerEntities.get(current_group_id).getCommentEntityList().clear();
+            answerEntities.get(current_group_id).getCommentEntityList().add(new CommentEntity());
             for (int i = 0; i < array.size(); i++) {
                 object = array.get(i).getAsJsonObject();
                 commentEntity = new CommentEntity(object);
@@ -287,7 +290,7 @@ public class IndexDetailActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token",SPUtils.get(this,"token",""));
-        map.put("article_id", questionEntity.getQuestionId());
+        map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
         //0 取消关注 1 关注
         map.put("select",questionEntity.getIsFocus()==0?1:0);
         LogUtils.d(map.toString());

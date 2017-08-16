@@ -13,7 +13,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:alpha="0.15"
         android:background="@color/grey"></View>
 
@@ -88,20 +88,48 @@
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
     </RadioGroup>
-
-    <com.njjd.utils.VpSwipeRefreshLayout
+    <!--<com.njjd.utils.VpSwipeRefreshLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginLeft="@dimen/margin"-->
+        <!--android:layout_marginRight="@dimen/margin"-->
+        <!--android:layout_marginTop="@dimen/margin"-->
+        <!--android:background="@drawable/background_layout_div"-->
+        <!--android:orientation="vertical">-->
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/list_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:listSelector="#00000000"
+            android:layout_marginTop="@dimen/margin"
+            android:background="@drawable/background_layout_div"
+            android:scrollbars="none">
+        </com.baoyz.swipemenulistview.SwipeMenuListView>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/list_ques"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:listSelector="#00000000"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@drawable/background_layout_div"
+        android:scrollbars="none">
+    </com.baoyz.swipemenulistview.SwipeMenuListView>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/list_tag"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="#00000000"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
         android:background="@drawable/background_layout_div"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/list_ques"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
-    </com.njjd.utils.VpSwipeRefreshLayout>
-
+        android:scrollbars="none">
+    </com.baoyz.swipemenulistview.SwipeMenuListView>
+    <!--</com.njjd.utils.VpSwipeRefreshLayout>-->
 </LinearLayout>

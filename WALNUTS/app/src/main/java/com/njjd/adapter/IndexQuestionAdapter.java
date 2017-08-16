@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.njjd.domain.BannerEntity;
 import com.njjd.domain.QuestionEntity;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ToastUtils;
@@ -44,11 +46,9 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int index = 0;
     public static int currentPage = 1;
     private Banner banner;
-    private List<String> images = new ArrayList<>(Arrays.asList("file:///android_asset/banner.png",
-            "http://img.zcool.cn/community/0166c756e1427432f875520f7cc838.jpg",
-            "http://img.zcool.cn/community/018fdb56e1428632f875520f7b67cb.jpg",
-            "http://img.zcool.cn/community/0114a856640b6d32f87545731c076a.jpg"));
-    private List<String> titles = new ArrayList<>(Arrays.asList("12趁现在", "嗨购5折不要停，12.12趁现在", "实打实大顶顶顶顶"));
+    private List<BannerEntity> bannerList= CommonUtils.getInstance().getBannerList();
+    private List<String> images = new ArrayList<>();
+    private List<String> titles = new ArrayList<>();
     private IndexQuestionAdapter.OnItemClickListener mOnItemClickListener = null;
     private int mHeaderCount = 1;//头部View个数
     public IndexQuestionAdapter(Context context, List<QuestionEntity> list) {
@@ -128,18 +128,24 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_TYPE_HEADER) {
-            banner = (Banner) inflater.inflate(R.layout.layout_banner, parent, false);
-            banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-            banner.setIndicatorGravity(BannerConfig.RIGHT);
-            banner.isAutoPlay(true);
-            banner.setDelayTime(3000);
-            banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
-            banner.setOnBannerListener(new OnBannerListener() {
-                @Override
-                public void OnBannerClick(int position) {
-                    ToastUtils.showShortToast(mContext, "你点击了：" + position);
+            if(banner==null){
+                banner = (Banner) inflater.inflate(R.layout.layout_banner, parent, false);
+                for(int i=0;i<bannerList.size();i++){
+                    images.add(bannerList.get(i).getImg());
+                    titles.add(bannerList.get(i).getTitle());
                 }
-            });
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+                banner.setIndicatorGravity(BannerConfig.RIGHT);
+                banner.isAutoPlay(true);
+                banner.setDelayTime(3000);
+                banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
+                banner.setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        ToastUtils.showShortToast(mContext, "你点击了：" + position);
+                    }
+                });
+            }
             return new HeaderViewHolder(banner);
         } else if (viewType == mHeaderCount) {
             View layout = LayoutInflater.from(mContext).inflate(R.layout.item_index, parent, false);

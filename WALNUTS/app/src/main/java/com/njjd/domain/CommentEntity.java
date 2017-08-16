@@ -17,7 +17,7 @@ public class CommentEntity implements Serializable {
     private String name="";
     private String message="";
     private String content="";
-    private String replyNum="";
+    private String replyNum="0";
     private String time="";
     private List<ReplyEntity> replyEntities;
     public CommentEntity(JsonObject object){

@@ -51,6 +51,13 @@ public interface HttpService {
     Observable<HttpResult<Object>> checkPhone(@QueryMap Map<String, String> params);
     @POST("user/getInvitation")
     Observable<HttpResult<Object>> checkInvitation(@QueryMap Map<String, String> params);
+    @POST("user/getFollowUser")
+    Observable<HttpResult<Object>> getFollowUser(@QueryMap Map<String, String> params);
+    @POST("user/followUser")
+    Observable<HttpResult<Object>> followUser(@QueryMap Map<String, String> params);
+    /**
+    @POST("user/getFollowUser")
+    Observable<HttpResult<Object>> getFollowUser(@QueryMap Map<String, String> params);
     /**
      * 社区模块
      * 首页 获取分类、获取问题列表、获取banner
@@ -81,8 +88,12 @@ public interface HttpService {
     Observable<HttpResult<Object>> agreeOrPraise(@QueryMap Map<String, String> params);
     @POST("index/followArticle")
     Observable<HttpResult<Object>> focusQuestion(@QueryMap Map<String, String> params);
-    @POST("index/getReply")
-    Observable<HttpResult<Object>> getReplyList(@QueryMap Map<String, String> params);
+    @POST("index/followLabel")
+    Observable<HttpResult<Object>> followLabel(@QueryMap Map<String, String> params);
+    @POST("index/getFollowLabel")
+    Observable<HttpResult<Object>> getFollowLabel(@QueryMap Map<String, String> params);
+    @POST("index/getFollowArticle")
+    Observable<HttpResult<Object>> getFollowArticle(@QueryMap Map<String, String> params);
     @POST("index/pubReply")
     Observable<HttpResult<Object>> pubReply(@QueryMap Map<String, String> params);
     /**
@@ -92,9 +103,11 @@ public interface HttpService {
      *  个人中心模块
      */
     /**
-     * 公共模块 获取地址、销售模式、行业信息、上传图片
+     * 公共模块 获取地址、销售模式、行业信息、上传图片、轮播图
      * @return
      */
+    @POST("Ads/getCarousel")
+    Observable<HttpResult<Object>> getBanner(@QueryMap Map<String, String> params);
     @POST("user/getCity")
     Observable<HttpResult<Object>> provinceList(@QueryMap Map<String, String> params);
     @POST("user/getSalesModel")

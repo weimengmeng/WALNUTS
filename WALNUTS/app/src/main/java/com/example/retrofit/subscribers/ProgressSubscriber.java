@@ -32,8 +32,10 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
     private boolean cancel = false;
     //    加载框可自己定义
     private LoadingDialog pd;
+
     /**
-     *是否显示加载框和是否可以取消请求
+     * 是否显示加载框和是否可以取消请求
+     *
      * @param mSubscriberOnNextListener
      * @param context
      * @param isShow
@@ -46,6 +48,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         this.isShow = isShow;
         initProgressDialog();
     }
+
     /**
      * 初始化加载框
      */
@@ -64,6 +67,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
             }
         }
     }
+
     /**
      * 显示加载框
      */
@@ -74,6 +78,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
             pd.show();
         }
     }
+
     /**
      * 隐藏
      */
@@ -82,6 +87,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
             pd.dismiss();
         }
     }
+
     /**
      * 订阅开始时调用
      * 显示ProgressDialog
@@ -91,6 +97,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         if (isShow)
             showProgressDialog();
     }
+
     /**
      * 完成，隐藏ProgressDialog
      */
@@ -99,6 +106,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         if (isShow)
             dismissProgressDialog();
     }
+
     /**
      * 对错误进行统一处理
      * 隐藏ProgressDialog
@@ -110,17 +118,23 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         Context context = mActivity.get();
         if (context == null) return;
         if (e instanceof SocketTimeoutException) {
-            ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
+            ToastUtils.showShortToast(context, "网络中断，请检查您的网络状态");
         } else if (e instanceof ConnectException) {
-            ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
+            ToastUtils.showShortToast(context, "网络中断，请检查您的网络状态");
         } else {
-            ToastUtils.showShortToast(context, e.toString().split(":").length<1?e.toString():e.toString().split(":")[1]);
+            if (e.toString().contains("暂无")) {
+
+            } else {
+                ToastUtils.showShortToast(context, e.toString().split(":").length < 1 ? e.toString() : e.toString().split(":")[1]);
+            }
         }
         if (isShow)
             dismissProgressDialog();
     }
+
     /**
      * 将onNext方法中的返回结果交给Activity或Fragment自己处理
+     *
      * @param t 创建Subscriber时的泛型类型
      */
     @Override
@@ -129,6 +143,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
             mSubscriberOnNextListener.onNext(t);
         }
     }
+
     /**
      * 取消ProgressDialog的时候，取消对observable的订阅，同时也取消了http请求
      */

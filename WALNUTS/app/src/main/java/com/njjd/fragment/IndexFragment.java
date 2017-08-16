@@ -198,6 +198,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 questionAdapter = adapterList.get(position);
                 tempKind = navList.get(position).getId();
                 getQuestion(tempKind, tempOrder);
+                setRefreshListener();
             }
 
             @Override
@@ -211,6 +212,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         questionAdapter = adapterList.get(0);
         tempKind = navList.get(0).getId();
         getQuestion(tempKind, tempOrder);
+        setRefreshListener();
+    }
+    private void setRefreshListener(){
         list.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -226,7 +230,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }
         });
     }
-
     private void getQuestion(String id, String sort) {
         Map<String, Object> map = new HashMap<>();
         map.put("cate_article_id", id);

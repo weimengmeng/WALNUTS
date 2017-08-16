@@ -79,7 +79,6 @@ public class AttentionActivity extends BaseActivity {
                         ToastUtils.showShortToast(AttentionActivity.this, "关注他");
                         break;
                 }
-                // false : close the menu; true : not close the menu
                 return false;
             }
         });
