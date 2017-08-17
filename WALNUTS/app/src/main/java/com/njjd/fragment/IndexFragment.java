@@ -36,6 +36,7 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
@@ -75,11 +76,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private PopupWindow popupWindow;
     private LayoutInflater myinflater;
     private View currentView;
-    private XRecyclerView list;
+    private MyXRecyclerView list;
     private List<QuestionEntity> tempList;
     private List<List<QuestionEntity>> lists = new ArrayList<>();
     private IndexQuestionAdapter questionAdapter;
-    private List<XRecyclerView> listViews = new ArrayList<>();
+    private List<MyXRecyclerView> listViews = new ArrayList<>();
     private List<IndexQuestionAdapter> adapterList = new ArrayList<>();
     private List<IndexNavEntity> navList;
     private String tempKind = "1";
@@ -148,12 +149,13 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             final List<QuestionEntity> list1 = new ArrayList<>();
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
-            list = (XRecyclerView) currentView.findViewById(R.id.list_index);
+            list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
             final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1);
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);
+            list.setEmptyView(currentView.findViewById(R.id.empty));
             listViews.add(list);
             questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override
@@ -211,7 +213,14 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         list = listViews.get(0);
         questionAdapter = adapterList.get(0);
         tempKind = navList.get(0).getId();
-        getQuestion(tempKind, tempOrder);
+        List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
+        for (QuestionEntity e:entities
+             ) {
+            tempList.add(e);
+        }
+//        getQuestion(tempKind, tempOrder);
+        questionAdapter.notifyDataSetChanged();
+        LogUtils.d(tempList.size());
         setRefreshListener();
     }
     private void setRefreshListener(){

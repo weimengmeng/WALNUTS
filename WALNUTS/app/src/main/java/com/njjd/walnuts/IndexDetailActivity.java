@@ -142,6 +142,7 @@ public class IndexDetailActivity extends BaseActivity {
         }
         scrollView.getHelper().setCurrentScrollableContainer(root);
         root.smoothScrollTo(0, 0);
+        exListVIew.setEmptyView(findViewById(R.id.empty));
         answerReplyAdapter = new AnswerReplyAdapter(this, answerEntities,questionEntity.getQuestionId());
         exListVIew.setAdapter(answerReplyAdapter);
         exListVIew.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {

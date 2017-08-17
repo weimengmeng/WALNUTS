@@ -19,8 +19,8 @@ public class GlideImageLoder extends ImageLoader {
     public void displayImage(final Context context, Object path, ImageView imageView) {
         Glide.with(context).load(path).centerCrop()
                 .thumbnail(0.5f)
-                .placeholder(R.drawable.head)
-                .error(R.drawable.head)
+                .placeholder(R.drawable.error)
+                .error(R.drawable.error)
                 .dontAnimate().into(imageView);
     }
 

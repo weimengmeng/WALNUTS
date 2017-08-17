@@ -231,12 +231,12 @@ public class CommonUtils {
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
             SPUtils.put(mContext, "province", json.isNull("province_id") ? "" : json.getString("province_id"));
             SPUtils.put(mContext, "city", json.isNull("city_id") ? "" : json.getString("city_id"));
-//              SPUtils.put(BindActivity.this, "company", json.isNull("company").getAsString());
-            SPUtils.put(mContext, "position", json.isNull("position") ? "" : json.getString("position"));
+            SPUtils.put(mContext, "company", json.isNull("company")?"":json.getString("company"));
+            SPUtils.put(mContext, "position", json.isNull("position") ? "未完善" : json.getString("position"));
             SPUtils.put(mContext, "industry", json.isNull("industry_id") ? "" : json.getString("industry_id"));
             SPUtils.put(mContext, "sales", json.isNull("sales_id") ? "" : json.getString("sales_id"));
             SPUtils.put(mContext, "token", json.getString("token"));
-            SPUtils.put(mContext, "message", json.isNull("introduction") ? "" : json.getString("introduction"));
+            SPUtils.put(mContext, "message", json.isNull("introduction") ? "未完善" : json.getString("introduction"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

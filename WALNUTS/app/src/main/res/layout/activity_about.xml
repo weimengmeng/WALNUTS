@@ -1,27 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.liuguangqiang.swipeback.SwipeBackLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lv_back"
     style="@style/Width_m_Height_m"
-    android:background="@color/grey"
-    >
+    android:background="@color/grey">
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/top"></include>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/margin"
+        android:background="@drawable/background_layout_div">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:text="@string/app_name"
+            android:textSize="@dimen/big"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:text="1.0.3版"
+            android:textSize="@dimen/big"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="南京交道科技有限公司"
+            android:textSize="@dimen/big"
+            android:textColor="@color/gray"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/top">
-        <include layout="@layout/top"></include>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom|center_horizontal">
         <TextView
-            android:id="@+id/txt_about"
-            android:background="@drawable/background_layout_div"
-            style="@style/Width_m_Height_m"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nanjing Bizcrossroad technology Co.Ltd"
+            android:layout_marginBottom="@dimen/_margin"
+            android:textSize="@dimen/normal"
+            android:textColor="@color/txt_color"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Copyright©2018 All Rights Reserved"
+            android:textSize="@dimen/normal"
+            android:textColor="@color/txt_color"/>
+        </LinearLayout>
     </LinearLayout>
-
-</com.liuguangqiang.swipeback.SwipeBackLayout>
+</LinearLayout>

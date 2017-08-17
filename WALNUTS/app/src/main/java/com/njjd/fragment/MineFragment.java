@@ -32,6 +32,10 @@ import com.njjd.walnuts.MySaveActivity;
 import com.njjd.walnuts.PersonalActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SettingActivity;
+import com.yongchun.library.view.ImageSelectorActivity;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +59,8 @@ public class MineFragment extends BaseFragment {
     TextView txtFocus;
     @BindView(R.id.txt_focused)
     TextView txtFocused;
+    @BindView(R.id.txt_message)
+    TextView txtMessage;
     @BindView(R.id.txt_vocation)
     TextView txtVocation;
     @BindView(R.id.txt_area)
@@ -66,7 +72,7 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.ll_bg)
     LinearLayout llbg;
     private Context context;
-
+    private File file;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -91,7 +97,10 @@ public class MineFragment extends BaseFragment {
         }else{
             imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_boy));
         }
-
+        txtMessage.setText(SPUtils.get(context,"message","").toString());
+        txtPosition.setText(SPUtils.get(context,"position","").toString());
+        txtArea.setText(SPUtils.get(context,"province","").toString()+SPUtils.get(context,"city","").toString());
+        txtVocation.setText(SPUtils.get(context,"industry","").toString());
     }
     @Override
     public void onDestroyView() {
@@ -102,10 +111,14 @@ public class MineFragment extends BaseFragment {
     public void onViewClicked() {
     }
 
-    @OnClick({R.id.txt_change,R.id.txt_focus,R.id.txt_focused, R.id.lv_question, R.id.lv_answer, R.id.lv_focus, R.id.lv_save, R.id.lv_set})
+    @OnClick({R.id.img_head,R.id.txt_change,R.id.txt_focus,R.id.txt_focused, R.id.lv_question, R.id.lv_answer, R.id.lv_focus, R.id.lv_save, R.id.lv_set})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.img_head:
+                //1多选 2 单选 单选才有裁剪功能
+                ImageSelectorActivity.start(getActivity(), 1, 2, true, true, true);
+                break;
             case R.id.txt_change:
                 intent=new Intent(context, PersonalActivity.class);
                 startActivity(intent);
@@ -138,6 +151,18 @@ public class MineFragment extends BaseFragment {
                 intent=new Intent(context, SettingActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+    private void uploadHead(){
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == getActivity().RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
+            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
+            file = new File(images.get(0));
+            GlideImageLoder.getInstance().displayImage(context, images.get(0), imgHead);
+            uploadHead();
         }
     }
 }

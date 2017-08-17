@@ -3,10 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
+    <com.njjd.utils.MyXRecyclerView
         android:id="@+id/list_index"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+    </com.njjd.utils.MyXRecyclerView>
+    <include layout="@layout/layout_nodata"
+        android:id="@+id/empty"></include>
 </LinearLayout>

@@ -24,8 +24,6 @@ public class AboutActivity extends BaseActivity {
     TextView txtTitle;
     @BindView(R.id.top)
     LinearLayout topView;
-    @BindView(R.id.lv_back)
-    SwipeBackLayout lvBack;
     @Override
     public int bindLayout() {
         return R.layout.activity_about;
@@ -39,7 +37,6 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
         ImmersedStatusbarUtils.initAfterSetContentView(this,topView);
     }
 

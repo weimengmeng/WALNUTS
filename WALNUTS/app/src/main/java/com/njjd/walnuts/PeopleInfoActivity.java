@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by mrwim on 17/7/12.\
+ * Created by mrwim on 17/7/12.
  * 查看其他用户信息必须参数用户id
  */
 

@@ -40,6 +40,7 @@
 
             <fragment
                 android:id="@+id/my_fragment"
+                android:tag="mine"
                 android:name="com.njjd.fragment.MineFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

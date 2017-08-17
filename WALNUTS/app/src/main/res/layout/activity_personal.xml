@@ -99,7 +99,8 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/padding"
                 android:layout_weight="0.2"
                 android:text="签名"
@@ -109,11 +110,15 @@
             <TextView
                 android:id="@+id/txt_message"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
                 android:text="我是一只小小鸟"
+                android:maxLength="50"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/normal" />
         </LinearLayout>

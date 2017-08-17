@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.njjd.fragment.MineFragment;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.MyActivityManager;
 
@@ -100,5 +101,11 @@ public class MainActivity extends FragmentActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.getSupportFragmentManager().findFragmentByTag("mine").onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -3,11 +3,9 @@ package com.njjd.walnuts;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.utils.ImmersedStatusbarUtils;
 
 import butterknife.BindView;
@@ -26,8 +24,6 @@ public class AgreementActivity extends BaseActivity {
     LinearLayout topView;
     @BindView(R.id.pdf_view)
     PDFView pdfView;
-    @BindView(R.id.lv_back)
-    SwipeBackLayout lvBack;
 
     @Override
     public int bindLayout() {
@@ -38,7 +34,7 @@ public class AgreementActivity extends BaseActivity {
     public void initView(View view) {
         back.setText("设置");
         txtTitle.setText("协议正文");
-        pdfView.fromAsset("agreement.pdf")
+        pdfView.fromAsset("aggrement.pdf")
                 .enableSwipe(true) // allows to block changing pages using swipe
                 .swipeHorizontal(false)
                 .enableDoubletap(true)
@@ -53,7 +49,6 @@ public class AgreementActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
     }
 

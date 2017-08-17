@@ -48,6 +48,16 @@
                 android:textColor="@color/gray"
                 android:layout_marginLeft="@dimen/padding"
                 android:textSize="@dimen/normal" />
+            <TextView
+                android:id="@+id/txt_cache"
+                android:layout_width="0dp"
+                android:gravity="center|right"
+                android:text=""
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal"
+                android:layout_weight="0.6"
+                android:layout_height="match_parent"
+                />
         </LinearLayout>
 
         <View

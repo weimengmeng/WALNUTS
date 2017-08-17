@@ -19,6 +19,8 @@
         android:supportsRtl="true"
         android:name="com.njjd.application.AppAplication"
         android:theme="@style/AppTheme">
+        <meta-data android:name="com.njjd.application.MyGlide"
+            android:value="WalnutsCache"></meta-data>
         <activity
             android:name=".AppIntroActivity"
             android:screenOrientation="portrait"></activity>
