@@ -32,9 +32,10 @@
             android:textSize="@dimen/big"
             android:textColor="@color/gray"/>
         <TextView
+            android:id="@+id/txt_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginTop="@dimen/margin_big"
             android:text="1.0.3版"
             android:textSize="@dimen/big"
             android:textColor="@color/gray"/>
@@ -44,6 +45,40 @@
             android:text="南京交道科技有限公司"
             android:textSize="@dimen/big"
             android:textColor="@color/gray"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_big"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
+        <LinearLayout
+            style="@style/view_me">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.3"
+                android:text="帮助说明"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_area"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:gravity="center|right"
+                android:drawableRight="@drawable/icon_npg"
+                android:paddingRight="@dimen/margin"
+                android:text=""
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.5"
+            android:background="@color/txt_color"></View>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
