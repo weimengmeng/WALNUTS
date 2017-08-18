@@ -44,6 +44,7 @@ import com.njjd.walnuts.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -260,10 +261,12 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls(); //重点
         Gson gson = gsonBuilder.create();
+        JSONObject object= null;
         JSONArray array = null;
         QuestionEntity entity;
         try {
-            array = new JSONArray(gson.toJson(o));
+            object=new JSONObject(gson.toJson(o));
+            array = object.getJSONArray("article");
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
                 tempList.clear();
