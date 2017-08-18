@@ -28,7 +28,7 @@
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/head_large"
                 android:layout_height="@dimen/head_large"
-                android:src="@drawable/head" />
+                 />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="刘建设a"
+                    android:text=""
                     android:textColor="#ffffff"
                     android:textSize="@dimen/big"
                     android:textStyle="bold" />
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:gravity="center"
-                    android:text="关注的人\n20"
+                    android:text=""
                     android:textColor="#ffffff"
                     android:textSize="@dimen/normal" />
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:gravity="center"
-                    android:text="被关注\n20"
+                    android:text=""
                     android:textColor="#ffffff"
                     android:textSize="@dimen/normal" />
 
@@ -146,7 +146,7 @@
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="我是一只小小小小小小鸟"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -188,7 +188,7 @@
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="化工"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -230,7 +230,7 @@
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="江苏省南京市"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -272,7 +272,7 @@
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="区域销售经理"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -314,7 +314,7 @@
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="上海化工原料厂"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
             </LinearLayout>
@@ -487,6 +487,7 @@
                 android:layout_margin="@dimen/margin"
                 android:background="@drawable/background_layout_div"
                 android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/padding">
 
                 <LinearLayout

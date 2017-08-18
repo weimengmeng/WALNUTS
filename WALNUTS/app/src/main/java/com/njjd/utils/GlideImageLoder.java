@@ -17,7 +17,7 @@ public class GlideImageLoder extends ImageLoader {
 
     @Override
     public void displayImage(final Context context, Object path, ImageView imageView) {
-        Glide.with(context).load(path).centerCrop()
+        Glide.with(context).load(path.toString().replace("\\","/")).centerCrop()
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.error)
                 .error(R.drawable.error)

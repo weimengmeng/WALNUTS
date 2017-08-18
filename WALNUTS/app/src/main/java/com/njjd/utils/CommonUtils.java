@@ -1,11 +1,14 @@
 package com.njjd.utils;
 
 import android.content.Context;
+import android.view.View;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.db.DBHelper;
@@ -14,6 +17,8 @@ import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.walnuts.PeopleInfoActivity;
+import com.njjd.walnuts.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,8 +196,7 @@ public class CommonUtils {
                 BannerEntity entity;
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
-//                    object.get("url").getAsString()
-                    entity=new BannerEntity(object.get("title").getAsString(),"",object.get("id").getAsString(),object.get("img").getAsString());
+                    entity=new BannerEntity(object.get("title").getAsString(),"http://www.baidu.com",object.get("id").getAsString(),object.get("img").getAsString());
                     bannerList.add(entity);
                 }
             }
@@ -229,14 +233,7 @@ public class CommonUtils {
             SPUtils.put(mContext, "head", json.isNull("headimg") ? "" : json.getString("headimg"));
             SPUtils.put(mContext, "sex", json.isNull("sex") ? "0" : json.getString("sex"));
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
-            SPUtils.put(mContext, "province", json.isNull("province_id") ? "" : json.getString("province_id"));
-            SPUtils.put(mContext, "city", json.isNull("city_id") ? "" : json.getString("city_id"));
-            SPUtils.put(mContext, "company", json.isNull("company")?"":json.getString("company"));
-            SPUtils.put(mContext, "position", json.isNull("position") ? "未完善" : json.getString("position"));
-            SPUtils.put(mContext, "industry", json.isNull("industry_id") ? "" : json.getString("industry_id"));
-            SPUtils.put(mContext, "sales", json.isNull("sales_id") ? "" : json.getString("sales_id"));
             SPUtils.put(mContext, "token", json.getString("token"));
-            SPUtils.put(mContext, "message", json.isNull("introduction") ? "未完善" : json.getString("introduction"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

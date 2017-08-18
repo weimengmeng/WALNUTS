@@ -20,23 +20,17 @@ import com.njjd.domain.QuestionEntity;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
-import com.njjd.walnuts.WebViewActivity;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     //item类型
-    public static final int ITEM_TYPE_HEADER = 0;
     public static final int ITEM_TYPE_CONTENT = 1;
     //模拟数据
     private List<QuestionEntity> mList;
@@ -51,9 +45,8 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<String> images = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
-    private IndexQuestionAdapter.OnItemClickListener mOnItemClickListener = null;
-    private int mHeaderCount = 1;//头部View个数
-    public IndexQuestionAdapter(Context context, List<QuestionEntity> list) {
+    private IndexQuestionAdapter2.OnItemClickListener mOnItemClickListener = null;
+    public IndexQuestionAdapter2(Context context, List<QuestionEntity> list) {
         this.mContext = context;
         this.mList = list;
         typeface = Typeface.createFromAsset(context.getAssets(), "fonts/NotoSansHans-Medium.ttf");
@@ -64,11 +57,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     //内容长度
     public int getContentItemCount() {
         return mList.size();
-    }
-
-    //判断当前item是否是HeadView
-    public boolean isHeaderView(int position) {
-        return mHeaderCount != 0 && position < mHeaderCount;
     }
 
 
@@ -83,12 +71,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     //判断当前item类型
     @Override
     public int getItemViewType(int position) {
-        int dataItemCount = getContentItemCount();
-        if (mHeaderCount != 0 && position < mHeaderCount) {
-            return ITEM_TYPE_HEADER;
-        } else {
             return ITEM_TYPE_CONTENT;
-        }
     }
 
     //内容 ViewHolder
@@ -129,45 +112,17 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == ITEM_TYPE_HEADER) {
-            if(banner==null){
-                banner = (Banner) inflater.inflate(R.layout.layout_banner, parent, false);
-                for(int i=0;i<bannerList.size();i++){
-                    images.add(bannerList.get(i).getImg());
-                    titles.add(bannerList.get(i).getTitle());
-                    urls.add(bannerList.get(i).getUrl());
-                }
-                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-                banner.setIndicatorGravity(BannerConfig.RIGHT);
-                banner.isAutoPlay(true);
-                banner.setDelayTime(3000);
-                banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
-                banner.setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Intent intent=new Intent(mContext, WebViewActivity.class);
-                        intent.putExtra("title",titles.get(position));
-                        intent.putExtra("url",urls.get(position));
-                        mContext.startActivity(intent);
-                    }
-                });
-            }
-            return new HeaderViewHolder(banner);
-        } else if (viewType == mHeaderCount) {
             View layout = LayoutInflater.from(mContext).inflate(R.layout.item_index, parent, false);
             ContentViewHolder vh = new ContentViewHolder(layout);
             layout.setOnClickListener(this);
             return vh;
-        }
-        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof HeaderViewHolder) {
-        } else if (holder instanceof ContentViewHolder) {
-            holder.itemView.setTag(position - mHeaderCount);
-            final QuestionEntity temp = mList.get(position - mHeaderCount);
+       if (holder instanceof ContentViewHolder) {
+            holder.itemView.setTag(position);
+            final QuestionEntity temp = mList.get(position);
             ((ContentViewHolder) holder).title.setText(temp.getTitle());
             ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()) + "  人参与");
             ParsePosition pos = new ParsePosition(0);
@@ -218,14 +173,14 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return mHeaderCount + getContentItemCount();
+        return getContentItemCount();
     }
 
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    public void setOnItemClickListener(IndexQuestionAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(IndexQuestionAdapter2.OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
 }

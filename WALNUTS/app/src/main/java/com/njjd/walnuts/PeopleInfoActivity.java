@@ -6,17 +6,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
-import com.njjd.adapter.MySaveAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by mrwim on 17/7/12.
@@ -27,14 +34,25 @@ public class PeopleInfoActivity extends BaseActivity {
     @BindView(R.id.txt_add_focus)
     TextView txtAddFocus;
     @BindView(R.id.img_head)
-    ImageView imgHead;
+    CircleImageView imgHead;
+    @BindView(R.id.img_sex)
+    ImageView imgSex;
     @BindView(R.id.txt_name)
     TextView txtName;
     @BindView(R.id.txt_focusNum)
     TextView txtFocusNum;
     @BindView(R.id.txt_focusedNum)
     TextView txtFocusedNum;
-    private String tempUser="";
+    @BindView(R.id.txt_vocation)
+    TextView txtVocation;
+    @BindView(R.id.txt_area)
+    TextView txtArea;
+    @BindView(R.id.txt_position)
+    TextView txtPosition;
+    @BindView(R.id.txt_company)
+    TextView txtCompany;
+    private String tempUser = "";
+
     @Override
     public int bindLayout() {
         return R.layout.activity_people;
@@ -42,7 +60,7 @@ public class PeopleInfoActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        tempUser=getIntent().getStringExtra("uid");
+        tempUser = getIntent().getStringExtra("uid");
         getUserInfo();
     }
 
@@ -50,14 +68,44 @@ public class PeopleInfoActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
-        map.put("ouid",tempUser);
+        map.put("ouid", tempUser);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
-        HttpManager.getInstance().getUidSave(postEntity);
+        HttpManager.getInstance().getUserInfo(postEntity);
     }
 
     @Override
     public void onNext(Object o) {
         super.onNext(o);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls(); //重点
+        Gson gson = gsonBuilder.create();
+        JSONObject object = null;
+        try {
+            object = new JSONObject(gson.toJson(o));
+            txtName.setText(object.isNull("uname")?"未填写":object.getString("uname"));
+            GlideImageLoder.getInstance().displayImage(this, object.isNull("headimg")?"":object.getString("headimg"), imgHead);
+            if (object.getString("sex").equals("1.0")) {
+                imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
+            } else {
+                imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_boy));
+            }
+            txtFocusNum.setText("关注的人\n" + Float.valueOf(object.getString("follow_numm")).intValue());
+            txtFocusedNum.setText("被关注\n" + Float.valueOf(object.getString("be_follow_numm")).intValue());
+            txtVocation.setText(object.getString("industry_name"));
+            txtPosition.setText(object.isNull("position")?"未填写":object.getString("position"));
+            txtArea.setText(object.getString("province_name")+object.getString("city_name"));
+            txtCompany.setText(object.isNull("company")?"未填写":object.getString("company"));
+            if(!object.getString("uid").equals(SPUtils.get(PeopleInfoActivity.this,"userId","").toString())){
+                txtAddFocus.setVisibility(View.VISIBLE);
+            }
+            if(object.getString("follow_stat").equals("1.0")){
+                txtAddFocus.setText("私信");
+            }else{
+                txtAddFocus.setText("关注");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -72,14 +120,33 @@ public class PeopleInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.txt_add_focus:
-                ToastUtils.showShortToast(this,"关注他或私信他");
+                if(txtAddFocus.getText().toString().equals("关注")){
+                    followUser();
+                }else {
+                    ToastUtils.showShortToast(this, "私信他");
+                }
                 break;
             case R.id.ll_ques:
-                ToastUtils.showShortToast(this,"他的问题");
+                ToastUtils.showShortToast(this, "他的问题");
                 break;
             case R.id.ll_answer:
-                ToastUtils.showShortToast(this,"他的回答");
+                ToastUtils.showShortToast(this, "他的回答");
                 break;
         }
+    }
+    private void followUser(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("be_uid", tempUser);
+        map.put("select",1);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                txtAddFocus.setText("私信");
+                ToastUtils.showShortToast(PeopleInfoActivity.this,"关注成功");
+            }
+        }, this, false, false), map);
+        HttpManager.getInstance().followUser(postEntity);
     }
 }

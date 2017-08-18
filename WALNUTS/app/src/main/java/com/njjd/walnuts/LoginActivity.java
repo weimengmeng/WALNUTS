@@ -107,14 +107,14 @@ public class LoginActivity extends BaseActivity {
             case R.id.btn_close:
                 break;
             case R.id.btn_login:
-//                if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
-//                    ToastUtils.showShortToast(this,"请输入账号和密码");
-//                    return;
-//                }
-//                doLogin();
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
+                    ToastUtils.showShortToast(this,"请输入账号和密码");
+                    return;
+                }
+                doLogin();
+//                intent = new Intent(this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
                 break;
             case R.id.btn_sina:
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, authListener);
@@ -161,7 +161,7 @@ public class LoginActivity extends BaseActivity {
         map.put("logintype", "" + type);
         map.put("uuid", result.get("uid"));
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
-        LogUtils.d("---------->" + map.toString());
+        map.put("authimg",result.get("iconurl"));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, this, true, false), map);
         HttpManager.getInstance().thirdLogin(postEntity);
     }

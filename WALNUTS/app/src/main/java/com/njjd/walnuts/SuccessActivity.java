@@ -129,7 +129,7 @@ public class SuccessActivity extends BaseActivity {
         industryPickview = new OptionsPickerView.Builder(SuccessActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                txtVocation.setText(industrys1.get(options1) + "-" + industrys2.get(options1).get(options2));
+                txtVocation.setText(industrys1.get(options1)  + industrys2.get(options1).get(options2));
                 industryId = industryList2.get(options1).get(options2).getId();
             }
         }).build();
@@ -218,7 +218,7 @@ public class SuccessActivity extends BaseActivity {
         map.put("message", "");
         map.put("position", "");
         map.put("headimg", path);
-        LogUtils.d(map.toString());
+        map.put("upload_stat", 1);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().completeInfo(postEntity);
     }

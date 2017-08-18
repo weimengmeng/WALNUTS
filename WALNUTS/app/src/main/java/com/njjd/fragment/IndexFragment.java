@@ -37,6 +37,7 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
@@ -199,8 +200,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 list = listViews.get(position);
                 questionAdapter = adapterList.get(position);
                 tempKind = navList.get(position).getId();
-                getQuestion(tempKind, tempOrder);
                 setRefreshListener();
+                if(tempList.size()==0) {
+                    getQuestion(tempKind, tempOrder);
+                }
             }
 
             @Override
@@ -213,14 +216,14 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         list = listViews.get(0);
         questionAdapter = adapterList.get(0);
         tempKind = navList.get(0).getId();
-        List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
-        for (QuestionEntity e:entities
-             ) {
-            tempList.add(e);
-        }
-//        getQuestion(tempKind, tempOrder);
-        questionAdapter.notifyDataSetChanged();
-        LogUtils.d(tempList.size());
+//        List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
+//        for (QuestionEntity e:entities
+//             ) {
+//            tempList.add(e);
+//        }
+        getQuestion(tempKind, tempOrder);
+//        questionAdapter.notifyDataSetChanged();
+//        LogUtils.d(tempList.size());
         setRefreshListener();
     }
     private void setRefreshListener(){
@@ -245,6 +248,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         map.put("page", questionAdapter.getCurrentPage());
         map.put("order", sort);
         map.put("keywords", "");
+        map.put("uid", SPUtils.get(context,"userId","").toString());
+        map.put("token",SPUtils.get(context,"token","").toString());
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getQuestionList(postEntity);

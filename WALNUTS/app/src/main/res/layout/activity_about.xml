@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="南京交道科技有限公司"
+            android:layout_marginTop="@dimen/_margin"
             android:textSize="@dimen/big"
             android:textColor="@color/gray"/>
         <View

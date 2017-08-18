@@ -1,7 +1,5 @@
 package com.njjd.domain;
 
-import com.youth.banner.Banner;
-
 /**
  * Created by mrwim on 17/8/15.
  */

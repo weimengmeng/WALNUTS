@@ -6,7 +6,7 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:background="@color/grey"
         android:scrollbarThumbVertical="@drawable/scrollbar">
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,15 +43,15 @@
                     android:textSize="@dimen/small"
                     android:background="@drawable/txt_shape_white"/>
             </LinearLayout>
-            <com.njjd.utils.MyListView
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
                 android:id="@+id/listview"
-                android:scrollbars="none"
+                android:background="@color/grey"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
-            </com.njjd.utils.MyListView>
+            </com.jcodecraeer.xrecyclerview.XRecyclerView>
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="1000dp"
+                android:layout_height="match_parent"
                 android:text="+关注标签"
                 android:textColor="@color/white"
                 android:textSize="@dimen/small"

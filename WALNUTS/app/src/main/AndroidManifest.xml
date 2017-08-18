@@ -47,12 +47,20 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".WebViewActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ForgetPwdActivity"
             android:screenOrientation="portrait">
 
+        </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".RegisterActivity"

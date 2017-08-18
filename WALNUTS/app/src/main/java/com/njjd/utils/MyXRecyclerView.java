@@ -46,7 +46,6 @@ public class MyXRecyclerView extends XRecyclerView {
                     getAdapter().getItemCount() == 1;
             emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
             setVisibility(emptyViewVisible ? GONE : VISIBLE);
-            LogUtils.d("hhhhhhhkdfhskdhfd=="+emptyViewVisible);
         }
     }
 

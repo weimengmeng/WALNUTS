@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding"
+            android:paddingTop="@dimen/margin"
             android:paddingRight="@dimen/padding"
             android:weightSum="1">
 

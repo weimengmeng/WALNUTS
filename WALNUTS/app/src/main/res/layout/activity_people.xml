@@ -45,28 +45,39 @@
                     android:layout_height="wrap_content"
                     android:gravity="right|center"
                     android:paddingRight="@dimen/padding_left"
+                    android:visibility="gone"
                     android:text="关注"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/big" />
             </LinearLayout>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/head_large"
                 android:layout_height="@dimen/head_large"
-                android:src="@drawable/head" />
+                />
 
-            <TextView
-                android:id="@+id/txt_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/icon_boy"
-                android:drawablePadding="@dimen/padding"
-                android:text="刘建设a"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/big"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/img_sex"
+                    android:layout_marginRight="@dimen/padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_boy"/>
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text=""
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/big"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:gravity="center"
-                    android:text="关注的人\n20"
+                    android:text=""
                     android:textColor="#ffffff"
                     android:textSize="@dimen/normal" />
 
@@ -102,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:gravity="center"
-                    android:text="被关注\n20"
+                    android:text=""
                     android:textColor="#ffffff"
                     android:textSize="@dimen/normal" />
 
@@ -160,12 +171,13 @@
                         android:textSize="@dimen/normal" />
 
                     <TextView
+                        android:id="@+id/txt_vocation"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="化工"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -201,12 +213,13 @@
                         android:textSize="@dimen/normal" />
 
                     <TextView
+                        android:id="@+id/txt_area"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="江苏省南京市"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -242,12 +255,13 @@
                         android:textSize="@dimen/normal" />
 
                     <TextView
+                        android:id="@+id/txt_position"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="区域销售经理"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
 
@@ -283,12 +297,13 @@
                         android:textSize="@dimen/normal" />
 
                     <TextView
+                        android:id="@+id/txt_company"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
-                        android:text="上海化工原料厂"
+                        android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
             </LinearLayout>
