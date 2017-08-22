@@ -14,6 +14,9 @@ import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.utils.CleanMessageUtil;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengCallback;
+import com.umeng.message.PushAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,10 +37,12 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.lv_back)
     SwipeBackLayout lvBack;
     private LoadingDialog loadingDialog;
+
     @Override
     public int bindLayout() {
         return R.layout.activity_setting;
     }
+
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -45,7 +50,7 @@ public class SettingActivity extends BaseActivity {
             switch (msg.what) {
 
                 case 0:
-                    ToastUtils.showShortToast(SettingActivity.this,"清理完成");
+                    ToastUtils.showShortToast(SettingActivity.this, "清理完成");
                     try {
 
                         txtCache.setText(CleanMessageUtil.getTotalCacheSize(SettingActivity.this));
@@ -58,19 +63,22 @@ public class SettingActivity extends BaseActivity {
 
             }
 
-        };
+        }
+
+        ;
 
     };
+
     @Override
     public void initView(View view) {
         back.setText("我的");
         txtTitle.setText("设置");
         try {
-            txtCache.setText(CleanMessageUtil.getTotalCacheSize(this)+"");
+            txtCache.setText(CleanMessageUtil.getTotalCacheSize(this) + "");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        loadingDialog=new LoadingDialog(this);
+        loadingDialog = new LoadingDialog(this);
     }
 
     @Override
@@ -79,6 +87,7 @@ public class SettingActivity extends BaseActivity {
         lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
     }
+
     @OnClick({R.id.back, R.id.lv_clean, R.id.lv_about, R.id.lv_user_agreement, R.id.lv_feedback, R.id.btn_exit})
     public void onViewClicked(View view) {
         Intent intent;
@@ -112,15 +121,33 @@ public class SettingActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_exit:
-                ToastUtils.showShortToast(this, "退出登陆");
+//                MobclickAgent.onProfileSignOff();
+                alert();
                 break;
         }
+    }
+
+    private void alert() {
+        new AlertDialog(this).builder().setTitle("退出当前账号").setMsg("退出后无法收到任何消息")
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }).setPositiveButton("退出", new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+                MainActivity.activity.finish();
+            }
+        }).setCancelable(false).show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
     class clearCache implements Runnable {
 
         @Override
@@ -129,7 +156,7 @@ public class SettingActivity extends BaseActivity {
             try {
                 CleanMessageUtil.clearAllCache(SettingActivity.this);
                 Thread.sleep(3000);
-                if ((CleanMessageUtil.getTotalCacheSize(SettingActivity.this)+"").startsWith("0")) {
+                if ((CleanMessageUtil.getTotalCacheSize(SettingActivity.this) + "").startsWith("0")) {
                     handler.sendEmptyMessage(0);
                 }
                 loadingDialog.dismiss();

@@ -23,8 +23,6 @@
             android:text="工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?"
             android:textColor="@color/gray"
             android:maxLines="2"
-            android:textStyle="normal"
-            android:textScaleX="1"
             android:lineSpacingMultiplier="1.2"
             android:textSize="@dimen/big" />
 

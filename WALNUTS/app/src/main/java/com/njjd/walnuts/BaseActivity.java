@@ -17,6 +17,7 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.liuguangqiang.swipeback.SwipeBackActivity;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
 import butterknife.ButterKnife;
@@ -105,11 +106,12 @@ public abstract class BaseActivity extends SwipeBackActivity implements HttpOnNe
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause()");
+        MobclickAgent.onPause(this);
     }
 
     @Override

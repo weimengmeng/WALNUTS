@@ -3,32 +3,42 @@
     android:background="@color/grey"
     android:weightSum="1"
     style="@style/Width_m_Height_m">
+    <RelativeLayout
+        android:id="@+id/ll_bg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:background="@drawable/me_bg">
 
+        <View
+            style="@style/Width_m_Height_m"
+            android:alpha="0.35"
+            android:background="#505050"></View>
+
+        <View
+            style="@style/Width_m_Height_m"
+            android:background="@drawable/bg_jb"></View>
 
         <LinearLayout
-            android:id="@+id/ll_bg"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
+            style="@style/Width_m_Height_m"
             android:gravity="center_horizontal"
-            android:background="@drawable/me_bg"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txt_change"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|top"
-                android:layout_marginRight="@dimen/padding"
-                android:text="修改"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/normal" />
-
+            >
+                <TextView
+                    android:id="@+id/txt_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:layout_marginRight="@dimen/margin"
+                    android:text="修改"
+                    android:gravity="right"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/normal" />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/head_large"
                 android:layout_height="@dimen/head_large"
-                 />
+                />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +63,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_margin"
                 android:gravity="center_vertical"
                 android:weightSum="1">
@@ -96,11 +106,11 @@
                     android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.6">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

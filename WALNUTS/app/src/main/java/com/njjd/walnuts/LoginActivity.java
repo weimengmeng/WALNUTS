@@ -1,7 +1,6 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,10 +8,8 @@ import android.widget.EditText;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
-import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
@@ -26,7 +23,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,34 +52,30 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         umShareAPI = UMShareAPI.get(this);
-
+        etPhone.setText(SPUtils.get(this,"phoneNumber","").toString());
+        etPwd.setText(SPUtils.get(this,"pwd","").toString());
+        etPhone.setSelection(etPhone.length());
         authListener = new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
                 ToastUtils.showShortToast(LoginActivity.this, "授权开始");
             }
-
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
                 ToastUtils.showShortToast(LoginActivity.this, "授权成功");
-                LogUtils.d(map.toString());
                 thirdMap = map;
                 doThirdLogin((share_media == SHARE_MEDIA.QQ ? 1 : share_media == SHARE_MEDIA.WEIXIN ? 2 : 3), map);
             }
-
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                LogUtils.d(throwable.toString() + "--------->" + i);
                 ToastUtils.showShortToast(LoginActivity.this, "授权错误");
             }
-
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
                 ToastUtils.showShortToast(LoginActivity.this, "授权取消");
             }
         };
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -147,6 +139,7 @@ public class LoginActivity extends BaseActivity {
         Gson gson = gsonBuilder.create();
         try {
             CommonUtils.initData(new JSONObject(gson.toJson(o)));
+            SPUtils.put(LoginActivity.this,"pwd",etPwd.getText().toString().trim());
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

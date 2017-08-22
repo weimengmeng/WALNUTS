@@ -57,7 +57,9 @@ public class SaveEntity implements Serializable{
         this.point_comment_stat=object.get("point_comment_stat").getAsString();
         this.comment_id=object.get("comment_id").getAsString();
     }
+    public SaveEntity(){
 
+    }
     public String getComment_id() {
         return comment_id;
     }

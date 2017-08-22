@@ -11,11 +11,11 @@ import java.io.Serializable;
 public class MyAnswerEntity implements Serializable {
     private String article_id;
     private String article_content;
+    private String title;
     private String article_imgs;
     private String article_answer_num;
     private String article_follow_num;
     private String article_point_num;
-    private String title;
     private String comment_id;
     private String comment_content;
     private String comment_collect_num;

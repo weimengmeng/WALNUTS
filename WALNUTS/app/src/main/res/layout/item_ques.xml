@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin"
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
         android:background="@drawable/background_layout_div"
@@ -16,19 +18,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding"
-            android:paddingTop="@dimen/margin"
-            android:paddingRight="@dimen/padding"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:weightSum="1">
 
             <TextView
                 android:id="@+id/txt_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_weight="0.8"
                 android:ellipsize="end"
-                android:maxLines="1"
-                android:text="工业项目一定要能喝酒吗?"
+                android:lines="1"
+                android:text=""
+                android:typeface="sans"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/big" />
 
@@ -36,7 +38,7 @@
                 android:id="@+id/txt_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:gravity="center|right"
                 android:text="2017-8-14"
                 android:textColor="@color/txt_color"
@@ -49,18 +51,19 @@
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:src="@drawable/demo" />
-
         <TextView
             android:id="@+id/txt_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_top"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.6"
             android:ellipsize="end"
+            android:layout_marginTop="@dimen/_margin"
             android:maxLines="2"
-            android:paddingLeft="@dimen/padding"
-            android:paddingRight="@dimen/padding"
-            android:text="工业项目一定要能喝酒吗?"
-            android:textColor="@color/gray"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:text=""
+            android:textColor="@color/txt_color"
             android:textSize="@dimen/normal"
             android:visibility="gone" />
     </LinearLayout>

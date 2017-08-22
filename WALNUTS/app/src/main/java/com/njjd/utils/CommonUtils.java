@@ -19,6 +19,7 @@ import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -228,8 +229,8 @@ public class CommonUtils {
     public static void initData(JSONObject json){
         try {
             SPUtils.put(mContext,"userId",json.isNull("uid")?"":json.getString("uid"));
+            MobclickAgent.onProfileSignIn(json.isNull("uid")?"":json.getString("uid"));
             SPUtils.put(mContext, "phoneNumber", json.isNull("phone") ? "" : json.getString("phone"));
-            SPUtils.put(mContext, "pwd", json.isNull("pwd") ? "" : json.getString("pwd"));
             SPUtils.put(mContext, "head", json.isNull("headimg") ? "" : json.getString("headimg"));
             SPUtils.put(mContext, "sex", json.isNull("sex") ? "0" : json.getString("sex"));
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));

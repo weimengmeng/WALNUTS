@@ -39,13 +39,14 @@
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txt_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
+                android:background="@null"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/normal" />
@@ -107,13 +108,14 @@
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txt_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
+                android:background="@null"
                 android:text=""
                 android:maxLength="50"
                 android:maxLines="3"
@@ -250,12 +252,13 @@
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txt_position"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
                 android:gravity="center|right"
+                android:background="@null"
                 android:paddingRight="@dimen/margin"
                 android:text=""
                 android:textColor="@color/black"
@@ -284,10 +287,11 @@
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txt_company"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:background="@null"
                 android:layout_weight="0.8"
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"

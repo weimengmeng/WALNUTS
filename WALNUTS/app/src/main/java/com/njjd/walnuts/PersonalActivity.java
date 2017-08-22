@@ -1,18 +1,12 @@
 package com.njjd.walnuts;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bigkoo.alertview.AlertView;
-import com.bigkoo.alertview.OnDismissListener;
-import com.bigkoo.alertview.OnItemClickListener;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
@@ -37,7 +31,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/13.
  */
 
-public class PersonalActivity extends BaseActivity implements OnItemClickListener, OnDismissListener{
+public class PersonalActivity extends BaseActivity{
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.txt_title)
@@ -45,30 +39,25 @@ public class PersonalActivity extends BaseActivity implements OnItemClickListene
     @BindView(R.id.top)
     LinearLayout top;
     @BindView(R.id.txt_name)
-    TextView txtName;
+    EditText txtName;
     @BindView(R.id.txt_sex)
     TextView txtSex;
     @BindView(R.id.txt_message)
-    TextView txtMessage;
+    EditText txtMessage;
     @BindView(R.id.txt_vocation)
     TextView txtVocation;
     @BindView(R.id.txt_province)
     TextView txtProvince;
     @BindView(R.id.txt_position)
-    TextView txtPosition;
+    EditText txtPosition;
     @BindView(R.id.txt_company)
-    TextView txtCompany;
+    EditText txtCompany;
     @BindView(R.id.btn_add_help)
     TextView btnAddHelp;
     @BindView(R.id.txt_sale)
     TextView txtSale;
     @BindView(R.id.lv_back)
     SwipeBackLayout lvBack;
-    private AlertView mAlertViewExt;//窗口拓展例子
-    private EditText etName;//拓展View内容
-    private InputMethodManager imm;
-    ViewGroup extView;
-    private int flag=0;
     //省份一级菜单
     private List<String> provinces;
     private List<CommonEntity> provinceEntities;
@@ -95,8 +84,8 @@ public class PersonalActivity extends BaseActivity implements OnItemClickListene
     public void initView(View view) {
         back.setText("我的");
         txtTitle.setText("个人资料");
-        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         txtName.setText(SPUtils.get(this,"name","").toString());
+        txtName.setSelection(txtName.length());
         txtMessage.setText(SPUtils.get(this,"message","未完善").toString());
         txtPosition.setText(SPUtils.get(this,"position","未完善").toString());
         txtProvince.setText(SPUtils.get(this,"province","").toString()+SPUtils.get(this,"city","").toString());
@@ -191,75 +180,10 @@ public class PersonalActivity extends BaseActivity implements OnItemClickListene
             case R.id.txt_sex:
                 sexPickview.show();
                 break;
-            case R.id.txt_name:
-                flag=0;
-                mAlertViewExt = new AlertView("提示", "请填写姓名", "取消", null, new String[]{"完成"}, this, AlertView.Style.Alert, this);
-                extView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.layout_et,null);
-                etName = (EditText) extView.findViewById(R.id.etName);
-                etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean focus) {
-                        //输入框出来则往上移动
-                        boolean isOpen=imm.isActive();
-                        mAlertViewExt.setMarginBottom(isOpen&&focus ? 120 :0);
-                        System.out.println(isOpen);
-                    }
-                });
-                mAlertViewExt.addExtView(extView);
-                mAlertViewExt.show();
-                break;
-            case R.id.txt_message:
-                flag=1;
-                mAlertViewExt = new AlertView("提示", "请填写签名(简介)", "取消", null, new String[]{"完成"}, this, AlertView.Style.Alert, this);
-                extView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.layout_et,null);
-                etName = (EditText) extView.findViewById(R.id.etName);
-                etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean focus) {
-                        //输入框出来则往上移动
-                        boolean isOpen=imm.isActive();
-                        mAlertViewExt.setMarginBottom(isOpen&&focus ? 120 :0);
-                        System.out.println(isOpen);
-                    }
-                });
-                mAlertViewExt.addExtView(extView);
-                mAlertViewExt.show();
-                break;
-            case R.id.txt_company:
-                flag=2;
-                mAlertViewExt = new AlertView("提示", "请输入公司名称", "取消", null, new String[]{"完成"}, this, AlertView.Style.Alert, this);
-                extView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.layout_et,null);
-                etName = (EditText) extView.findViewById(R.id.etName);
-                etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean focus) {
-                        //输入框出来则往上移动
-                        boolean isOpen=imm.isActive();
-                        mAlertViewExt.setMarginBottom(isOpen&&focus ? 120 :0);
-                        System.out.println(isOpen);
-                    }
-                });
-                mAlertViewExt.addExtView(extView);
-                mAlertViewExt.show();
-                break;
-            case R.id.txt_position:
-                flag=3;
-                mAlertViewExt = new AlertView("提示", "请输入z昵称", "取消", null, new String[]{"完成"}, this, AlertView.Style.Alert, this);
-                extView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.layout_et,null);
-                etName = (EditText) extView.findViewById(R.id.etName);
-                etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean focus) {
-                        //输入框出来则往上移动
-                        boolean isOpen=imm.isActive();
-                        mAlertViewExt.setMarginBottom(isOpen&&focus ? 120 :0);
-                        System.out.println(isOpen);
-                    }
-                });
-                mAlertViewExt.addExtView(extView);
-                mAlertViewExt.show();
-                break;
             case R.id.btn_add_help:
+                if(TextUtils.isEmpty(txtName.getText().toString())){
+                    ToastUtils.showShortToast(this,"昵称不能为空");
+                }
                 completeInfo();
                 break;
         }
@@ -301,53 +225,9 @@ public class PersonalActivity extends BaseActivity implements OnItemClickListene
         SPUtils.put(this, "sales", txtSale.getText().toString().trim());
         SPUtils.put(this, "message",txtMessage.getText().toString().trim());
     }
-    private void closeKeyboard() {
-        //关闭软键盘
-        imm.hideSoftInputFromWindow(etName.getWindowToken(),0);
-        //恢复位置
-        mAlertViewExt.setMarginBottom(0);
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-    @Override
-    public void onDismiss(Object o) {
-        closeKeyboard();
-    }
-
-    @Override
-    public void onItemClick(Object o, int position) {
-        closeKeyboard();
-        //判断是否是拓展窗口View，而且点击的是非取消按钮
-        if(o == mAlertViewExt && position != AlertView.CANCELPOSITION){
-            String content = etName.getText().toString();
-            if(content.isEmpty()){
-                ToastUtils.showShortToast(this, "啥都没填呢");
-            }
-            else{
-                switch (flag){
-                    case 0:
-                        txtName.setText(content);
-                        break;
-                    case 1:
-                        if(content.trim().length()>49){
-                            ToastUtils.showShortToast(this,"签名最多50字哦");
-                            return;
-                        }
-                        txtMessage.setText(content);
-                        break;
-                    case 2:
-                        txtCompany.setText(content);
-                        break;
-                    case 3:
-                        txtPosition.setText(content);
-                        break;
-                }
-            }
-            return;
-        }
-
-    }
 }

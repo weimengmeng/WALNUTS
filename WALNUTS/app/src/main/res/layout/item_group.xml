@@ -99,17 +99,17 @@
             android:lineSpacingExtra="@dimen/line_height"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
+            android:layout_marginTop="@dimen/_margin"
             android:text="工业项目销售工业项目销售工项目销售工业工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售"
             android:textColor="@color/gray"
             android:textScaleX="1"
             android:textSize="@dimen/normal"
-            android:typeface="sans" />
+             />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginRight="@dimen/margin_right"
-            android:layout_marginTop="@dimen/margin"
             android:alpha="0.15"
             android:background="#000000"></View>
 

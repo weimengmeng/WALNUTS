@@ -3,6 +3,7 @@ package com.njjd.application;
 import android.content.Context;
 
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by mrwim on 17/7/19.
@@ -34,6 +35,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
            return;
         }
         ToastUtils.showShortToast(context,arg1.toString());
+        MobclickAgent.reportError(context,arg1);
 //        try {
 //            throw new Exception(arg1);
 //        } catch (Exception e) {

@@ -125,7 +125,6 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             }
         }
         List<String> strings = bundle.getStringArrayList("imgs");
-        LogUtils.d(strings.size());
         if (strings != null) {
             List<File> files = new ArrayList<>();
             File file;

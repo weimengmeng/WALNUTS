@@ -73,8 +73,8 @@ public class MineFragment extends BaseFragment {
     TextView txtPosition;
     @BindView(R.id.txt_company)
     TextView txtCompany;
-    @BindView(R.id.ll_bg)
-    LinearLayout llbg;
+//    @BindView(R.id.ll_bg)
+//    LinearLayout llbg;
     private Context context;
     private File file;
 
@@ -151,7 +151,6 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), txtChange);
     }
 
     @Override

@@ -86,7 +86,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private List<IndexQuestionAdapter> adapterList = new ArrayList<>();
     private List<IndexNavEntity> navList;
     private String tempKind = "1";
-    private Handler handler = new Handler();
     private String tempOrder = "time";
     private boolean isLoading=false;
     @Override

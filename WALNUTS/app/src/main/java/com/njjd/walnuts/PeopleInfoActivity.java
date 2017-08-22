@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -60,6 +61,7 @@ public class PeopleInfoActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+        ImmersedStatusbarUtils.initAfterSetContentView(this,findViewById(R.id.txt_back));
         tempUser = getIntent().getStringExtra("uid");
         getUserInfo();
     }

@@ -96,12 +96,29 @@ public class MyAnswerActivity extends BaseActivity {
         listSave.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(MyAnswerActivity.this, SaveDetailActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("save", list.get(position));
-//                intent.putExtra("save", bundle);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.in, R.anim.out);
+                MyAnswerEntity answerEntity=list.get(position);
+                SaveEntity saveEntity=new SaveEntity();
+                saveEntity.setArticle_id(answerEntity.getArticle_id());
+                saveEntity.setTitle(answerEntity.getTitle());
+                saveEntity.setArticle_answer_num(answerEntity.getArticle_answer_num());
+                saveEntity.setArticle_follow_num(answerEntity.getArticle_follow_num());
+                saveEntity.setArticle_content(answerEntity.getArticle_content());
+                saveEntity.setArticle_imgs(answerEntity.getArticle_imgs());
+                saveEntity.setComment_id(answerEntity.getComment_id());
+                saveEntity.setComment_uid_headimg(SPUtils.get(MyAnswerActivity.this,"head","").toString());
+                saveEntity.setComment_uid_name(SPUtils.get(MyAnswerActivity.this,"name","").toString());
+                saveEntity.setComment_uid_introduction(SPUtils.get(MyAnswerActivity.this,"message","").toString());
+                saveEntity.setComment_content(answerEntity.getComment_content());
+                saveEntity.setComment_point_num(answerEntity.getComment_point_num());
+                saveEntity.setComment_collect_num(answerEntity.getComment_collect_num());
+                saveEntity.setPoint_comment_stat(answerEntity.getPoint_comment_stat());
+                saveEntity.setCollect_time(answerEntity.getAdd_time());
+                Intent intent = new Intent(MyAnswerActivity.this, SaveDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("save", saveEntity);
+                intent.putExtra("save", bundle);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in, R.anim.out);
             }
         });
     }
