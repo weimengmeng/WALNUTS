@@ -33,6 +33,8 @@
             android:background="@null"
             android:gravity="center|bottom"
             android:hint="请输入手机号"
+            android:typeface="sans"
+            android:textColorHint="@color/txt_color"
             android:inputType="phone"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
@@ -50,6 +52,8 @@
             android:background="@null"
             android:gravity="center|bottom"
             android:hint="请输入密码"
+            android:typeface="sans"
+            android:textColorHint="@color/txt_color"
             android:inputType="textPassword"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />

@@ -87,7 +87,7 @@ public class PersonalActivity extends BaseActivity{
         txtPosition.setText(SPUtils.get(this,"position","未完善").toString());
         txtProvince.setText(SPUtils.get(this,"province","").toString()+SPUtils.get(this,"city","").toString());
         txtVocation.setText(SPUtils.get(this,"industry","").toString());
-        if(SPUtils.get(this,"sex","0").toString().equals("1.0")){
+        if(SPUtils.get(this,"sex","0").toString().equals("0.0")){
             txtSex.setText("女");
         }else{
             txtSex.setText("男");
@@ -220,6 +220,7 @@ public class PersonalActivity extends BaseActivity{
         SPUtils.put(this, "industry", txtVocation.getText().toString().trim());
         SPUtils.put(this, "sales", txtSale.getText().toString().trim());
         SPUtils.put(this, "message",txtMessage.getText().toString().trim());
+        finish();
     }
     @Override
     protected void onDestroy() {

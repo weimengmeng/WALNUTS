@@ -18,6 +18,8 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.FocusPeopleAdapter;
@@ -28,6 +30,9 @@ import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.SPUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -249,6 +254,15 @@ public class MyFocusActivity extends BaseActivity {
                 }
                 refreshLayout.setEnabled(enable);
             }});
+        listTag.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MyFocusActivity.this, TagActivity.class);
+                intent.putExtra("tag_id", tagList.get(position).getId());
+                intent.putExtra("name", tagList.get(position).getName());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -300,15 +314,22 @@ public class MyFocusActivity extends BaseActivity {
             if (!o.toString().equals("")) {
                 JsonObject jsonObject = JSONUtils.getAsJsonObject(o);
                 JsonArray array = JSONUtils.getAsJsonArray(jsonObject.get("user"));
-                JsonObject object;
+                JSONObject object;
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
                 if (array != null) {
                     if(FocusPeopleAdapter.CURRENT_PAGE==1){
                         userList.clear();
                     }
                     for (int i = 0; i < array.size(); i++) {
-                        object = array.get(i).getAsJsonObject();
-                        userList.add(new FocusEntity(object.get("uid").getAsString(), object.get("uname").getAsString(), object.get("headimgs").getAsString(),
-                                object.get("add_time").getAsString(), object.get("introduction").getAsString()));
+                        try {
+                            object = new JSONObject(gson.toJson(array.get(i)));
+                            userList.add(new FocusEntity(object.getString("uid"), object.getString("uname"), object.getString("headimgs"),
+                                    object.getString("add_time"), object.isNull("introduction")?"":object.getString("introduction")));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                     peopleAdapter.notifyDataSetChanged();
                 }

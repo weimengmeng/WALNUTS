@@ -104,7 +104,7 @@ public class MineFragment extends BaseFragment {
         txtFocused.setText("被关注\n" + SPUtils.get(context, "focused", 0));
         txtCompany.setText(SPUtils.get(context,"company","").toString());
         GlideImageLoder.getInstance().displayImage(context, SPUtils.get(context, "head", "").toString(), imgHead);
-        if (SPUtils.get(context, "sex", "0").toString().equals("1.0")) {
+        if (SPUtils.get(context, "sex", "0").toString().equals("0.0")) {
             imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
         } else {
             imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_boy));

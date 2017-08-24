@@ -29,6 +29,7 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;
+import com.njjd.utils.TimeCountDown2;
 import com.njjd.utils.ToastUtils;
 
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class BindActivity extends BaseActivity {
     @BindView(R.id.lv_phonecode)
     LinearLayout lvPhone;
     @BindView(R.id.btn_get_code)
-    TimeCountDown btnGetCode;
+    TimeCountDown2 btnGetCode;
     @BindView(R.id.txt_tip)
     TextView txtTip;
     private EditText etVerify;
@@ -89,7 +90,7 @@ public class BindActivity extends BaseActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
+                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
             }
         });
         etVerify.addTextChangedListener(new TextWatcher() {
@@ -216,6 +217,7 @@ public class BindActivity extends BaseActivity {
         map.put("logintype", SPUtils.get(this, "logintype", "").toString());
         map.put("code", etPhoneCode.getText().toString().trim());
         map.put("phone", etPhone.getText().toString().trim());
+        map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(bindListener, this, false, false), map);
         HttpManager.getInstance().authBind(postEntity);
@@ -271,7 +273,7 @@ public class BindActivity extends BaseActivity {
                     return;
                 }
                 popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
+                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
                 break;
         }
     }

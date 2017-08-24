@@ -21,6 +21,7 @@ import com.njjd.utils.BasePopupWindow;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.TimeCountDown;
+import com.njjd.utils.TimeCountDown2;
 import com.njjd.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -33,13 +34,13 @@ import butterknife.OnClick;
  * Created by mrwim on 17/8/4.
  */
 
-public class ForgetPwdActivity extends BaseActivity implements TimeCountDown.OnTimerCountDownListener {
+public class ForgetPwdActivity extends BaseActivity implements TimeCountDown2.OnTimerCountDownListener {
     @BindView(R.id.img_back)
     LinearLayout imgBack;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.btn_get_code)
-    TimeCountDown btnGetCode;
+    TimeCountDown2 btnGetCode;
     private EditText etVerify;
     private WebView web;
     View lvImgcode;
@@ -67,7 +68,7 @@ public class ForgetPwdActivity extends BaseActivity implements TimeCountDown.OnT
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
+                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
                 LogUtils.d("点击一次");
             }
         });
@@ -111,7 +112,7 @@ public class ForgetPwdActivity extends BaseActivity implements TimeCountDown.OnT
                     return;
                 }
                 popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
+                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
                 break;
         }
     }

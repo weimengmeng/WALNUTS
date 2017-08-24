@@ -35,7 +35,9 @@
             android:background="@null"
             android:layout_marginTop="@dimen/margin_big"
             android:gravity="center|bottom"
+            android:typeface="sans"
             android:hint="请输入验证码"
+            android:textColorHint="@color/txt_color"
             android:textColor="@color/gray"
             android:inputType="number"
             android:textSize="@dimen/normal" />
@@ -53,7 +55,9 @@
             android:layout_height="@dimen/height"
             android:background="@null"
             android:inputType="textPassword"
+            android:typeface="sans"
             android:gravity="center|bottom"
+            android:textColorHint="@color/txt_color"
             android:hint="请输入新密码（不少于六位）"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
@@ -70,6 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height"
             android:background="@null"
+            android:textColorHint="@color/txt_color"
+            android:typeface="sans"
             android:gravity="center|bottom"
             android:hint="请再次输入新密码"
             android:inputType="textPassword"

@@ -1,7 +1,10 @@
 package com.njjd.walnuts;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,8 +16,10 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.njjd.adapter.InformAdapter;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
+import com.njjd.fragment.MessageFragment;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
@@ -35,6 +40,7 @@ public class MainActivity extends FragmentActivity {
     private Fragment indexFragment,findFragment,messFragment,mineFragment,pubFragment;
     private int temp=0;
     public static Activity activity;
+    private MyReceiver receiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,10 @@ public class MainActivity extends FragmentActivity {
         MyActivityManager.getInstance().pushOneActivity(this);
     }
     private void initView(){
+        receiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConstantsVal.NEW_INFORM);
+        registerReceiver(receiver, filter);
         fm = getSupportFragmentManager();
         indexFragment = fm.findFragmentById(R.id.index_fragment);
         findFragment = fm.findFragmentById(R.id.find_fragment);
@@ -97,6 +107,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(receiver);
         MyActivityManager.getInstance().popOneActivity(this);
     }
 
@@ -167,5 +178,10 @@ public class MainActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         this.getSupportFragmentManager().findFragmentByTag("mine").onActivityResult(requestCode, resultCode, data);
+    }
+     private class MyReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            findViewById(R.id.radio4).performClick();
+        }
     }
 }

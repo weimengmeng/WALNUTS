@@ -20,6 +20,8 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.FocusPeopleAdapter;
@@ -31,6 +33,10 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,19 +145,26 @@ public class AttentionActivity extends BaseActivity {
         public void onNext(Object o) {
             refreshLayout.setRefreshing(false);
             if (!o.toString().equals("")) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                JSONObject object= null;
                 JsonObject jsonObject = JSONUtils.getAsJsonObject(o);
-                JsonArray array = JSONUtils.getAsJsonArray(jsonObject.get("user"));
-                JsonObject object;
-                if (array != null) {
-                    if(FocusPeopleAdapter.CURRENT_PAGE==1){
-                        userList.clear();
+                try {
+                    JSONArray array = new JSONArray(gson.toJson(jsonObject.get("user")));
+                    if (array != null) {
+                        if(FocusPeopleAdapter.CURRENT_PAGE==1){
+                            userList.clear();
+                        }
+                        for (int i = 0; i < array.length(); i++) {
+                            object = array.getJSONObject(i);
+                            userList.add(new FocusEntity(object.isNull("uid")?"":object.getString("uid"), object.isNull("uname")?"":object.getString("uname"), object.isNull("headimgs")?"":object.getString("headimgs"),
+                                    object.isNull("add_time")?"":object.getString("add_time"), object.isNull("introduction")?"":object.getString("introduction")));
+                        }
+                        peopleAdapter.notifyDataSetChanged();
                     }
-                    for (int i = 0; i < array.size(); i++) {
-                        object = array.get(i).getAsJsonObject();
-                        userList.add(new FocusEntity(object.get("uid").getAsString(), object.get("uname").getAsString(), object.get("headimgs").getAsString(),
-                                object.get("add_time").getAsString(), object.get("introduction").getAsString()));
-                    }
-                    peopleAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }

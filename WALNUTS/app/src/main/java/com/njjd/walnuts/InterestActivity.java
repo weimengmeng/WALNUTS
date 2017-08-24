@@ -78,8 +78,7 @@ public class InterestActivity extends BaseActivity{
         }
         switch (view.getId()) {
             case R.id.btn_close:
-//                doLogin();
-//                finish();
+                doLogin();
                 break;
             case R.id.btn_selector:
                 btnOne.setChecked(true);

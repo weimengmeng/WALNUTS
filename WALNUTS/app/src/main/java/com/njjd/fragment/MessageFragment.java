@@ -9,6 +9,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +30,11 @@ import com.google.gson.GsonBuilder;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.njjd.adapter.ConversationAdapter;
-import com.njjd.adapter.FocusPeopleAdapter;
-import com.njjd.adapter.FocusQuesAdapter;
 import com.njjd.adapter.InformAdapter;
 import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.InformEntity;
+import com.njjd.domain.MyConversation;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -49,6 +50,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,12 +77,12 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private SwipeMenuCreator creator;
     Map<String, EMConversation> conversationsMap;
     private ConversationAdapter adapter;
-    List<EMConversation> conversations = new ArrayList<>();
+    List<MyConversation> conversations = new ArrayList<>();
     private Receiver receiver;
-
+    private InformReceive informReceive;
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
-
+    List<EMConversation> messageList = new ArrayList<EMConversation>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -92,10 +95,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onResume() {
         super.onResume();
         conversations.clear();
+        messageList=loadConversationsWithRecentChat();
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
-        for (Map.Entry<String, EMConversation> entry : conversationsMap.entrySet()) {
-            conversations.add(entry.getValue());
+        for(int i=0;i<messageList.size();i++){
+            MyConversation conversation = new MyConversation(messageList.get(i));
+            conversation.setOpenId(messageList.get(i).getLastMessage().getTo());
+            conversations.add(conversation);
         }
+//        for (Map.Entry<String, EMConversation> entry : conversationsMap.entrySet()) {
+//            conversations.add(entry.getValue());
+//        }
         adapter.notifyDataSetChanged();
     }
 
@@ -106,6 +115,10 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsVal.MESSAGE_RECEIVE);
         context.registerReceiver(receiver, filter);
+        informReceive = new InformReceive();
+        IntentFilter filter1 = new IntentFilter();
+        filter1.addAction(ConstantsVal.NEW_INFORM);
+        context.registerReceiver(informReceive, filter1);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
         creator = new SwipeMenuCreator() {
             @Override
@@ -151,10 +164,13 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("name", conversations.get(position).getLastMessage().getTo());
+                intent.putExtra("openId", conversations.get(position).getOpenId());
                 startActivity(intent);
             }
         });
+        if(messageList.size()>0){
+            getUserInfoByOpenId();
+        }
         /**
          * tongzhi
          */
@@ -218,6 +234,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                             bundle.putSerializable("question", entity);
                             intent.putExtra("question", bundle);
                             intent.putExtra("type","2");
+                            intent.putExtra("comment_id",entities.get(position).getComment_id());
                             startActivity(intent);
                             getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                             break;
@@ -231,7 +248,44 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             }
         });
     }
+    private void getUserInfoByOpenId(){
+        String ids = "";
+        for (MyConversation conversation : conversations)
+            ids = ids + conversation.getOpenId() + ",";
+        Map<String,Object> map=new HashMap<>();
+        map.put("openId",ids);
 
+//        RequestParams params = new RequestParams();
+//        params.put("huanxin_id", ids);
+//        HttpUtils.post(context, HttpUtils.SERVERIP + "getDoctorByHuanXinId",
+//                params, new BaseResponseHandler(context, false,
+//                        BaseResponseHandler.TOAST) {
+//                    @Override
+//                    public void onSuccess(int statusCode, Header[] headers,
+//                                          JSONObject response) {
+//                        // TODO Auto-generated method stub
+//                        listView.onRefreshComplete();
+//                        try {
+//                            Log.i("", response.toString());
+//                            if (response.getInt("resultCode") == 0) {
+//                                JSONObject resultData = response
+//                                        .getJSONObject("resultData");
+//                                JSONArray array = resultData
+//                                        .getJSONArray("list");
+//                                for (int i = 0; i < array.length(); i++) {
+//                                    list.get(i).setJson(array.getJSONObject(i));
+//                                }
+//                                adapter.notifyDataSetChanged();
+//                            } else {
+//                                super.onSuccess(statusCode, headers, response);
+//                            }
+//                        } catch (JSONException e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+    }
     private void getMyInform() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(context, "userId", "").toString());
@@ -266,6 +320,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onDestroy() {
         super.onDestroy();
         context.unregisterReceiver(receiver);
+        context.unregisterReceiver(informReceive);
     }
 
     @Override
@@ -296,5 +351,69 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         public void onReceive(Context context, Intent intent) {
             onResume();
         }
+    }
+    public class InformReceive extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            InformAdapter.CURRENT_PAGE = 1;
+            getMyInform();
+        }
+    }
+    /**
+     * 获取所有会话
+     *
+     * @return +
+     */
+    private List<EMConversation> loadConversationsWithRecentChat() {
+        // 获取所有会话，包括陌生人
+        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+        // 过滤掉messages size为0的conversation
+        /**
+         * 如果在排序过程中有新消息收到，lastMsgTime会发生变化 影响排序过程，Collection.sort会产生异常
+         * 保证Conversation在Sort过程中最后一条消息的时间不变 避免并发问题
+         */
+        List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
+        synchronized (conversations) {
+            for (EMConversation conversation : conversations.values()) {
+                if (conversation.getAllMessages().size() != 0) {
+                    sortList.add(new Pair<Long, EMConversation>(conversation
+                            .getLastMessage().getMsgTime(), conversation));
+                }
+            }
+        }
+        try {
+            // Internal is TimSort algorithm, has bug
+            sortConversationByLastChatTime(sortList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<EMConversation> list = new ArrayList<EMConversation>();
+        for (Pair<Long, EMConversation> sortItem : sortList) {
+            list.add(sortItem.second);
+        }
+        return list;
+    }
+
+    /**
+     * 根据最后一条消息的时间排序
+     *
+     */
+    private void sortConversationByLastChatTime(
+            List<Pair<Long, EMConversation>> conversationList) {
+        Collections.sort(conversationList,
+                new Comparator<Pair<Long, EMConversation>>() {
+                    @Override
+                    public int compare(final Pair<Long, EMConversation> con1,
+                                       final Pair<Long, EMConversation> con2) {
+
+                        if (con1.first == con2.first) {
+                            return 0;
+                        } else if (con2.first > con1.first) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+
+                });
     }
 }

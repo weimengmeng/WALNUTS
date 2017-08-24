@@ -74,6 +74,7 @@ public class TagActivity extends BaseActivity  {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", list.get(position));
                 intent.putExtra("question", bundle);
+                intent.putExtra("type","1");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }

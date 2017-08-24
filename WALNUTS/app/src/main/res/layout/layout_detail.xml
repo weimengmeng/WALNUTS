@@ -116,6 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding"
+            android:id="@+id/txt_sort"
             android:drawableRight="@drawable/btn_cd"
             android:gravity="right"
             android:text="认同数"

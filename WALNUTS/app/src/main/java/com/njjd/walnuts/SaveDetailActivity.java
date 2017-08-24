@@ -49,8 +49,8 @@ public class SaveDetailActivity extends BaseActivity {
     TextView back;
     @BindView(R.id.txt_title)
     TextView txtTitle;
-    @BindView(R.id.top_view)
-    RelativeLayout topView;
+    @BindView(R.id.top)
+    LinearLayout topView;
     @BindView(R.id.lv_tag)
     LinearLayout lvTag;
     @BindView(R.id.txt_quesTitle)
@@ -100,7 +100,7 @@ public class SaveDetailActivity extends BaseActivity {
     public void initView(View view) {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
-        txtTitle.setText("收藏详情");
+        txtTitle.setText("详情");
         saveEntity=(SaveEntity)getIntent().getBundleExtra("save").get("save");
         txtQuesTitle.setText(saveEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(saveEntity.getArticle_answer_num()).intValue());

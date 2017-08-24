@@ -35,6 +35,7 @@ public abstract class BaseEntity<T> implements Func1<HttpResult<T>,T> {
 
     @Override
     public T call(HttpResult<T> httpResult) {
+        LogUtils.d(httpResult.toString());
         if (httpResult.getResultCode() != 0) {
             throw new HttpTimeException(httpResult.getResultMsg());
         }

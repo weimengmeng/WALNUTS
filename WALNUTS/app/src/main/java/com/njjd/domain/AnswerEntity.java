@@ -26,18 +26,22 @@ public class AnswerEntity implements Serializable {
     private String isSave;
     private String isPrise;
     private List<CommentEntity> commentEntityList;
-    public AnswerEntity(JsonObject object){
-            this.anwerId=object.get("id").getAsString();
-            this.answerUId=object.get("uid").getAsString();
-            this.head=object.get("headimgs").getAsString();
-            this.name=object.get("uname").getAsString();
-            this.message=object.get("introduction").getAsString();
-            this.content=object.get("content").getAsString();
-            this.agree=object.get("point_num").getAsString();
-            this.open=object.get("answer_num").getAsString();
-            this.time= object.get("change_time").getAsString();
-            this.isPrise=object.get("p_stat").getAsString();
-            this.isSave=object.get("c_stat").getAsString();
+    public AnswerEntity(JSONObject object){
+        try {
+            this.anwerId=object.isNull("id")?"":object.getString("id");
+            this.answerUId=object.isNull("uid")?"":object.getString("uid");
+            this.head=object.isNull("headimgs")?"":object.getString("headimgs");
+            this.name=object.isNull("uname")?"":object.getString("uname");
+            this.message=object.isNull("introduction")?"":object.getString("introduction");
+            this.content=object.isNull("content")?"":object.getString("content");
+            this.agree=object.isNull("point_num")?"":object.getString("point_num");
+            this.open=object.isNull("answer_num")?"":object.getString("answer_num");
+            this.time=object.isNull("change_time")?"":object.getString("change_time");
+            this.isPrise=object.isNull("p_stat")?"":object.getString("p_stat");
+            this.isSave=object.isNull("c_stat")?"":object.getString("c_stat");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     public AnswerEntity(){
 

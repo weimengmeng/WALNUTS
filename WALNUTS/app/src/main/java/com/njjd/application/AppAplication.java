@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.view.View;
@@ -15,11 +16,14 @@ import android.view.View;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.ios.dialog.AlertDialog;
+import com.njjd.db.DBHelper;
+import com.njjd.domain.QuestionEntity;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.LoginActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.WelcomeActivity;
@@ -128,7 +132,6 @@ public class AppAplication extends Application {
 
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
-                LogUtils.d("hahaha"+msg.getRaw().toString());
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -150,7 +153,10 @@ public class AppAplication extends Application {
                                         }).setCancelable(false).show();
                             }
                             if(object2.getString("action").equals("notice_show")){
-//                                ToastUtils.showShortToast(MyActivityManager.getInstance().getLastActivity(),"收到"+object2.getString("num")+"通知");
+                                ToastUtils.showShortToast(MyActivityManager.getInstance().getLastActivity(),"收到"+object2.getString("num")+"通知");
+                                Intent intent = new Intent();
+                                intent.setAction(ConstantsVal.NEW_INFORM);
+                                sendBroadcast(intent);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -187,19 +193,37 @@ public class AppAplication extends Application {
                         JSONObject object1 = object.getJSONObject("extra");
                         JSONObject object2 = object1.getJSONObject("param");
                         if (object2.getString("action").equals("follow_article")) {
-//                            Intent intent = new Intent(context, InformActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            startActivity(intent);
+                            Intent intent = new Intent();
+                            intent.setAction(ConstantsVal.NEW_INFORM);
+                            sendBroadcast(intent);
                         }
                         if (object2.getString("action").equals("follow_user")) {
-                            LogUtils.d("点击了关注用户通知");
                             Intent intent = new Intent(context, PeopleInfoActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("uid",object2.getString("uid"));
                             startActivity(intent);
                         }
                         if (object2.getString("action").equals("answer")) {
-                            LogUtils.d("点击了回答评论问题通知");
+                            if(object2.toString().contains("comment_id")){
+                                //此处是评论推送
+                                Intent intent=new Intent(context, IndexDetailActivity.class);
+                                QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id"));
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("question", entity);
+                                intent.putExtra("question", bundle);
+                                intent.putExtra("type","2");
+                                intent.putExtra("comment_id",String.valueOf(Float.valueOf(object2.getString("comment_id"))));
+                                startActivity(intent);
+                            }else{
+                                //此处是评论推送
+                                Intent intent=new Intent(context, IndexDetailActivity.class);
+                                QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id"));
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("question", entity);
+                                intent.putExtra("question", bundle);
+                                intent.putExtra("type","1");
+                                startActivity(intent);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

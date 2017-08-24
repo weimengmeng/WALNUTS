@@ -129,7 +129,7 @@
                 android:paddingRight="@dimen/padding"
                 android:text="14分钟前"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small">
+                android:textSize="@dimen/mini">
 
             </TextView>
 
@@ -151,6 +151,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
+                android:visibility="invisible"
                 android:paddingLeft="@dimen/padding"
                 android:paddingRight="@dimen/padding"
                 android:text="举报"

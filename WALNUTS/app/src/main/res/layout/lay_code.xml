@@ -60,6 +60,7 @@
                     android:hint="请输入验证码"
                     android:inputType="text"
                     android:maxLength="4"
+                    android:textColorHint="@color/txt_color"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/normal" />
 

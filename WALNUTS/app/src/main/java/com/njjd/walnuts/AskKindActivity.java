@@ -170,6 +170,10 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             v.setPadding(25, 0, 25, 0);
             list.remove(v.getTag());
         } else {
+            if(list.size()>3){
+                ToastUtils.showShortToast(this,"最多可以选择4个标签哦");
+                return;
+            }
             v.setBackgroundResource(R.drawable.round_textview1);
             list.add(v.getTag().toString());
             v.setPadding(25, 0, 25, 0);

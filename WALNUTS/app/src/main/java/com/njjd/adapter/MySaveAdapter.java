@@ -10,9 +10,12 @@ import android.widget.TextView;
 
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.walnuts.R;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -54,8 +57,9 @@ public class MySaveAdapter extends BaseAdapter{
             hodel.name=(TextView)convertView.findViewById(R.id.txt_name);
             hodel.introduction=(TextView)convertView.findViewById(R.id.txt_message);
             hodel.title=(TextView)convertView.findViewById(R.id.txt_title);
-            hodel.image_photo=(ImageView) convertView.findViewById(R.id.img);
+//            hodel.image_photo=(ImageView) convertView.findViewById(R.id.img);
             hodel.reply_content=(TextView)convertView.findViewById(R.id.txt_reply);
+            hodel.time=(TextView)convertView.findViewById(R.id.txt_time);
             convertView.setTag(hodel);
         }else{
             hodel=(ViewHodel) convertView.getTag();
@@ -65,14 +69,16 @@ public class MySaveAdapter extends BaseAdapter{
         hodel.name.setText(saveEntity.getComment_uid_name());
         hodel.introduction.setText(saveEntity.getComment_uid_introduction());
         hodel.title.setText(saveEntity.getTitle());
-        hodel.reply_content.setText(saveEntity.getComment_uid_name()+": "+saveEntity.getComment_content());
-        if ("".equals(saveEntity.getArticle_imgs())) {
-            hodel.image_photo.setVisibility(View.GONE);
-        } else {
-            hodel.image_photo.setVisibility(View.VISIBLE);
-            String[] strings = saveEntity.getArticle_imgs().split(",");
-            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+strings[0].replace("\"", ""), hodel.image_photo);
-        }
+        hodel.reply_content.setText(saveEntity.getComment_content());
+        ParsePosition pos = new ParsePosition(0);
+        hodel.time.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(saveEntity.getCollect_time(), pos)));
+//        if ("".equals(saveEntity.getArticle_imgs())) {
+//            hodel.image_photo.setVisibility(View.GONE);
+//        } else {
+//            hodel.image_photo.setVisibility(View.VISIBLE);
+//            String[] strings = saveEntity.getArticle_imgs().split(",");
+//            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+strings[0].replace("\"", ""), hodel.image_photo);
+//        }
         return convertView;
     }
     private class ViewHodel{
@@ -80,7 +86,8 @@ public class MySaveAdapter extends BaseAdapter{
         TextView name;
         TextView introduction;
         TextView title;
-        ImageView image_photo;
+//        ImageView image_photo;
         TextView reply_content;
+        TextView time;
     }
 }

@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="欢迎来到核桃"
             android:textColor="@color/login"
-            android:textSize="@dimen/large_big" />
+            android:textSize="@dimen/largest" />
 
 
         <EditText
@@ -45,6 +45,7 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginTop="@dimen/margin_big"
             android:background="@null"
+            android:typeface="sans"
             android:gravity="center|bottom"
             android:hint="请输入手机号"
             android:inputType="phone"
@@ -73,6 +74,7 @@
             android:textColorHint="@color/txt_color"
             android:hint="请输入邀请码"
             android:inputType="number"
+            android:typeface="sans"
             android:maxLength="6"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />

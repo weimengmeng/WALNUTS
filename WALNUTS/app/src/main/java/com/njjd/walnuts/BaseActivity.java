@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.umeng.analytics.MobclickAgent;

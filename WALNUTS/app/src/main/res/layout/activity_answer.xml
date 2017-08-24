@@ -31,13 +31,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin"
+                android:typeface="sans"
                 android:layout_weight="1"
                 android:background="@drawable/background_layout_div"
                 android:gravity="top|left"
                 android:hint="请输入回答"
                 android:textColorHint="@color/txt_color"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/normal"
+                android:textSize="@dimen/big"
                 android:padding="@dimen/padding_left" />
         </LinearLayout>
 

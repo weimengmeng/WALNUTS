@@ -45,6 +45,7 @@
             android:background="@null"
             android:gravity="center|bottom"
             android:hint="请输入手机号"
+            android:typeface="sans"
             android:inputType="phone"
             android:maxLength="11"
             android:textColor="@color/gray"
@@ -120,7 +121,7 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <com.njjd.utils.TimeCountDown
+    <com.njjd.utils.TimeCountDown2
         android:id="@+id/btn_get_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

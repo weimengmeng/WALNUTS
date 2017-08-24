@@ -1,12 +1,17 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,10 +36,12 @@ import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyScrollView;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.scrollablelayout.ScrollableLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +57,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/12.
  */
 
-public class IndexDetailActivity extends BaseActivity {
+public class IndexDetailActivity extends BaseActivity implements View.OnClickListener{
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.txt_title)
@@ -89,7 +96,12 @@ public class IndexDetailActivity extends BaseActivity {
     private ReplyEntity replyEntity;
     private AnswerReplyAdapter answerReplyAdapter;
     private List<String> list = new ArrayList<>();
-    private int current_group_id=0,tempFocus=0,tempAnswer=0;
+    private int current_group_id = 0, tempFocus = 0, tempAnswer = 0;
+    private String comment_id = "";
+    private PopupWindow popupWindow;
+    private View mainView;
+    private RadioButton layoutTop, layoutTime;
+    private String tempOrder = "time";
     @Override
     public int bindLayout() {
         return R.layout.activity_index_detail;
@@ -100,19 +112,22 @@ public class IndexDetailActivity extends BaseActivity {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
-        back.setText("关闭");
-        if(getIntent().getStringExtra("type").equals("1")){
+        back.setText("返回");
+        if (getIntent().getStringExtra("type").equals("1")) {
             txtTitle.setText("问题详情");
-        }else{
+            findViewById(R.id.txt_sort).setVisibility(View.VISIBLE);
+        } else {
             txtTitle.setText("通知详情");
+            comment_id = getIntent().getStringExtra("comment_id");
+            findViewById(R.id.txt_sort).setVisibility(View.GONE);
         }
         quesTitle.setText(questionEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(questionEntity.getAnswerNum()).intValue());
         txtFocusNum.setText("关注 " + Float.valueOf(questionEntity.getFocusNum()).intValue());
-        tempFocus=Float.valueOf(questionEntity.getFocusNum()).intValue();
-        tempAnswer=Float.valueOf(questionEntity.getAnswerNum()).intValue();
+        tempFocus = Float.valueOf(questionEntity.getFocusNum()).intValue();
+        tempAnswer = Float.valueOf(questionEntity.getAnswerNum()).intValue();
         txtContent.setText(questionEntity.getContent());
-        if (questionEntity.getIsFocus()== 1) {
+        if (questionEntity.getIsFocus() == 1) {
             txtFocus.setText("取消关注");
         }
         inflater = LayoutInflater.from(this);
@@ -122,8 +137,8 @@ public class IndexDetailActivity extends BaseActivity {
             final String[] imgs = questionEntity.getPhoto().split(",");
             final ArrayList<String> list1 = new ArrayList<>();
             for (int i = 0; i < imgs.length; i++) {
-                if(!imgs[i].contains("http:")){
-                    imgs[i]=HttpManager.BASE_URL2+imgs[i];
+                if (!imgs[i].contains("http:")) {
+                    imgs[i] = HttpManager.BASE_URL2 + imgs[i];
                 }
                 list1.add(imgs[i].replace("\"", ""));
                 relativeLayout = (RelativeLayout) inflater.inflate(R.layout.layout_img, null);
@@ -149,19 +164,56 @@ public class IndexDetailActivity extends BaseActivity {
         scrollView.getHelper().setCurrentScrollableContainer(root);
         root.smoothScrollTo(0, 0);
         exListVIew.setEmptyView(findViewById(R.id.empty));
-        answerReplyAdapter = new AnswerReplyAdapter(this, answerEntities,questionEntity.getQuestionId());
+        answerReplyAdapter = new AnswerReplyAdapter(this, answerEntities, questionEntity.getQuestionId());
         exListVIew.setAdapter(answerReplyAdapter);
         exListVIew.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if(!parent.isGroupExpanded(groupPosition)){
-                    getComments(answerEntities.get(groupPosition).getAnwerId()+"");
-                    current_group_id=groupPosition;
+                if (!parent.isGroupExpanded(groupPosition)) {
+                    getComments(answerEntities.get(groupPosition).getAnwerId() + "");
+                    current_group_id = groupPosition;
                 }
                 return false;
             }
         });
         getDetail();
+        mainView = LayoutInflater.from(this).inflate(R.layout.layout_pop, null);
+        layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
+        layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
+        layoutTop.setOnClickListener(this);
+        layoutTime.setOnClickListener(this);
+        popupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(mainView);
+        popupWindow.getContentView().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    popupWindow.dismiss();
+                }
+            }
+        });
+        popupWindow.setAnimationStyle(R.style.AnimTools);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0));
+        popupWindow.setFocusable(true);
+        popupWindow.update();
+        exListVIew.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
+                            AnswerReplyAdapter.CURRENT_PAGE++;
+                            getAnswerList();
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     private void getDetail() {
@@ -217,11 +269,13 @@ public class IndexDetailActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         getAnswerList();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,64 +285,89 @@ public class IndexDetailActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
         map.put("uid", SPUtils.get(this, "userId", ""));
-        map.put("order", "time");
-        map.put("page",AnswerReplyAdapter.CURRENT_PAGE);
-        LogUtils.d(map.toString());
+        map.put("order", tempOrder);
+        map.put("page", AnswerReplyAdapter.CURRENT_PAGE);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getAnswerListener, this, false, false), map);
         HttpManager.getInstance().getAnswerList(postEntity);
     }
+
     HttpOnNextListener getAnswerListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            JsonArray array = JSONUtils.getAsJsonArray(o);
-            JsonObject object;
-            if(answerReplyAdapter.getCurrentPage()==1){
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONObject object = null;
+            if (AnswerReplyAdapter.CURRENT_PAGE == 1) {
                 answerEntities.clear();
             }
-            for (int i = 0; i < array.size(); i++) {
-                object = array.get(i).getAsJsonObject();
-                answerEntity = new AnswerEntity(object);
-                List<CommentEntity> commentEntities = new ArrayList<>();
-                commentEntities.add(new CommentEntity());
-                answerEntity.setCommentEntityList(commentEntities);
-//                if(answerEntity.getAnwerId())
-                answerEntities.add(answerEntity);
+            try {
+                JSONArray array = new JSONArray(gson.toJson(o));
+                for (int i = 0; i < array.length(); i++) {
+                    object = array.getJSONObject(i);
+                    answerEntity = new AnswerEntity(object);
+                    List<CommentEntity> commentEntities = new ArrayList<>();
+                    commentEntities.add(new CommentEntity());
+                    answerEntity.setCommentEntityList(commentEntities);
+                    if (getIntent().getStringExtra("type").equals("2")) {
+                        if (String.valueOf(Float.valueOf(answerEntity.getAnwerId()).intValue()).equals(comment_id)) {
+                            answerEntities.add(answerEntity);
+                        }
+                    }else{
+                        answerEntities.add(answerEntity);
+                    }
+                }
+                answerReplyAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            answerReplyAdapter.notifyDataSetChanged();
         }
     };
-    private void getComments(String answer_id){
+
+    private void getComments(String answer_id) {
         Map<String, Object> map = new HashMap<>();
-        map.put("comment_id",answer_id);
+        map.put("comment_id", answer_id);
         map.put("uid", SPUtils.get(this, "userId", ""));
-        map.put("page","1");
+        map.put("page", "1");
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getCommentListener, this, false, false), map);
         HttpManager.getInstance().getCommentList(postEntity);
     }
+
     HttpOnNextListener getCommentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            JsonArray array = JSONUtils.getAsJsonArray(o);
-            JsonObject object;
-            answerEntities.get(current_group_id).getCommentEntityList().clear();
-            answerEntities.get(current_group_id).getCommentEntityList().add(new CommentEntity());
-            for (int i = 0; i < array.size(); i++) {
-                object = array.get(i).getAsJsonObject();
-                commentEntity = new CommentEntity(object);
-                answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONObject object = null;
+            try {
+                JSONArray array=new JSONArray(gson.toJson(o));
+                answerEntities.get(current_group_id).getCommentEntityList().clear();
+                answerEntities.get(current_group_id).getCommentEntityList().add(new CommentEntity());
+                for (int i = 0; i < array.length(); i++) {
+                    object = array.getJSONObject(i);
+                    commentEntity = new CommentEntity(object);
+                    answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
+                }
+                answerReplyAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            answerReplyAdapter.notifyDataSetChanged();
         }
     };
-    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer})
+
+    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer,R.id.txt_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
+            case R.id.txt_sort:
+                popupWindow.showAsDropDown(findViewById(R.id.txt_sort), 0, 0);
+                break;
             case R.id.txt_focus:
-               addFocus();
+                addFocus();
                 break;
             case R.id.img_answer:
                 Intent intent = new Intent(this, AnswerActivity.class);
@@ -298,27 +377,46 @@ public class IndexDetailActivity extends BaseActivity {
                 break;
         }
     }
-    private void addFocus(){
+
+    private void addFocus() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
-        map.put("token",SPUtils.get(this,"token",""));
+        map.put("token", SPUtils.get(this, "token", ""));
         map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
         //0 取消关注 1 关注
-        map.put("select",questionEntity.getIsFocus()==0?1:0);
+        map.put("select", questionEntity.getIsFocus() == 0 ? 1 : 0);
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
         HttpManager.getInstance().focusQuestion(postEntity);
     }
-    HttpOnNextListener focusListener=new HttpOnNextListener() {
+
+    HttpOnNextListener focusListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            ToastUtils.showShortToast(IndexDetailActivity.this,questionEntity.getIsFocus()==0?"成功关注":"取消成功");
-            txtFocus.setText(questionEntity.getIsFocus()==0?"取消关注":"+关注问题");
-            txtFocusNum.setText("关注 "+(questionEntity.getIsFocus()==0?++tempFocus:--tempFocus));
-            questionEntity.setIsFocus(questionEntity.getIsFocus()==0?1:0);
+            ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消成功");
+            txtFocus.setText(questionEntity.getIsFocus() == 0 ? "取消关注" : "+关注问题");
+            txtFocusNum.setText("关注 " + (questionEntity.getIsFocus() == 0 ? ++tempFocus : --tempFocus));
+            questionEntity.setIsFocus(questionEntity.getIsFocus() == 0 ? 1 : 0);
             DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(questionEntity);
         }
     };
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rb_hot:
+                tempOrder = "hot";
+                AnswerReplyAdapter.CURRENT_PAGE=1;
+                getAnswerList();
+                popupWindow.dismiss();
+                break;
+            case R.id.rb_time:
+                tempOrder = "time";
+                AnswerReplyAdapter.CURRENT_PAGE=1;
+                getAnswerList();
+                popupWindow.dismiss();
+                break;
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

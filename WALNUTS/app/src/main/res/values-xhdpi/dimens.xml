@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="zero">0dp</dimen>
+    <dimen name="mini">10sp</dimen>
     <dimen name="small">12sp</dimen>
     <dimen name="normal">14sp</dimen>
     <dimen name="big">16sp</dimen>
     <dimen name="large">18sp</dimen>
     <dimen name="large_big">24sp</dimen>
-    <dimen name="largest">45sp</dimen>
+    <dimen name="largest">40sp</dimen>
     <dimen name="larger">50sp</dimen>
     <dimen name="padding">5dp</dimen>
     <dimen name="margin_small">7dp</dimen>

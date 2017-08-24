@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,8 +122,10 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         holder.groupMess.setText(answerEntity.getMessage());
         if (answerEntity.getIsSave().equals("1")) {
             holder.groupSave.setText("取消收藏");
+            holder.groupSave.setTextColor(mContext.getResources().getColor(R.color.txt_color));
         } else {
             holder.groupSave.setText("收藏");
+            holder.groupSave.setTextColor(mContext.getResources().getColor(R.color.login));
         }
         if (answerEntity.getIsPrise().equals("1")) {
             holder.groupAgree.setBackgroundResource(R.drawable.background_button_div_grey);
@@ -318,11 +321,13 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             case 2:
                 ToastUtils.showShortToast(mContext, "收藏成功");
                 tempView.setText("取消收藏");
+                tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
                 groupArray.get(currentid).setIsSave("1");
                 break;
             case 3:
                 ToastUtils.showShortToast(mContext, "取消收藏");
                 tempView.setText("收藏");
+                tempView.setTextColor(mContext.getResources().getColor(R.color.login));
                 groupArray.get(currentid).setIsSave("0");
                 break;
         }

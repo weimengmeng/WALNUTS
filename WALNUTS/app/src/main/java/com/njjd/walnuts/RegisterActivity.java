@@ -29,6 +29,8 @@ import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;
 import com.njjd.utils.ToastUtils;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,8 +141,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     ToastUtils.showShortToast(RegisterActivity.this, "请输入邀请码");
                     return;
                 }
-                popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
+                isUserExist();
 //                Intent intent = new Intent(this, SetPasswordActivity.class);
 //                startActivity(intent);
                 break;
@@ -150,6 +151,24 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         }
     }
 
+    private void isUserExist(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", etPhone.getText().toString().trim());
+        LogUtils.d(map.toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                JsonObject object=JSONUtils.getAsJsonObject(o);
+                if(object.get("code").getAsString().equals("1.0")){
+                    popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                    web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
+                }else{
+                    ToastUtils.showShortToast(RegisterActivity.this,"手机号已注册");
+                }
+            }
+        }, this, true, false), map);
+        HttpManager.getInstance().isExistUser(postEntity);
+    }
     private void getPhoneCode() {
         Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());

@@ -21,6 +21,8 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.njjd.adapter.MSGLAdapter;
 import com.njjd.application.AppAplication;
+import com.njjd.utils.AndroidBug5497Workaround;
+import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.ToastUtils;
@@ -71,6 +73,7 @@ public class ChatActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         txtTitle.setText(getIntent().getStringExtra("name"));
+        ImmersedStatusbarUtils.initAfterSetContentView(this,findViewById(R.id.top));
         EMConversation conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("name"));
         if (conversation == null) {
             messagesList = new ArrayList<>();
@@ -104,6 +107,7 @@ public class ChatActivity extends BaseActivity {
                 }
             }
         });
+        AndroidBug5497Workaround.assistActivity(this);
     }
 
     @Override

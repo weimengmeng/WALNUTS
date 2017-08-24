@@ -1,6 +1,7 @@
 package com.njjd.domain;
 
-import com.google.gson.JsonObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,15 +21,20 @@ public class CommentEntity implements Serializable {
     private String replyNum="0";
     private String time="";
     private List<ReplyEntity> replyEntities;
-    public CommentEntity(JsonObject object){
-        this.commentId=object.get("id").getAsString();
-        this.commentUId=object.get("uid").getAsString();
-        this.head=object.get("headimgs").getAsString();
-        this.name=object.get("uname").getAsString();
-        this.message=object.get("introduction").getAsString();
-        this.content=object.get("content").getAsString();
-        this.time= object.get("change_time").getAsString();
-        this.replyNum =object.get("answer_num").getAsString();
+    public CommentEntity(JSONObject object){
+
+        try {
+            this.commentId=object.isNull("id")?"":object.getString("id");
+            this.commentUId=object.isNull("uid")?"":object.getString("uid");
+            this.head=object.isNull("headimgs")?"":object.getString("headimgs");
+            this.name=object.isNull("uname")?"":object.getString("uname");
+            this.message=object.isNull("introduction")?"":object.getString("introduction");
+            this.content=object.isNull("content")?"":object.getString("content");
+            this.time= object.isNull("change_time")?"":object.getString("change_time");
+            this.replyNum =object.isNull("answer_num")?"":object.getString("answer_num");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     public CommentEntity(){
 

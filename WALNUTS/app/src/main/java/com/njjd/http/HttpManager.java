@@ -120,6 +120,11 @@ public class HttpManager {
         observable = httpService.completeInfo(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void isExistUser(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.isExistUser(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void getFollowUser(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getFollowUser(basePar.getParams()).map(basePar);

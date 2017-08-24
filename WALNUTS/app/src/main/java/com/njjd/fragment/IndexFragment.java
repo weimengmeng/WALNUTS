@@ -87,7 +87,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private List<IndexNavEntity> navList;
     private String tempKind = "1";
     private String tempOrder = "time";
-    private boolean isLoading=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -101,6 +100,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -239,11 +239,18 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             public void onLoadMore() {
                 questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
                 getQuestion(tempKind, tempOrder);
-                isLoading=true;
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        list.loadMoreComplete();
+                    }
+                }, 1000);
             }
         });
     }
     private void getQuestion(String id, String sort) {
+        if(tempList.size()==0){
+            questionAdapter.setCurrentPage(1);
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("cate_article_id", id);
         map.put("page", questionAdapter.getCurrentPage());
@@ -270,10 +277,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
                 tempList.clear();
-            }
-            if(isLoading){
-                isLoading=false;
-                list.loadMoreComplete();
             }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i), tempKind);
@@ -328,7 +331,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 break;
         }
     }
-
     @Override
     public void onStop() {
         super.onStop();

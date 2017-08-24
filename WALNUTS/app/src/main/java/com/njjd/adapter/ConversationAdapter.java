@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.exceptions.HyphenateException;
+import com.njjd.domain.MyConversation;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.walnuts.R;
@@ -27,9 +27,9 @@ import java.util.List;
 
 public class ConversationAdapter extends BaseAdapter {
     Context context;
-    List<EMConversation> list;
+    List<MyConversation> list;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public ConversationAdapter(Context context, List<EMConversation> list) {
+    public ConversationAdapter(Context context, List<MyConversation> list) {
         this.context = context;
         this.list = list;
     }
@@ -55,7 +55,7 @@ public class ConversationAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = LayoutInflater.from(context).inflate(
                     R.layout.item_mesg, null);
-        EMConversation conversation = list.get(position);
+        EMConversation conversation = list.get(position).getConversation();
         if (conversation.getAllMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
@@ -87,12 +87,8 @@ public class ConversationAdapter extends BaseAdapter {
 //        } else {
 //            convertView.findViewById(R.id.unread_msg_number).setVisibility(View.INVISIBLE);
 //        }
-        try {
-            ((TextView) convertView.findViewById(R.id.txt_name)).setText(conversation.getLastMessage().getTo());
-            GlideImageLoder.getInstance().displayImage(context,conversation.getLastMessage().getStringAttribute("head"),(ImageView) convertView.findViewById(R.id.img_head));
-        } catch (HyphenateException e) {
-            e.printStackTrace();
-        }
+            ((TextView) convertView.findViewById(R.id.txt_name)).setText(list.get(position).getName());
+            GlideImageLoder.getInstance().displayImage(context,list.get(position).getAvatar(),(ImageView) convertView.findViewById(R.id.img_head));
         ParsePosition pos = new ParsePosition(0);
         ((TextView) convertView.findViewById(R.id.txt_date)).setText(DateUtils.formationDate(sdf.parse(sdf.format(new Date(conversation.getLastMessage().getMsgTime())), pos)));
         return convertView;
