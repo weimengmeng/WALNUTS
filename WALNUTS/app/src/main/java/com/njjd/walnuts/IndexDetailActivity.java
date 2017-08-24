@@ -89,7 +89,7 @@ public class IndexDetailActivity extends BaseActivity {
     private ReplyEntity replyEntity;
     private AnswerReplyAdapter answerReplyAdapter;
     private List<String> list = new ArrayList<>();
-    private int current_group_id=0;
+    private int current_group_id=0,tempFocus=0,tempAnswer=0;
     @Override
     public int bindLayout() {
         return R.layout.activity_index_detail;
@@ -101,10 +101,16 @@ public class IndexDetailActivity extends BaseActivity {
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
         back.setText("关闭");
-        txtTitle.setText("问题详情");
+        if(getIntent().getStringExtra("type").equals("1")){
+            txtTitle.setText("问题详情");
+        }else{
+            txtTitle.setText("通知详情");
+        }
         quesTitle.setText(questionEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(questionEntity.getAnswerNum()).intValue());
         txtFocusNum.setText("关注 " + Float.valueOf(questionEntity.getFocusNum()).intValue());
+        tempFocus=Float.valueOf(questionEntity.getFocusNum()).intValue();
+        tempAnswer=Float.valueOf(questionEntity.getAnswerNum()).intValue();
         txtContent.setText(questionEntity.getContent());
         if (questionEntity.getIsFocus()== 1) {
             txtFocus.setText("取消关注");
@@ -245,6 +251,7 @@ public class IndexDetailActivity extends BaseActivity {
                 List<CommentEntity> commentEntities = new ArrayList<>();
                 commentEntities.add(new CommentEntity());
                 answerEntity.setCommentEntityList(commentEntities);
+//                if(answerEntity.getAnwerId())
                 answerEntities.add(answerEntity);
             }
             answerReplyAdapter.notifyDataSetChanged();
@@ -286,6 +293,7 @@ public class IndexDetailActivity extends BaseActivity {
             case R.id.img_answer:
                 Intent intent = new Intent(this, AnswerActivity.class);
                 intent.putExtra("quesId", questionEntity.getQuestionId());
+                intent.putExtra("quesTitle", questionEntity.getTitle());
                 startActivity(intent);
                 break;
         }
@@ -306,6 +314,7 @@ public class IndexDetailActivity extends BaseActivity {
         public void onNext(Object o) {
             ToastUtils.showShortToast(IndexDetailActivity.this,questionEntity.getIsFocus()==0?"成功关注":"取消成功");
             txtFocus.setText(questionEntity.getIsFocus()==0?"取消关注":"+关注问题");
+            txtFocusNum.setText("关注 "+(questionEntity.getIsFocus()==0?++tempFocus:--tempFocus));
             questionEntity.setIsFocus(questionEntity.getIsFocus()==0?1:0);
             DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(questionEntity);
         }

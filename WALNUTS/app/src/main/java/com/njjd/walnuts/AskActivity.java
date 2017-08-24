@@ -1,22 +1,15 @@
 package com.njjd.walnuts;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.adapter.GridViewAddImgesAdpter;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ToastUtils;
@@ -48,8 +41,6 @@ public class AskActivity extends BaseActivity {
     private GridView gw;
     private List<Map<String, Object>> datas;
     private GridViewAddImgesAdpter gridViewAddImgesAdpter;
-    @BindView(R.id.lv_back)
-    SwipeBackLayout lvBack;
     private  ArrayList<String> images;
     public static Activity activity;
     @Override
@@ -83,7 +74,6 @@ public class AskActivity extends BaseActivity {
 
             }
         });
-        lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
     }
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

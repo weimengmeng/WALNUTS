@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,9 +18,8 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter2;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.GradationScrollView;
+import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -41,24 +39,15 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/28.
  */
 
-public class TagActivity extends BaseActivity implements GradationScrollView.ScrollViewListener {
+public class TagActivity extends BaseActivity  {
     @BindView(R.id.back)
     TextView back;
-    @BindView(R.id.txt_title)
-    TextView txtTitle;
     @BindView(R.id.listview)
     XRecyclerView listview;
-    @BindView(R.id.scrollview)
-    GradationScrollView scrollview;
-    @BindView(R.id.lv_top)
-    LinearLayout lvTop;
     @BindView(R.id.txt_tag)
     TextView txtTag;
-    @BindView(R.id.top_view)
-    RelativeLayout topView;
     @BindView(R.id.txt_focus)
     TextView txtFocus;
-    private int height = 0;
     private List<QuestionEntity> list=new ArrayList<>();
     private IndexQuestionAdapter2 adapter;
     private boolean isLoading=false;
@@ -69,12 +58,9 @@ public class TagActivity extends BaseActivity implements GradationScrollView.Scr
 
     @Override
     public void initView(View view) {
+        ImmersedStatusbarUtils.initAfterSetContentView(this,back);
         back.setText("");
-        txtTitle.setText(getIntent().getStringExtra("name"));
-        initListeners();
         txtTag.setText(getIntent().getStringExtra("name"));
-        txtTitle.setTextColor(Color.argb(0, 255, 255, 255));
-        topView.setBackgroundColor(getResources().getColor(R.color.login));
         adapter=new IndexQuestionAdapter2(this,list);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         listview.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
@@ -156,47 +142,6 @@ public class TagActivity extends BaseActivity implements GradationScrollView.Scr
             LogUtils.d(e.toString());
         }
     }
-
-    /**
-     * 获取顶部图片高度后，设置滚动监听
-     */
-    private void initListeners() {
-
-        ViewTreeObserver vto = lvTop.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                txtTitle.getViewTreeObserver().removeGlobalOnLayoutListener(
-                        this);
-                height = lvTop.getHeight();
-                scrollview.setScrollViewListener(TagActivity.this);
-            }
-        });
-    }
-
-    /**
-     * 滑动监听
-     *
-     * @param scrollView
-     * @param x
-     * @param y
-     * @param oldx
-     * @param oldy
-     */
-    @Override
-    public void onScrollChanged(GradationScrollView scrollView, int x, int y,
-                                int oldx, int oldy) {
-        // TODO Auto-generated method stub
-        if (y <= 0) {   //设置标题的背景颜色
-            txtTitle.setBackgroundColor(Color.argb(0, 144, 151, 166));
-        } else if (y > 0 && y <= height) {
-            float scale = (float) y / height;
-            float alpha = (255 * scale);
-            txtTitle.setTextColor(Color.argb((int) alpha, 255, 255, 255));
-        } else {
-        }
-    }
-
     @OnClick({R.id.back,R.id.txt_focus})
     public void onViewClicked(View view) {
         switch (view.getId()){

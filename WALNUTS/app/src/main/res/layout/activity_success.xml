@@ -34,7 +34,7 @@
             android:gravity="center"
             android:text="核桃是一个专业的销售社区\n详实的信息便于您沟通交流"
             android:textColor="@color/login"
-            android:textSize="@dimen/large_big" />
+            android:textSize="21sp" />
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_head"
             android:layout_width="100dp"
@@ -61,6 +61,7 @@
             android:layout_marginLeft="@dimen/margin_big"
             android:layout_marginRight="@dimen/margin_big"
             android:hint="请输入名字"
+            android:textColorHint="@color/txt_color"
             android:maxLength="8"
             android:inputType="textPersonName"
             android:textColor="@color/gray"
@@ -86,6 +87,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:hint="性别"
+                android:textColorHint="@color/txt_color"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
@@ -102,6 +104,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:hint="地区"
+                android:textColorHint="@color/txt_color"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
@@ -128,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
+                android:textColorHint="@color/txt_color"
                 android:hint="行业"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
@@ -146,6 +150,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:hint="销售场景"
+                android:textColorHint="@color/txt_color"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />

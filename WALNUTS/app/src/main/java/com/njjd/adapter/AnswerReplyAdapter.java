@@ -267,7 +267,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(mContext, "userId", ""));
         map.put(params, id);
-        LogUtils.d(map.toString());
+        map.put("token",SPUtils.get(mContext,"token","").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, mContext, true, false), map);
         HttpManager.getInstance().agreeOrPraise(postEntity);
     }
@@ -279,6 +279,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         map.put("uid", SPUtils.get(mContext, "userId", ""));
         map.put("content", comment);
         map.put("comment_id", groupArray.get(position).getAnwerId());
+        map.put("token",SPUtils.get(mContext,"token","").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, mContext, false, false), map);
         HttpManager.getInstance().pubComment(postEntity);
     }

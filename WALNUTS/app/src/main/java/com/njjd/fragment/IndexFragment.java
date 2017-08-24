@@ -165,6 +165,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("question", list1.get(position));
                     intent.putExtra("question", bundle);
+                    intent.putExtra("type","1");
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                 }

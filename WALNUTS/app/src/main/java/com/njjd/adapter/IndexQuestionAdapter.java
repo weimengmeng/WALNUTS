@@ -177,7 +177,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 GlideImageLoder.getInstance().displayImage(mContext, strings[0].replace("\"", ""), ((ContentViewHolder) holder).imageView);
             }
             String[] strs = temp.getPic().split(",");
-            String[] uids=temp.getUids().split(",");
+            final String[] uids=temp.getUids().split(",");
             if ("".equals(temp.getPic())) {
                 ((ContentViewHolder) holder).lvHead.removeAllViews();
             } else {
@@ -185,16 +185,16 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((ContentViewHolder) holder).lvHead.setVisibility(View.VISIBLE);
                 LinearLayout layout;
                 for (int i = 0; i < strs.length && i < 3; i++) {
+                    final int temp1=i;
                     layout = (LinearLayout) inflater.inflate(R.layout.layout_head, null);
                     head = (ImageView) layout.findViewById(R.id.head);
                     GlideImageLoder.getInstance().displayImage(mContext, strs[i], head);
-                    head.setTag(uids[i]);
                     ((ContentViewHolder) holder).lvHead.addView(layout);
                     head.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent=new Intent(mContext,PeopleInfoActivity.class);
-                            intent.putExtra("uid",head.getTag().toString());
+                            intent.putExtra("uid",uids[temp1]);
                             mContext.startActivity(intent);
                         }
                     });

@@ -1,8 +1,10 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -13,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -48,6 +51,8 @@ public class PeopleInfoActivity extends BaseActivity {
     TextView txtVocation;
     @BindView(R.id.txt_area)
     TextView txtArea;
+    @BindView(R.id.topview)
+    LinearLayout top;
     @BindView(R.id.txt_position)
     TextView txtPosition;
     @BindView(R.id.txt_company)
@@ -61,7 +66,7 @@ public class PeopleInfoActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this,findViewById(R.id.txt_back));
+        ImmersedStatusbarUtils.initAfterSetContentView(this,top);
         tempUser = getIntent().getStringExtra("uid");
         getUserInfo();
     }
@@ -71,6 +76,7 @@ public class PeopleInfoActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("ouid", tempUser);
+        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUserInfo(postEntity);
     }
@@ -125,7 +131,10 @@ public class PeopleInfoActivity extends BaseActivity {
                 if(txtAddFocus.getText().toString().equals("关注")){
                     followUser();
                 }else {
-                    ToastUtils.showShortToast(this, "私信他");
+                    Intent intent=new Intent(this, ChatActivity.class);
+                    intent.putExtra("name",tempUser);
+                    startActivity(intent);
+                    finish();
                 }
                 break;
             case R.id.ll_ques:

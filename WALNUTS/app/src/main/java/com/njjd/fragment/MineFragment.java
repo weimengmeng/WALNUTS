@@ -83,6 +83,7 @@ public class MineFragment extends BaseFragment {
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),txtChange);
         getUserInfo();
         return view;
     }

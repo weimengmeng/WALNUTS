@@ -5,18 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.mywidget.LoadingDialog;
 import com.ios.dialog.AlertDialog;
-import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.utils.CleanMessageUtil;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ToastUtils;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.IUmengCallback;
-import com.umeng.message.PushAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,8 +29,6 @@ public class SettingActivity extends BaseActivity {
     TextView txtCache;
     @BindView(R.id.top)
     LinearLayout topView;
-    @BindView(R.id.lv_back)
-    SwipeBackLayout lvBack;
     private LoadingDialog loadingDialog;
 
     @Override
@@ -84,7 +77,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
     }
 

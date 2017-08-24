@@ -117,6 +117,8 @@ public interface HttpService {
      */
     @POST("Ads/getCarousel")
     Observable<HttpResult<Object>> getBanner(@QueryMap Map<String, String> params);
+    @POST("Ads/getNotice")
+    Observable<HttpResult<Object>> getNotice(@QueryMap Map<String, String> params);
     @POST("user/getCity")
     Observable<HttpResult<Object>> provinceList(@QueryMap Map<String, String> params);
     @POST("user/getSalesModel")

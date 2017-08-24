@@ -7,15 +7,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
-import com.njjd.fragment.MineFragment;
-import com.njjd.utils.ImmersedStatusbarUtils;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
+import com.njjd.application.AppAplication;
+import com.njjd.application.ConstantsVal;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
+import com.njjd.utils.NotificationUtils;
+import com.umeng.analytics.MobclickAgent;
 
-import butterknife.BindView;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -47,8 +53,47 @@ public class MainActivity extends FragmentActivity {
         mineFragment = fm.findFragmentById(R.id.my_fragment);
         fm.beginTransaction().hide(findFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
                 .show(indexFragment).commit();
+        initConversionLitener();
     }
+    private void initConversionLitener() {
+        EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
 
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                LogUtils.d(messages.get(0).getBody());
+                if(AppAplication.isApplicationBroughtToBackground(AppAplication.getContext())){
+                    Intent intent=new Intent(AppAplication.getContext(),ChatActivity.class);
+                    intent.putExtra("name",messages.get(0).getFrom());
+                    NotificationUtils.createNotif(AppAplication.getContext(),R.drawable.logo,"",messages.get(0).getFrom(),messages.get(0).getBody().toString(),intent,1);
+                }
+                EMClient.getInstance().chatManager().importMessages(messages);
+                EMClient.getInstance().chatManager().loadAllConversations();
+                Intent intent = new Intent();
+                intent.setAction(ConstantsVal.MESSAGE_RECEIVE);
+                sendBroadcast(intent);
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+                //收到透传消息
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> messages) {
+                //收到已读回执
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> message) {
+                //收到已送达回执
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+                //消息状态变动
+            }
+        });
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -104,6 +149,18 @@ public class MainActivity extends FragmentActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

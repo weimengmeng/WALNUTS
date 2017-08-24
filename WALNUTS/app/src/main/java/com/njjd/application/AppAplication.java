@@ -9,22 +9,25 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
 import android.view.View;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
 import com.ios.dialog.AlertDialog;
-import com.njjd.db.DBHelper;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.LoginActivity;
-import com.njjd.walnuts.MainActivity;
+import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.WelcomeActivity;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
-import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
@@ -36,13 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
-
-import retrofit.http.Url;
 
 /**
  * Created by mrwim on 17/7/13.
@@ -95,6 +93,7 @@ public class AppAplication extends Application {
          *  友盟推送
          */
         pushAgent = PushAgent.getInstance(this);
+        MobclickAgent.openActivityDurationTrack(false);
         pushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String s) {
@@ -107,6 +106,12 @@ public class AppAplication extends Application {
                 LogUtils.d("device_token" + s + "  " + s1);
             }
         });
+        EMOptions options = new EMOptions();
+        options.setAcceptInvitationAlways(false);
+        EMClient.getInstance().init(this, options);
+        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
+        MultiDex.install(this);
     }
 
     public static Context getContext() {
@@ -123,26 +128,29 @@ public class AppAplication extends Application {
 
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
+                LogUtils.d("hahaha"+msg.getRaw().toString());
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtils.d("收到通知啦－－－－－－－》" + msg.getRaw().toString());
-                        JSONObject object=msg.getRaw();
+                        JSONObject object = msg.getRaw();
                         try {
-                            JSONObject object1=object.getJSONObject("extra");
-                            JSONObject object2=object1.getJSONObject("param");
-                            if(object2.getString("action").contains("logout")){
+                            JSONObject object1 = object.getJSONObject("extra");
+                            JSONObject object2 = object1.getJSONObject("param");
+                            if (object2.getString("action").equals("logout")) {
                                 new AlertDialog(MyActivityManager.getInstance().getLastActivity()).builder().setTitle("异常提示").setMsg("您的账号在另外一台设备登陆，请重新登陆")
                                         .setPositiveButton("确定", new View.OnClickListener() {
 
                                             @Override
                                             public void onClick(View v) {
                                                 MyActivityManager.getInstance().finishAllActivity();
-                                                Intent intent=new Intent(context, LoginActivity.class);
+                                                Intent intent = new Intent(context, LoginActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
                                             }
                                         }).setCancelable(false).show();
+                            }
+                            if(object2.getString("action").equals("notice_show")){
+//                                ToastUtils.showShortToast(MyActivityManager.getInstance().getLastActivity(),"收到"+object2.getString("num")+"通知");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -154,6 +162,7 @@ public class AppAplication extends Application {
         UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
+
             }
 
             @Override
@@ -173,29 +182,24 @@ public class AppAplication extends Application {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
-                    JSONObject object = msg.getRaw();
                     try {
-                        JSONObject object2 = object.getJSONObject("extra");
-                        if ((object2.isNull("type") ? "" : object2
-                                .getString("type")).equals("0")) {
-                            //系统通知
-                            super.launchApp(context, msg);
-                        } else if ((object2.isNull("type") ? "" : object2
-                                .getString("type")).equals("1")) {
-                            //回答通知
-                            super.launchApp(context, msg);
-                        } else if ((object2.isNull("type") ? "" : object2
-                                .getString("type")).equals("2")) {
-                            //评论通知
-                        } else if ((object2.isNull("type") ? "" : object2
-                                .getString("type")).equals("3")) {
-                            //关注通知
-                        } else {
-                            super.launchApp(context, msg);
-                            Intent intent = new Intent();
-                            intent.putExtra("data", "1");
-                            intent.setAction("attenation"); // 设置你这个广播的action，只有和这个action一样的接受者才能接受者才能接收广播
-                            sendBroadcast(intent); // 发送广播
+                        JSONObject object = msg.getRaw();
+                        JSONObject object1 = object.getJSONObject("extra");
+                        JSONObject object2 = object1.getJSONObject("param");
+                        if (object2.getString("action").equals("follow_article")) {
+//                            Intent intent = new Intent(context, InformActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+                        }
+                        if (object2.getString("action").equals("follow_user")) {
+                            LogUtils.d("点击了关注用户通知");
+                            Intent intent = new Intent(context, PeopleInfoActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("uid",object2.getString("uid"));
+                            startActivity(intent);
+                        }
+                        if (object2.getString("action").equals("answer")) {
+                            LogUtils.d("点击了回答评论问题通知");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

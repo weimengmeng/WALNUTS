@@ -1,24 +1,23 @@
 package com.njjd.utils;
 
 import android.content.Context;
-import android.view.View;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.BannerEntity;
 import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.walnuts.PeopleInfoActivity;
-import com.njjd.walnuts.R;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
@@ -235,8 +234,52 @@ public class CommonUtils {
             SPUtils.put(mContext, "sex", json.isNull("sex") ? "0" : json.getString("sex"));
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
             SPUtils.put(mContext, "token", json.getString("token"));
+            EMClient.getInstance().login(json.getString("uid"), "123456", new EMCallBack() {
+                @Override
+                public void onSuccess() {
+                    LogUtils.d("环信即时登陆成功");
+                    /**
+                     *  获取所有联系人
+                     */
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    addListener();
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    LogUtils.d("环信即时登陆失败");
+                }
+
+                @Override
+                public void onProgress(int progress, String status) {
+
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+    private static void addListener(){
+        //注册一个监听连接状态的listener
+        EMClient.getInstance().addConnectionListener(new MyConnectionListener());
+    }
+    private static class MyConnectionListener implements EMConnectionListener {
+        @Override
+        public void onConnected() {
+        }
+        @Override
+        public void onDisconnected(final int error) {
+            new Runnable() {
+
+                @Override
+                public void run() {
+                    if(error == EMError.USER_REMOVED){
+                        // 显示帐号已经被移除
+                    }else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                        // 显示帐号在其他设备登录
+                    }
+                }
+            };
         }
     }
     public List<String> getProvincesList(){

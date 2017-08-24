@@ -243,6 +243,7 @@ public class SaveDetailActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", entity);
                 intent.putExtra("question", bundle);
+                intent.putExtra("type","1");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
                 break;

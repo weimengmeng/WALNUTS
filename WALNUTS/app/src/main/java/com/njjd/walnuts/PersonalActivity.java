@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
-import com.liuguangqiang.swipeback.SwipeBackLayout;
 import com.njjd.domain.CommonEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
@@ -56,8 +55,6 @@ public class PersonalActivity extends BaseActivity{
     TextView btnAddHelp;
     @BindView(R.id.txt_sale)
     TextView txtSale;
-    @BindView(R.id.lv_back)
-    SwipeBackLayout lvBack;
     //省份一级菜单
     private List<String> provinces;
     private List<CommonEntity> provinceEntities;
@@ -157,7 +154,6 @@ public class PersonalActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         ImmersedStatusbarUtils.initAfterSetContentView(this, top);
         btnAddHelp.setVisibility(View.VISIBLE);
-        lvBack.setDragEdge(SwipeBackLayout.DragEdge.LEFT);
     }
 
     @OnClick({R.id.txt_position,R.id.back,R.id.btn_add_help,R.id.txt_name,R.id.txt_message,R.id.txt_company,R.id.txt_province, R.id.txt_sale, R.id.txt_vocation, R.id.txt_sex})

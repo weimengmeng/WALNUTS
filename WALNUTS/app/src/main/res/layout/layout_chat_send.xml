@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
+        android:id="@+id/txt_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="3分钟前"
@@ -19,17 +20,44 @@
         <View android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="match_parent"/>
-        <TextView
+        <LinearLayout
+            android:id="@+id/msgView"
             android:layout_width="0dp"
             android:layout_weight="0.5"
-            android:background="@drawable/chat_send"
-            android:text="你好你好你好你好你好你好你好你好"
-            android:layout_height="wrap_content" />
+            android:gravity="right"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:background="@drawable/bg_chat_right_white"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/chat_content"
+                android:layout_width="wrap_content"
+                android:text="你好你好你好你好你好你好你好你好"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/chat_img_pic"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:maxHeight="200dp"
+                android:src="@drawable/head"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/chat_voice"
+                android:layout_width="wrap_content"
+                android:src="@drawable/head"
+                android:drawableLeft="@drawable/pic_voice_left"
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
+                </LinearLayout>
+        </LinearLayout>
         <LinearLayout android:layout_width="0dp"
             android:layout_weight="0.2"
             android:gravity="center"
             android:layout_height="match_parent">
             <ImageView
+                android:id="@+id/img_head"
                 android:layout_width="@dimen/head_big"
                 android:layout_height="@dimen/head_big"
                 android:src="@drawable/head"/>

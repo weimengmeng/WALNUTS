@@ -1,12 +1,9 @@
 package com.njjd.walnuts;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -14,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
-import com.liuguangqiang.swipeback.SwipeBackActivity;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.umeng.analytics.MobclickAgent;
@@ -26,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by mrwim on 17/7/13.
  */
 
-public abstract class BaseActivity extends SwipeBackActivity implements HttpOnNextListener{
+public abstract class BaseActivity extends Activity implements HttpOnNextListener{
     /** 是否沉浸状态栏 **/
     private boolean isSetStatusBar = true;
     /** 当前Activity渲染的视图View **/
@@ -106,11 +102,13 @@ public abstract class BaseActivity extends SwipeBackActivity implements HttpOnNe
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
     }
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 

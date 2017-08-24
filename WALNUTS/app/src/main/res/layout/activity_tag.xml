@@ -1,67 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <com.njjd.utils.GradationScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey"
-        android:scrollbarThumbVertical="@drawable/scrollbar">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_big"
-            android:orientation="vertical" >
-            <LinearLayout
-                android:id="@+id/lv_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/login"
-                android:paddingLeft="@dimen/padding_left"
-                android:paddingTop="@dimen/margin"
-                android:paddingBottom="@dimen/padding_left"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/txt_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/largest"
-                    android:textStyle="bold"
-                    android:text="商务谈判"/>
-                <TextView
-                    android:id="@+id/txt_focus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+关注标签"
-                    android:typeface="sans"
-                    android:paddingTop="@dimen/padding"
-                    android:paddingBottom="@dimen/padding"
-                    android:layout_marginTop="@dimen/_top"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/small"
-                    android:background="@drawable/txt_shape_white"/>
-            </LinearLayout>
-            <com.jcodecraeer.xrecyclerview.XRecyclerView
-                android:id="@+id/listview"
-                android:background="@color/grey"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </com.jcodecraeer.xrecyclerview.XRecyclerView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="+关注标签"
-                android:textColor="@color/white"
-                android:textSize="@dimen/small"
-                android:typeface="sans"
-                android:background="@drawable/txt_shape_white"/>
-        </LinearLayout>
-    </com.njjd.utils.GradationScrollView>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/lv_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include layout="@layout/top"></include>
+        android:layout_height="wrap_content"
+        android:background="@color/login"
+        android:paddingLeft="@dimen/padding_left"
+        android:paddingBottom="@dimen/padding_left"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/btn_back_white"
+            android:text=""
+            android:textColor="#000000"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/normal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/txt_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="-20dp"
+            android:textSize="@dimen/largest"
+            android:textStyle="bold"
+            android:text="商务谈判"/>
+        <TextView
+            android:id="@+id/txt_focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+关注标签"
+            android:typeface="sans"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
+            android:layout_marginTop="-20dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/small"
+            android:background="@drawable/txt_shape_white"/>
     </LinearLayout>
-</RelativeLayout>
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/listview"
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+</LinearLayout>

@@ -66,43 +66,43 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
     @Override
     public void initView(View view) {
         btnGetCode.setText("获取验证码");
-//        inflater = LayoutInflater.from(this);
-//        lvImgcode = inflater.inflate(R.layout.lay_code, null);
-//        popupWindow = new BasePopupWindow(this);
-//        popupWindow.setContentView(lvImgcode);
-//        popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        inflater = LayoutInflater.from(this);
+        lvImgcode = inflater.inflate(R.layout.lay_code, null);
+        popupWindow = new BasePopupWindow(this);
+        popupWindow.setContentView(lvImgcode);
+        popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
-//        etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
-//        web = (WebView) lvImgcode.findViewById(R.id.web);
-//        imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
-//            }
-//        });
-//        etVerify.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (s.length() == 4) {
-//                    code = etVerify.getText().toString().trim();
-//                    popupWindow.dismiss();
-//                    etVerify.setText("");
-//                    //判断是否邀请
-//                    checkInvitation();
-//                }
-//            }
-//        });
-//        btnGetCode.setOnTimerCountDownListener(this);
+        etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
+        web = (WebView) lvImgcode.findViewById(R.id.web);
+        imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
+            }
+        });
+        etVerify.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 4) {
+                    code = etVerify.getText().toString().trim();
+                    popupWindow.dismiss();
+                    etVerify.setText("");
+                    //判断是否邀请
+                    checkInvitation();
+                }
+            }
+        });
+        btnGetCode.setOnTimerCountDownListener(this);
     }
     private void checkInvitation(){
         Map<String, Object> map = new HashMap<>();
@@ -140,7 +140,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     return;
                 }
                 popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-                web.loadUrl(HttpManager.BASE_URL + "getVerify?phone=" + etPhone.getText().toString().trim());
+                web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
 //                Intent intent = new Intent(this, SetPasswordActivity.class);
 //                startActivity(intent);
                 break;

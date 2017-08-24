@@ -6,18 +6,21 @@ package com.njjd.fragment;
 
 import android.support.v4.app.Fragment;
 
+import com.umeng.analytics.MobclickAgent;
+
 public abstract class BaseFragment extends Fragment {
     protected boolean isVisible = false;
+    protected final String TAG = this.getClass().getSimpleName();
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+    }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            isVisible = true;
-            lazyInitData();
-        } else {
-            isVisible = false;
-        }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
     public abstract void lazyInitData();
 }

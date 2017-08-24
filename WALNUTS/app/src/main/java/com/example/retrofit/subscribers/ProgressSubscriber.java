@@ -122,7 +122,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         } else if (e instanceof ConnectException) {
             ToastUtils.showShortToast(context, "网络中断，请检查您的网络状态");
         } else {
-            if (e.toString().contains("暂无")) {
+            if (e.toString().contains("暂无")||e.toString().contains("NO")) {
 
             } else {
                 ToastUtils.showShortToast(context, e.toString().split(":").length < 1 ? e.toString() : e.toString().split(":")[1]);

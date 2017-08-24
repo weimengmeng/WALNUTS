@@ -43,7 +43,7 @@ public class QuestionEntity implements Serializable{
             this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
             this.photo=object.isNull("imgs")?"":object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.pic=object.isNull("headimgs")?(object.isNull("authheadimg")?"":object.getString("authheadimg")):object.getString("headimgs");
-            this.uids=object.isNull("uids")? SPUtils.get(AppAplication.getContext(),"userId","").toString():object.getString("uids");
+            this.uids=object.isNull("uids")?(object.isNull("auth_uid")?"":object.getString("auth_uid")):object.getString("uids");
             this.tag="";
             this.isFocus=0;
             this.kind=kind;

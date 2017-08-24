@@ -35,6 +35,7 @@
                 android:background="@drawable/background_layout_div"
                 android:gravity="top|left"
                 android:hint="请输入回答"
+                android:textColorHint="@color/txt_color"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal"
                 android:padding="@dimen/padding_left" />

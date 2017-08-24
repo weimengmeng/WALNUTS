@@ -102,6 +102,14 @@ public class MyFocusActivity extends BaseActivity {
                 return false;
             }
         });
+        listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(MyFocusActivity.this,PeopleInfoActivity.class);
+                intent.putExtra("uid",userList.get(position).getId());
+                startActivity(intent);
+            }
+        });
         focusTagAdapter = new FocusTagAdapter(tagList, this);
         listTag.setAdapter(focusTagAdapter);
         listTag.setMenuCreator(creator);
@@ -145,6 +153,7 @@ public class MyFocusActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", quesList.get(position));
                 intent.putExtra("question", bundle);
+                intent.putExtra("type","1");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
@@ -279,6 +288,7 @@ public class MyFocusActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", FocusPeopleAdapter.CURRENT_PAGE);
+        map.put("select","1");
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getFocusUserListener, this, false, false), map);
         HttpManager.getInstance().getFollowUser(postEntity);
     }
@@ -297,7 +307,7 @@ public class MyFocusActivity extends BaseActivity {
                     }
                     for (int i = 0; i < array.size(); i++) {
                         object = array.get(i).getAsJsonObject();
-                        userList.add(new FocusEntity(object.get("be_uid").getAsString(), object.get("uname").getAsString(), object.get("headimgs").getAsString(),
+                        userList.add(new FocusEntity(object.get("uid").getAsString(), object.get("uname").getAsString(), object.get("headimgs").getAsString(),
                                 object.get("add_time").getAsString(), object.get("introduction").getAsString()));
                     }
                     peopleAdapter.notifyDataSetChanged();
@@ -382,7 +392,6 @@ public class MyFocusActivity extends BaseActivity {
         HttpManager.getInstance().followUser(postEntity);
 
     }
-
     private void cancleFocusQuestion(final int position) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
@@ -398,7 +407,6 @@ public class MyFocusActivity extends BaseActivity {
         }, this, false, false), map);
         HttpManager.getInstance().focusQuestion(postEntity);
     }
-
     private void cancleFocusTag(final int position) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
@@ -414,7 +422,6 @@ public class MyFocusActivity extends BaseActivity {
         }, this, false, false), map);
         HttpManager.getInstance().focusLabel(postEntity);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
