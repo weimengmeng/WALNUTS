@@ -100,6 +100,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
+        if(tempList!=null&&questionAdapter!=null&&list!=null){
+            questionAdapter.setCurrentPage(1);
+            getQuestion(tempKind, tempOrder);
+        }
 
     }
 
@@ -303,7 +307,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
     private void initRefresh() {
     }
-
 
     @OnClick(R.id.img_order)
     public void onViewClicked() {

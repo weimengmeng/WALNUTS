@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.txt_misspwd, R.id.txt_register, R.id.btn_close, R.id.btn_login, R.id.btn_sina, R.id.btn_wx, R.id.btn_qq})
+    @OnClick({R.id.txt_misspwd, R.id.txt_register, R.id.btn_login, R.id.btn_sina, R.id.btn_wx, R.id.btn_qq})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -95,8 +95,6 @@ public class LoginActivity extends BaseActivity {
                 intent.putExtra("bind", 0);
                 startActivity(intent);
                 finish();
-                break;
-            case R.id.btn_close:
                 break;
             case R.id.btn_login:
                 if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){

@@ -20,7 +20,12 @@ public class CommentEntity implements Serializable {
     private String content="";
     private String replyNum="0";
     private String time="";
-    private List<ReplyEntity> replyEntities;
+    private String sec_uid="";
+    private String sec_com_id="";
+    private String sec_content;
+    private String sec_uname="";
+    private String sec_introduction="";
+    private String sec_headimgs="";
     public CommentEntity(JSONObject object){
 
         try {
@@ -30,8 +35,15 @@ public class CommentEntity implements Serializable {
             this.name=object.isNull("uname")?"":object.getString("uname");
             this.message=object.isNull("introduction")?"":object.getString("introduction");
             this.content=object.isNull("content")?"":object.getString("content");
-            this.time= object.isNull("change_time")?"":object.getString("change_time");
+            this.time= object.isNull("add_time")?"":object.getString("add_time");
             this.replyNum =object.isNull("answer_num")?"":object.getString("answer_num");
+
+            this.sec_uid=object.isNull("sec_uid")?"":object.getString("sec_uid");
+            this.sec_com_id=object.isNull("sec_com_id")?"":object.getString("sec_com_id");
+            this.sec_content=object.isNull("sec_content")?"":object.getString("sec_content");
+            this.sec_uname=object.isNull("sec_uname")?"":object.getString("sec_uname");
+            this.sec_introduction= object.isNull("sec_introduction")?"":object.getString("sec_introduction");
+            this.sec_headimgs =object.isNull("sec_headimgs")?"":object.getString("sec_headimgs");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -39,6 +51,55 @@ public class CommentEntity implements Serializable {
     public CommentEntity(){
 
     }
+
+    public String getSec_uid() {
+        return sec_uid;
+    }
+
+    public void setSec_uid(String sec_uid) {
+        this.sec_uid = sec_uid;
+    }
+
+    public String getSec_com_id() {
+        return sec_com_id;
+    }
+
+    public void setSec_com_id(String sec_com_id) {
+        this.sec_com_id = sec_com_id;
+    }
+
+    public String getSec_content() {
+        return sec_content;
+    }
+
+    public void setSec_content(String sec_content) {
+        this.sec_content = sec_content;
+    }
+
+    public String getSec_uname() {
+        return sec_uname;
+    }
+
+    public void setSec_uname(String sec_uname) {
+        this.sec_uname = sec_uname;
+    }
+
+    public String getSec_introduction() {
+        return sec_introduction;
+    }
+
+    public void setSec_introduction(String sec_introduction) {
+        this.sec_introduction = sec_introduction;
+    }
+
+    public String getSec_headimgs() {
+        return sec_headimgs;
+    }
+
+    public void setSec_headimgs(String sec_headimgs) {
+        this.sec_headimgs = sec_headimgs;
+    }
+
     public String getCommentId() {
         return commentId;
     }
@@ -95,13 +156,6 @@ public class CommentEntity implements Serializable {
         this.commentUId = commentUId;
     }
 
-    public List<ReplyEntity> getReplyEntities() {
-        return replyEntities;
-    }
-
-    public void setReplyEntities(List<ReplyEntity> replyEntities) {
-        this.replyEntities = replyEntities;
-    }
 
     public String getTime() {
         return time;

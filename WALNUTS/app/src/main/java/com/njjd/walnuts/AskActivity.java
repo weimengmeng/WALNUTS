@@ -51,7 +51,7 @@ public class AskActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         ImmersedStatusbarUtils.initAfterSetContentView(this, top);
-        back.setText("发布");
+        back.setText("返回");
         txtTitle.setText("提问");
         gw = (GridView) findViewById(R.id.gw);
         datas = new ArrayList<>();

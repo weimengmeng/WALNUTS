@@ -126,11 +126,11 @@ public class MineFragment extends BaseFragment {
                     object = new JSONObject(gson.toJson(o));
                     SPUtils.put(context, "province", object.getString("province_name"));
                     SPUtils.put(context, "city", object.getString("city_name"));
-                    SPUtils.put(context, "company", object.isNull("company") ? "未填写" : object.getString("company"));
-                    SPUtils.put(context, "position", object.isNull("position") ? "未填写" : object.getString("position"));
+                    SPUtils.put(context, "company", object.isNull("company") ? "" : object.getString("company"));
+                    SPUtils.put(context, "position", object.isNull("position") ? "" : object.getString("position"));
                     SPUtils.put(context, "industry", object.getString("industry_name"));
                     SPUtils.put(context, "sales", object.getString("sales_name"));
-                    SPUtils.put(context, "message", object.isNull("introduction") ? "未填写" : object.getString("introduction"));
+                    SPUtils.put(context, "message", object.isNull("introduction") ? "" : object.getString("introduction"));
                     SPUtils.put(context, "focus", Float.valueOf(object.getString("follow_numm")).intValue());
                     SPUtils.put(context, "focused", Float.valueOf(object.getString("be_follow_numm")).intValue());
                     txtName.setText(SPUtils.get(context, "name", "").toString());
@@ -141,6 +141,15 @@ public class MineFragment extends BaseFragment {
                     txtVocation.setText(SPUtils.get(context, "industry", "").toString());
                     txtFocus.setText("关注的人\n" + SPUtils.get(context, "focus", 0));
                     txtFocused.setText("被关注\n" + SPUtils.get(context, "focused", 0));
+                    if(txtMessage.getText().toString().equals("")){
+                        txtMessage.setHint("待完善");
+                    }
+                    if(txtPosition.getText().toString().equals("")){
+                        txtPosition.setHint("待完善");
+                    }
+                    if(txtCompany.getText().toString().equals("")){
+                        txtCompany.setHint("待完善");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -216,7 +225,7 @@ public class MineFragment extends BaseFragment {
         @Override
         public void onNext(Object o) {
             JsonObject object= JSONUtils.getAsJsonObject(o);
-            SPUtils.put(context,"head",object.get("path").getAsString());
+            SPUtils.put(context,"head",HttpManager.BASE_URL2+object.get("path").getAsString());
         }
     };
 

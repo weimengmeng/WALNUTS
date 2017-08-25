@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lv_back"
     style="@style/Width_m_Height_m"
     android:background="@color/grey">
 
@@ -80,6 +79,14 @@
             android:layout_height="1dp"
             android:alpha="0.5"
             android:background="@color/txt_color"></View>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_top"
+            android:lineSpacingMultiplier="1.2"
+            android:text="QQ客服：2198152901\n微信/手机客服：17396809650\n邮箱：bizcrossroadd@qq.com"
+            android:textSize="@dimen/normal" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.njjd.domain.InformEntity;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
 import org.json.JSONException;
@@ -51,7 +53,7 @@ public class InformAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHodel hodel=null;
         if(convertView==null){
             convertView=inflater.inflate(R.layout.item_inform,parent,false);
@@ -66,6 +68,14 @@ public class InformAdapter extends BaseAdapter {
         }
         tempEntity=list.get(position);
         GlideImageLoder.getInstance().displayImage(context,tempEntity.getHeadimg(),hodel.image_head);
+        hodel.image_head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context,PeopleInfoActivity.class);
+                intent.putExtra("uid",list.get(position).getUid());
+                context.startActivity(intent);
+            }
+        });
         switch (tempEntity.getType()){
 //            0 系统通知 1 关注用户 2 关注问题 3回答问题 4 评论回答 5 收藏回答 6 点赞",
             case "0.0":
@@ -74,7 +84,7 @@ public class InformAdapter extends BaseAdapter {
                 break;
             case "1.0":
                 hodel.title.setText(tempEntity.getUname()+" 关注了你");
-                hodel.content.setText("恭喜你被关注啦");
+                hodel.content.setText("被关注了？快去看看");
                 break;
             case "2.0":
                 hodel.title.setText(tempEntity.getUname()+" 关注了你的问题");

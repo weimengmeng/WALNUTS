@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    android:id="@+id/lv_back"
     android:orientation="vertical">
 <LinearLayout
     android:layout_width="match_parent"
@@ -106,7 +105,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/padding"
                 android:layout_weight="0.2"
-                android:text="签名"
+                android:text="简介"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
             <EditText
@@ -118,6 +117,7 @@
                 android:paddingRight="@dimen/margin"
                 android:background="@null"
                 android:text=""
+                android:textColorHint="@color/txt_color"
                 android:typeface="sans"
                 android:maxLength="50"
                 android:textColor="@color/gray"
@@ -261,6 +261,7 @@
                 android:paddingRight="@dimen/margin"
                 android:text=""
                 android:typeface="sans"
+                android:textColorHint="@color/txt_color"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
         </LinearLayout>
@@ -296,6 +297,7 @@
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
                 android:typeface="sans"
+                android:textColorHint="@color/txt_color"
                 android:text=""
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />

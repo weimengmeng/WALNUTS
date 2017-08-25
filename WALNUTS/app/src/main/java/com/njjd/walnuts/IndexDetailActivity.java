@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,24 +21,20 @@ import android.widget.TextView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
-import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.njjd.adapter.AnswerReplyAdapter;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
 import com.njjd.domain.QuestionEntity;
-import com.njjd.domain.ReplyEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.CommonUtils;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.MyScrollView;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.scrollablelayout.ScrollableLayout;
@@ -45,7 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/12.
  */
 
-public class IndexDetailActivity extends BaseActivity implements View.OnClickListener{
+public class IndexDetailActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.txt_title)
@@ -80,20 +80,22 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     TextView txtFocus;
     @BindView(R.id.ex_list)
     ExpandableListView exListVIew;
+    @BindView(R.id.lv_reply)
+    LinearLayout lvRply;
     @BindView(R.id.scrollLayout)
     ScrollableLayout scrollView;
     @BindView(R.id.lv_tag)
     LinearLayout lvTag;
+    @BindView(R.id.et_content)
+    EditText etContent;
     private QuestionEntity questionEntity;
     private RelativeLayout relativeLayout;
     private ImageView imageView;
     private LayoutInflater inflater;
     private List<AnswerEntity> answerEntities = new ArrayList<>();
     private List<CommentEntity> commentEntities = new ArrayList<>();
-    private List<ReplyEntity> replyEntities = new ArrayList<>();
     private AnswerEntity answerEntity;
     private CommentEntity commentEntity;
-    private ReplyEntity replyEntity;
     private AnswerReplyAdapter answerReplyAdapter;
     private List<String> list = new ArrayList<>();
     private int current_group_id = 0, tempFocus = 0, tempAnswer = 0;
@@ -102,6 +104,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     private View mainView;
     private RadioButton layoutTop, layoutTime;
     private String tempOrder = "time";
+    private AnswerEntity tempAnswerInfo;
+    private CommentEntity tempComment;
+    private String content="";
+    private int currentId=0;
     @Override
     public int bindLayout() {
         return R.layout.activity_index_detail;
@@ -109,6 +115,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void initView(View view) {
+        AndroidBug5497Workaround.assistActivity(this);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
@@ -176,7 +183,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 return false;
             }
         });
-        getDetail();
         mainView = LayoutInflater.from(this).inflate(R.layout.layout_pop, null);
         layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
         layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
@@ -214,6 +220,18 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                                  int visibleItemCount, int totalItemCount) {
             }
         });
+        exListVIew.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                lvRply.setVisibility(View.VISIBLE);
+                currentId=groupPosition;
+                etContent.setHint("回复"+answerEntities.get(groupPosition).getCommentEntityList().get(childPosition).getName());
+                KeybordS.openKeybord(etContent,IndexDetailActivity.this);
+                tempAnswerInfo=answerEntities.get(groupPosition);
+                tempComment=answerEntities.get(groupPosition).getCommentEntityList().get(childPosition);
+                return false;
+            }
+        });
     }
 
     private void getDetail() {
@@ -227,6 +245,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onNext(Object o) {
         super.onNext(o);
+        lvTag.removeAllViews();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls(); //重点
         Gson gson = gsonBuilder.create();
@@ -273,9 +292,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+        AnswerReplyAdapter.CURRENT_PAGE = 1;
+        getDetail();
         getAnswerList();
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -310,10 +330,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     commentEntities.add(new CommentEntity());
                     answerEntity.setCommentEntityList(commentEntities);
                     if (getIntent().getStringExtra("type").equals("2")) {
-                        if (String.valueOf(Float.valueOf(answerEntity.getAnwerId()).intValue()).equals(comment_id)) {
+                        if (String.valueOf(Float.valueOf(answerEntity.getAnwerId()).intValue()).equals(String.valueOf(Float.valueOf(comment_id).intValue()))) {
                             answerEntities.add(answerEntity);
                         }
-                    }else{
+                    } else {
                         answerEntities.add(answerEntity);
                     }
                 }
@@ -342,7 +362,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             Gson gson = gsonBuilder.create();
             JSONObject object = null;
             try {
-                JSONArray array=new JSONArray(gson.toJson(o));
+                JSONArray array = new JSONArray(gson.toJson(o));
                 answerEntities.get(current_group_id).getCommentEntityList().clear();
                 answerEntities.get(current_group_id).getCommentEntityList().add(new CommentEntity());
                 for (int i = 0; i < array.length(); i++) {
@@ -357,7 +377,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         }
     };
 
-    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer,R.id.txt_sort})
+    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort,R.id.btn_reply,R.id.btn_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -369,6 +389,19 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             case R.id.txt_focus:
                 addFocus();
                 break;
+            case R.id.btn_cancle:
+                   KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
+               lvRply.setVisibility(View.GONE);
+                break;
+            case R.id.btn_reply:
+                if(etContent.getText().toString().trim().equals("")){
+                    ToastUtils.showShortToast(IndexDetailActivity.this,"请输入回复内容");
+                    return ;
+                }
+                addCommentF(etContent.getText().toString().trim());
+                KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
+                etContent.setText("");
+                break;
             case R.id.img_answer:
                 Intent intent = new Intent(this, AnswerActivity.class);
                 intent.putExtra("quesId", questionEntity.getQuestionId());
@@ -377,7 +410,40 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+    private void addCommentF(String content){
+        this.content=content;
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", questionEntity.getQuestionId());
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("content", content);
+        if(tempComment.getSec_content().equals("sec_content")){
+            map.put("comment_id", tempComment.getCommentId());
+            map.put("sec_comment_id",tempAnswerInfo.getAnwerId());
+        }else{
+            map.put("comment_id", tempComment.getCommentId());
+            map.put("sec_comment_id",tempComment.getSec_com_id());
+        }
+        map.put("token",SPUtils.get(this,"token","").toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, this, false, false), map);
+        HttpManager.getInstance().pubComment(postEntity);
+    }
 
+    HttpOnNextListener commentListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            commentEntity=new CommentEntity();
+            commentEntity.setContent(content);
+            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this,"head","").toString());
+            commentEntity.setName(SPUtils.get(IndexDetailActivity.this,"name","").toString());
+            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this,"message","").toString());
+            commentEntity.setSec_uid("sec_uid");
+            commentEntity.setReplyNum("0");
+            commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            answerEntities.get(currentId).getCommentEntityList().add(1,commentEntity);
+            answerReplyAdapter.notifyDataSetChanged();
+            ToastUtils.showShortToast(IndexDetailActivity.this, "回复成功");
+        }
+    };
     private void addFocus() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
@@ -393,30 +459,32 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     HttpOnNextListener focusListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消成功");
+            ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消关注");
             txtFocus.setText(questionEntity.getIsFocus() == 0 ? "取消关注" : "+关注问题");
             txtFocusNum.setText("关注 " + (questionEntity.getIsFocus() == 0 ? ++tempFocus : --tempFocus));
             questionEntity.setIsFocus(questionEntity.getIsFocus() == 0 ? 1 : 0);
             DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(questionEntity);
         }
     };
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rb_hot:
                 tempOrder = "hot";
-                AnswerReplyAdapter.CURRENT_PAGE=1;
+                AnswerReplyAdapter.CURRENT_PAGE = 1;
                 getAnswerList();
                 popupWindow.dismiss();
                 break;
             case R.id.rb_time:
                 tempOrder = "time";
-                AnswerReplyAdapter.CURRENT_PAGE=1;
+                AnswerReplyAdapter.CURRENT_PAGE = 1;
                 getAnswerList();
                 popupWindow.dismiss();
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

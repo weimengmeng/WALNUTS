@@ -7,10 +7,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.njjd.adapter.MyPagerAdapter;
-import com.njjd.utils.CustomRadioButton;
 import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.VpSwipeRefreshLayout;
@@ -33,11 +34,11 @@ public class FindFragment extends BaseFragment {
     @BindView(R.id.layout_refresh)
     VpSwipeRefreshLayout layoutRefresh;
     @BindView(R.id.radio_hot)
-    CustomRadioButton radioHot;
+    RadioButton radioHot;
     @BindView(R.id.radio_new)
-    CustomRadioButton radioNew;
-    @BindView(R.id.button_group)
-    RadioGroup buttonGroup;
+    RadioButton radioNew;
+    @BindView(R.id.top)
+    LinearLayout top;
     private Context context;
 //    @BindView(R.id.top)
 //    LinearLayout top;
@@ -59,7 +60,7 @@ public class FindFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), buttonGroup);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
 //        back.setVisibility(View.GONE);
 //        txtTitle.setText("发现");
         viewList = new ArrayList<>();

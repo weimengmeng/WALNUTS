@@ -8,7 +8,6 @@
         android:src="@drawable/wel_bg2"
         android:scaleType="centerCrop"/>
     <RelativeLayout
-        android:id="@+id/rl_private_message_launcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true">

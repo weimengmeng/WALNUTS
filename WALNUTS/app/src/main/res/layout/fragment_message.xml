@@ -68,12 +68,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="#00000000"
+            android:overScrollMode="never"
             android:dividerHeight="0dip"
             android:listSelector="@android:color/transparent" />
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/list_inform"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             android:visibility="gone"
             android:listSelector="@android:color/transparent" />
         <include

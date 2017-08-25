@@ -21,7 +21,8 @@
             android:layout_weight="0.8"
             android:background="@drawable/background_layout_et"
             android:gravity="center_vertical"
-            android:hint="点击此次评论"
+            android:hint="点此进行评论"
+            android:textColorHint="@color/txt_color"
             android:paddingLeft="@dimen/padding"
             android:textSize="@dimen/small"
             android:typeface="sans" />
@@ -91,7 +92,6 @@
                     android:layout_weight="0.5"
                     android:gravity="center_vertical"
                     android:text="职业的小逗比"
-                    android:layout_marginLeft="-2dp"
                     android:layout_marginTop="@dimen/_margin"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small" />
@@ -138,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
                 android:gravity="center|left"
+                android:visibility="invisible"
                 android:text="回复 1"
                 android:textColor="@color/login"
                 android:textSize="@dimen/small">

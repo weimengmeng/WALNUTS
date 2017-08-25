@@ -13,12 +13,5 @@
     <color name="login">#fed32b</color>
     <color name="alertdialog_line">#c6c6c6</color>
     <color name="actionsheet_blue">#037BFF</color>
-    <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
-    <color name="hintColor">#CCCCCC</color>
-    <color name="textColor">#000</color>
-    <color name="underline_default_color">#CCCCCC</color>
-    <color name="underline_selected_color">#000</color>
-    <color name="btn_press_color">#5677fc</color>
-    <color name="btn_pressed_color">#3ca0ec</color>
 </resources>

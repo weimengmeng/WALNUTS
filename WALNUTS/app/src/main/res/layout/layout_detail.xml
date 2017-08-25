@@ -12,12 +12,6 @@
         android:background="@drawable/background_layout_div"
         android:orientation="vertical"
         android:paddingBottom="@dimen/padding">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginRight="@dimen/margin_right"
-            android:alpha="0.15"
-            android:background="#000000"></View>
         <LinearLayout
             android:id="@+id/lv_img"
             android:layout_width="match_parent"
@@ -106,14 +100,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="回答"
             android:textColor="@color/txt_color"
             android:textSize="@dimen/normal" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding"
             android:id="@+id/txt_sort"
@@ -131,6 +126,7 @@
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/_margin"
+        android:overScrollMode="never"
         android:divider="#00000000"
         android:dividerHeight="0dp"
         android:focusable="false"

@@ -37,7 +37,6 @@
         android:textColor="@color/txt_color"
         android:textSize="@dimen/small"/>
     <ListView
-        android:id="@+id/list_new"
         android:layout_marginTop="-5dp"
         android:layout_width="match_parent"
         android:background="@drawable/background_layout_div"

@@ -1,7 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +14,12 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
-import com.njjd.domain.CommonEntity;
-import com.njjd.domain.ReplyEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
 import java.text.ParsePosition;
@@ -39,7 +37,6 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
     private List<AnswerEntity> groupArray;
     private AnswerEntity answerEntity;
     private CommentEntity commentEntity;
-    private ReplyEntity replyEntity;
     private Context mContext;
     public static int CURRENT_PAGE = 1;
     int temp = 1, currentid = 0;
@@ -123,17 +120,30 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         if (answerEntity.getIsSave().equals("1")) {
             holder.groupSave.setText("取消收藏");
             holder.groupSave.setTextColor(mContext.getResources().getColor(R.color.txt_color));
+
         } else {
             holder.groupSave.setText("收藏");
             holder.groupSave.setTextColor(mContext.getResources().getColor(R.color.login));
         }
         if (answerEntity.getIsPrise().equals("1")) {
-            holder.groupAgree.setBackgroundResource(R.drawable.background_button_div_grey);
-        } else {
             holder.groupAgree.setBackgroundResource(R.drawable.background_button_div);
+            holder.groupAgree.setSelected(true);
+            holder.groupAgree.setTextColor(mContext.getResources().getColor(R.color.white));
+        } else {
+            holder.groupAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+            holder.groupAgree.setTextColor(mContext.getResources().getColor(R.color.txt_color));
+            holder.groupAgree.setSelected(false);
         }
         holder.groupAgree.setText("" + Float.valueOf(answerEntity.getAgree()).intValue());
         GlideImageLoder.getInstance().displayImage(mContext,answerEntity.getHead(),holder.head);
+        holder.head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext,PeopleInfoActivity.class);
+                intent.putExtra("uid",groupArray.get(groupPosition).getAnswerUId());
+                mContext.startActivity(intent);
+            }
+        });
         holder.groupAgree.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
         holder.groupSave.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
         holder.groupReport.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
@@ -186,7 +196,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
     }
 
     @Override
-    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View view = convertView;
         ChildHolder holder = null;
         if (view == null) {
@@ -226,14 +236,41 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         }
         if(childPosition!=0) {
             commentEntity = groupArray.get(groupPosition).getCommentEntityList().get(childPosition);
-            GlideImageLoder.getInstance().displayImage(mContext,commentEntity.getHead(),holder.childHead);
-            holder.childName.setText(commentEntity.getName());
-            holder.childMess.setText(commentEntity.getMessage());
-            holder.childContent.setText(commentEntity.getContent());
-            ParsePosition pos = new ParsePosition(0);
-            holder.childTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(commentEntity.getTime(), pos)));
-            holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());
-            view.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+            if(commentEntity.getSec_uid().equals("sec_uid")) {
+                GlideImageLoder.getInstance().displayImage(mContext, commentEntity.getHead(), holder.childHead);
+                holder.childHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, PeopleInfoActivity.class);
+                        intent.putExtra("uid", groupArray.get(groupPosition).getCommentEntityList().get(childPosition).getCommentUId());
+                        mContext.startActivity(intent);
+                    }
+                });
+                holder.childName.setText(commentEntity.getName());
+                holder.childMess.setText(commentEntity.getMessage());
+                holder.childContent.setText(commentEntity.getContent());
+                ParsePosition pos = new ParsePosition(0);
+                holder.childTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(commentEntity.getTime(), pos)));
+                holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+            }else{
+                GlideImageLoder.getInstance().displayImage(mContext, commentEntity.getSec_headimgs(), holder.childHead);
+                holder.childHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, PeopleInfoActivity.class);
+                        intent.putExtra("uid", groupArray.get(groupPosition).getCommentEntityList().get(childPosition).getSec_uid());
+                        mContext.startActivity(intent);
+                    }
+                });
+                holder.childName.setText(commentEntity.getSec_uname());
+                holder.childMess.setText(commentEntity.getSec_introduction());
+                holder.childContent.setText(commentEntity.getContent()+" //@"+commentEntity.getName()+":"+commentEntity.getSec_content());
+                ParsePosition pos = new ParsePosition(0);
+                holder.childTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(commentEntity.getTime(), pos)));
+                holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
+            }
         }
         return view;
     }
@@ -282,6 +319,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         map.put("uid", SPUtils.get(mContext, "userId", ""));
         map.put("content", comment);
         map.put("comment_id", groupArray.get(position).getAnwerId());
+        map.put("sec_comment_id", groupArray.get(position).getAnwerId());
         map.put("token",SPUtils.get(mContext,"token","").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, mContext, false, false), map);
         HttpManager.getInstance().pubComment(postEntity);
@@ -308,14 +346,18 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         switch (temp) {
             case 0:
                 ToastUtils.showShortToast(mContext, "认同＋1");
-                tempView.setBackgroundResource(R.drawable.background_button_div_grey);
+                tempView.setBackgroundResource(R.drawable.background_button_div);
                 tempView.setText((Integer.valueOf(tempView.getText().toString()) + 1) + "");
+                tempView.setTextColor(mContext.getResources().getColor(R.color.white));
+                tempView.setSelected(true);
                 groupArray.get(currentid).setIsPrise("1");
                 break;
             case 1:
                 ToastUtils.showShortToast(mContext, "认同－1");
-                tempView.setBackgroundResource(R.drawable.background_button_div);
+                tempView.setBackgroundResource(R.drawable.background_button_div_grey);
                 tempView.setText((Integer.valueOf(tempView.getText().toString()) - 1) + "");
+                tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
+                tempView.setSelected(false);
                 groupArray.get(currentid).setIsPrise("0");
                 break;
             case 2:

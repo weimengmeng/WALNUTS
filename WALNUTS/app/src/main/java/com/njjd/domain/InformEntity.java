@@ -34,7 +34,11 @@ public class InformEntity implements Serializable {
             add_time=object.isNull("add_time")?"":object.getString("add_time");
             LogUtils.d("hhhhhhhh"+type);
             if(!type.equals("1.0")||!type.equals("0.0")){
-                content=object.isNull("content")?null:object.getJSONObject("content");
+                if(type.equals("2.0")){
+                    content=object.isNull("content")?null:object.getJSONArray("content").getJSONObject(0);
+                }else{
+                    content=object.isNull("content")?null:object.getJSONObject("content");
+                }
                 if(type.equals("3.0")){
                     comment_id=content.isNull("comment_id")?"":content.getString("comment_id");
                 }

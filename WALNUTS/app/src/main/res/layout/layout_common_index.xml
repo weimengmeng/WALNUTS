@@ -7,6 +7,7 @@
         android:id="@+id/list_index"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:scrollbars="none">
     </com.njjd.utils.MyXRecyclerView>
     <include layout="@layout/layout_nodata"

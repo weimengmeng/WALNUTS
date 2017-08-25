@@ -9,13 +9,11 @@
         android:src="@drawable/wel_bg3"
         android:scaleType="centerCrop"/>
     <RelativeLayout
-        android:id="@+id/rl_receive_apicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true">
 
         <ImageView
-            android:id="@+id/iv_receive_apicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX="0.8"

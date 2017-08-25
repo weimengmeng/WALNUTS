@@ -59,7 +59,6 @@
             android:layout_height="1dp"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
-            android:layout_marginTop="-5dp"
             android:alpha="0.1"
             android:background="@color/gray" />
 
@@ -82,7 +81,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="-5dp"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
             android:alpha="0.1"

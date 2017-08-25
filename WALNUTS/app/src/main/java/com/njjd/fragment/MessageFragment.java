@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -71,6 +71,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     SwipeMenuListView listInform;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
+    @BindView(R.id.radio_inform)
+    RadioButton radioInform;
     private Context context;
     @BindView(R.id.top)
     LinearLayout top;
@@ -83,6 +85,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
     List<EMConversation> messageList = new ArrayList<EMConversation>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -95,9 +98,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onResume() {
         super.onResume();
         conversations.clear();
-        messageList=loadConversationsWithRecentChat();
+        messageList = loadConversationsWithRecentChat();
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
-        for(int i=0;i<messageList.size();i++){
+        for (int i = 0; i < messageList.size(); i++) {
             MyConversation conversation = new MyConversation(messageList.get(i));
             conversation.setOpenId(messageList.get(i).getLastMessage().getTo());
             conversations.add(conversation);
@@ -168,7 +171,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 startActivity(intent);
             }
         });
-        if(messageList.size()>0){
+        if (messageList.size() > 0) {
             getUserInfoByOpenId();
         }
         /**
@@ -180,10 +183,10 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(listInform.getVisibility()==View.VISIBLE) {
+                if (listInform.getVisibility() == View.VISIBLE) {
                     InformAdapter.CURRENT_PAGE = 1;
                     getMyInform();
-                }else if(listMes.getVisibility()==View.VISIBLE){
+                } else if (listMes.getVisibility() == View.VISIBLE) {
                     onResume();
                     refresh.setRefreshing(false);
                 }
@@ -200,60 +203,75 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                     }
                 }
             }
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 boolean enable = false;
-                if(listInform != null && listInform.getChildCount() > 0){
+                if (listInform != null && listInform.getChildCount() > 0) {
                     boolean firstItemVisible = listInform.getFirstVisiblePosition() == 0;
                     boolean topOfFirstItemVisible = listInform.getChildAt(0).getTop() == 0;
                     enable = firstItemVisible && topOfFirstItemVisible;
                 }
                 refresh.setEnabled(enable);
-            }});
+            }
+        });
         listInform.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent;
-                    switch (entities.get(position).getType()){
+                Intent intent;
+                QuestionEntity entity = null;
+                Bundle bundle =null;
+                switch (entities.get(position).getType()) {
 //            0 系统通知 1 关注用户 2 关注问题 3回答问题 4 评论回答 5 收藏回答 6 点赞",
-                        case "0.0":
-                            break;
-                        case "1.0":
-                            intent=new Intent(context, PeopleInfoActivity.class);
-                            intent.putExtra("uid",entities.get(position).getUid());
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
-                            break;
-                        case "2.0":
-                            break;
-                        case "3.0":
-                            intent=new Intent(context, IndexDetailActivity.class);
-                            QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getArticle_id());
-                            Bundle bundle = new Bundle();
+                    case "0.0":
+                        break;
+                    case "1.0":
+                    case "2.0":
+                    case "5.0":
+                    case "6.0":
+                        intent = new Intent(context, PeopleInfoActivity.class);
+                        intent.putExtra("uid", entities.get(position).getUid());
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        break;
+                    case "3.0":
+                        intent = new Intent(context, IndexDetailActivity.class);
+                        bundle=new Bundle();
+                        entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getArticle_id());
+                        intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getComment_id())));
+                        bundle.putSerializable("question", entity);
+                        intent.putExtra("question", bundle);
+                        intent.putExtra("type", "2");
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        break;
+                    case "4.0":
+                        intent = new Intent(context, IndexDetailActivity.class);
+                        bundle=new Bundle();
+                        try {
+                            entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
+                            intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
                             bundle.putSerializable("question", entity);
                             intent.putExtra("question", bundle);
-                            intent.putExtra("type","2");
-                            intent.putExtra("comment_id",entities.get(position).getComment_id());
+                            intent.putExtra("type", "2");
                             startActivity(intent);
                             getActivity().overridePendingTransition(R.anim.in, R.anim.out);
-                            break;
-                        case "4.0":
-                            break;
-                        case "5.0":
-                            break;
-                        case "6.0":
-                            break;
-                    }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
             }
         });
     }
-    private void getUserInfoByOpenId(){
+
+    private void getUserInfoByOpenId() {
         String ids = "";
         for (MyConversation conversation : conversations)
             ids = ids + conversation.getOpenId() + ",";
-        Map<String,Object> map=new HashMap<>();
-        map.put("openId",ids);
+        Map<String, Object> map = new HashMap<>();
+        map.put("openId", ids);
 
 //        RequestParams params = new RequestParams();
 //        params.put("huanxin_id", ids);
@@ -286,6 +304,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 //                    }
 //                });
     }
+
     private void getMyInform() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(context, "userId", "").toString());
@@ -352,12 +371,15 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             onResume();
         }
     }
+
     public class InformReceive extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             InformAdapter.CURRENT_PAGE = 1;
+            radioInform.performClick();
             getMyInform();
         }
     }
+
     /**
      * 获取所有会话
      *
@@ -395,7 +417,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
     /**
      * 根据最后一条消息的时间排序
-     *
      */
     private void sortConversationByLastChatTime(
             List<Pair<Long, EMConversation>> conversationList) {

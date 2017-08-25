@@ -56,7 +56,6 @@
                 android:background="@drawable/background_layout_et"
                 android:hint="输入文字"
                 android:imeOptions="actionSend"
-                android:typeface="sans"
                 android:paddingLeft="@dimen/padding"
                 android:textColor="@color/gray"
                 android:textColorHint="@color/txt_color"

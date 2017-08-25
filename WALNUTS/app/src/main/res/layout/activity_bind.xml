@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top"
             android:gravity="center"
-            android:text="欢迎来到核桃"
+            android:text="绑定手机号"
             android:textColor="@color/login"
             android:textSize="@dimen/largest" />
 
@@ -42,6 +42,7 @@
             android:layout_height="@dimen/height"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginTop="@dimen/margin_big"
+            android:textColorHint="@color/txt_color"
             android:background="@null"
             android:gravity="center|bottom"
             android:hint="请输入手机号"
@@ -56,7 +57,7 @@
             android:layout_height="1dp"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
-            android:layout_marginTop="-5dp"
+            android:layout_marginTop="@dimen/padding"
             android:alpha="0.1"
             android:background="@color/gray" />
     <LinearLayout
@@ -73,6 +74,7 @@
             android:gravity="center|bottom"
             android:hint="请输入验证码"
             android:inputType="number"
+            android:textColorHint="@color/txt_color"
             android:maxLength="6"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
@@ -97,6 +99,7 @@
             android:background="@null"
             android:gravity="center|bottom"
             android:hint="请输入邀请码"
+            android:textColorHint="@color/txt_color"
             android:inputType="number"
             android:maxLength="6"
             android:textColor="@color/gray"

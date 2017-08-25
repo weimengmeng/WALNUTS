@@ -4,7 +4,6 @@
     android:weightSum="1"
     style="@style/Width_m_Height_m">
     <RelativeLayout
-        android:id="@+id/ll_bg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.45"
@@ -145,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding"
                         android:layout_weight="0.2"
-                        android:text="签名"
+                        android:text="简介"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/normal" />
 
@@ -155,7 +154,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
                         android:gravity="center|right"
+                        android:maxLines="1"
                         android:paddingRight="@dimen/margin"
+                        android:textColorHint="@color/txt_color"
                         android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
@@ -281,6 +282,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
                         android:gravity="center|right"
+                        android:textColorHint="@color/txt_color"
+
                         android:paddingRight="@dimen/margin"
                         android:text=""
                         android:textSize="@dimen/normal" />
@@ -324,6 +327,7 @@
                         android:layout_weight="0.7"
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
+                        android:textColorHint="@color/txt_color"
                         android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>

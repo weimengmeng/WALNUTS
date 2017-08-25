@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lv_back"
     android:background="@color/grey"
     style="@style/Width_m_Height_m">
 
@@ -34,10 +33,11 @@
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:typeface="sans"
+                android:textColorHint="@color/txt_color"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_layout_et"
-                android:gravity="top|left"
-                android:hint="请输入问题（不少于5字,不超过50字）"
+                android:gravity="center|left"
+                android:hint="请输入问题（5~50字）"
                 android:maxLines="3"
                 android:minLines="2"
                 android:paddingLeft="@dimen/padding_left"
@@ -60,7 +60,8 @@
                 android:layout_weight="0.4"
                 android:background="@drawable/background_layout_div"
                 android:gravity="top|left"
-                android:hint="对您的问题进行详细的补充，如：客户背景、相关产品、销售流程等等，越详细越能让其他用户帮到您"
+                android:textColorHint="@color/txt_color"
+                android:hint="如：客户背景、相关产品、销售流程等等，越详细越能让其他用户帮到您"
                 android:paddingLeft="@dimen/padding_left"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />

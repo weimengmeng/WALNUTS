@@ -38,7 +38,7 @@
             android:gravity="center"
             android:onClick="onClick"
             android:paddingRight="@dimen/padding_top"
-            android:text="关注的人"
+            android:text="用户"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
 
@@ -61,7 +61,7 @@
             android:gravity="center"
             android:onClick="onClick"
             android:paddingRight="@dimen/padding_top"
-            android:text="关注的问题"
+            android:text="问题"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
 
@@ -84,7 +84,7 @@
             android:gravity="center"
             android:onClick="onClick"
             android:paddingRight="@dimen/padding_top"
-            android:text="我的标签"
+            android:text="标签"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
     </RadioGroup>

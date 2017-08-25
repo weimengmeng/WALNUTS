@@ -83,8 +83,8 @@ public class PersonalActivity extends BaseActivity{
         txtTitle.setText("个人资料");
         txtName.setText(SPUtils.get(this,"name","").toString());
         txtName.setSelection(txtName.length());
-        txtMessage.setText(SPUtils.get(this,"message","未完善").toString());
-        txtPosition.setText(SPUtils.get(this,"position","未完善").toString());
+        txtMessage.setText(SPUtils.get(this,"message","").toString());
+        txtPosition.setText(SPUtils.get(this,"position","").toString());
         txtProvince.setText(SPUtils.get(this,"province","").toString()+SPUtils.get(this,"city","").toString());
         txtVocation.setText(SPUtils.get(this,"industry","").toString());
         if(SPUtils.get(this,"sex","0").toString().equals("0.0")){
@@ -92,7 +92,16 @@ public class PersonalActivity extends BaseActivity{
         }else{
             txtSex.setText("男");
         }
-        txtCompany.setText(SPUtils.get(this,"company","待完善").toString());
+        txtCompany.setText(SPUtils.get(this,"company","").toString());
+        if(txtMessage.getText().toString().equals("")){
+            txtMessage.setHint("完善自我介绍");
+        }
+        if(txtPosition.getText().toString().equals("")){
+            txtPosition.setHint("完善具体工作职位");
+        }
+        if(txtCompany.getText().toString().equals("")){
+            txtCompany.setHint("完善公司详细名称");
+        }
         txtSale.setText(SPUtils.get(this,"sales","").toString());
         provinceName=SPUtils.get(this,"province","").toString();
         cityName=SPUtils.get(this,"city","").toString();

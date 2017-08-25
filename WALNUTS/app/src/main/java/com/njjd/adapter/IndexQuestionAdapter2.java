@@ -124,8 +124,11 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
             holder.itemView.setTag(position);
             final QuestionEntity temp = mList.get(position);
             ((ContentViewHolder) holder).title.setText(temp.getTitle());
-            ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()) + "  人参与");
-            ParsePosition pos = new ParsePosition(0);
+           if(Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()==0){
+               ((ContentViewHolder) holder).total.setText("提出了该问题");
+           }else{
+               ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()) + "  人参与");
+           }            ParsePosition pos = new ParsePosition(0);
             ((ContentViewHolder) holder).createTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(temp.getDateTime(), pos)));
             if ("".equals(temp.getPhoto())) {
                 ((ContentViewHolder) holder).imageView.setVisibility(View.GONE);
