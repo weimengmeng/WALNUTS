@@ -234,7 +234,7 @@ public class CommonUtils {
             SPUtils.put(mContext, "sex", json.isNull("sex") ? "0" : json.getString("sex"));
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
             SPUtils.put(mContext, "token", json.getString("token"));
-            EMClient.getInstance().login(json.getString("uid"), "123456", new EMCallBack() {
+            EMClient.getInstance().login(json.getString("uid"), "Walnut2017", new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     LogUtils.d("环信即时登陆成功");

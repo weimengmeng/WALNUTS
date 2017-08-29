@@ -43,6 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height"
             android:layout_marginLeft="@dimen/margin"
+            android:textCursorDrawable="@drawable/color_cusor"
+
             android:layout_marginTop="@dimen/margin_big"
             android:background="@null"
             android:typeface="sans"
@@ -70,6 +72,8 @@
             android:layout_marginLeft="@dimen/margin"
             android:background="@null"
             android:gravity="center|bottom"
+            android:textCursorDrawable="@drawable/color_cusor"
+
             android:textColorHint="@color/txt_color"
             android:hint="请输入邀请码"
             android:inputType="number"

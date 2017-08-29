@@ -74,13 +74,15 @@ public class ChatActivity extends BaseActivity {
     public void initView(View view) {
         txtTitle.setText(getIntent().getStringExtra("name"));
         ImmersedStatusbarUtils.initAfterSetContentView(this,findViewById(R.id.top));
-        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("name"));
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("openId"));
         if (conversation == null) {
             messagesList = new ArrayList<>();
         } else {
             messagesList = conversation.getAllMessages();
         }
         adapter = new MSGLAdapter(this, messagesList);
+
+        adapter.setAvatar(getIntent().getStringExtra("avatar"));
         listChat.setAdapter(adapter);
         listChat.smoothScrollToPosition(
                 messagesList.size() - 1);
@@ -122,10 +124,10 @@ public class ChatActivity extends BaseActivity {
                 LogUtils.d(messages.get(0).getBody());
                 if (AppAplication.isApplicationBroughtToBackground(AppAplication.getContext())) {
                     Intent intent = new Intent(AppAplication.getContext(), ChatActivity.class);
-                    intent.putExtra("name", messages.get(0).getFrom());
+                    intent.putExtra("openId", messages.get(0).getFrom());
                     NotificationUtils.createNotif(AppAplication.getContext(), R.drawable.logo, "", messages.get(0).getFrom(), messages.get(0).getBody().toString(), intent, 1);
                 }
-                if (messages.get(0).getFrom().equals(getIntent().getStringExtra("name"))) {
+                if (messages.get(0).getFrom().equals(getIntent().getStringExtra("openId"))) {
                     messagesList.add(messages.get(0));
                     handler.sendEmptyMessage(0);
                 }

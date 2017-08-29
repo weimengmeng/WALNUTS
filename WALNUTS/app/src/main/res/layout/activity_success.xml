@@ -61,6 +61,7 @@
             android:layout_marginLeft="@dimen/margin_big"
             android:layout_marginRight="@dimen/margin_big"
             android:hint="请输入名字"
+            android:textCursorDrawable="@drawable/color_cusor"
             android:textColorHint="@color/txt_color"
             android:maxLength="8"
             android:inputType="textPersonName"

@@ -18,12 +18,14 @@
 
     <LinearLayout
         style="@style/Width_m_Height_m"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/margin_big"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:padding="@dimen/margin">
+        android:padding="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginRight="@dimen/margin_big"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/txt_tips"
@@ -42,6 +44,8 @@
             android:layout_height="@dimen/height"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginTop="@dimen/margin_big"
+            android:textCursorDrawable="@drawable/color_cusor"
+
             android:textColorHint="@color/txt_color"
             android:background="@null"
             android:gravity="center|bottom"

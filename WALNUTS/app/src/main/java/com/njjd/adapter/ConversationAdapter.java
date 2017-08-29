@@ -1,10 +1,10 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,49 +25,42 @@ import java.util.List;
  * Created by mrwim on 17/8/22.
  */
 
-public class ConversationAdapter extends BaseAdapter {
+public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder>  implements View.OnClickListener {
     Context context;
     List<MyConversation> list;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private OnItemClickListener mOnItemClickListener = null;
     public ConversationAdapter(Context context, List<MyConversation> list) {
         this.context = context;
         this.list = list;
     }
 
+    //创建新View，被LayoutManager所调用
     @Override
-    public int getCount() {
-        return list.size();
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_mesg, viewGroup, false);
+        ViewHolder vh = new ViewHolder(view);
+        view.setOnClickListener(this);
+        return vh;
     }
 
+    //将数据与界面进行绑定的操作
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-        if (convertView == null)
-            convertView = LayoutInflater.from(context).inflate(
-                    R.layout.item_mesg, null);
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         EMConversation conversation = list.get(position).getConversation();
+        viewHolder.itemView.setTag(position);
         if (conversation.getAllMsgCount() != 0) {
             // 把最后一条消息的内容作为item的message内容
             EMMessage lastMessage = conversation.getLastMessage();
             if (lastMessage.getType() == EMMessage.Type.TXT) {
-                ((TextView) convertView.findViewById(R.id.txt_content))
+                viewHolder.content
                         .setText(((EMTextMessageBody) lastMessage.getBody())
                                 .getMessage());
             } else if (lastMessage.getType() == EMMessage.Type.IMAGE) {
-                ((TextView) convertView.findViewById(R.id.txt_content))
+                viewHolder.content
                         .setText("[图片]");
             } else if (lastMessage.getType() == EMMessage.Type.VOICE) {
-                ((TextView) convertView.findViewById(R.id.txt_content))
+                viewHolder.content
                         .setText("[语音]");
             }
 //            if (lastMessage.direct == EMMessage.Direct.SEND
@@ -87,11 +80,45 @@ public class ConversationAdapter extends BaseAdapter {
 //        } else {
 //            convertView.findViewById(R.id.unread_msg_number).setVisibility(View.INVISIBLE);
 //        }
-            ((TextView) convertView.findViewById(R.id.txt_name)).setText(list.get(position).getName());
-            GlideImageLoder.getInstance().displayImage(context,list.get(position).getAvatar(),(ImageView) convertView.findViewById(R.id.img_head));
+        viewHolder.name.setText(list.get(position).getName());
+        GlideImageLoder.getInstance().displayImage(context, list.get(position).getAvatar(), viewHolder.head);
         ParsePosition pos = new ParsePosition(0);
-        ((TextView) convertView.findViewById(R.id.txt_date)).setText(DateUtils.formationDate(sdf.parse(sdf.format(new Date(conversation.getLastMessage().getMsgTime())), pos)));
-        return convertView;
+        viewHolder.date.setText(DateUtils.formationDate(sdf.parse(sdf.format(new Date(conversation.getLastMessage().getMsgTime())), pos)));
     }
 
+    //获取数据的数量
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    //自定义的ViewHolder，持有每个Item的的所有界面元素
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
+        public TextView content;
+        public ImageView head;
+        public TextView date;
+
+        public ViewHolder(View view) {
+            super(view);
+            name = (TextView) view.findViewById(R.id.txt_name);
+            head = (ImageView) view.findViewById(R.id.img_head);
+            content = (TextView) view.findViewById(R.id.txt_content);
+            date = (TextView) view.findViewById(R.id.txt_date);
+        }
+    }
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+            //注意这里使用getTag方法获取position
+            mOnItemClickListener.onItemClick(v, (int) v.getTag());
+        }
+    }
+    public static interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
 }

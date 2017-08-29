@@ -124,12 +124,12 @@
                 android:id="@+id/txt_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
+                android:layout_weight="0.25"
                 android:paddingLeft="@dimen/padding"
                 android:paddingRight="@dimen/padding"
                 android:text="14分钟前"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/mini">
+                android:textSize="@dimen/small">
 
             </TextView>
 
@@ -150,7 +150,7 @@
                 android:id="@+id/txt_report"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
+                android:layout_weight="0.15"
                 android:visibility="invisible"
                 android:paddingLeft="@dimen/padding"
                 android:paddingRight="@dimen/padding"

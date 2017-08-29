@@ -153,7 +153,6 @@ public class AppAplication extends Application {
                                         }).setCancelable(false).show();
                             }
                             if(object2.getString("action").equals("notice_show")){
-                                ToastUtils.showShortToast(MyActivityManager.getInstance().getLastActivity(),"收到"+object2.getString("num")+"通知");
                                 Intent intent = new Intent();
                                 intent.setAction(ConstantsVal.NEW_INFORM);
                                 sendBroadcast(intent);

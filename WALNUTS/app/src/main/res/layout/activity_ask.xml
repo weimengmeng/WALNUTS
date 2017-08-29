@@ -33,6 +33,7 @@
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:typeface="sans"
+                android:textCursorDrawable="@drawable/color_cusor"
                 android:textColorHint="@color/txt_color"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_layout_et"
@@ -57,6 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:typeface="sans"
+                android:textCursorDrawable="@drawable/color_cusor"
+
                 android:layout_weight="0.4"
                 android:background="@drawable/background_layout_div"
                 android:gravity="top|left"

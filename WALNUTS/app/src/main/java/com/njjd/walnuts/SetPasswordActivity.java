@@ -2,6 +2,7 @@ package com.njjd.walnuts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,6 +58,8 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
         temp = String.format(temp, getIntent().getStringExtra("phone"));
         txtTip.setText(temp);
         txtTip.setVisibility(View.VISIBLE);
+        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        etConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
     private void userRegister() {

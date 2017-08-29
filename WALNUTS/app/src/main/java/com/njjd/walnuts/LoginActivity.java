@@ -1,6 +1,8 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +56,7 @@ public class LoginActivity extends BaseActivity {
         umShareAPI = UMShareAPI.get(this);
         etPhone.setText(SPUtils.get(this,"phoneNumber","").toString());
         etPwd.setText(SPUtils.get(this,"pwd","").toString());
+        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
         etPhone.setSelection(etPhone.length());
         authListener = new UMAuthListener() {
             @Override

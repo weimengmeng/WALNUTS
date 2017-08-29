@@ -2,6 +2,7 @@ package com.njjd.walnuts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -48,7 +49,8 @@ public class ChangePwdActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-
+        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        etRePwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
     @Override

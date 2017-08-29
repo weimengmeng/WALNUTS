@@ -17,6 +17,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.R;
 
@@ -67,21 +68,13 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 					R.layout.layout_chat_receive, null);
 			ImageView img_avatar = (ImageView) convertView
 					.findViewById(R.id.img_head);
-			try {
-				GlideImageLoder.getInstance().displayImage(context,vo.getStringAttribute("head"),img_avatar);
-			} catch (HyphenateException e) {
-				e.printStackTrace();
-			}
+				GlideImageLoder.getInstance().displayImage(context,avatar,img_avatar);
 		} else {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.layout_chat_send, null);
 			ImageView img_avatar = (ImageView) convertView
 					.findViewById(R.id.img_head);
-			try {
-				GlideImageLoder.getInstance().displayImage(context,vo.getStringAttribute("head"),img_avatar);
-			} catch (HyphenateException e) {
-				e.printStackTrace();
-			}
+				GlideImageLoder.getInstance().displayImage(context, SPUtils.get(context,"head",""),img_avatar);
 		}
 		TextView text_msg = (TextView) convertView.findViewById(R.id.chat_content);
 		ImageView img_msg = (ImageView) convertView.findViewById(R.id.chat_img_pic);

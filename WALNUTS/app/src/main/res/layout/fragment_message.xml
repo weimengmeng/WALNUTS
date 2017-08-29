@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center_horizontal">
+
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,6 +21,7 @@
             android:checkedButton="@+id/radio_mess"
             android:orientation="horizontal"
             android:weightSum="1">
+
             <RadioButton
                 android:id="@+id/radio_mess"
                 android:layout_width="0dp"
@@ -33,6 +36,7 @@
                 android:text="消息"
                 android:textColor="@drawable/selector_btn_top"
                 android:textSize="@dimen/big" />
+
             <RadioButton
                 android:id="@+id/radio_inform"
                 android:layout_width="0dp"
@@ -49,38 +53,26 @@
                 android:textSize="@dimen/big" />
         </RadioGroup>
     </LinearLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/list_mes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/background_layout_div"
-        android:layout_marginTop="@dimen/margin"
-        android:layout_marginLeft="@dimen/margin"
-        android:layout_marginRight="@dimen/margin">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:divider="#00000000"
+        android:dividerHeight="0dip"
+        android:visibility="visible"
+        android:listSelector="@android:color/transparent"
+        android:overScrollMode="never" />
 
-        <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/list_mes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="#00000000"
-            android:overScrollMode="never"
-            android:dividerHeight="0dip"
-            android:listSelector="@android:color/transparent" />
-        <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/list_inform"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:visibility="gone"
-            android:listSelector="@android:color/transparent" />
-        <include
-            android:id="@+id/empty"
-            layout="@layout/layout_nodata"></include>
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/list_inform"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:overScrollMode="never"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/empty"
+        layout="@layout/layout_nodata"></include>
 </LinearLayout>

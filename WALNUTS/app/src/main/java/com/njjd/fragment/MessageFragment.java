@@ -4,24 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
@@ -29,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.ConversationAdapter;
 import com.njjd.adapter.InformAdapter;
 import com.njjd.application.ConstantsVal;
@@ -38,8 +32,8 @@ import com.njjd.domain.MyConversation;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.ChatActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
@@ -66,17 +60,14 @@ import butterknife.OnClick;
 
 public class MessageFragment extends BaseFragment implements HttpOnNextListener {
     @BindView(R.id.list_mes)
-    SwipeMenuListView listMes;
+    XRecyclerView listMes;
     @BindView(R.id.list_inform)
-    SwipeMenuListView listInform;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refresh;
+    XRecyclerView listInform;
     @BindView(R.id.radio_inform)
     RadioButton radioInform;
     private Context context;
     @BindView(R.id.top)
     LinearLayout top;
-    private SwipeMenuCreator creator;
     Map<String, EMConversation> conversationsMap;
     private ConversationAdapter adapter;
     List<MyConversation> conversations = new ArrayList<>();
@@ -84,7 +75,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformReceive informReceive;
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
-    List<EMConversation> messageList = new ArrayList<EMConversation>();
+    List<EMConversation> messageList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,6 +100,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 //            conversations.add(entry.getValue());
 //        }
         adapter.notifyDataSetChanged();
+        if (messageList.size() > 0) {
+            getUserInfoByOpenId();
+        }
     }
 
     @Override
@@ -123,105 +117,71 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         filter1.addAction(ConstantsVal.NEW_INFORM);
         context.registerReceiver(informReceive, filter1);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
-        creator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                SwipeMenuItem messItem = new SwipeMenuItem(
-                        context);
-                messItem.setBackground(new ColorDrawable(Color.LTGRAY));
-                messItem.setWidth(220);
-                messItem.setTitle("置顶");
-                messItem.setTitleSize(16);
-                messItem.setTitleColor(Color.WHITE);
-                menu.addMenuItem(messItem);
-
-                SwipeMenuItem focusItem = new SwipeMenuItem(
-                        context);
-                focusItem.setBackground(R.color.login);
-                focusItem.setWidth(220);
-                focusItem.setTitle("删除");
-                focusItem.setTitleSize(16);
-                focusItem.setTitleColor(Color.WHITE);
-                menu.addMenuItem(focusItem);
-            }
-        };
-        listMes.setMenuCreator(creator);
-        listMes.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+//        listMes.setMenuCreator(creator);
+//        listMes.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         adapter = new ConversationAdapter(getContext(), conversations);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
         listMes.setAdapter(adapter);
-        listMes.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        listMes.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        ToastUtils.showShortToast(context, "置顶");
-                        break;
-                    case 1:
-                        ToastUtils.showShortToast(context, "删除");
-                        break;
-                }
-                return false;
+            public void onRefresh() {
+                onResume();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        listMes.refreshComplete();
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onLoadMore() {
             }
         });
-        listMes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ConversationAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("openId", conversations.get(position).getOpenId());
+                intent.putExtra("name", conversations.get(position).getName());
+                intent.putExtra("avatar",conversations.get(position).getAvatar());
                 startActivity(intent);
             }
         });
-        if (messageList.size() > 0) {
-            getUserInfoByOpenId();
-        }
+//        listMes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(context, ChatActivity.class);
+//                intent.putExtra("openId", conversations.get(position).getOpenId());
+//                startActivity(intent);
+//            }
+//        });
         /**
          * tongzhi
          */
         adapterInform = new InformAdapter(context, entities);
+        final LinearLayoutManager layoutManager1 = new LinearLayoutManager(context);
+        listInform.setLayoutManager(layoutManager1);//这里用线性显示 类似于listview
         listInform.setAdapter(adapterInform);
-        getMyInform();
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                if (listInform.getVisibility() == View.VISIBLE) {
-                    InformAdapter.CURRENT_PAGE = 1;
-                    getMyInform();
-                } else if (listMes.getVisibility() == View.VISIBLE) {
-                    onResume();
-                    refresh.setRefreshing(false);
-                }
-            }
-        });
-        listInform.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // 当不滚动时
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1) {
-                        InformAdapter.CURRENT_PAGE++;
-                        getMyInform();
-                    }
-                }
+                getMyInform();
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                boolean enable = false;
-                if (listInform != null && listInform.getChildCount() > 0) {
-                    boolean firstItemVisible = listInform.getFirstVisiblePosition() == 0;
-                    boolean topOfFirstItemVisible = listInform.getChildAt(0).getTop() == 0;
-                    enable = firstItemVisible && topOfFirstItemVisible;
-                }
-                refresh.setEnabled(enable);
+            public void onLoadMore() {
+                InformAdapter.CURRENT_PAGE++;
+                getMyInform();
             }
         });
-        listInform.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getMyInform();
+        adapterInform.setOnItemClickListener(new InformAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 Intent intent;
                 QuestionEntity entity = null;
-                Bundle bundle =null;
+                Bundle bundle = null;
                 switch (entities.get(position).getType()) {
 //            0 系统通知 1 关注用户 2 关注问题 3回答问题 4 评论回答 5 收藏回答 6 点赞",
                     case "0.0":
@@ -237,7 +197,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         break;
                     case "3.0":
                         intent = new Intent(context, IndexDetailActivity.class);
-                        bundle=new Bundle();
+                        bundle = new Bundle();
                         entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getArticle_id());
                         intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getComment_id())));
                         bundle.putSerializable("question", entity);
@@ -248,7 +208,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         break;
                     case "4.0":
                         intent = new Intent(context, IndexDetailActivity.class);
-                        bundle=new Bundle();
+                        bundle = new Bundle();
                         try {
                             entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
                             intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
@@ -271,38 +231,27 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         for (MyConversation conversation : conversations)
             ids = ids + conversation.getOpenId() + ",";
         Map<String, Object> map = new HashMap<>();
-        map.put("openId", ids);
-
-//        RequestParams params = new RequestParams();
-//        params.put("huanxin_id", ids);
-//        HttpUtils.post(context, HttpUtils.SERVERIP + "getDoctorByHuanXinId",
-//                params, new BaseResponseHandler(context, false,
-//                        BaseResponseHandler.TOAST) {
-//                    @Override
-//                    public void onSuccess(int statusCode, Header[] headers,
-//                                          JSONObject response) {
-//                        // TODO Auto-generated method stub
-//                        listView.onRefreshComplete();
-//                        try {
-//                            Log.i("", response.toString());
-//                            if (response.getInt("resultCode") == 0) {
-//                                JSONObject resultData = response
-//                                        .getJSONObject("resultData");
-//                                JSONArray array = resultData
-//                                        .getJSONArray("list");
-//                                for (int i = 0; i < array.length(); i++) {
-//                                    list.get(i).setJson(array.getJSONObject(i));
-//                                }
-//                                adapter.notifyDataSetChanged();
-//                            } else {
-//                                super.onSuccess(statusCode, headers, response);
-//                            }
-//                        } catch (JSONException e) {
-//                            // TODO Auto-generated catch block
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
+        map.put("uids", ids);
+        map.put("uid", SPUtils.get(context, "userId", ""));
+        map.put("token", SPUtils.get(context, "token", ""));
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                try {
+                    JSONArray array = new JSONArray(gson.toJson(o));
+                    for (int i=0;i<array.length();i++) {
+                        conversations.get(i).setJson(array.getJSONObject(i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }, context, false, false), map);
+        HttpManager.getInstance().getUserUids(postEntity);
     }
 
     private void getMyInform() {
@@ -313,15 +262,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getNotice(postEntity);
     }
-
     @Override
     public void onNext(Object o) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls(); //重点
         Gson gson = gsonBuilder.create();
-        refresh.setRefreshing(false);
         if (InformAdapter.CURRENT_PAGE == 1) {
             entities.clear();
+            listInform.refreshComplete();
+        } else {
+            listInform.loadMoreComplete();
         }
         try {
             JSONObject object = new JSONObject(gson.toJson(o));
@@ -330,6 +280,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 entities.add(new InformEntity(array.getJSONObject(i)));
             }
             adapterInform.notifyDataSetChanged();
+            LogUtils.d("notice");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -403,7 +354,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             }
         }
         try {
-            // Internal is TimSort algorithm, has bug
             sortConversationByLastChatTime(sortList);
         } catch (Exception e) {
             e.printStackTrace();

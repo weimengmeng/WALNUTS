@@ -421,13 +421,13 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             map.put("sec_comment_id",tempAnswerInfo.getAnwerId());
         }else{
             map.put("comment_id", tempComment.getCommentId());
-            map.put("sec_comment_id",tempComment.getSec_com_id());
+            map.put("sec_comment_id",tempAnswerInfo.getAnwerId());
         }
         map.put("token",SPUtils.get(this,"token","").toString());
+        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, this, false, false), map);
         HttpManager.getInstance().pubComment(postEntity);
     }
-
     HttpOnNextListener commentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {

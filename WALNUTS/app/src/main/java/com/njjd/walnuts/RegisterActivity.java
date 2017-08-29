@@ -160,8 +160,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
             public void onNext(Object o) {
                 JsonObject object=JSONUtils.getAsJsonObject(o);
                 if(object.get("code").getAsString().equals("1.0")){
-                    popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-                    web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
+                   show();
                 }else{
                     ToastUtils.showShortToast(RegisterActivity.this,"手机号已注册");
                 }
@@ -169,6 +168,11 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         }, this, true, false), map);
         HttpManager.getInstance().isExistUser(postEntity);
     }
+    private void show(){
+        popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
+    }
+
     private void getPhoneCode() {
         Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());

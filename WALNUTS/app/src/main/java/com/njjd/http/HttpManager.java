@@ -30,8 +30,10 @@ import rx.schedulers.Schedulers;
  * BASE_URL必须以“/”符号结束
  */
 public class HttpManager {
-    public static final String BASE_URL = "http://116.62.243.41/hetao_api/public/index.php/api/";
-    public static final String BASE_URL2 = "http://116.62.243.41/hetao_api/public/";
+    public static final String BASE_URL = "http://116.62.243.41/api/";
+    public static final String BASE_URL2 = "http://116.62.243.41/";
+//public static final String BASE_URL = "http://192.168.1.111/hetao_api/public/index.php/api/";
+//    public static final String BASE_URL2 = "http://192.168.1.111/hetao_api/public/";
     /**
      * 设置超时时间，默认6s
      */
@@ -148,6 +150,11 @@ public class HttpManager {
     public void getUserInfo(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getUserInfo(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getUserUids(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getUserUids(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

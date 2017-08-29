@@ -12,6 +12,7 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
@@ -20,7 +21,9 @@ import com.njjd.utils.SPUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -50,7 +53,9 @@ public class InterestActivity extends BaseActivity{
     RadioButton btnEight;
     @BindView(R.id.btn_skip)
     Button btnSkip;
-
+    private List<TagEntity> entities;
+    private String strs="";
+    private List<String> ids=new ArrayList<>();
     @Override
     public int bindLayout() {
         return R.layout.activity_interest;
@@ -58,6 +63,7 @@ public class InterestActivity extends BaseActivity{
 
     @Override
     public void initView(View view) {
+        entities=CommonUtils.getInstance().getTagsList();
     }
 
     @Override
@@ -69,11 +75,13 @@ public class InterestActivity extends BaseActivity{
     public void onViewClicked(View view) {
         if(view instanceof RadioButton){
             if(view.getTag().toString().equals("0")){
+                ids.add(((RadioButton) view).getText().toString());
                 ((RadioButton) view).setChecked(true);
                 view.setTag("1");
             }else{
                 ((RadioButton) view).setChecked(false);
                 view.setTag("0");
+                ids.remove(((RadioButton) view).getText().toString());
             }
         }
         switch (view.getId()) {
@@ -115,8 +123,16 @@ public class InterestActivity extends BaseActivity{
             case R.id.btn_eight:
                 break;
             case R.id.btn_skip:
+                if("".equals(strs)){
+                    doLogin();
+                }else{
+                    addFocus();
+                }
                 break;
         }
+    }
+    private void addFocus(){
+
     }
     private void doLogin() {
         Map<String, Object> map = new HashMap<>();

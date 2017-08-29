@@ -65,6 +65,8 @@ public interface HttpService {
     Observable<HttpResult<Object>> getUserInfo(@QueryMap Map<String, String> params);
     @POST("user/getUserInfo")
     Observable<HttpResult<Object>> isExistUser(@QueryMap Map<String, String> params);
+    @POST("user/getUserUids")
+    Observable<HttpResult<Object>> getUserUids(@QueryMap Map<String, String> params);
 
     /**
     @POST("user/getFollowUser")
