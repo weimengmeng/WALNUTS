@@ -38,6 +38,7 @@ import com.njjd.walnuts.ChatActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +80,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = getContext();
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -93,7 +93,10 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
         for (int i = 0; i < messageList.size(); i++) {
             MyConversation conversation = new MyConversation(messageList.get(i));
-            conversation.setOpenId(messageList.get(i).getLastMessage().getTo());
+            if(messageList.get(i).getLatestMessageFromOthers()!=null)
+            conversation.setOpenId(messageList.get(i).getLatestMessageFromOthers().getFrom());
+            else
+                conversation.setOpenId(messageList.get(i).getLastMessage().getTo());
             conversations.add(conversation);
         }
 //        for (Map.Entry<String, EMConversation> entry : conversationsMap.entrySet()) {
@@ -111,6 +114,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         receiver = new Receiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsVal.MESSAGE_RECEIVE);
+        context=getContext();
         context.registerReceiver(receiver, filter);
         informReceive = new InformReceive();
         IntentFilter filter1 = new IntentFilter();

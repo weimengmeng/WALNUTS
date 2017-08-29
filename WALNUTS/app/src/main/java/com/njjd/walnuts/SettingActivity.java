@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.mywidget.LoadingDialog;
+import com.hyphenate.chat.EMClient;
 import com.ios.dialog.AlertDialog;
 import com.njjd.utils.CleanMessageUtil;
 import com.njjd.utils.ImmersedStatusbarUtils;
@@ -124,6 +125,7 @@ public class SettingActivity extends BaseActivity {
                 .setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        EMClient.getInstance().logout(true);
                     }
                 }).setPositiveButton("退出", new View.OnClickListener() {
 

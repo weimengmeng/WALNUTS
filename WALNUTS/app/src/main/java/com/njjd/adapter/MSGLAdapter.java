@@ -16,12 +16,16 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
+import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.R;
 
 import java.io.IOException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,6 +81,11 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 				GlideImageLoder.getInstance().displayImage(context, SPUtils.get(context,"head",""),img_avatar);
 		}
 		TextView text_msg = (TextView) convertView.findViewById(R.id.chat_content);
+		TextView text_time = (TextView) convertView.findViewById(R.id.txt_time);
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time=format.format(new Date(vo.getMsgTime()));
+		ParsePosition pos = new ParsePosition(0);
+		text_time.setText(DateUtils.formationDate(format.parse(time, pos)));
 		ImageView img_msg = (ImageView) convertView.findViewById(R.id.chat_img_pic);
 		TextView voice_msg = (TextView) convertView
 				.findViewById(R.id.chat_voice);

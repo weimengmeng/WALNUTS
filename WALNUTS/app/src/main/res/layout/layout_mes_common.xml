@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -67,6 +68,19 @@
                 android:paddingRight="@dimen/padding_left"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/txt_badge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:text=""
+                android:layout_marginRight="@dimen/margin"
+                android:paddingRight="@dimen/padding_top"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small"
+                app:badge_gravity="rightTop"
+                app:badge_dragable="true"
+                app:badge_padding="5dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

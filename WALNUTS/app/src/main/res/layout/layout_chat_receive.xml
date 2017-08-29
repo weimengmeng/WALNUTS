@@ -21,7 +21,7 @@
             android:layout_weight="0.2"
             android:gravity="center"
             android:layout_height="wrap_content">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/head_big"
                 android:layout_height="@dimen/head_big"
@@ -54,7 +54,7 @@
                     android:id="@+id/chat_voice"
                     android:layout_width="wrap_content"
                     android:src="@drawable/head"
-                    android:drawableLeft="@drawable/pic_voice_right"
+                    android:drawableRight="@drawable/pic_voice_right"
                     android:visibility="gone"
                     android:layout_height="wrap_content" />
             </LinearLayout>

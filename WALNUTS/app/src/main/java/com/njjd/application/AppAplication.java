@@ -145,6 +145,7 @@ public class AppAplication extends Application {
 
                                             @Override
                                             public void onClick(View v) {
+                                                EMClient.getInstance().logout(true);
                                                 MyActivityManager.getInstance().finishAllActivity();
                                                 Intent intent = new Intent(context, LoginActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

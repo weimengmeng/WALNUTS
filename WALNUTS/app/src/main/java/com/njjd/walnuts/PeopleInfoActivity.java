@@ -58,7 +58,7 @@ public class PeopleInfoActivity extends BaseActivity {
     @BindView(R.id.txt_company)
     TextView txtCompany;
     private String tempUser = "";
-
+    private String tempHead="";
     @Override
     public int bindLayout() {
         return R.layout.activity_people;
@@ -91,6 +91,7 @@ public class PeopleInfoActivity extends BaseActivity {
         try {
             object = new JSONObject(gson.toJson(o));
             txtName.setText(object.isNull("uname")?"未填写":object.getString("uname"));
+            tempHead=object.isNull("headimg")?"":object.getString("headimg");
             GlideImageLoder.getInstance().displayImage(this, object.isNull("headimg")?"":object.getString("headimg"), imgHead);
             if (object.getString("sex").equals("1.0")) {
                 imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
@@ -132,7 +133,9 @@ public class PeopleInfoActivity extends BaseActivity {
                     followUser();
                 }else {
                     Intent intent=new Intent(this, ChatActivity.class);
-                    intent.putExtra("name",tempUser);
+                    intent.putExtra("openId",tempUser);
+                    intent.putExtra("name",txtName.getText().toString().trim());
+                    intent.putExtra("avatar",tempHead);
                     startActivity(intent);
                     finish();
                 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Width_m_Height_m">
+    style="@style/Width_m_Height_m"
+    android:id="@+id/lv_root">
 
     <LinearLayout
         android:id="@+id/top"
@@ -19,6 +20,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:divider="#00000000"
+        android:background="@color/white"
         android:dividerHeight="0dp"
         android:listSelector="#00000000"></ListView>
     <LinearLayout
@@ -53,9 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="2dp"
+                android:textCursorDrawable="@drawable/color_cusor"
                 android:background="@drawable/background_layout_et"
                 android:hint="输入文字"
                 android:imeOptions="actionSend"
+                android:singleLine="true"
                 android:paddingLeft="@dimen/padding"
                 android:textColor="@color/gray"
                 android:textColorHint="@color/txt_color"
@@ -72,14 +76,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/btn_img" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="发送"
-                android:background="@drawable/background_button_div"
-                android:textSize="@dimen/normal"
-                android:visibility="gone"
-                android:id="@+id/btn_send"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -92,8 +88,9 @@
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/btn_voice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_micro" />
+            android:src="@drawable/selector_btn_voice" />
     </LinearLayout>
 </LinearLayout>

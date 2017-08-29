@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +29,9 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.ToastUtils;
+import com.voice.AudioRecoderUtils;
+import com.voice.PopupWindowFactory;
+import com.voice.TimeUtils;
 import com.yongchun.library.view.ImageSelectorActivity;
 
 import java.util.ArrayList;
@@ -38,7 +44,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/12.
  */
 
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements TextView.OnEditorActionListener{
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.list_chat)
@@ -49,12 +55,18 @@ public class ChatActivity extends BaseActivity {
     LinearLayout lvVoice;
     @BindView(R.id.btn_img)
     ImageView btnImg;
-    @BindView(R.id.btn_send)
-    Button btnSend;
+    @BindView(R.id.lv_root)
+    LinearLayout lvRoot;
+    @BindView(R.id.btn_voice)
+    ImageView btnVoice;
     private MSGLAdapter adapter;
     private List<EMMessage> messagesList;
-    private String imagePath = "";
-
+    private String imagePath = "", tempFilePath = "";
+    private int length = 0;
+    private AudioRecoderUtils mAudioRecoderUtils;
+    private PopupWindowFactory mPop;
+    private ImageView mImageView;
+    private TextView mTextView;
     @Override
     public int bindLayout() {
         return R.layout.activity_chat;
@@ -73,43 +85,79 @@ public class ChatActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         txtTitle.setText(getIntent().getStringExtra("name"));
-        ImmersedStatusbarUtils.initAfterSetContentView(this,findViewById(R.id.top));
+        etContent.setOnEditorActionListener(this);
+        ImmersedStatusbarUtils.initAfterSetContentView(this, findViewById(R.id.top));
         EMConversation conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("openId"));
         if (conversation == null) {
             messagesList = new ArrayList<>();
         } else {
             messagesList = conversation.getAllMessages();
+            conversation.markAllMessagesAsRead();
         }
         adapter = new MSGLAdapter(this, messagesList);
-
         adapter.setAvatar(getIntent().getStringExtra("avatar"));
         listChat.setAdapter(adapter);
-        listChat.smoothScrollToPosition(
-                messagesList.size() - 1);
+       handler.sendEmptyMessage(0);
         initConversionLitener();
-        etContent.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        AndroidBug5497Workaround.assistActivity(this);
 
+        mAudioRecoderUtils = new AudioRecoderUtils();
+
+        //录音回调
+        mAudioRecoderUtils.setOnAudioStatusUpdateListener(new AudioRecoderUtils.OnAudioStatusUpdateListener() {
+
+            //录音中....db为声音分贝，time为录音时长
+            @Override
+            public void onUpdate(double db, long time) {
+                mImageView.getDrawable().setLevel((int) (3000 + 6000 * db / 100));
+                mTextView.setText(TimeUtils.long2String(time));
+                length=(int)time/1000;
             }
 
+            //录音结束，filePath为保存路径
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (etContent.getText().toString().trim().length() <= 0) {
-                    btnImg.setVisibility(View.VISIBLE);
-                    btnSend.setVisibility(View.GONE);
-                }else{
-                    btnImg.setVisibility(View.GONE);
-                    btnSend.setVisibility(View.VISIBLE);
+            public void onStop(String filePath) {
+                mTextView.setText(TimeUtils.long2String(0));
+                tempFilePath=filePath;
+                if(length<1){
+                    ToastUtils.showShortToast(ChatActivity.this,"语音时间过短");
+                    return;
                 }
+                sendVoice();
             }
         });
-        AndroidBug5497Workaround.assistActivity(this);
+
+        //PopupWindow的布局文件
+        final View view1 = View.inflate(this, R.layout.layout_microphone, null);
+
+        mPop = new PopupWindowFactory(this,view1);
+
+        //PopupWindow布局文件里面的控件
+        mImageView = (ImageView) view1.findViewById(R.id.iv_recording_icon);
+        mTextView = (TextView) view1.findViewById(R.id.tv_recording_time);
+        //Button的touch监听
+        btnVoice.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()){
+
+                    case MotionEvent.ACTION_DOWN:
+
+                        mPop.showAtLocation(lvRoot, Gravity.CENTER,0,0);
+                        mAudioRecoderUtils.startRecord();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+
+                        mAudioRecoderUtils.stopRecord();        //结束录音（保存录音文件）
+//                        mAudioRecoderUtils.cancelRecord();    //取消录音（不保存录音文件）
+                        mPop.dismiss();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -121,12 +169,6 @@ public class ChatActivity extends BaseActivity {
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
-                LogUtils.d(messages.get(0).getBody());
-                if (AppAplication.isApplicationBroughtToBackground(AppAplication.getContext())) {
-                    Intent intent = new Intent(AppAplication.getContext(), ChatActivity.class);
-                    intent.putExtra("openId", messages.get(0).getFrom());
-                    NotificationUtils.createNotif(AppAplication.getContext(), R.drawable.logo, "", messages.get(0).getFrom(), messages.get(0).getBody().toString(), intent, 1);
-                }
                 if (messages.get(0).getFrom().equals(getIntent().getStringExtra("openId"))) {
                     messagesList.add(messages.get(0));
                     handler.sendEmptyMessage(0);
@@ -155,17 +197,14 @@ public class ChatActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.btn_micro, R.id.btn_img,R.id.btn_send})
+    @OnClick({R.id.back, R.id.btn_micro, R.id.btn_img})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
-            case R.id.btn_send:
-                sendTextMessage();
-                break;
             case R.id.btn_micro:
-                ToastUtils.showShortToast(this, "发送语音");
+             lvVoice.setVisibility(lvVoice.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
                 break;
             case R.id.btn_img:
                 //1多选 2 单选 单选才有裁剪功能
@@ -176,31 +215,39 @@ public class ChatActivity extends BaseActivity {
 
     private void sendTextMessage() {
         //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
-        EMMessage message = EMMessage.createTxtSendMessage(etContent.getText().toString().trim(), getIntent().getStringExtra("name"));
-        message.setAttribute("head", "http://192.168.1.112/hetao_api/public/uploads/482015018/headImg/599692475018f.JPEG");
+        EMMessage message = EMMessage.createTxtSendMessage(etContent.getText().toString().trim(), getIntent().getStringExtra("openId"));
         EMClient.getInstance().chatManager().sendMessage(message);
+        messagesList.add(message);
         message.setMessageStatusCallback(emCallBack);
+        etContent.setText("");
     }
 
     private void sendImageMessage() {
         //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
-        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, getIntent().getStringExtra("name"));
-        message.setAttribute("head", "http://192.168.1.112/hetao_api/public/uploads/482015018/headImg/599692475018f.JPEG");
+        EMMessage message = EMMessage.createImageSendMessage(imagePath, false, getIntent().getStringExtra("openId"));
         EMClient.getInstance().chatManager().sendMessage(message);
+        messagesList.add(message);
         message.setMessageStatusCallback(emCallBack);
-        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("name"));
-        conversation.appendMessage(message);
+    }
+
+    private void sendVoice() {
+        //filePath为语音文件路径，length为录音时间(秒)
+        EMMessage message = EMMessage.createVoiceSendMessage(tempFilePath, length, getIntent().getStringExtra("openId"));
+        EMClient.getInstance().chatManager().sendMessage(message);
+        messagesList.add(message);
+        message.setMessageStatusCallback(emCallBack);
     }
 
     private EMCallBack emCallBack = new EMCallBack() {
         @Override
         public void onSuccess() {
             handler.sendEmptyMessage(0);
+            LogUtils.d("huanxin success");
         }
 
         @Override
         public void onError(int code, String error) {
-
+            LogUtils.d("huanxin" + error.toString());
         }
 
         @Override
@@ -216,5 +263,14 @@ public class ChatActivity extends BaseActivity {
             imagePath = images.get(0);
             sendImageMessage();
         }
+    }
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if(etContent.getText().toString().trim().equals("")){
+            ToastUtils.showShortToast(this,"请输入发送内容");
+            return true;
+        }
+        sendTextMessage();
+        return true;
     }
 }

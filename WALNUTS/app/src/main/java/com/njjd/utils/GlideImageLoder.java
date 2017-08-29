@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.njjd.application.AppAplication;
 import com.njjd.http.HttpManager;
 import com.njjd.walnuts.R;
 import com.youth.banner.loader.ImageLoader;
@@ -17,7 +18,7 @@ public class GlideImageLoder extends ImageLoader {
 
     @Override
     public void displayImage(final Context context, Object path, ImageView imageView) {
-        Glide.with(context).load(path.toString().replace("\\","/")).centerCrop()
+        Glide.with(AppAplication.getContext()).load(path.toString().replace("\\","/")).centerCrop()
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.error)
                 .error(R.drawable.error)

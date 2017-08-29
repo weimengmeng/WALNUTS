@@ -131,8 +131,24 @@ public class InterestActivity extends BaseActivity{
                 break;
         }
     }
-    private void addFocus(){
-
+    private void addFocus() {
+        for(int i=0;i<entities.size();i++){
+            if(ids.contains(entities.get(i).getName())){
+                strs+=entities.get(i).getId()+",";
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("select", "1");
+        map.put("label_id", strs);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+               doLogin();
+            }
+        }, this, false, false), map);
+        HttpManager.getInstance().focusLabel(postEntity);
     }
     private void doLogin() {
         Map<String, Object> map = new HashMap<>();

@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import cn.bingoogolapple.badgeview.BGABadgeTextView;
+
 /**
  * Created by mrwim on 17/8/22.
  */
@@ -72,18 +74,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 //                        View.GONE);
 //            }
         }
-//        if (conversation.getUnreadMsgCount() > 0) {
-//            // 显示与此用户的消息未读数
-//            ((TextView)convertView.findViewById(R.id.unread_msg_number)).setText(String.valueOf(conversation
-//                    .getUnreadMsgCount()));
-//            convertView.findViewById(R.id.unread_msg_number).setVisibility(View.VISIBLE);
-//        } else {
-//            convertView.findViewById(R.id.unread_msg_number).setVisibility(View.INVISIBLE);
-//        }
         viewHolder.name.setText(list.get(position).getName());
         GlideImageLoder.getInstance().displayImage(context, list.get(position).getAvatar(), viewHolder.head);
         ParsePosition pos = new ParsePosition(0);
         viewHolder.date.setText(DateUtils.formationDate(sdf.parse(sdf.format(new Date(conversation.getLastMessage().getMsgTime())), pos)));
+        if (conversation.getUnreadMsgCount() > 0) {
+            viewHolder.badge.showTextBadge(conversation.getUnreadMsgCount()+"");
+        } else {
+           viewHolder.badge.hiddenBadge();
+        }
     }
 
     //获取数据的数量
@@ -98,13 +97,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         public TextView content;
         public ImageView head;
         public TextView date;
+        public BGABadgeTextView badge;
 
         public ViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.txt_name);
             head = (ImageView) view.findViewById(R.id.img_head);
             content = (TextView) view.findViewById(R.id.txt_content);
-            date = (TextView) view.findViewById(R.id.txt_date);
+            date =(TextView) view.findViewById(R.id.txt_date);
+            badge =(BGABadgeTextView) view.findViewById(R.id.txt_badge);
         }
     }
     @Override

@@ -6,24 +6,49 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.RadioButton;
 
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
+import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.chat.EMVoiceMessageBody;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
+import com.njjd.domain.MyConversation;
+import com.njjd.http.HttpManager;
+import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
+import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +67,22 @@ public class MainActivity extends FragmentActivity {
     private int temp = 0;
     public static Activity activity;
     private MyReceiver receiver;
-
+    private JSONObject object;
+    private String message="";
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            sendNotify();
+        }
+    };
+    private Handler handler2=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            getUserInfoByOpenId(msg.getData().getString("uid"));
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +91,60 @@ public class MainActivity extends FragmentActivity {
         ButterKnife.bind(this);
         initView();
         MyActivityManager.getInstance().pushOneActivity(this);
+        loginHuanxin();
+    }
+
+    private static void loginHuanxin() {
+        EMClient.getInstance().login(SPUtils.get(activity, "userId", "").toString(), "Walnut2017", new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                LogUtils.d("环信即时登陆成功");
+                /**
+                 *  获取所有联系人
+                 */
+                EMClient.getInstance().chatManager().loadAllConversations();
+                addListener();
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                LogUtils.d("环信即时登陆失败");
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+
+            }
+        });
+    }
+
+    private static void addListener() {
+        //注册一个监听连接状态的listener
+        EMClient.getInstance().addConnectionListener(new MyConnectionListener());
+    }
+
+    private static class MyConnectionListener implements EMConnectionListener {
+        @Override
+        public void onConnected() {
+            LogUtils.d("huanxin connect");
+        }
+
+        @Override
+        public void onDisconnected(final int error) {
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (error == EMError.USER_REMOVED) {
+                        LogUtils.d("huanxin账号被移除");
+                        // 显示帐号已经被移除
+                    } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                        LogUtils.d("huanxin在另外一台设备登陆");
+                        EMClient.getInstance().logout(true);
+                        // 显示帐号在其他设备登录
+                    }
+                }
+            };
+        }
     }
 
     private void initView() {
@@ -76,9 +170,22 @@ public class MainActivity extends FragmentActivity {
             public void onMessageReceived(List<EMMessage> messages) {
                 LogUtils.d(messages.get(0).getBody());
                 if (AppAplication.isApplicationBroughtToBackground(AppAplication.getContext())) {
-                    Intent intent = new Intent(AppAplication.getContext(), ChatActivity.class);
-                    intent.putExtra("name", messages.get(0).getFrom());
-                    NotificationUtils.createNotif(AppAplication.getContext(), R.drawable.logo, "", messages.get(0).getFrom(), messages.get(0).getBody().toString(), intent, 1);
+                    Message msg = new Message();
+                    Bundle b = new Bundle();// 存放数据
+                    b.putString("uid",messages.get(0).getFrom());
+                    msg.setData(b);
+                    handler2.sendMessage(msg); // 向Handler发送消息，更新UI
+
+                    if (messages.get(0).getType() == EMMessage.Type.TXT) {
+//                        getUserInfoByOpenId(messages.get(0).getFrom());
+                        message=((EMTextMessageBody) messages.get(0).getBody()).getMessage();
+                    } else if (messages.get(0).getType() == EMMessage.Type.IMAGE) {
+//                        getUserInfoByOpenId(messages.get(0).getFrom());
+                        message="[图片]";
+                    } else if (messages.get(0).getType() == EMMessage.Type.VOICE) {
+//                        getUserInfoByOpenId(messages.get(0).getFrom());
+                        message="[语音]";
+                    }
                 }
                 EMClient.getInstance().chatManager().importMessages(messages);
                 EMClient.getInstance().chatManager().loadAllConversations();
@@ -108,7 +215,39 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
-
+    private void getUserInfoByOpenId(final String uid) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uids", uid);
+        map.put("uid", SPUtils.get(activity, "userId", ""));
+        map.put("token", SPUtils.get(activity, "token", ""));
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                try {
+                    JSONArray array = new JSONArray(gson.toJson(o));
+                    object=array.getJSONObject(0);
+                    handler.sendEmptyMessage(0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, this, false, false), map);
+        HttpManager.getInstance().getUserUids(postEntity);
+    }
+    private void sendNotify(){
+        Intent intent = new Intent(AppAplication.getContext(), ChatActivity.class);
+        try {
+            intent.putExtra("openId",object.getString("uid"));
+            intent.putExtra("name",object.isNull("uname") ? "未填写" : object.getString("uname"));
+            intent.putExtra("avatar",object.isNull("headimg") ? "" : object.getString("headimg"));
+            NotificationUtils.createNotif(AppAplication.getContext(), R.drawable.logo, "", object.isNull("uname") ? "未填写" :object.getString("uname"),message, intent, 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

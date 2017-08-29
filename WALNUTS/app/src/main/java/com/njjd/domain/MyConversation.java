@@ -22,8 +22,8 @@ public class MyConversation {
 
 	public void setJson(JSONObject json) {
 		try {
-			name = json.isNull("name") ? "" : json.getString("name");
-			avatar = json.isNull("avatar") ? "" : json.getString("avatar");
+			name = json.isNull("uname") ? "" : json.getString("uname");
+			avatar = json.isNull("headimg") ? "" : json.getString("headimg");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

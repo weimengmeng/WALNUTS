@@ -36,7 +36,7 @@ public class DrawableLeftTextview extends EditText{
                 int drawableWidth = 0;
                 drawableWidth = drawableLeft.getIntrinsicWidth();
                 float bodyWidth = textWidth + drawableWidth + drawablePadding;
-                canvas.translate((getWidth() - bodyWidth) / 2, 0);
+                canvas.translate((getWidth() - bodyWidth) / 3, 0);
             }
         }
         super.onDraw(canvas);
