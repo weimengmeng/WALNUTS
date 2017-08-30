@@ -1,14 +1,20 @@
 package com.njjd.fragment;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -20,8 +26,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
+import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.AttentionActivity;
 import com.njjd.walnuts.MyAnswerActivity;
@@ -31,7 +40,6 @@ import com.njjd.walnuts.MySaveActivity;
 import com.njjd.walnuts.PersonalActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SettingActivity;
-import com.yongchun.library.view.ImageSelectorActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,12 +47,16 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.valuesfeng.picker.Picker;
+import io.valuesfeng.picker.engine.GlideEngine;
+import io.valuesfeng.picker.utils.PicturePickerUtils;
 
 /**
  * Created by mrwim on 17/7/10.
@@ -83,11 +95,39 @@ public class MineFragment extends BaseFragment {
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),txtChange);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getActivity().getWindow();
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+        initAfterSetContentView(getActivity(),txtChange);
         getUserInfo();
         return view;
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void initAfterSetContentView(Activity activity,
+                                               View titleViewGroup) {
+        if (activity == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (titleViewGroup == null)
+                return;
+            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
+            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
+            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+        }
+    }
     @Override
     public void lazyInitData() {
     }
@@ -177,8 +217,11 @@ public class MineFragment extends BaseFragment {
         Intent intent;
         switch (view.getId()) {
             case R.id.img_head:
-                //1多选 2 单选 单选才有裁剪功能
-                ImageSelectorActivity.start(getActivity(), 1, 2, true, true, true);
+                Picker.from(this)
+                        .count(1)
+                        .enableCamera(true)
+                        .setEngine(new GlideEngine())
+                        .forResult(0);
                 break;
             case R.id.txt_change:
                 intent = new Intent(context, PersonalActivity.class);
@@ -226,6 +269,7 @@ public class MineFragment extends BaseFragment {
         public void onNext(Object o) {
             JsonObject object= JSONUtils.getAsJsonObject(o);
             SPUtils.put(context,"head",HttpManager.BASE_URL2+object.get("path").getAsString());
+            onResume();
         }
     };
 
@@ -237,10 +281,10 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == getActivity().RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
-            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-            file = new File(images.get(0));
-            GlideImageLoder.getInstance().displayImage(context, images.get(0), imgHead);
+        if (resultCode == getActivity().RESULT_OK && requestCode == 0) {
+            List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
+            String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(context,mSelected.get(0)), 480,800);
+            file = new File(imgpath);
             uploadFile();
         }
     }

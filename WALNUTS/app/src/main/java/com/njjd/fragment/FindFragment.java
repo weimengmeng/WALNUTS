@@ -1,12 +1,17 @@
 package com.njjd.fragment;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -40,12 +45,6 @@ public class FindFragment extends BaseFragment {
     @BindView(R.id.top)
     LinearLayout top;
     private Context context;
-//    @BindView(R.id.top)
-//    LinearLayout top;
-//    @BindView(R.id.back)
-//    TextView back;
-//    @BindView(R.id.txt_title)
-//    TextView txtTitle;
     private List<View> viewList;
     private MyPagerAdapter adapter;
 
@@ -56,13 +55,30 @@ public class FindFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void initAfterSetContentView(Activity activity,
+                                               View titleViewGroup) {
+        if (activity == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (titleViewGroup == null)
+                return;
+            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
+            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
+            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+        }
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
-//        back.setVisibility(View.GONE);
-//        txtTitle.setText("发现");
+        initAfterSetContentView(getActivity(), top);
         viewList = new ArrayList<>();
         viewList.add(view.inflate(context, R.layout.find_jinxuan, null));
         viewList.add(view.inflate(context, R.layout.find_zhuanlan, null));

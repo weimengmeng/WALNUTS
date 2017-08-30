@@ -29,14 +29,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:layout_marginLeft="@dimen/padding_left"
-                android:layout_marginRight="@dimen/padding_left"
                 android:orientation="vertical">
-                <TextView
+                <com.njjd.utils.ShangshabanChangeTextSpaceView
                     android:id="@+id/txt_quesTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:textStyle="bold"
                     android:paddingLeft="@dimen/margin"
                     android:paddingRight="@dimen/margin"
                     android:background="@color/white"

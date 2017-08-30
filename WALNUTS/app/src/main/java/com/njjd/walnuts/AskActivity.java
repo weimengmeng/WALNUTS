@@ -2,6 +2,7 @@ package com.njjd.walnuts;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,10 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.adapter.GridViewAddImgesAdpter;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ToastUtils;
-import com.yongchun.library.view.ImageSelectorActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,9 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.valuesfeng.picker.Picker;
+import io.valuesfeng.picker.engine.GlideEngine;
+import io.valuesfeng.picker.utils.PicturePickerUtils;
 
 /**
  * Created by mrwim on 17/7/12.
@@ -60,38 +65,14 @@ public class AskActivity extends BaseActivity {
         gw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                if (Build.VERSION.SDK_INT >= 23) {
-//                    int checkCallPhonePermission = ContextCompat.checkSelfPermission(AskActivity.this,Manifest.permission_group.STORAGE);
-//                    if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
-//                        ActivityCompat.requestPermissions(AskActivity.this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_CAMER);
-//                        return;
-//                    }else{
-                        ImageSelectorActivity.start(AskActivity.this,10-gridViewAddImgesAdpter.getCount(), 1, true, true, true);
-//                    }
-//                } else {
-//                    ImageSelectorActivity.start(AskActivity.this,10-gridViewAddImgesAdpter.getCount(), 1, true, true, true);
-//                }
-
+                Picker.from(AskActivity.this)
+                        .count(10-gridViewAddImgesAdpter.getCount())
+                        .enableCamera(true)
+                        .setEngine(new GlideEngine())
+                        .forResult(REQUEST_CODE);
             }
         });
     }
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_ASK_CAMER:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(this, "Ok", Toast.LENGTH_SHORT)
-//                            .show();
-//                } else {
-//                    Toast.makeText(this, "Denied", Toast.LENGTH_SHORT)
-//                            .show();
-//                    ActivityCompat.requestPermissions(AskActivity.this,new String[]{Manifest.permission_group.STORAGE},REQUEST_CODE_ASK_CAMER);
-//                }
-//                break;
-//            default:
-//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,11 +115,12 @@ public class AskActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
-            images= (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-            for (int i = 0; i < images.size(); i++) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
+
+            for (int i = 0; i < mSelected.size(); i++) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("path", images.get(i));
+                map.put("path", CommonUtils.getRealPathFromUri(AskActivity.this,mSelected.get(i)));
                 datas.add(map);
             }
             gridViewAddImgesAdpter.setMaxImages(9);

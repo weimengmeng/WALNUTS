@@ -36,16 +36,15 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".WelcomeActivity"
-            android:screenOrientation="portrait">
-
         </activity>
         <activity
             android:name=".BindActivity"
@@ -149,9 +148,6 @@
         <activity
             android:name=".FeedBackActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name="com.yongchun.library.view.ImageSelectorActivity" />
-        <activity android:name="com.yongchun.library.view.ImagePreviewActivity" />
-        <activity android:name="com.yongchun.library.view.ImageCropActivity" />
         <!-- 友盟key-->
         <meta-data
             android:name="UMENG_APPKEY"

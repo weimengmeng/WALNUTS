@@ -178,10 +178,10 @@
         android:id="@+id/btn_exit"
         android:layout_margin="@dimen/margin"
         android:layout_width="match_parent"
-        android:background="@drawable/background_layout_div"
+        android:background="@color/red"
         android:layout_height="wrap_content"
         android:text="退出登录"
         android:textSize="@dimen/big"
-        android:textColor="@color/red"/>
+        android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>

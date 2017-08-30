@@ -1,8 +1,13 @@
 package com.njjd.walnuts;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,11 +71,30 @@ public class PeopleInfoActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this,top);
+        initAfterSetContentView(this,top);
         tempUser = getIntent().getStringExtra("uid");
         getUserInfo();
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void initAfterSetContentView(Activity activity,
+                                               View titleViewGroup) {
+        if (activity == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (titleViewGroup == null)
+                return;
+            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
+            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
+            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+        }
+    }
     private void getUserInfo() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());

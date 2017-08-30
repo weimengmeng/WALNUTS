@@ -1,9 +1,12 @@
 package com.njjd.fragment;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -12,6 +15,8 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -107,7 +112,26 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             getUserInfoByOpenId();
         }
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void initAfterSetContentView(Activity activity,
+                                               View titleViewGroup) {
+        if (activity == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (titleViewGroup == null)
+                return;
+            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
+            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
+            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+        }
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -120,9 +144,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         IntentFilter filter1 = new IntentFilter();
         filter1.addAction(ConstantsVal.NEW_INFORM);
         context.registerReceiver(informReceive, filter1);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
-//        listMes.setMenuCreator(creator);
-//        listMes.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        initAfterSetContentView(getActivity(), top);
         adapter = new ConversationAdapter(getContext(), conversations);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
@@ -170,6 +192,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                InformAdapter.CURRENT_PAGE=1;
                 getMyInform();
             }
 
@@ -177,6 +200,11 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             public void onLoadMore() {
                 InformAdapter.CURRENT_PAGE++;
                 getMyInform();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        listInform.loadMoreComplete();
+                    }
+                }, 1500);
             }
         });
         getMyInform();

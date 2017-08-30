@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.njjd.walnuts.R;
+
 /**
  * Created by mrwim on 17/7/13.
  */
@@ -27,14 +29,15 @@ public class ImmersedStatusbarUtils {
                                                View titleViewGroup) {
         if (activity == null)
             return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            // 透明状态栏
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            // 透明导航栏
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.setStatusBarColor(activity.getResources().getColor(R.color.login));
             if (titleViewGroup == null)
                 return;
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
@@ -49,7 +52,7 @@ public class ImmersedStatusbarUtils {
      * @param context
      * @return
      */
-    private static int getStatusBarHeight(Context context) {
+    public static int getStatusBarHeight(Context context) {
         int result = 0;
         int resourceId = context.getResources().getIdentifier(
                 "status_bar_height", "dimen", "android");

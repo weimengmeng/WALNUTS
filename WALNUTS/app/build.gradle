@@ -77,7 +77,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.isseiaoki:simplecropview:1.0.13'
-    compile 'com.yongchun:com.yongchun.imageselector:1.1.0'
     compile 'com.contrarywind:Android-PickerView:3.2.4'
     compile files('libs/android-pdfview-1.0.2-sources.jar')
     compile 'com.github.barteksc:android-pdf-viewer:2.7.0-beta.1'
@@ -104,4 +103,5 @@ dependencies {
     compile 'com.hyphenate:hyphenate-sdk-lite:3.3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile project(':BGABadgeView-master')
+    compile 'com.github.valuesfeng:androidpicturepicker:1.0.0'
 }

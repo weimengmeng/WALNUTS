@@ -5,14 +5,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RadioButton;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -25,15 +28,12 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.chat.EMVoiceMessageBody;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
-import com.njjd.domain.MyConversation;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
@@ -69,6 +69,7 @@ public class MainActivity extends FragmentActivity {
     private MyReceiver receiver;
     private JSONObject object;
     private String message="";
+    private long exitTime=0;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -331,5 +332,19 @@ public class MainActivity extends FragmentActivity {
             radio4.setTipOn(true);
             radio4.invalidate();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+            if((System.currentTimeMillis()-exitTime) > 1000){
+                ToastUtils.showShortToast(getApplicationContext(), "再按一次退出程序");
+                exitTime = System.currentTimeMillis();
+            } else {
+                MyActivityManager.getInstance().finishAllActivity();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -9,7 +9,7 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/login"
         android:gravity="center_horizontal">
 
         <RadioGroup
@@ -56,7 +56,7 @@
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/list_mes"
-        android:layout_marginTop="@dimen/margin"
+        android:layout_marginTop="@dimen/padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="#00000000"
@@ -67,6 +67,7 @@
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/list_inform"
+        android:layout_marginTop="@dimen/padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"

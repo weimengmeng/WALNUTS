@@ -1,16 +1,18 @@
 package com.njjd.walnuts;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,22 +25,23 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.njjd.adapter.MSGLAdapter;
-import com.njjd.application.AppAplication;
 import com.njjd.utils.AndroidBug5497Workaround;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.ToastUtils;
 import com.voice.AudioRecoderUtils;
 import com.voice.PopupWindowFactory;
 import com.voice.TimeUtils;
-import com.yongchun.library.view.ImageSelectorActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.valuesfeng.picker.Picker;
+import io.valuesfeng.picker.engine.GlideEngine;
+import io.valuesfeng.picker.utils.PicturePickerUtils;
 
 /**
  * Created by mrwim on 17/7/12.
@@ -97,12 +100,10 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         adapter = new MSGLAdapter(this, messagesList);
         adapter.setAvatar(getIntent().getStringExtra("avatar"));
         listChat.setAdapter(adapter);
-       handler.sendEmptyMessage(0);
+        handler.sendEmptyMessage(0);
         initConversionLitener();
         AndroidBug5497Workaround.assistActivity(this);
-
         mAudioRecoderUtils = new AudioRecoderUtils();
-
         //录音回调
         mAudioRecoderUtils.setOnAudioStatusUpdateListener(new AudioRecoderUtils.OnAudioStatusUpdateListener() {
 
@@ -207,8 +208,13 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
              lvVoice.setVisibility(lvVoice.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
                 break;
             case R.id.btn_img:
-                //1多选 2 单选 单选才有裁剪功能
-                ImageSelectorActivity.start(this, 1, 2, true, true, true);
+                Picker.from(this)
+                        .count(1)
+                        .enableCamera(true)
+                        .setEngine(new GlideEngine())
+                        .forResult(REQUEST_CODE);
+//                //1多选 2 单选 单选才有裁剪功能
+//                ImageSelectorActivity.start(this, 1, 2, true, true, true);
                 break;
         }
     }
@@ -258,9 +264,10 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
-            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-            imagePath = images.get(0);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
+//            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
+            imagePath = CommonUtils.getRealPathFromUri(this,mSelected.get(0));
             sendImageMessage();
         }
     }

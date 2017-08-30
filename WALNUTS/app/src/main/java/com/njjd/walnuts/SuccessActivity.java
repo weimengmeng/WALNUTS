@@ -1,6 +1,7 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,9 +14,6 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.domain.CommonEntity;
 import com.njjd.http.HttpManager;
@@ -23,12 +21,9 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
-import com.yongchun.library.view.ImageSelectorActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,6 +34,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.valuesfeng.picker.Picker;
+import io.valuesfeng.picker.engine.GlideEngine;
+import io.valuesfeng.picker.utils.PicturePickerUtils;
 
 /**
  * Created by mrwim on 17/7/12.
@@ -88,14 +86,14 @@ public class SuccessActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
-        if (getIntent().getIntExtra("bind", 0) == 1) {
-            //绑定账号情况，预先设置第三方的头像性别等
-            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
-            etName.setText(SPUtils.get(this, "thirdName", "").toString());
-            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
-            path = SPUtils.get(this, "thirdHead", "").toString();
-        }
-        setPickView();
+//        if (getIntent().getIntExtra("bind", 0) == 1) {
+//            //绑定账号情况，预先设置第三方的头像性别等
+//            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
+//            etName.setText(SPUtils.get(this, "thirdName", "").toString());
+//            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
+//            path = SPUtils.get(this, "thirdHead", "").toString();
+//        }
+//        setPickView();
     }
 
     private void setPickView() {
@@ -158,8 +156,13 @@ public class SuccessActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_head:
+                Picker.from(this)
+                        .count(1)
+                        .enableCamera(true)
+                        .setEngine(new GlideEngine())
+                        .forResult(REQUEST_CODE);
                 //1多选 2 单选 单选才有裁剪功能
-                ImageSelectorActivity.start(this, 1, 2, true, true, true);
+//                ImageSelectorActivity.start(this, 1, 2, true, true, true);
                 break;
             case R.id.txt_province:
                 if (provincePickview != null) {
@@ -232,11 +235,12 @@ public class SuccessActivity extends BaseActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE) {
-            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-            file = new File(images.get(0));
-            GlideImageLoder.getInstance().displayImage(this, images.get(0), imgHead);
-            path = images.get(0);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
+            String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(this,mSelected.get(0)), 480,800);
+            file = new File(imgpath);
+            GlideImageLoder.getInstance().displayImage(this, file.getPath(), imgHead);
+            path = imgpath;
         }
     }
 

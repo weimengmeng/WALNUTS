@@ -1,8 +1,11 @@
 package com.njjd.fragment;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,6 +17,8 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -111,11 +116,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void lazyInitData() {
         //获取问题
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
         layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
         layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
@@ -137,8 +140,28 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         popupWindow.update();
         initRefresh();
         initTop(view);
+        initAfterSetContentView(getActivity(),top);
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void initAfterSetContentView(Activity activity,
+                                               View titleViewGroup) {
+        if (activity == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (titleViewGroup == null)
+                return;
+            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
+            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
+            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+        }
+    }
     private void initTop(View view) {
         viewList = new ArrayList<>();
         for (int i = 0; i < navList.size(); i++) {
