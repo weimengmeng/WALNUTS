@@ -100,7 +100,7 @@ public class SaveDetailActivity extends BaseActivity {
     public void initView(View view) {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
-        txtTitle.setText("详情");
+        txtTitle.setText("收藏详情");
         saveEntity=(SaveEntity)getIntent().getBundleExtra("save").get("save");
         txtQuesTitle.setText(saveEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(saveEntity.getArticle_answer_num()).intValue());
@@ -147,6 +147,7 @@ public class SaveDetailActivity extends BaseActivity {
             txtAgree.setBackgroundResource(R.drawable.background_button_div);
         }
         txtSave.setText("取消收藏");
+        txtSave.setTextColor(getResources().getColor(R.color.txt_color));
         txtSave.setTag("0");
         ParsePosition pos = new ParsePosition(0);
         txtTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(saveEntity.getCollect_time(), pos)));
@@ -220,7 +221,15 @@ public class SaveDetailActivity extends BaseActivity {
         public void onNext(Object o) {
             ToastUtils.showShortToast(SaveDetailActivity.this,txtFocus.getTag().toString().equals("0")?"成功关注":"取消成功");
             txtFocus.setTag(txtFocus.getTag().toString().equals("0")?"1":"0");
-            txtFocus.setText(txtFocus.getTag().toString().equals("1")?"+关注问题":"取消关注");
+            if (txtFocus.getTag().toString().equals("0")) {
+                txtFocus.setText("取消关注");
+                txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape);
+            }else{
+                txtFocus.setText("+关注问题");
+                txtFocus.setTextColor(getResources().getColor(R.color.login));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape_login);
+            }
         }
     };
     @OnClick({R.id.back,R.id.txt_more, R.id.txt_focus, R.id.img_answer,R.id.txt_agree,R.id.txt_save})

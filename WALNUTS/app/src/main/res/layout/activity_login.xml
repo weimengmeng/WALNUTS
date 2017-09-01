@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
+    android:background="@color/white"
     android:paddingTop="@dimen/margin">
 
     <LinearLayout
@@ -25,16 +26,23 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_big">
-            <com.njjd.utils.DrawableLeftTextview
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机号"
+                android:textSize="@dimen/normal"
+                android:textColor="@color/gray"/>
+            <EditText
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height"
                 android:background="@null"
-                android:drawableLeft="@drawable/img_phone"
                 android:hint="请输入手机号"
                 android:textCursorDrawable="@drawable/color_cusor"
                 android:inputType="phone"
                 android:maxLength="11"
+                android:paddingRight="@dimen/margin_top"
+                android:gravity="center"
                 android:textColor="@color/gray"
                 android:textColorHint="@color/txt_color"
                 android:textSize="@dimen/normal"
@@ -51,16 +59,22 @@
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:layout_height="@dimen/height">
-            <com.njjd.utils.DrawableLeftTextview
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="密码"
+                android:textSize="@dimen/normal"
+                android:textColor="@color/gray"/>
+            <EditText
                 android:id="@+id/et_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@null"
-                android:drawableLeft="@drawable/img_pwd"
                 android:hint="请输入密码"
                 android:textCursorDrawable="@drawable/color_cusor"
-                android:gravity="center_vertical"
+                android:gravity="center"
+                android:paddingRight="@dimen/margin_top"
                 android:textColor="@color/gray"
                 android:textColorHint="@color/txt_color"
                 android:textSize="@dimen/normal"

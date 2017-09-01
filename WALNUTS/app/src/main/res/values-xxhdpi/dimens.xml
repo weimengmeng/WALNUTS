@@ -7,9 +7,9 @@
     <dimen name="large">18sp</dimen>
     <dimen name="large_big">24sp</dimen>
     <dimen name="largest">40sp</dimen>
-    <dimen name="padding">7dp</dimen>
+    <dimen name="padding">5dp</dimen>
     <dimen name="margin_small">7dp</dimen>
-    <dimen name="margin">10dp</dimen>
+    <dimen name="margin">12dp</dimen>
     <dimen name="banner">160dp</dimen>
     <dimen name="margin_big">30dp</dimen>
     <dimen name="margin_top">60dp</dimen>
@@ -19,7 +19,7 @@
     <dimen name="line_height">8dp</dimen>
     <dimen name="height">40dp</dimen>
     <dimen name="round">45dp</dimen>
-    <dimen name="head">30dp</dimen>
+    <dimen name="head">25dp</dimen>
     <dimen name="head_big">50dp</dimen>
     <dimen name="head_large">80dp</dimen>
     <dimen name="shadow">19dp</dimen>
@@ -27,7 +27,7 @@
     <dimen name="loading">80dp</dimen>
     <dimen name="pop">270dp</dimen>
     <!--2017 7 17-->
-    <dimen name="_top">-17dp</dimen>
-    <dimen name="_margin">-12dp</dimen>
+    <dimen name="_top">-12dp</dimen>
+    <dimen name="_margin">-7dp</dimen>
     <dimen name="post_height">150dp</dimen>
 </resources>

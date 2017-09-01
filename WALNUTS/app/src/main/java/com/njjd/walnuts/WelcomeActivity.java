@@ -1,6 +1,7 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.view.View;
 
@@ -13,6 +14,9 @@ import com.njjd.utils.SPUtils;
 public class WelcomeActivity extends BaseActivity{
     @Override
     public void initView(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        }
         if(SPUtils.get(this,"isFirst","0").equals("0")){
             SPUtils.put(this,"isFirst","1");
             startActivity(new Intent(this,AppIntroActivity.class));

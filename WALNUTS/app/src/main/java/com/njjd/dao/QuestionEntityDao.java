@@ -37,6 +37,7 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         public final static Property Tag = new Property(10, String.class, "tag", false, "TAG");
         public final static Property Kind = new Property(11, String.class, "kind", false, "KIND");
         public final static Property Tag_id = new Property(12, String.class, "tag_id", false, "TAG_ID");
+        public final static Property Part_num = new Property(13, String.class, "part_num", false, "PART_NUM");
     }
 
 
@@ -64,7 +65,8 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
                 "\"DATE_TIME\" TEXT," + // 9: dateTime
                 "\"TAG\" TEXT," + // 10: tag
                 "\"KIND\" TEXT," + // 11: kind
-                "\"TAG_ID\" TEXT);"); // 12: tag_id
+                "\"TAG_ID\" TEXT," + // 12: tag_id
+                "\"PART_NUM\" TEXT);"); // 13: part_num
     }
 
     /** Drops the underlying database table. */
@@ -137,6 +139,11 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         if (tag_id != null) {
             stmt.bindString(13, tag_id);
         }
+ 
+        String part_num = entity.getPart_num();
+        if (part_num != null) {
+            stmt.bindString(14, part_num);
+        }
     }
 
     @Override
@@ -203,6 +210,11 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         if (tag_id != null) {
             stmt.bindString(13, tag_id);
         }
+ 
+        String part_num = entity.getPart_num();
+        if (part_num != null) {
+            stmt.bindString(14, part_num);
+        }
     }
 
     @Override
@@ -225,7 +237,8 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // dateTime
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // tag
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // kind
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // tag_id
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // tag_id
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // part_num
         );
         return entity;
     }
@@ -245,6 +258,7 @@ public class QuestionEntityDao extends AbstractDao<QuestionEntity, String> {
         entity.setTag(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setKind(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setTag_id(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setPart_num(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     @Override

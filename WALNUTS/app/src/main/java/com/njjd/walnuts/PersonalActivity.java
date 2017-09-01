@@ -206,7 +206,7 @@ public class PersonalActivity extends BaseActivity{
             map.put("industry_id", industryId);
         if(!"".equals(modelId))
             map.put("sales_id", modelId);
-        map.put("sex", txtSex.getText().toString().equals("男") ? "0" : "1");
+        map.put("sex", txtSex.getText().toString().equals("男") ? "1" : "0");
         map.put("message", txtMessage.getText().toString().trim());
         map.put("position", txtPosition.getText().toString().trim());
         map.put("company", txtCompany.getText().toString().trim());

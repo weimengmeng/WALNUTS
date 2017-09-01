@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -30,6 +31,9 @@ public class AppIntroActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appintro);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        }
        /* //初始化点点点控件
         ViewGroup group = (ViewGroup)findViewById(R.id.viewGroup);
         tips = new ImageView[4];

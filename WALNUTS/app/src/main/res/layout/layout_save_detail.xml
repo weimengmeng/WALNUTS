@@ -10,12 +10,6 @@
         android:background="@drawable/background_layout_div"
         android:orientation="vertical"
         android:paddingBottom="@dimen/padding">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginRight="@dimen/margin_right"
-            android:alpha="0.15"
-            android:background="#000000"></View>
         <LinearLayout
             android:id="@+id/lv_img"
             android:layout_width="match_parent"
@@ -84,12 +78,12 @@
                     android:id="@+id/txt_focus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/txt_shape"
+                    android:background="@drawable/txt_shape_login"
                     android:gravity="center_vertical"
                     android:paddingBottom="@dimen/padding"
                     android:paddingTop="@dimen/padding"
                     android:text="+关注问题"
-                    android:textColor="@color/txt_color"
+                    android:textColor="@color/login"
                     android:textSize="@dimen/small"
                     android:typeface="sans"></TextView>
             </LinearLayout>

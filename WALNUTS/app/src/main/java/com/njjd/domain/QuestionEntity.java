@@ -32,7 +32,7 @@ public class QuestionEntity implements Serializable{
     private String tag;
     private String kind="";
     private String tag_id;
-
+    private String part_num="";
     public QuestionEntity(JSONObject object,String kind){
         try {
             this.questionId=object.isNull("id")?"0":object.getString("id");
@@ -48,6 +48,8 @@ public class QuestionEntity implements Serializable{
             this.isFocus=0;
             this.kind=kind;
             this.tag_id="";
+            this.part_num=object.isNull("part_num")?"1":object.getString("part_num");
+            ;
         }catch (JSONException e){
 
         }
@@ -65,10 +67,11 @@ public class QuestionEntity implements Serializable{
             this.tag="";
             this.isFocus=0;
             this.tag_id="";
+            this.part_num="0";
     }
-    @Generated(hash = 226711368)
+    @Generated(hash = 1179706357)
     public QuestionEntity(String questionId, String title, String content, String photo, String pic, String uids, String focusNum,
-            String answerNum, int isFocus, String dateTime, String tag, String kind, String tag_id) {
+            String answerNum, int isFocus, String dateTime, String tag, String kind, String tag_id, String part_num) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
@@ -82,6 +85,7 @@ public class QuestionEntity implements Serializable{
         this.tag = tag;
         this.kind = kind;
         this.tag_id = tag_id;
+        this.part_num = part_num;
     }
     @Generated(hash = 98121125)
     public QuestionEntity() {
@@ -163,5 +167,11 @@ public class QuestionEntity implements Serializable{
     }
     public void setUids(String uids) {
         this.uids = uids;
+    }
+    public String getPart_num() {
+        return this.part_num;
+    }
+    public void setPart_num(String part_num) {
+        this.part_num = part_num;
     }
 }

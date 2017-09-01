@@ -9,21 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_div"
-        android:layout_marginTop="@dimen/padding"
+        android:layout_marginTop="@dimen/margin_small"
         android:orientation="vertical">
 
-        <com.njjd.utils.ShangshabanChangeTextSpaceView
+        <TextView
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin"
-            android:textStyle="bold"
             android:text="工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:ellipsize="end"
             android:maxLines="2"
             android:typeface="sans"
-            android:lineSpacingMultiplier="1.2"
+            android:lineSpacingMultiplier="1.1"
             android:textSize="@dimen/big" />
 
         <ImageView
@@ -31,11 +30,25 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/post_height"
             android:scaleType="centerCrop" />
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_top"
+            android:textColor="@color/gray"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:singleLine="true"
+            android:typeface="sans"
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin"
+            android:ellipsize="end"
+            android:textSize="@dimen/normal"
+            android:id="@+id/txt_content"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginRight="@dimen/margin_top"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
             android:alpha="0.15"
             android:background="#000000"></View>
 
@@ -52,7 +65,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="@dimen/margin"
+                android:paddingBottom="@dimen/padding"
+                android:paddingTop="@dimen/padding"
+                android:paddingLeft="@dimen/margin"
                 ></LinearLayout>
             <TextView
                 android:id="@+id/txt_total"
@@ -60,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|left"
                 android:text="300人参与讨论"
+                android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
             <TextView
                 android:id="@+id/txt_time"
@@ -69,6 +85,7 @@
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
                 android:text="15分钟前"
+                android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
         </LinearLayout>
     </LinearLayout>

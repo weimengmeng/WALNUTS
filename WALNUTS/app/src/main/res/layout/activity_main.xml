@@ -1,50 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Width_m_Height_m">
-    <LinearLayout
+    style="@style/Width_m_Height_m"
+    android:clipChildren="true">
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/top"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <FrameLayout
+        <fragment
+            android:id="@+id/index_fragment"
+            android:name="com.njjd.fragment.IndexFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/index_fragment"
-                android:name="com.njjd.fragment.IndexFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <fragment
+            android:id="@+id/find_fragment"
+            android:name="com.njjd.fragment.FindFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/find_fragment"
-                android:name="com.njjd.fragment.FindFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <fragment
+            android:id="@+id/pub_fragment"
+            android:name="com.njjd.fragment.PubFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/pub_fragment"
-                android:name="com.njjd.fragment.PubFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <fragment
+            android:id="@+id/mess_fragment"
+            android:name="com.njjd.fragment.MessageFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/mess_fragment"
-                android:name="com.njjd.fragment.MessageFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <fragment
-                android:id="@+id/my_fragment"
-                android:tag="mine"
-                android:name="com.njjd.fragment.MineFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
-    </LinearLayout>
+        <fragment
+            android:id="@+id/my_fragment"
+            android:name="com.njjd.fragment.MineFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tag="mine" />
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"
@@ -59,5 +53,4 @@
 
         <include layout="@layout/bottom"></include>
     </LinearLayout>
-
 </LinearLayout>

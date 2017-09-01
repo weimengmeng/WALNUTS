@@ -194,6 +194,11 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             public void onRefresh() {
                 InformAdapter.CURRENT_PAGE=1;
                 getMyInform();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        listInform.refreshComplete();
+                    }
+                }, 3000);
             }
 
             @Override

@@ -15,11 +15,9 @@ import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chat.EMVoiceMessageBody;
-import com.hyphenate.exceptions.HyphenateException;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.R;
 
 import java.io.IOException;
@@ -133,36 +131,31 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 			else
 				play(((EMVoiceMessageBody) message.getBody()).getLocalUrl());
 		} else if (message.getType() == EMMessage.Type.IMAGE) {
-			ToastUtils.showShortToast(context,"点击放大图片");
-//			Intent intent = new Intent(context, ShowBigImage.class);
 //			File file = new File(
-//					((ImageMessageBody) message.getBody()).getLocalUrl());
+//					((EMImageMessageBody) message.getBody()).getLocalUrl());
 //			if (file.exists()) {
 //				Uri uri = Uri.fromFile(file);
-//				intent.putExtra("uri", uri);
+//				ArrayList<String> strings=new ArrayList<>();
+//				strings.add(CommonUtils.getRealPathFromUri(context,uri));
+//				new PhotoPagerConfig.Builder((Activity)context)
+//						.setBigImageUrls(strings) //图片url,可以是sd卡res，asset，网络图片.
+//						.setSavaImage(false)                         //开启保存图片，默认false
+//						.setPosition(1)                             //默认展示第2张图片
+//						.build();
 //			} else {
 //				// The local full size pic does not exist yet.
 //				// ShowBigImage needs to download it from the server
 //				// first
 //				// intent.putExtra("", message.get);
-//				ImageMessageBody body = (ImageMessageBody) message.getBody();
-//				intent.putExtra("secret", body.getSecret());
-//				intent.putExtra("remotepath",
-//						((ImageMessageBody) message.getBody()).getRemoteUrl());
+//				ArrayList<String> strings=new ArrayList<>();
+//				strings.add(((EMImageMessageBody) message.getBody()).getRemoteUrl());
+//				EMImageMessageBody body = (EMImageMessageBody) message.getBody();
+//				new PhotoPagerConfig.Builder((Activity)context)
+//						.setBigImageUrls(strings) //图片url,可以是sd卡res，asset，网络图片.
+//						.setSavaImage(false)                         //开启保存图片，默认false
+//						.setPosition(1)                             //默认展示第2张图片
+//						.build();
 //			}
-//			if (message != null && message.direct == EMMessage.Direct.RECEIVE
-//					&& !message.isAcked
-//					&& message.getChatType() != ChatType.GroupChat
-//					&& message.getChatType() != ChatType.ChatRoom) {
-//				try {
-//					EMChatManager.getInstance().ackMessageRead(
-//							message.getFrom(), message.getMsgId());
-//					message.isAcked = true;
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			context.startActivity(intent);
 		}
 	}
 

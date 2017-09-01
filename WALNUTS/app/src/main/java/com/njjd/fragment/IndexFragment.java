@@ -317,6 +317,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     temp.setFocusNum(entity.getFocusNum());
                     temp.setPic(entity.getPic());
                     temp.setPhoto(entity.getPhoto());
+                    temp.setPart_num(entity.getPart_num());
                     DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(temp);
                 } else {
                     DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(entity);

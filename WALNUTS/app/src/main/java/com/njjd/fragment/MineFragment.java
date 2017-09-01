@@ -284,6 +284,7 @@ public class MineFragment extends BaseFragment {
         if (resultCode == getActivity().RESULT_OK && requestCode == 0) {
             List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
             String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(context,mSelected.get(0)), 480,800);
+            LogUtils.d(imgpath);
             file = new File(imgpath);
             uploadFile();
         }

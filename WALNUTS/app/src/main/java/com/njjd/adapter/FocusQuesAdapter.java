@@ -67,7 +67,7 @@ public class FocusQuesAdapter extends BaseAdapter {
         }
         focusEntity=list.get(position);
         hodel.title.setText(focusEntity.getTitle());
-        hodel.tag.setText("销售环节");
+        hodel.tag.setText("关注量: "+Float.valueOf(focusEntity.getFocusNum()).intValue());
         hodel.date.setText(focusEntity.getDateTime());
         return convertView;
     }

@@ -7,20 +7,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <LinearLayout
             style="@style/Width_m_Height_m"
             android:focusable="true"
             android:focusableInTouchMode="true">
-
             <LinearLayout
                 android:id="@+id/top"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <include layout="@layout/top"></include>
             </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,8 +39,11 @@
                 android:maxLines="3"
                 android:minLines="2"
                 android:paddingLeft="@dimen/padding_left"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
+                android:paddingRight="@dimen/padding_left"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
+                android:textSize="@dimen/big" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,23 +52,22 @@
                 android:text="详情"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
-
             <EditText
                 android:id="@+id/et_content2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:typeface="sans"
                 android:textCursorDrawable="@drawable/color_cusor"
-
                 android:layout_weight="0.4"
                 android:background="@drawable/background_layout_div"
                 android:gravity="top|left"
                 android:textColorHint="@color/txt_color"
                 android:hint="如：客户背景、相关产品、销售流程等等，越详细越能让其他用户帮到您"
                 android:paddingLeft="@dimen/padding_left"
+                android:paddingTop="@dimen/padding_left"
+                android:paddingRight="@dimen/padding_left"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
-
+                android:textSize="@dimen/big" />
             <GridView
                 android:id="@+id/gw"
                 android:layout_width="match_parent"
@@ -79,7 +78,6 @@
                 android:numColumns="4"
                 android:paddingLeft="@dimen/padding_left"
                 android:paddingTop="@dimen/padding" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

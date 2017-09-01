@@ -56,7 +56,7 @@ public class ChangePwdActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
+        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
     }
 
     @OnClick({R.id.img_back, R.id.btn_submit})

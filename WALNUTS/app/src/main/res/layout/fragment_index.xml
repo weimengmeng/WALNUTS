@@ -8,7 +8,7 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/login"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:weightSum="1">
         <HorizontalScrollView
@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.9"
-            android:background="@color/login"
+            android:background="@color/white"
             android:scrollbars="none">
 
             <LinearLayout
@@ -28,7 +28,7 @@
                     android:id="@+id/button_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/login"
+                    android:background="@color/white"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/padding"></RadioGroup>
             </LinearLayout>
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
-            android:background="@color/login"
+            android:background="@color/white"
             android:gravity="center">
 
             <ImageView

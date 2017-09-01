@@ -147,8 +147,14 @@ public class PhotoUtil {
 		String path = "";
 		try {
 			path = Environment.getExternalStorageDirectory()
-					+ "/walnuts/"+ "/" + System.currentTimeMillis()
+					+ "/walnuts/" + System.currentTimeMillis()
 					+ ".jpg";
+			File dirFirstFolder = new File(Environment.getExternalStorageDirectory()
+					+ "/walnuts");//方法二：通过变量文件来获取需要创建的文件夹名字
+			if(!dirFirstFolder.exists())
+			{ //如果该文件夹不存在，则进行创建
+				dirFirstFolder.mkdirs();//创建文件夹
+			}
 			File file = new File(path);
 			BufferedOutputStream bos = new BufferedOutputStream(
 					new FileOutputStream(file));

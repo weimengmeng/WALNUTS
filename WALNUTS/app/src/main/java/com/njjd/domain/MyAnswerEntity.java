@@ -27,7 +27,6 @@ public class MyAnswerEntity implements Serializable {
     public MyAnswerEntity(JsonObject object){
         this.article_id=object.get("article_id").getAsString();
         this.article_content=object.get("article_content").getAsString();
-        this.article_imgs=object.get("article_imgs").getAsString();
         this.article_answer_num=object.get("article_answer_num").getAsString();
         this.article_follow_num=object.get("article_follow_num").getAsString();
         this.article_point_num=object.get("article_point_num").getAsString();

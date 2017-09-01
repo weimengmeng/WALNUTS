@@ -21,6 +21,7 @@ import com.njjd.domain.MyAnswerEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class MyAnswerActivity extends BaseActivity {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MySaveAdapter.CURRENT_PAGE = 1;
+                MyAnswerAdapter.CURRENT_PAGE = 1;
                 getMySave();
             }
         });
@@ -75,7 +76,7 @@ public class MyAnswerActivity extends BaseActivity {
                 // 当不滚动时
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1) {
-                        MySaveAdapter.CURRENT_PAGE++;
+                        MyAnswerAdapter.CURRENT_PAGE++;
                         getMySave();
                     }
                 }
@@ -126,7 +127,7 @@ public class MyAnswerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MySaveAdapter.CURRENT_PAGE = 1;
+        MyAnswerAdapter.CURRENT_PAGE = 1;
         getMySave();
     }
 
@@ -134,7 +135,7 @@ public class MyAnswerActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
-        map.put("page", MySaveAdapter.CURRENT_PAGE);
+        map.put("page", MyAnswerAdapter.CURRENT_PAGE);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidComment(postEntity);
     }
@@ -147,14 +148,14 @@ public class MyAnswerActivity extends BaseActivity {
             JsonObject object = JSONUtils.getAsJsonObject(o);
             JsonArray array = object.get("collect").getAsJsonArray();
             MyAnswerEntity entity;
-            if (MySaveAdapter.CURRENT_PAGE == 1) {
+            if (MyAnswerAdapter.CURRENT_PAGE == 1) {
                 list.clear();
             }
             for (int i = 0; i < array.size(); i++) {
                 entity = new MyAnswerEntity(array.get(i).getAsJsonObject());
                 list.add(entity);
+                saveAdapter.notifyDataSetChanged();
             }
-            saveAdapter.notifyDataSetChanged();
         }
     }
 

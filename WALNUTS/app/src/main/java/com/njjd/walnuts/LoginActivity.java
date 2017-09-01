@@ -1,6 +1,7 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.os.Build;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -53,6 +54,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        }
         umShareAPI = UMShareAPI.get(this);
         etPhone.setText(SPUtils.get(this,"phoneNumber","").toString());
         etPwd.setText(SPUtils.get(this,"pwd","").toString());

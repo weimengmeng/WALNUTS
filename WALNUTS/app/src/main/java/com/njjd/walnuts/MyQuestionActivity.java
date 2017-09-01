@@ -147,7 +147,7 @@ public class MyQuestionActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
-        map.put("page", FocusPeopleAdapter.CURRENT_PAGE);
+        map.put("page", MyQuestionAdapter.CURRENT_PAGE);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidArticle(postEntity);
     }

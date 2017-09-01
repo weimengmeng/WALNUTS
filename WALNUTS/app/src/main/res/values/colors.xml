@@ -4,16 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-    <color name="yellow">#fed32b</color>
-    <color name="gray">#333333</color>
+    <color name="black">#333333</color>
+    <color name="yellow">#ffb129</color>
+    <color name="gray">#666666</color>
     <color name="txt_color">#999999</color>
-    <color name="tip">#fe8e09</color>
+    <color name="tip">#ffb129</color>
     <color name="red">#CC3300</color>
     <color name="grey">#ededed</color>
-    <color name="login">#fed847</color>
+    <color name="login">#ffb129</color>
     <color name="alertdialog_line">#c6c6c6</color>
     <color name="actionsheet_blue">#037BFF</color>
     <color name="actionsheet_gray">#8F8F8F</color>
     <color name="colorGray">#33000000</color>
+    <color name="tag">#F4B975</color>
 </resources>

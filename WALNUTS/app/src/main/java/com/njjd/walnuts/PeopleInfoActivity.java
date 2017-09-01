@@ -117,7 +117,7 @@ public class PeopleInfoActivity extends BaseActivity {
             txtName.setText(object.isNull("uname")?"未填写":object.getString("uname"));
             tempHead=object.isNull("headimg")?"":object.getString("headimg");
             GlideImageLoder.getInstance().displayImage(this, object.isNull("headimg")?"":object.getString("headimg"), imgHead);
-            if (object.getString("sex").equals("1.0")) {
+            if (object.getString("sex").equals("0.0")) {
                 imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
             } else {
                 imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_boy));

@@ -85,15 +85,15 @@ public class SuccessActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
-//        if (getIntent().getIntExtra("bind", 0) == 1) {
-//            //绑定账号情况，预先设置第三方的头像性别等
-//            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
-//            etName.setText(SPUtils.get(this, "thirdName", "").toString());
-//            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
-//            path = SPUtils.get(this, "thirdHead", "").toString();
-//        }
-//        setPickView();
+        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
+        if (getIntent().getIntExtra("bind", 0) == 1) {
+            //绑定账号情况，预先设置第三方的头像性别等
+            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
+            etName.setText(SPUtils.get(this, "thirdName", "").toString());
+            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
+            path = SPUtils.get(this, "thirdHead", "").toString();
+        }
+        setPickView();
     }
 
     private void setPickView() {
@@ -240,6 +240,7 @@ public class SuccessActivity extends BaseActivity {
             String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(this,mSelected.get(0)), 480,800);
             file = new File(imgpath);
             GlideImageLoder.getInstance().displayImage(this, file.getPath(), imgHead);
+            LogUtils.d("huan"+imgpath);
             path = imgpath;
         }
     }

@@ -53,7 +53,7 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
+        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         temp = getResources().getString(R.string.code);
         temp = String.format(temp, getIntent().getStringExtra("phone"));
         txtTip.setText(temp);

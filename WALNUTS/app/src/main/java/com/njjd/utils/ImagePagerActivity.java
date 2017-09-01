@@ -1,5 +1,6 @@
 package com.njjd.utils;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,6 +28,9 @@ public class ImagePagerActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.image_detail_pager);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+		}
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		List<String> urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
 

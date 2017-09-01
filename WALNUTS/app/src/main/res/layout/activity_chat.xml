@@ -5,6 +5,7 @@
 
     <LinearLayout
         android:id="@+id/top"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <include layout="@layout/top"></include>

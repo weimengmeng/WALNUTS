@@ -73,7 +73,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         popupWindow = new BasePopupWindow(this);
         popupWindow.setContentView(lvImgcode);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, imgBack);
+        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
         web = (WebView) lvImgcode.findViewById(R.id.web);
         imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);

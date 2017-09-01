@@ -94,6 +94,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView title;
         ImageView imageView;
         LinearLayout lvHead;
+        TextView content;
         TextView total;
         TextView createTime;
 
@@ -104,6 +105,8 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .findViewById(R.id.img1);
             lvHead = (LinearLayout) itemView
                     .findViewById(R.id.lv_head);
+            content= (TextView) itemView
+                    .findViewById(R.id.txt_content);
             total = (TextView) itemView.findViewById(R.id.txt_total);
             createTime = (TextView) itemView
                     .findViewById(R.id.txt_time);
@@ -170,13 +173,16 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((ContentViewHolder) holder).total.setText("提出了该问题");
             }else{
 
-                ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()) + "  人参与");
+                ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getPart_num()).intValue()) + "  人参与");
             }
             ParsePosition pos = new ParsePosition(0);
             ((ContentViewHolder) holder).createTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(temp.getDateTime(), pos)));
             if ("".equals(temp.getPhoto())) {
                 ((ContentViewHolder) holder).imageView.setVisibility(View.GONE);
+                ((ContentViewHolder) holder).content.setVisibility(View.VISIBLE);
+                ((ContentViewHolder) holder).content.setText("问题描述: "+temp.getContent());
             } else {
+                ((ContentViewHolder) holder).content.setVisibility(View.GONE);
                 ((ContentViewHolder) holder).imageView.setVisibility(View.VISIBLE);
                 String[] strings = temp.getPhoto().split(",");
                 GlideImageLoder.getInstance().displayImage(mContext, strings[0].replace("\"", ""), ((ContentViewHolder) holder).imageView);

@@ -19,6 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/margin_big"
             android:layout_weight="0.8"
+            android:textCursorDrawable="@drawable/color_cusor"
             android:background="@drawable/background_layout_et"
             android:gravity="center_vertical"
             android:hint="点此进行评论"

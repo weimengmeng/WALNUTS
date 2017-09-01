@@ -4,6 +4,7 @@
     style="@style/Width_m_Height_m">
 
     <LinearLayout
+        android:background="@color/white"
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

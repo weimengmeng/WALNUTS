@@ -17,10 +17,12 @@ import com.njjd.domain.CommentEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
+import com.umeng.socialize.utils.Log;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -28,6 +30,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit.http.POST;
 
 /**
  * Created by mrwim on 17/7/31.
@@ -170,6 +174,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             @Override
             public void onClick(View v) {
                 tempView = (TextView) v;
+                currentid = groupPosition;
                 if (groupArray.get(groupPosition).getIsSave().equals("0")) {
                     temp = 2;
                     //收藏
@@ -188,10 +193,19 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             }
         });
         if (isExpanded) {
-            holder.groupOpen.setText("收起评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
-        } else {
-            holder.groupOpen.setText("展开评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+            if(Float.valueOf(answerEntity.getOpen()).intValue()==0){
+                holder.groupOpen.setText("评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+            }else{
+                holder.groupOpen.setText("收起评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+            }
+        }else{
+            if(Float.valueOf(answerEntity.getOpen()).intValue()==0){
+                holder.groupOpen.setText("评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+            }else{
+                holder.groupOpen.setText("展开评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+            }
         }
+        holder.groupOpen.setTag(groupPosition);
         return view;
     }
 
@@ -308,12 +322,14 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         map.put("uid", SPUtils.get(mContext, "userId", ""));
         map.put(params, id);
         map.put("token",SPUtils.get(mContext,"token","").toString());
+        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, mContext, true, false), map);
         HttpManager.getInstance().agreeOrPraise(postEntity);
     }
 
     private void addComment(int position, String comment) {
         this.comment=comment;
+        currentPosition= position;
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", article_id);
         map.put("uid", SPUtils.get(mContext, "userId", ""));
@@ -332,10 +348,12 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             commentEntity.setContent(comment);
             commentEntity.setHead(SPUtils.get(mContext,"head","").toString());
             commentEntity.setName(SPUtils.get(mContext,"name","").toString());
+            commentEntity.setSec_uid("sec_uid");
             commentEntity.setMessage(SPUtils.get(mContext,"message","").toString());
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             groupArray.get(currentid).getCommentEntityList().add(1,commentEntity);
+            groupArray.get(currentPosition).setOpen((Float.valueOf(groupArray.get(currentPosition).getOpen()).intValue()+1)+"");
             notifyDataSetChanged();
             ToastUtils.showShortToast(mContext, "评论成功");
         }

@@ -28,6 +28,7 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,6 +128,7 @@ public class MySaveActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", MySaveAdapter.CURRENT_PAGE);
+        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidSave(postEntity);
     }

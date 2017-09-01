@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="mini">10sp</dimen>
-    <dimen name="small">12sp</dimen>
+    <dimen name="small">10sp</dimen>
     <dimen name="normal">12sp</dimen>
     <dimen name="big">14sp</dimen>
     <dimen name="large">16sp</dimen>
@@ -27,7 +27,7 @@
     <dimen name="loading">80dp</dimen>
     <dimen name="pop">270dp</dimen>
     <!--2017 7 17-->
-    <dimen name="_top">-17dp</dimen>
+    <dimen name="_top">-14dp</dimen>
     <dimen name="_margin">-12dp</dimen>
     <dimen name="post_height">150dp</dimen>
 </resources>

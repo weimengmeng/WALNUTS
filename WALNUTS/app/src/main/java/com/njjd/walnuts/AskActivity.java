@@ -12,8 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.adapter.GridViewAddImgesAdpter;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
+import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.ToastUtils;
 
 import java.io.File;
@@ -46,7 +49,7 @@ public class AskActivity extends BaseActivity {
     private GridView gw;
     private List<Map<String, Object>> datas;
     private GridViewAddImgesAdpter gridViewAddImgesAdpter;
-    private  ArrayList<String> images;
+    private  ArrayList<String> images=new ArrayList<>();
     public static Activity activity;
     @Override
     public int bindLayout() {
@@ -93,6 +96,9 @@ public class AskActivity extends BaseActivity {
                     ToastUtils.showShortToast(this,"请输入问题描述");
                     return;
                 }
+                for(int i=0;i<datas.size();i++){
+                    images.add(datas.get(i).get("path").toString());
+                }
                 Intent intent=new Intent(this,AskKindActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putString("title",etTitle.getText().toString().trim());
@@ -117,10 +123,10 @@ public class AskActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
-
             for (int i = 0; i < mSelected.size(); i++) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("path", CommonUtils.getRealPathFromUri(AskActivity.this,mSelected.get(i)));
+                String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(this,mSelected.get(0)), 480,800);
+                map.put("path",imgpath);
                 datas.add(map);
             }
             gridViewAddImgesAdpter.setMaxImages(9);

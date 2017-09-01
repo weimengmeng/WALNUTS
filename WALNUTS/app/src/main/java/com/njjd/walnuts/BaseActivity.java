@@ -1,9 +1,9 @@
 package com.njjd.walnuts;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
-import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.umeng.analytics.MobclickAgent;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by mrwim on 17/7/13.
  */
 
-public abstract class BaseActivity extends Activity implements HttpOnNextListener{
+public abstract class BaseActivity extends AppCompatActivity implements HttpOnNextListener{
     /** 是否沉浸状态栏 **/
     private boolean isSetStatusBar = true;
     /** 当前Activity渲染的视图View **/
@@ -59,11 +58,11 @@ public abstract class BaseActivity extends Activity implements HttpOnNextListene
     private void steepStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);//calculateStatusColor(Color.WHITE, (int) alphaValu
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+////            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+////                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.WHITE);//calculateStatusColor(Color.WHITE, (int) alphaValu
         }
     }
     /**

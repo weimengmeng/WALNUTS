@@ -1,6 +1,5 @@
 package com.njjd.walnuts;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -136,6 +135,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         txtContent.setText(questionEntity.getContent());
         if (questionEntity.getIsFocus() == 1) {
             txtFocus.setText("取消关注");
+            txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
+            txtFocus.setBackgroundResource(R.drawable.txt_shape);
         }
         inflater = LayoutInflater.from(this);
         if (!"".equals(questionEntity.getPhoto())) {
@@ -202,23 +203,13 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         popupWindow.setBackgroundDrawable(new ColorDrawable(0));
         popupWindow.setFocusable(true);
         popupWindow.update();
-        exListVIew.setOnScrollListener(new AbsListView.OnScrollListener() {
+        scrollView.setOnScrollListener(new ScrollableLayout.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
-                        if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
-                            AnswerReplyAdapter.CURRENT_PAGE++;
-                            getAnswerList();
-                        }
-                        break;
+            public void onScroll(int i, int i1) {
+                if(exListVIew.getCount()>0&&exListVIew.getChildAt(exListVIew.getLastVisiblePosition()).getVisibility()==View.VISIBLE)
+                    AnswerReplyAdapter.CURRENT_PAGE++;
+                    getAnswerList();
                 }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-            }
         });
         exListVIew.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -230,6 +221,17 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 tempAnswerInfo=answerEntities.get(groupPosition);
                 tempComment=answerEntities.get(groupPosition).getCommentEntityList().get(childPosition);
                 return false;
+            }
+        });
+        exListVIew.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                for (int i = 0, count = exListVIew
+                        .getExpandableListAdapter().getGroupCount(); i < count; i++) {
+                    if (groupPosition != i) {// 关闭其他分组
+                        exListVIew.collapseGroup(i);
+                    }
+                }
             }
         });
     }
@@ -295,6 +297,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         AnswerReplyAdapter.CURRENT_PAGE = 1;
         getDetail();
         getAnswerList();
+        for (int i = 0, count = exListVIew
+                .getExpandableListAdapter().getGroupCount(); i < count; i++) {
+                exListVIew.collapseGroup(i);
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -440,6 +446,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             answerEntities.get(currentId).getCommentEntityList().add(1,commentEntity);
+            answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue()+1)+"");
             answerReplyAdapter.notifyDataSetChanged();
             ToastUtils.showShortToast(IndexDetailActivity.this, "回复成功");
         }
@@ -460,7 +467,15 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         @Override
         public void onNext(Object o) {
             ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消关注");
-            txtFocus.setText(questionEntity.getIsFocus() == 0 ? "取消关注" : "+关注问题");
+            if (questionEntity.getIsFocus() == 0) {
+                txtFocus.setText("取消关注");
+                txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape);
+            }else{
+                txtFocus.setText("+关注问题");
+                txtFocus.setTextColor(getResources().getColor(R.color.login));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape_login);
+            }
             txtFocusNum.setText("关注 " + (questionEntity.getIsFocus() == 0 ? ++tempFocus : --tempFocus));
             questionEntity.setIsFocus(questionEntity.getIsFocus() == 0 ? 1 : 0);
             DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(questionEntity);
@@ -470,6 +485,15 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.txt_open:
+                if(!exListVIew.isGroupExpanded(Integer.valueOf(v.getTag().toString()))){
+                    getComments(answerEntities.get(Integer.valueOf(v.getTag().toString())).getAnwerId() + "");
+                    current_group_id = Integer.valueOf(v.getTag().toString());
+                    exListVIew.expandGroup(Integer.valueOf(v.getTag().toString()),true);
+                }else{
+                    exListVIew.collapseGroup(Integer.valueOf(v.getTag().toString()));
+                }
+                break;
             case R.id.rb_hot:
                 tempOrder = "hot";
                 AnswerReplyAdapter.CURRENT_PAGE = 1;
@@ -484,7 +508,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
