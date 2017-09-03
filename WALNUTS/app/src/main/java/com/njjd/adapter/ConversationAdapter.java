@@ -98,7 +98,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         public ImageView head;
         public TextView date;
         public BGABadgeTextView badge;
-
+        public TextView delete;
         public ViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.txt_name);
@@ -106,6 +106,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             content = (TextView) view.findViewById(R.id.txt_content);
             date =(TextView) view.findViewById(R.id.txt_date);
             badge =(BGABadgeTextView) view.findViewById(R.id.txt_badge);
+            delete =(TextView) view.findViewById(R.id.item_delete);
         }
     }
     @Override

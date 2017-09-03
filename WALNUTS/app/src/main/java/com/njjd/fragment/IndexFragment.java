@@ -30,6 +30,7 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
@@ -184,6 +185,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             adapterList.add(questionAdapter);
             list.setAdapter(questionAdapter);
             list.setEmptyView(currentView.findViewById(R.id.empty));
+            list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
             listViews.add(list);
             questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override

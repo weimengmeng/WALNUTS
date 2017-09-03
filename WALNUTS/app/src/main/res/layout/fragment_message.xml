@@ -54,15 +54,13 @@
         </RadioGroup>
     </LinearLayout>
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
+    <com.njjd.utils.ItemRemoveRecyclerView
         android:id="@+id/list_mes"
         android:layout_marginTop="@dimen/padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#00000000"
-        android:dividerHeight="0dip"
         android:visibility="visible"
-        android:listSelector="@android:color/transparent"
+        android:listSelector="@color/login"
         android:overScrollMode="never" />
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
@@ -70,7 +68,7 @@
         android:layout_marginTop="@dimen/padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@android:color/transparent"
+        android:listSelector="@color/login"
         android:overScrollMode="never"
         android:visibility="gone" />
 

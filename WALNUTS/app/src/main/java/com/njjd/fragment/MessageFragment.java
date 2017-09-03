@@ -30,6 +30,7 @@ import com.hyphenate.chat.EMConversation;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.ConversationAdapter;
 import com.njjd.adapter.InformAdapter;
+import com.njjd.adapter.OnItemClickListener;
 import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.InformEntity;
@@ -37,8 +38,11 @@ import com.njjd.domain.MyConversation;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.ItemRemoveRecyclerView;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.ChatActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
@@ -66,7 +70,7 @@ import butterknife.OnClick;
 
 public class MessageFragment extends BaseFragment implements HttpOnNextListener {
     @BindView(R.id.list_mes)
-    XRecyclerView listMes;
+    ItemRemoveRecyclerView listMes;
     @BindView(R.id.list_inform)
     XRecyclerView listInform;
     @BindView(R.id.radio_inform)
@@ -174,14 +178,18 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 startActivity(intent);
             }
         });
-//        listMes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(context, ChatActivity.class);
-//                intent.putExtra("openId", conversations.get(position).getOpenId());
-//                startActivity(intent);
-//            }
-//        });
+        listMes.setmListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ToastUtils.showShortToast(context,"删除"+position);
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+            }
+        });
+        listMes.addItemDecoration(new RecycleViewDivider(context, LinearLayoutManager.VERTICAL));
+        listMes.setItem_delete(R.id.item_delete);
         /**
          * tongzhi
          */
