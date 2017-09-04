@@ -32,6 +32,7 @@ import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,17 +139,24 @@ public class MySaveActivity extends BaseActivity {
         super.onNext(o);
         refresh.setRefreshing(false);
         if (!o.toString().equals("")) {
-            JsonObject object = JSONUtils.getAsJsonObject(o);
-            JsonArray array = object.get("collect").getAsJsonArray();
-            SaveEntity entity;
-            if (MySaveAdapter.CURRENT_PAGE == 1) {
-                list.clear();
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            try {
+                JSONObject object=new JSONObject(gson.toJson(o));
+                JSONArray array=object.getJSONArray("collect");
+                SaveEntity entity;
+                if (MySaveAdapter.CURRENT_PAGE == 1) {
+                    list.clear();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    entity = new SaveEntity(array.getJSONObject(i));
+                    list.add(entity);
+                }
+                saveAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            for (int i = 0; i < array.size(); i++) {
-                entity = new SaveEntity(array.get(i).getAsJsonObject());
-                list.add(entity);
-            }
-            saveAdapter.notifyDataSetChanged();
         }
     }
 

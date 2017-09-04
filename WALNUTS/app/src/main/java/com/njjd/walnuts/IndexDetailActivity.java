@@ -65,6 +65,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     TextView quesTitle;
     @BindView(R.id.top)
     LinearLayout topView;
+    @BindView(R.id.mask)
+    RelativeLayout mask;
     @BindView(R.id.lv_img)
     LinearLayout lvImg;
     @BindView(R.id.lv_root)
@@ -215,7 +217,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 lvRply.setVisibility(View.VISIBLE);
+                mask.setVisibility(View.VISIBLE);
                 currentId=groupPosition;
+                etContent.requestFocus();
                 etContent.setHint("回复"+answerEntities.get(groupPosition).getCommentEntityList().get(childPosition).getName());
                 KeybordS.openKeybord(etContent,IndexDetailActivity.this);
                 tempAnswerInfo=answerEntities.get(groupPosition);
@@ -383,11 +387,16 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         }
     };
 
-    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort,R.id.btn_reply,R.id.btn_cancle})
+    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort,R.id.btn_reply,R.id.btn_cancle,R.id.mask})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
+                break;
+            case R.id.mask:
+                mask.setVisibility(View.GONE);
+                lvRply.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
                 break;
             case R.id.txt_sort:
                 popupWindow.showAsDropDown(findViewById(R.id.txt_sort), 0, 0);
@@ -396,7 +405,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 addFocus();
                 break;
             case R.id.btn_cancle:
-                   KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
+                mask.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
                lvRply.setVisibility(View.GONE);
                 break;
             case R.id.btn_reply:
@@ -405,6 +415,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     return ;
                 }
                 addCommentF(etContent.getText().toString().trim());
+                lvRply.setVisibility(View.GONE);
+                mask.setVisibility(View.GONE);
                 KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
                 etContent.setText("");
                 break;
@@ -499,12 +511,20 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 AnswerReplyAdapter.CURRENT_PAGE = 1;
                 getAnswerList();
                 popupWindow.dismiss();
+                for (int i = 0, count = exListVIew
+                        .getExpandableListAdapter().getGroupCount(); i < count; i++) {
+                    exListVIew.collapseGroup(i);
+                }
                 break;
             case R.id.rb_time:
                 tempOrder = "time";
                 AnswerReplyAdapter.CURRENT_PAGE = 1;
                 getAnswerList();
                 popupWindow.dismiss();
+                for (int i = 0, count = exListVIew
+                        .getExpandableListAdapter().getGroupCount(); i < count; i++) {
+                    exListVIew.collapseGroup(i);
+                }
                 break;
         }
     }

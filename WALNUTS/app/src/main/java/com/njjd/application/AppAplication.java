@@ -112,6 +112,7 @@ public class AppAplication extends Application {
         });
         EMOptions options = new EMOptions();
         options.setAcceptInvitationAlways(false);
+        options.setAutoLogin(false);
         EMClient.getInstance().init(this, options);
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
@@ -140,7 +141,7 @@ public class AppAplication extends Application {
                             JSONObject object1 = object.getJSONObject("extra");
                             JSONObject object2 = object1.getJSONObject("param");
                             if (object2.getString("action").equals("logout")) {
-                                new AlertDialog(MyActivityManager.getInstance().getLastActivity()).builder().setTitle("异常提示").setMsg("您的账号在另外一台设备登陆，请重新登陆")
+                                new AlertDialog(MyActivityManager.getInstance().getLastActivity()).builder().setTitle("下线通知").setMsg("你的账号已在其他地方登录，本地已下线。如非本人登录，建议立即修改密码")
                                         .setPositiveButton("确定", new View.OnClickListener() {
 
                                             @Override

@@ -85,7 +85,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformReceive informReceive;
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
-    List<EMConversation> messageList = new ArrayList<>();
+//    List<EMConversation> messageList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,24 +98,25 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onResume() {
         super.onResume();
         conversations.clear();
-        messageList = loadConversationsWithRecentChat();
+//        messageList = loadConversationsWithRecentChat();
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
-        for (int i = 0; i < messageList.size(); i++) {
-            MyConversation conversation = new MyConversation(messageList.get(i));
-            if(messageList.get(i).getLatestMessageFromOthers()!=null)
-            conversation.setOpenId(messageList.get(i).getLatestMessageFromOthers().getFrom());
-            else
-                conversation.setOpenId(messageList.get(i).getLastMessage().getTo());
-            conversations.add(conversation);
-        }
-//        for (Map.Entry<String, EMConversation> entry : conversationsMap.entrySet()) {
-//            conversations.add(entry.getValue());
-//        }
+        if (conversationsMap != null)
+            for (EMConversation conversation1 : conversationsMap.values()) {
+                MyConversation conversation = new MyConversation(conversation1);
+                if (conversation1.getLatestMessageFromOthers() != null) {
+                    conversation.setOpenId(conversation1.getLatestMessageFromOthers().getFrom());
+                } else {
+                    conversation.setOpenId(conversation1.getLastMessage().getTo());
+                }
+                LogUtils.d("huanxin" + conversation.getOpenId());
+                conversations.add(conversation);
+            }
         adapter.notifyDataSetChanged();
-        if (messageList.size() > 0) {
+        if (conversations.size() > 0) {
             getUserInfoByOpenId();
         }
     }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void initAfterSetContentView(Activity activity,
                                                View titleViewGroup) {
@@ -133,16 +134,17 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 return;
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
             int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+            titleViewGroup.setPadding(0, statusBarHeight, 0, 0);
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         receiver = new Receiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsVal.MESSAGE_RECEIVE);
-        context=getContext();
+        context = getContext();
         context.registerReceiver(receiver, filter);
         informReceive = new InformReceive();
         IntentFilter filter1 = new IntentFilter();
@@ -174,14 +176,20 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("openId", conversations.get(position).getOpenId());
                 intent.putExtra("name", conversations.get(position).getName());
-                intent.putExtra("avatar",conversations.get(position).getAvatar());
+                intent.putExtra("avatar", conversations.get(position).getAvatar());
                 startActivity(intent);
             }
         });
         listMes.setmListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ToastUtils.showShortToast(context,"删除"+position);
+                //删除和某个user会话，如果需要保留聊天记录，传false
+                if (conversations.get(position - 1).getConversation().getLatestMessageFromOthers() != null) {
+                    EMClient.getInstance().chatManager().deleteConversation(conversations.get(position - 1).getConversation().getLatestMessageFromOthers().getFrom(), true);
+                } else {
+                    EMClient.getInstance().chatManager().deleteConversation(conversations.get(position - 1).getConversation().getLastMessage().getTo(), true);
+                }
+                adapter.remove(position - 1);
             }
 
             @Override
@@ -200,7 +208,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                InformAdapter.CURRENT_PAGE=1;
+                InformAdapter.CURRENT_PAGE = 1;
                 getMyInform();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
@@ -275,6 +283,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         String ids = "";
         for (MyConversation conversation : conversations)
             ids = ids + conversation.getOpenId() + ",";
+        LogUtils.d("huanid" + ids);
         Map<String, Object> map = new HashMap<>();
         map.put("uids", ids);
         map.put("uid", SPUtils.get(context, "userId", ""));
@@ -287,7 +296,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 Gson gson = gsonBuilder.create();
                 try {
                     JSONArray array = new JSONArray(gson.toJson(o));
-                    for (int i=0;i<array.length();i++) {
+                    for (int i = 0; i < array.length(); i++) {
                         conversations.get(i).setJson(array.getJSONObject(i));
                     }
                 } catch (JSONException e) {
@@ -307,6 +316,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getNotice(postEntity);
     }
+
     @Override
     public void onNext(Object o) {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -382,6 +392,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
      * @return +
      */
     private List<EMConversation> loadConversationsWithRecentChat() {
+        EMClient.getInstance().chatManager().loadAllConversations();
         // 获取所有会话，包括陌生人
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
         // 过滤掉messages size为0的conversation
@@ -393,7 +404,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
                 if (conversation.getAllMessages().size() != 0) {
-                    sortList.add(new Pair<Long, EMConversation>(conversation
+                    sortList.add(new Pair<>(conversation
                             .getLastMessage().getMsgTime(), conversation));
                 }
             }

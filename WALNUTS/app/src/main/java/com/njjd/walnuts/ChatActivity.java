@@ -70,6 +70,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     private PopupWindowFactory mPop;
     private ImageView mImageView;
     private TextView mTextView;
+    EMConversation conversation;
     @Override
     public int bindLayout() {
         return R.layout.activity_chat;
@@ -90,7 +91,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         txtTitle.setText(getIntent().getStringExtra("name"));
         etContent.setOnEditorActionListener(this);
         ImmersedStatusbarUtils.initAfterSetContentView(this, findViewById(R.id.top));
-        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("openId"));
+        conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("openId"));
         if (conversation == null) {
             messagesList = new ArrayList<>();
         } else {
@@ -213,8 +214,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
                         .enableCamera(true)
                         .setEngine(new GlideEngine())
                         .forResult(REQUEST_CODE);
-//                //1多选 2 单选 单选才有裁剪功能
-//                ImageSelectorActivity.start(this, 1, 2, true, true, true);
                 break;
         }
     }
@@ -223,6 +222,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
         EMMessage message = EMMessage.createTxtSendMessage(etContent.getText().toString().trim(), getIntent().getStringExtra("openId"));
         EMClient.getInstance().chatManager().sendMessage(message);
+        LogUtils.d(getIntent().getStringExtra("openId"));
         messagesList.add(message);
         message.setMessageStatusCallback(emCallBack);
         etContent.setText("");
@@ -248,7 +248,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         @Override
         public void onSuccess() {
             handler.sendEmptyMessage(0);
-            LogUtils.d("huanxin success");
         }
 
         @Override
@@ -261,6 +260,14 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
 
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(conversation!=null){
+            conversation.markAllMessagesAsRead();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

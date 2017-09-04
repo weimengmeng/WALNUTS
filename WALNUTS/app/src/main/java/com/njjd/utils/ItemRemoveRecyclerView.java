@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.OnItemClickListener;
+import com.njjd.walnuts.R;
 
 /**
  * 侧滑删除RecyclerView
@@ -115,17 +116,18 @@ public class ItemRemoveRecyclerView extends XRecyclerView {
                     mItemLayout = viewHolder.itemView;
                     mItemLayout.setClickable(true);
                     mPosition = viewHolder.getAdapterPosition();
-
-                    mDelete = (TextView) mItemLayout.findViewById(item_delete);
-                    mMaxLength = mDelete.getWidth();
-                    mDelete.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mListener.onItemClick(v,mPosition);
-                            mItemLayout.scrollTo(0, 0);
-                            mDeleteBtnState = 0;
-                        }
-                    });
+                    mDelete = (TextView) mItemLayout.findViewById(R.id.item_delete);
+                    if(mDelete!=null) {
+                        mMaxLength = mDelete.getWidth();
+                        mDelete.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mListener.onItemClick(v, mPosition);
+                                mItemLayout.scrollTo(0, 0);
+                                mDeleteBtnState = 0;
+                            }
+                        });
+                    }
                 } else if (mDeleteBtnState == 3){
                     mScroller.startScroll(mItemLayout.getScrollX(), 0, -mMaxLength, 0, 200);
                     invalidate();

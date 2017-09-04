@@ -112,7 +112,7 @@ public class SuccessActivity extends BaseActivity {
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 provinceId = provinceEntities.get(options1).getId();
                 cityId = cityList.get(options1).get(options2).getId();
-                txtProvince.setText(provinceEntities.get(options1).getName() + "-" + cityEntities.get(options1).get(options2));
+                txtProvince.setText(provinceEntities.get(options1).getName() + cityEntities.get(options1).get(options2));
             }
         }).build();
         provincePickview.setPicker(provinces, cityEntities);

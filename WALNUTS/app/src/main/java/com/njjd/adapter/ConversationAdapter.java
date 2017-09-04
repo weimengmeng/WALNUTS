@@ -14,6 +14,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.njjd.domain.MyConversation;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.R;
 
 import java.text.ParsePosition;
@@ -115,6 +116,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             //注意这里使用getTag方法获取position
             mOnItemClickListener.onItemClick(v, (int) v.getTag());
         }
+    }
+    public void remove(int position){
+        list.remove(position);
+        notifyDataSetChanged();
     }
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);

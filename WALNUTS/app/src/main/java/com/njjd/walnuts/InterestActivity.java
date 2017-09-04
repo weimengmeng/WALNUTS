@@ -16,6 +16,7 @@ import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 
 import org.json.JSONException;
@@ -157,6 +158,7 @@ public class InterestActivity extends BaseActivity{
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(longinListener, this, true, false), map);
         HttpManager.getInstance().userLogin(postEntity);
+        MyActivityManager.getInstance().popOneActivity(LoginActivity.activity);
     }
 
     HttpOnNextListener longinListener = new HttpOnNextListener() {

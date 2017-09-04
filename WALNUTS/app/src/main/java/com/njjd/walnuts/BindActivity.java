@@ -27,6 +27,7 @@ import com.njjd.utils.BasePopupWindow;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;
 import com.njjd.utils.TimeCountDown2;
@@ -233,6 +234,7 @@ public class BindActivity extends BaseActivity {
             Gson gson = gsonBuilder.create();
             try {
                 CommonUtils.initData(new JSONObject(gson.toJson(o)));
+                MyActivityManager.getInstance().popOneActivity(LoginActivity.activity);
                 intent = new Intent(BindActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

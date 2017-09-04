@@ -1,6 +1,7 @@
 package com.njjd.domain;
 
-import com.google.gson.JsonObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 
@@ -32,30 +33,34 @@ public class SaveEntity implements Serializable{
     private String follow_article_user_stat;
     private String point_comment_stat;
     private String comment_id;
-    public SaveEntity(JsonObject object){
-        this.article_uid=object.get("article_uid").getAsString();
-        this.article_uid_headimg=object.get("article_uid_headimg").getAsString();
-        this.article_uid_name=object.get("article_uid_name").getAsString();
-        this.article_uid_introduction=object.get("article_uid_introduction").getAsString();
-        this.article_content=object.get("article_content").getAsString();
-        this.article_id=object.get("article_id").getAsString();
-        this.title=object.get("title").getAsString();
-        this.article_imgs=object.get("article_imgs").getAsString().replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
-        this.article_answer_num=object.get("article_answer_num").getAsString();
-        this.article_follow_num=object.get("article_follow_num").getAsString();
-        this.article_point_num=object.get("article_point_num").getAsString();
-        this.comment_content=object.get("comment_content").getAsString();
-        this.comment_collect_num=object.get("comment_collect_num").getAsString();
-        this.comment_point_num=object.get("comment_point_num").getAsString();
-        this.comment_answer_num=object.get("comment_answer_num").getAsString();
-        this.comment_uid=object.get("comment_uid").getAsString();
-        this.comment_uid_headimg=object.get("comment_uid_headimg").getAsString();
-        this.comment_uid_name=object.get("comment_uid_name").getAsString();
-        this.comment_uid_introduction=object.get("comment_uid_introduction").getAsString();
-        this.collect_time=object.get("collect_time").getAsString();
-        this.follow_article_user_stat=object.get("follow_article_user_stat").getAsString();
-        this.point_comment_stat=object.get("point_comment_stat").getAsString();
-        this.comment_id=object.get("comment_id").getAsString();
+    public SaveEntity(JSONObject object){
+        try {
+            this.article_uid=object.getString("article_uid");
+            this.article_uid_headimg=object.getString("article_uid_headimg");
+            this.article_uid_name=object.isNull("article_uid_name")?"未填写":object.getString("article_uid_name");
+            this.article_uid_introduction=object.isNull("article_uid_introduction")?"此人好神秘":object.getString("article_uid_introduction");
+            this.article_content=object.getString("article_content");
+            this.article_id=object.getString("article_id");
+            this.title=object.getString("title");
+            this.article_imgs=object.getString("article_imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.article_answer_num=object.getString("article_answer_num");
+            this.article_follow_num=object.getString("article_follow_num");
+            this.article_point_num=object.getString("article_point_num");
+            this.comment_content=object.getString("comment_content");
+            this.comment_collect_num=object.getString("comment_collect_num");
+            this.comment_point_num=object.getString("comment_point_num");
+            this.comment_answer_num=object.getString("comment_answer_num");
+            this.comment_uid=object.getString("comment_uid");
+            this.comment_uid_headimg=object.getString("comment_uid_headimg");
+            this.comment_uid_name=object.getString("comment_uid_name");
+            this.comment_uid_introduction=object.getString("comment_uid_introduction");
+            this.collect_time=object.getString("collect_time");
+            this.follow_article_user_stat=object.getString("follow_article_user_stat");
+            this.point_comment_stat=object.getString("point_comment_stat");
+            this.comment_id=object.getString("comment_id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     public SaveEntity(){
 

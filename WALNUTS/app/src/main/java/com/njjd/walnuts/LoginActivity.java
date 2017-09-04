@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.text.method.HideReturnsTransformationMethod;
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.message.PushAgent;
@@ -46,7 +48,7 @@ public class LoginActivity extends BaseActivity {
     private UMShareAPI umShareAPI;
     private UMAuthListener authListener;
     private Map<String, String> thirdMap;
-
+    public static Activity activity;
     @Override
     public int bindLayout() {
         return R.layout.activity_login;
@@ -54,6 +56,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+        activity=this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         }
@@ -95,13 +98,11 @@ public class LoginActivity extends BaseActivity {
             case R.id.txt_misspwd:
                 intent = new Intent(this, ForgetPwdActivity.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.txt_register:
                 intent = new Intent(this, RegisterActivity.class);
                 intent.putExtra("bind", 0);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.btn_login:
                 if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
@@ -187,7 +188,6 @@ public class LoginActivity extends BaseActivity {
                     intent = new Intent(LoginActivity.this, BindActivity.class);
                     intent.putExtra("bind", 1);
                     startActivity(intent);
-                    finish();
                     ToastUtils.showShortToast(LoginActivity.this, "请先绑定手机号");
                 } else {
                     CommonUtils.initData(new JSONObject(gson.toJson(o)));

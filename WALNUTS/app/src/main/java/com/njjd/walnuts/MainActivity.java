@@ -169,7 +169,6 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
-                LogUtils.d(messages.get(0).getBody());
                 if (AppAplication.isApplicationBroughtToBackground(AppAplication.getContext())) {
                     Message msg = new Message();
                     Bundle b = new Bundle();// 存放数据
@@ -187,12 +186,19 @@ public class MainActivity extends FragmentActivity {
 //                        getUserInfoByOpenId(messages.get(0).getFrom());
                         message="[语音]";
                     }
+                    radio4.setTipOn(true);
+                    radio4.invalidate();
                 }
+                EMClient.getInstance().chatManager().getConversation(messages.get(0).getFrom());
                 EMClient.getInstance().chatManager().importMessages(messages);
                 EMClient.getInstance().chatManager().loadAllConversations();
                 Intent intent = new Intent();
                 intent.setAction(ConstantsVal.MESSAGE_RECEIVE);
                 sendBroadcast(intent);
+                if(temp!=2){
+                    radio4.setTipOn(true);
+                    radio4.invalidate();
+                }
             }
 
             @Override

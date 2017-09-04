@@ -16,6 +16,7 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -109,7 +110,8 @@ public class ChangePwdActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         ToastUtils.showShortToast(this, "重置成功");
-        doLogin();
+        finish();
+//        doLogin();
     }
     private void doLogin() {
         Map<String, Object> map = new HashMap<>();
