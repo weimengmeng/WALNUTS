@@ -34,7 +34,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
         if(arg1.toString().contains("SSLSocketFactory")){
            return;
         }
-        ToastUtils.showShortToast(context,arg1.toString());
         MobclickAgent.reportError(context,arg1);
 //        try {
 //            throw new Exception(arg1);

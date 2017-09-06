@@ -63,6 +63,7 @@ public class AttentionActivity extends BaseActivity {
     private FocusPeopleAdapter peopleAdapter;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refreshLayout;
+    private SwipeMenuCreator creator;
     @Override
     public int bindLayout() {
         return R.layout.activity_attention;
@@ -73,15 +74,31 @@ public class AttentionActivity extends BaseActivity {
         ImmersedStatusbarUtils.initAfterSetContentView(this,topView);
         back.setText("关注");
         txtTitle.setText("我的粉丝");
+        creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem focusItem = new SwipeMenuItem(
+                        AttentionActivity.this);
+                focusItem.setBackground(R.color.login);
+                focusItem.setWidth(240);
+                focusItem.setTitle("私信");
+                focusItem.setTitleSize(16);
+                focusItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(focusItem);
+            }
+        };
+        listMes.setMenuCreator(creator);
+        listMes.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         listMes.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        ToastUtils.showShortToast(AttentionActivity.this, "私信他");
-                        break;
-                    case 1:
-                        ToastUtils.showShortToast(AttentionActivity.this, "关注他");
+                        Intent intent=new Intent(AttentionActivity.this,ChatActivity.class);
+                        intent.putExtra("openId",userList.get(position).getId());
+                        intent.putExtra("name",userList.get(position).getName());
+                        intent.putExtra("avatar",userList.get(position).getHead());
+                        startActivity(intent);
                         break;
                 }
                 return false;
@@ -111,7 +128,7 @@ public class AttentionActivity extends BaseActivity {
                 // 当不滚动时
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1) {
-                        FocusQuesAdapter.CURRENT_PAGE++;
+                        FocusPeopleAdapter.CURRENT_PAGE++;
                         getFocusUser();
                     }
                 }

@@ -101,6 +101,7 @@ public class SaveDetailActivity extends BaseActivity {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("收藏详情");
+        findViewById(R.id.txt_open).setVisibility(View.GONE);
         saveEntity=(SaveEntity)getIntent().getBundleExtra("save").get("save");
         txtQuesTitle.setText(saveEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(saveEntity.getArticle_answer_num()).intValue());
@@ -212,7 +213,6 @@ public class SaveDetailActivity extends BaseActivity {
         map.put("article_id", Float.valueOf(saveEntity.getArticle_id()).intValue());
         //0 取消关注 1 关注
         map.put("select",txtFocus.getTag().toString().equals("0")?0:1);
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
         HttpManager.getInstance().focusQuestion(postEntity);
     }
@@ -254,6 +254,7 @@ public class SaveDetailActivity extends BaseActivity {
                 intent.putExtra("question", bundle);
                 intent.putExtra("type","1");
                 startActivity(intent);
+                finish();
                 overridePendingTransition(R.anim.in, R.anim.out);
                 break;
             case R.id.txt_focus:
@@ -290,20 +291,26 @@ public class SaveDetailActivity extends BaseActivity {
                 switch (params){
                     case "point_comment_id":
                         saveEntity.setPoint_comment_stat("1");
-                        txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+                        txtAgree.setBackgroundResource(R.drawable.background_button_div);
+                        txtAgree.setTextColor(getResources().getColor(R.color.white));
+                        txtAgree.setSelected(true);
                         txtAgree.setText((Integer.valueOf(txtAgree.getText().toString())+1)+"");
                         break;
                     case "point_comment_id_not":
                         saveEntity.setPoint_comment_stat("0");
-                        txtAgree.setBackgroundResource(R.drawable.background_button_div);
+                        txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+                        txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
+                        txtAgree.setSelected(false);
                         txtAgree.setText((Integer.valueOf(txtAgree.getText().toString())-1)+"");
                         break;
                     case "collect_comment_id":
                         txtSave.setText("取消收藏");
+                        txtSave.setTextColor(getResources().getColor(R.color.txt_color));
                         txtSave.setTag("0");
                         break;
                     case "collect_comment_id_not":
                         txtSave.setText("收藏");
+                        txtSave.setTextColor(getResources().getColor(R.color.login));
                         txtSave.setTag("1");
                         break;
                 }

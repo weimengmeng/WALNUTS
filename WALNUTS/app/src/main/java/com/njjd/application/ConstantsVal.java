@@ -7,4 +7,5 @@ package com.njjd.application;
 public class ConstantsVal {
     public static String MESSAGE_RECEIVE="messreceive";
     public static String NEW_INFORM="newinform";
+    public static String LOGIN_PASS="loginpass";
 }

@@ -60,8 +60,8 @@ public class MyAnswerAdapter extends BaseAdapter{
         }
 
         myAnswerEntity=list.get(position);
-        hodel.title.setText("原题: "+myAnswerEntity.getTitle());
-        hodel.reply_content.setText("我的回答: "+myAnswerEntity.getComment_content());
+        hodel.title.setText(myAnswerEntity.getTitle());
+        hodel.reply_content.setText(myAnswerEntity.getComment_content());
         if ("".equals(myAnswerEntity.getArticle_imgs())) {
             hodel.image_photo.setVisibility(View.GONE);
         } else {

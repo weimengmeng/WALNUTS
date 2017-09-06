@@ -268,18 +268,18 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                 holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());
                 view.setBackgroundColor(mContext.getResources().getColor(R.color.grey));
             }else{
-                GlideImageLoder.getInstance().displayImage(mContext, commentEntity.getSec_headimgs(), holder.childHead);
+                GlideImageLoder.getInstance().displayImage(mContext, commentEntity.getHead(), holder.childHead);
                 holder.childHead.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, PeopleInfoActivity.class);
-                        intent.putExtra("uid", groupArray.get(groupPosition).getCommentEntityList().get(childPosition).getSec_uid());
+                        intent.putExtra("uid", groupArray.get(groupPosition).getCommentEntityList().get(childPosition).getCommentUId());
                         mContext.startActivity(intent);
                     }
                 });
-                holder.childName.setText(commentEntity.getSec_uname());
-                holder.childMess.setText(commentEntity.getSec_introduction());
-                holder.childContent.setText(commentEntity.getContent()+" //@"+commentEntity.getName()+":"+commentEntity.getSec_content());
+                holder.childName.setText(commentEntity.getName());
+                holder.childMess.setText(commentEntity.getMessage());
+                holder.childContent.setText(commentEntity.getContent()+" //@"+commentEntity.getSec_uname()+":"+commentEntity.getSec_content());
                 ParsePosition pos = new ParsePosition(0);
                 holder.childTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(commentEntity.getTime(), pos)));
                 holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());
@@ -372,10 +372,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                 break;
             case 1:
                 ToastUtils.showShortToast(mContext, "认同－1");
-                tempView.setBackgroundResource(R.drawable.background_button_div_grey);
-                tempView.setText((Integer.valueOf(tempView.getText().toString()) - 1) + "");
-                tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
-                tempView.setSelected(false);
+
                 groupArray.get(currentid).setIsPrise("0");
                 break;
             case 2:

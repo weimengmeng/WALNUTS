@@ -29,7 +29,9 @@ import com.njjd.domain.FocusEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -419,6 +421,7 @@ public class MyFocusActivity extends BaseActivity {
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("select", "0");
         map.put("article_id", Float.valueOf(quesList.get(position).getQuestionId()).intValue());
+        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {

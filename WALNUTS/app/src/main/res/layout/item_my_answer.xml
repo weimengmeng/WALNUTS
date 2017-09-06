@@ -32,10 +32,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lineSpacingMultiplier="1.2"
-            android:layout_marginTop="@dimen/margin"
+            android:layout_marginTop="@dimen/padding"
             android:maxLines="2"
             android:text=""
-            android:textColor="@color/gray"
+            android:textColor="@color/txt_color"
             android:textSize="@dimen/normal"
             android:typeface="sans" />
     </LinearLayout>

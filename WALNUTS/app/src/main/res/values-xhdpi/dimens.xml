@@ -28,6 +28,6 @@
     <dimen name="pop">270dp</dimen>
     <!--2017 7 17-->
     <dimen name="_top">-14dp</dimen>
-    <dimen name="_margin">-12dp</dimen>
+    <dimen name="_margin">-8dp</dimen>
     <dimen name="post_height">150dp</dimen>
 </resources>

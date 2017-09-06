@@ -60,6 +60,11 @@ public class LoginActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         }
+        if(SPUtils.get(this,"isFirst","0").equals("0")){
+            SPUtils.put(this,"isFirst","1");
+            startActivity(new Intent(this,AppIntroActivity.class));
+            finish();
+        }
         umShareAPI = UMShareAPI.get(this);
         etPhone.setText(SPUtils.get(this,"phoneNumber","").toString());
         etPwd.setText(SPUtils.get(this,"pwd","").toString());

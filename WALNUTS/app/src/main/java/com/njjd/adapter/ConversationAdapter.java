@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,12 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.njjd.domain.InformEntity;
 import com.njjd.domain.MyConversation;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.LogUtils;
+import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
 import java.text.ParsePosition;
@@ -49,7 +52,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         EMConversation conversation = list.get(position).getConversation();
         viewHolder.itemView.setTag(position);
         if (conversation.getAllMsgCount() != 0) {
@@ -77,6 +80,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
         viewHolder.name.setText(list.get(position).getName());
         GlideImageLoder.getInstance().displayImage(context, list.get(position).getAvatar(), viewHolder.head);
+        viewHolder.head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = new Intent(context, PeopleInfoActivity.class);
+                intent.putExtra("uid", list.get(position).getOpenId());
+                context.startActivity(intent);
+            }
+        });
         ParsePosition pos = new ParsePosition(0);
         viewHolder.date.setText(DateUtils.formationDate(sdf.parse(sdf.format(new Date(conversation.getLastMessage().getMsgTime())), pos)));
         if (conversation.getUnreadMsgCount() > 0) {

@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.hyphenate.chat.EMVoiceMessageBody;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.SPUtils;
+import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
 import java.io.IOException;
@@ -63,7 +65,7 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		EMMessage vo = list.get(position);
 		if (vo.direct() == EMMessage.Direct.RECEIVE) {
 			convertView = LayoutInflater.from(context).inflate(
@@ -71,6 +73,14 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 			ImageView img_avatar = (ImageView) convertView
 					.findViewById(R.id.img_head);
 				GlideImageLoder.getInstance().displayImage(context,avatar,img_avatar);
+			img_avatar.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, PeopleInfoActivity.class);
+					intent.putExtra("uid", list.get(position).getFrom());
+					context.startActivity(intent);
+				}
+			});
 		} else {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.layout_chat_send, null);

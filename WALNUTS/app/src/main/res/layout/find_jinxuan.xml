@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_div"
@@ -35,10 +35,15 @@
         android:paddingLeft="@dimen/padding"
         android:layout_marginTop="-5dp"
         android:textColor="@color/txt_color"
-        android:textSize="@dimen/small"/>
-    <ListView
+        android:textSize="@dimen/small"/>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:text="该功能正在紧锣密鼓开发中，敬请期待！"/>
+   <!-- <ListView
         android:layout_marginTop="-5dp"
         android:layout_width="match_parent"
         android:background="@drawable/background_layout_div"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"></ListView>-->
 </LinearLayout>

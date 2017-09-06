@@ -35,7 +35,6 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     //模拟数据
     private List<QuestionEntity> mList;
     private Context mContext;
-    private Typeface typeface;
     private ImageView head;
     private LayoutInflater inflater;
     private int index = 0;
@@ -45,11 +44,10 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     private List<String> images = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
-    private IndexQuestionAdapter2.OnItemClickListener mOnItemClickListener = null;
+    private OnItemClickListener mOnItemClickListener = null;
     public IndexQuestionAdapter2(Context context, List<QuestionEntity> list) {
         this.mContext = context;
         this.mList = list;
-        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/NotoSansHans-Medium.ttf");
         inflater = LayoutInflater.from(context);
 
     }
@@ -87,7 +85,6 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.txt_title);
             content = (TextView) itemView.findViewById(R.id.txt_content);
-            title.setTypeface(typeface);
             imageView = (ImageView) itemView
                     .findViewById(R.id.img1);
             lvHead = (LinearLayout) itemView

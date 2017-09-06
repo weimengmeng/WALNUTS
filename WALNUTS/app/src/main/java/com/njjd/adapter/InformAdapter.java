@@ -73,7 +73,11 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                 break;
             case "2.0":
                 viewHolder.title.setText(tempEntity.getUname()+" 关注了你的问题");
-                break;
+                try {
+                    viewHolder.content.setText(tempEntity.getContent().getString("title"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             case "3.0":
                 try {
                     viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回答了你的问题");
@@ -84,7 +88,11 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                 break;
             case "4.0":
                 try {
-                    viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人评论了你的回答");
+                    if(tempEntity.getContent().getString("level").equals("1.0")){
+                        viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回复了你的回答");
+                    }else{
+                        viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回复了你的评论");
+                    }
                     viewHolder.content.setText(tempEntity.getContent().getString("content"));
                 } catch (JSONException e) {
                     e.printStackTrace();

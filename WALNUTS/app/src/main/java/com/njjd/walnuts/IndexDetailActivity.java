@@ -128,6 +128,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             txtTitle.setText("通知详情");
             comment_id = getIntent().getStringExtra("comment_id");
             findViewById(R.id.txt_sort).setVisibility(View.GONE);
+            findViewById(R.id.img_answer).setVisibility(View.GONE);
         }
         quesTitle.setText(questionEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(questionEntity.getAnswerNum()).intValue());
@@ -339,7 +340,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     List<CommentEntity> commentEntities = new ArrayList<>();
                     commentEntities.add(new CommentEntity());
                     answerEntity.setCommentEntityList(commentEntities);
-                    if (getIntent().getStringExtra("type").equals("2")) {
+                    if (getIntent().getStringExtra("type").equals("2")||getIntent().getStringExtra("type").equals("3")) {
                         if (String.valueOf(Float.valueOf(answerEntity.getAnwerId()).intValue()).equals(String.valueOf(Float.valueOf(comment_id).intValue()))) {
                             answerEntities.add(answerEntity);
                         }
@@ -348,6 +349,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
                 answerReplyAdapter.notifyDataSetChanged();
+                if (getIntent().getStringExtra("type").equals("2")||getIntent().getStringExtra("type").equals("3")) {
+                    getComments(comment_id);
+                    exListVIew.expandGroup(0);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -378,7 +383,15 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 for (int i = 0; i < array.length(); i++) {
                     object = array.getJSONObject(i);
                     commentEntity = new CommentEntity(object);
-                    answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
+                    if (getIntent().getStringExtra("type").equals("3")) {
+                       if(commentEntity.getCommentId().equals(getIntent().getStringExtra("current_commentId"))){
+                           answerEntities.get(current_group_id).getCommentEntityList().add(1,commentEntity);
+                       }else{
+                           answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
+                       }
+                    }else {
+                        answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
+                    }
                 }
                 answerReplyAdapter.notifyDataSetChanged();
             } catch (JSONException e) {
@@ -434,7 +447,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         map.put("article_id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("content", content);
-        if(tempComment.getSec_content().equals("sec_content")){
+        if("sec_content".equals(tempComment.getSec_content())){
             map.put("comment_id", tempComment.getCommentId());
             map.put("sec_comment_id",tempAnswerInfo.getAnwerId());
         }else{

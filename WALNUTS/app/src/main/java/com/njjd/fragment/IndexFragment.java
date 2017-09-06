@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -30,11 +28,11 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jcodecraeer.xrecyclerview.LoadingMoreFooter;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
-import com.njjd.dao.QuestionEntityDao;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
@@ -44,7 +42,6 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
 
@@ -268,11 +265,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             public void onLoadMore() {
                 questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
                 getQuestion(tempKind, tempOrder);
-                new Handler().postDelayed(new Runnable(){
-                    public void run() {
-                        list.loadMoreComplete();
-                    }
-                }, 1000);
             }
         });
     }
@@ -287,7 +279,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         map.put("keywords", "");
         map.put("uid", SPUtils.get(context,"userId","").toString());
         map.put("token",SPUtils.get(context,"token","").toString());
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getQuestionList(postEntity);
     }
@@ -306,6 +297,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
                 tempList.clear();
+            }else{
+                list.loadMoreComplete();
+            }
+            if(array.length()<10){
+                list.setNoMore(true);
             }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i), tempKind);

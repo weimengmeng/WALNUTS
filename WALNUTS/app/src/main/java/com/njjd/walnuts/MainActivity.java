@@ -67,6 +67,7 @@ public class MainActivity extends FragmentActivity {
     private int temp = 0;
     public static Activity activity;
     private MyReceiver receiver;
+    private LoginPassReceiver passReceiver;
     private JSONObject object;
     private String message="";
     private long exitTime=0;
@@ -82,6 +83,14 @@ public class MainActivity extends FragmentActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             getUserInfoByOpenId(msg.getData().getString("uid"));
+        }
+    };
+    private Handler handler3=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            radio4.setTipOn(true);
+            radio4.invalidate();
         }
     };
     @Override
@@ -153,6 +162,10 @@ public class MainActivity extends FragmentActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsVal.NEW_INFORM);
         registerReceiver(receiver, filter);
+        passReceiver = new LoginPassReceiver();
+        IntentFilter filter1 = new IntentFilter();
+        filter1.addAction(ConstantsVal.LOGIN_PASS);
+        registerReceiver(passReceiver, filter1);
         fm = getSupportFragmentManager();
         indexFragment = fm.findFragmentById(R.id.index_fragment);
         findFragment = fm.findFragmentById(R.id.find_fragment);
@@ -175,15 +188,11 @@ public class MainActivity extends FragmentActivity {
                     b.putString("uid",messages.get(0).getFrom());
                     msg.setData(b);
                     handler2.sendMessage(msg); // 向Handler发送消息，更新UI
-
                     if (messages.get(0).getType() == EMMessage.Type.TXT) {
-//                        getUserInfoByOpenId(messages.get(0).getFrom());
                         message=((EMTextMessageBody) messages.get(0).getBody()).getMessage();
                     } else if (messages.get(0).getType() == EMMessage.Type.IMAGE) {
-//                        getUserInfoByOpenId(messages.get(0).getFrom());
                         message="[图片]";
                     } else if (messages.get(0).getType() == EMMessage.Type.VOICE) {
-//                        getUserInfoByOpenId(messages.get(0).getFrom());
                         message="[语音]";
                     }
                     radio4.setTipOn(true);
@@ -196,8 +205,7 @@ public class MainActivity extends FragmentActivity {
                 intent.setAction(ConstantsVal.MESSAGE_RECEIVE);
                 sendBroadcast(intent);
                 if(temp!=2){
-                    radio4.setTipOn(true);
-                    radio4.invalidate();
+                    handler3.sendEmptyMessage(0);
                 }
             }
 
@@ -259,6 +267,7 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+        unregisterReceiver(passReceiver);
         MyActivityManager.getInstance().popOneActivity(this);
     }
 
@@ -339,7 +348,13 @@ public class MainActivity extends FragmentActivity {
             radio4.invalidate();
         }
     }
-
+    private class LoginPassReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            MyActivityManager.getInstance().finishAllActivity();
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            ToastUtils.showShortToast(MainActivity.this,"用户登录已过期，请重新登录");
+        }
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){

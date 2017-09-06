@@ -33,13 +33,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_top"
+            android:layout_marginTop="@dimen/_margin"
             android:textColor="@color/gray"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             android:singleLine="true"
             android:typeface="sans"
-            android:paddingTop="@dimen/margin"
             android:paddingBottom="@dimen/margin"
             android:ellipsize="end"
             android:textSize="@dimen/normal"
@@ -47,8 +46,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/margin_big"
-            android:layout_marginRight="@dimen/margin_big"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
             android:alpha="0.15"
             android:background="#000000"></View>
 

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -27,9 +28,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.ConversationAdapter;
 import com.njjd.adapter.InformAdapter;
+import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.adapter.OnItemClickListener;
 import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
@@ -37,6 +40,7 @@ import com.njjd.domain.InformEntity;
 import com.njjd.domain.MyConversation;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ItemRemoveRecyclerView;
 import com.njjd.utils.LogUtils;
@@ -69,15 +73,19 @@ import butterknife.OnClick;
  */
 
 public class MessageFragment extends BaseFragment implements HttpOnNextListener {
-    @BindView(R.id.list_mes)
     ItemRemoveRecyclerView listMes;
-    @BindView(R.id.list_inform)
     XRecyclerView listInform;
     @BindView(R.id.radio_inform)
     RadioButton radioInform;
     private Context context;
     @BindView(R.id.top)
     LinearLayout top;
+    @BindView(R.id.mess_page)
+    ViewPager messPage;
+    @BindView(R.id.radio_mess)
+    RadioButton radioMess;
+    private List<View> viewList;
+    private MyPagerAdapter pagerAdapter;
     Map<String, EMConversation> conversationsMap;
     private ConversationAdapter adapter;
     List<MyConversation> conversations = new ArrayList<>();
@@ -108,7 +116,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 } else {
                     conversation.setOpenId(conversation1.getLastMessage().getTo());
                 }
-                LogUtils.d("huanxin" + conversation.getOpenId());
                 conversations.add(conversation);
             }
         adapter.notifyDataSetChanged();
@@ -151,6 +158,36 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         filter1.addAction(ConstantsVal.NEW_INFORM);
         context.registerReceiver(informReceive, filter1);
         initAfterSetContentView(getActivity(), top);
+        LinearLayout linearLayout=(LinearLayout) view.inflate(context, R.layout.mess_chat, null);
+        listMes=(ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
+        viewList = new ArrayList<>();
+        viewList.add(linearLayout);
+        linearLayout=(LinearLayout) view.inflate(context, R.layout.mess_inform, null);
+        listInform=(XRecyclerView)linearLayout.findViewById(R.id.list_inform);
+        viewList.add(linearLayout);
+        pagerAdapter = new MyPagerAdapter(viewList);
+        messPage.setAdapter(pagerAdapter);
+        messPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    radioMess.setChecked(true);
+                }else{
+                    radioInform.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        messPage.setPageTransformer(true,new DepthPageTransformer());
         adapter = new ConversationAdapter(getContext(), conversations);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
@@ -205,6 +242,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         final LinearLayoutManager layoutManager1 = new LinearLayoutManager(context);
         listInform.setLayoutManager(layoutManager1);//这里用线性显示 类似于listview
         listInform.setAdapter(adapterInform);
+        listInform.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
         listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -221,11 +259,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             public void onLoadMore() {
                 InformAdapter.CURRENT_PAGE++;
                 getMyInform();
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        listInform.loadMoreComplete();
-                    }
-                }, 1500);
             }
         });
         getMyInform();
@@ -255,7 +288,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getComment_id())));
                         bundle.putSerializable("question", entity);
                         intent.putExtra("question", bundle);
-                        intent.putExtra("type", "2");
+                        intent.putExtra("current_commentId", entities.get(position).getComment_id());
+                        intent.putExtra("type", "3");
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                         break;
@@ -266,8 +300,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                             entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
                             intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
                             bundle.putSerializable("question", entity);
+                            intent.putExtra("current_commentId", entities.get(position).getComment_id());
                             intent.putExtra("question", bundle);
-                            intent.putExtra("type", "2");
+                            intent.putExtra("type", "3");
                             startActivity(intent);
                             getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                         } catch (JSONException e) {
@@ -331,11 +366,13 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         try {
             JSONObject object = new JSONObject(gson.toJson(o));
             JSONArray array = object.getJSONArray("notice");
+            if(array.length()<10){
+                listInform.setNoMore(true);
+            }
             for (int i = 0; i < array.length(); i++) {
                 entities.add(new InformEntity(array.getJSONObject(i)));
             }
             adapterInform.notifyDataSetChanged();
-            LogUtils.d("notice");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -362,12 +399,10 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.radio_mess:
-                listMes.setVisibility(View.VISIBLE);
-                listInform.setVisibility(View.GONE);
+               messPage.setCurrentItem(0);
                 break;
             case R.id.radio_inform:
-                listInform.setVisibility(View.VISIBLE);
-                listMes.setVisibility(View.GONE);
+                messPage.setCurrentItem(1);
                 break;
         }
     }

@@ -22,13 +22,10 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.LoginActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.WelcomeActivity;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -53,42 +50,21 @@ import java.util.List;
 public class AppAplication extends Application {
     protected static Context context;
     protected static String appName = "核桃";
-    private RefWatcher mRefWatcher;
     String fontPath = "fonts/NotoSansHans-Regular.ttf";
     private PushAgent pushAgent;
-    /**
-     * 0 系统通知
-     * 1 回答通知 你的问题被回答  ret{ article_id}
-     * 2 评论通知 有人评论了你    ret{}
-     * 3 关注通知
-     */
-    private int notifyType = 0;
-    Handler mainHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (msg.what == 1) {
-            } else if (msg.what == 2) {
-            } else if (msg.what == 3) {
-            } else if (msg.what == 0) {
-            }
-        }
-
-        ;
-    };
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = this.getApplicationContext();
-        mRefWatcher = LeakCanary.install(this);
         replaceSystemDefaultFont(this, fontPath);
-//        CrashHandler handler = CrashHandler.getInstance();
-//        handler.init(getApplicationContext());
-//        Thread.setDefaultUncaughtExceptionHandler(handler);
+        CrashHandler handler = CrashHandler.getInstance();
+        handler.init(getApplicationContext());
+        Thread.setDefaultUncaughtExceptionHandler(handler);
         CommonUtils.init(context);
         /**
          * 友盟登录、分享
          */
-        Config.DEBUG = true;
+//        Config.DEBUG = true;
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxaaa88f9a47ec1f98", "35a9eef61c384087a3028686789f2900");
         PlatformConfig.setQQZone("1106091328", "7XJSCwws0c8wFtFx");
@@ -202,10 +178,11 @@ public class AppAplication extends Application {
                             Intent intent = new Intent(context, PeopleInfoActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("uid",object2.getString("uid"));
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
                         if (object2.getString("action").equals("answer")) {
-                            if(object2.toString().contains("comment_id")){
+                            if(object2.toString().contains("device_token")){
                                 //此处是评论推送
                                 Intent intent=new Intent(context, IndexDetailActivity.class);
                                 QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id"));
@@ -213,17 +190,19 @@ public class AppAplication extends Application {
                                 bundle.putSerializable("question", entity);
                                 intent.putExtra("question", bundle);
                                 intent.putExtra("type","2");
-                                intent.putExtra("comment_id",String.valueOf(Float.valueOf(object2.getString("comment_id"))));
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("comment_id",String.valueOf(Float.valueOf(object2.getJSONObject("comment").getString("answer_id"))));
                                 startActivity(intent);
                             }else{
-                                //此处是评论推送
+                                //此处是回答推送
                                 Intent intent=new Intent(context, IndexDetailActivity.class);
-                                QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id"));
+                                QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id")+".0");
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("question", entity);
                                 intent.putExtra("question", bundle);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("type","1");
-                                startActivity(intent);
+                                context.startActivity(intent);
                             }
                         }
                     } catch (JSONException e) {

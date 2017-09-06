@@ -53,26 +53,9 @@
                 android:textSize="@dimen/big" />
         </RadioGroup>
     </LinearLayout>
-
-    <com.njjd.utils.ItemRemoveRecyclerView
-        android:id="@+id/list_mes"
-        android:layout_marginTop="@dimen/padding"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mess_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        android:listSelector="@color/login"
-        android:overScrollMode="never" />
-
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/list_inform"
-        android:layout_marginTop="@dimen/padding"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:listSelector="@color/login"
-        android:overScrollMode="never"
-        android:visibility="gone" />
-
-    <include
-        android:id="@+id/empty"
-        layout="@layout/layout_nodata"></include>
+        ></android.support.v4.view.ViewPager>
 </LinearLayout>

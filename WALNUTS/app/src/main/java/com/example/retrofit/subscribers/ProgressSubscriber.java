@@ -2,10 +2,13 @@ package com.example.retrofit.subscribers;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.mywidget.LoadingDialog;
+import com.njjd.application.AppAplication;
+import com.njjd.application.ConstantsVal;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -124,7 +127,11 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
         } else {
             if (e.toString().contains("暂时")||e.toString().contains("暂无")||e.toString().contains("NO")||e.toString().contains("NullPointer")) {
 
-            } else {
+            } else if (e.toString().contains("用户登录已过期")){
+                Intent intent = new Intent();
+                intent.setAction(ConstantsVal.LOGIN_PASS);
+                AppAplication.getContext().sendBroadcast(intent);
+            }else{
                 ToastUtils.showShortToast(context, e.toString().split(":").length < 2 ? e.toString() : e.toString().split(":")[1]);
             }
         }

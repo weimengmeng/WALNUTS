@@ -17,11 +17,6 @@ public class WelcomeActivity extends BaseActivity{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         }
-        if(SPUtils.get(this,"isFirst","0").equals("0")){
-            SPUtils.put(this,"isFirst","1");
-            startActivity(new Intent(this,AppIntroActivity.class));
-            finish();
-        }else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -29,7 +24,6 @@ public class WelcomeActivity extends BaseActivity{
                     finish();
                 }
             }, 3000);
-        }
     }
 
     @Override

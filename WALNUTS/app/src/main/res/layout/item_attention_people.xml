@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
-                android:layout_marginTop="@dimen/_margin"
+                android:layout_marginTop="@dimen/_top"
                 android:paddingTop="@dimen/padding"
                 android:text="您的回答被评论"
                 android:textColor="@color/txt_color"

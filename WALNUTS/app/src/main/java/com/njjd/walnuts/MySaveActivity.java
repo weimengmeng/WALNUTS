@@ -121,6 +121,7 @@ public class MySaveActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         MySaveAdapter.CURRENT_PAGE = 1;
+        list.clear();
         getMySave();
     }
 

@@ -29,7 +29,7 @@ public class FeedBackActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-
+        txtTitle.setText("帮助反馈");
     }
 
     @Override

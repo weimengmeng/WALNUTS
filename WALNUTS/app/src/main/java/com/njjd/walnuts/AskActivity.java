@@ -96,6 +96,10 @@ public class AskActivity extends BaseActivity {
                     ToastUtils.showShortToast(this,"请输入问题描述");
                     return;
                 }
+                if(etTitle.getText().toString().trim().length()<5||etTitle.getText().toString().trim().length()>=50){
+                    ToastUtils.showShortToast(this,"标题字数有限制的哦");
+                    return;
+                }
                 for(int i=0;i<datas.size();i++){
                     images.add(datas.get(i).get("path").toString());
                 }
