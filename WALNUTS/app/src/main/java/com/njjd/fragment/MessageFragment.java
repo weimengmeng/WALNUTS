@@ -12,14 +12,12 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -46,20 +44,18 @@ import com.njjd.utils.ItemRemoveRecyclerView;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
+import com.njjd.utils.TipButton;
 import com.njjd.walnuts.ChatActivity;
 import com.njjd.walnuts.IndexDetailActivity;
+import com.njjd.walnuts.MainActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
-import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,14 +72,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     ItemRemoveRecyclerView listMes;
     XRecyclerView listInform;
     @BindView(R.id.radio_inform)
-    RadioButton radioInform;
+    TipButton radioInform;
     private Context context;
     @BindView(R.id.top)
     LinearLayout top;
     @BindView(R.id.mess_page)
     ViewPager messPage;
     @BindView(R.id.radio_mess)
-    RadioButton radioMess;
+    TipButton radioMess;
     private List<View> viewList;
     private MyPagerAdapter pagerAdapter;
     Map<String, EMConversation> conversationsMap;
@@ -93,7 +89,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformReceive informReceive;
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
-//    List<EMConversation> messageList = new ArrayList<>();
+    private int temp = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,7 +102,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onResume() {
         super.onResume();
         conversations.clear();
-//        messageList = loadConversationsWithRecentChat();
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
         if (conversationsMap != null)
             for (EMConversation conversation1 : conversationsMap.values()) {
@@ -121,6 +116,12 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         adapter.notifyDataSetChanged();
         if (conversations.size() > 0) {
             getUserInfoByOpenId();
+        }
+        if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
+            if(MainActivity.temp!=2||messPage.getCurrentItem()!=0) {
+                radioMess.setTipOn(true,1);
+                radioMess.invalidate();
+            }
         }
     }
 
@@ -158,12 +159,12 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         filter1.addAction(ConstantsVal.NEW_INFORM);
         context.registerReceiver(informReceive, filter1);
         initAfterSetContentView(getActivity(), top);
-        LinearLayout linearLayout=(LinearLayout) view.inflate(context, R.layout.mess_chat, null);
-        listMes=(ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
+        LinearLayout linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_chat, null);
+        listMes = (ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
         viewList = new ArrayList<>();
         viewList.add(linearLayout);
-        linearLayout=(LinearLayout) view.inflate(context, R.layout.mess_inform, null);
-        listInform=(XRecyclerView)linearLayout.findViewById(R.id.list_inform);
+        linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_inform, null);
+        listInform = (XRecyclerView) linearLayout.findViewById(R.id.list_inform);
         viewList.add(linearLayout);
         pagerAdapter = new MyPagerAdapter(viewList);
         messPage.setAdapter(pagerAdapter);
@@ -177,8 +178,12 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             public void onPageSelected(int position) {
                 if (position == 0) {
                     radioMess.setChecked(true);
-                }else{
+                    radioMess.setTipOn(false,1);
+                    radioMess.invalidate();
+                } else {
                     radioInform.setChecked(true);
+                    radioInform.setTipOn(false,1);
+                    radioInform.invalidate();
                 }
             }
 
@@ -187,15 +192,18 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
             }
         });
-        messPage.setPageTransformer(true,new DepthPageTransformer());
+        messPage.setPageTransformer(true, new DepthPageTransformer());
         adapter = new ConversationAdapter(getContext(), conversations);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
         listMes.setAdapter(adapter);
+        listMes.setRefreshProgressStyle(ProgressStyle.BallPulse);
         listMes.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 onResume();
+                radioMess.setTipOn(false,1);
+                radioMess.invalidate();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         listMes.refreshComplete();
@@ -242,11 +250,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         final LinearLayoutManager layoutManager1 = new LinearLayoutManager(context);
         listInform.setLayoutManager(layoutManager1);//这里用线性显示 类似于listview
         listInform.setAdapter(adapterInform);
+        listInform.setRefreshProgressStyle(ProgressStyle.BallPulse);
         listInform.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
         listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 InformAdapter.CURRENT_PAGE = 1;
+                radioInform.setTipOn(false,1);
+                radioInform.invalidate();
                 getMyInform();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
@@ -366,7 +377,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         try {
             JSONObject object = new JSONObject(gson.toJson(o));
             JSONArray array = object.getJSONArray("notice");
-            if(array.length()<10){
+            if (array.length() < 10) {
                 listInform.setNoMore(true);
             }
             for (int i = 0; i < array.length(); i++) {
@@ -399,10 +410,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.radio_mess:
-               messPage.setCurrentItem(0);
+                messPage.setCurrentItem(0);
+                radioMess.setTipOn(false,1);
+                radioMess.invalidate();
                 break;
             case R.id.radio_inform:
                 messPage.setCurrentItem(1);
+                radioInform.setTipOn(false,1);
+                radioInform.invalidate();
                 break;
         }
     }
@@ -416,66 +431,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public class InformReceive extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             InformAdapter.CURRENT_PAGE = 1;
-            radioInform.performClick();
+            radioInform.setTipOn(true,1);
+            radioInform.invalidate();
             getMyInform();
         }
-    }
-
-    /**
-     * 获取所有会话
-     *
-     * @return +
-     */
-    private List<EMConversation> loadConversationsWithRecentChat() {
-        EMClient.getInstance().chatManager().loadAllConversations();
-        // 获取所有会话，包括陌生人
-        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
-        // 过滤掉messages size为0的conversation
-        /**
-         * 如果在排序过程中有新消息收到，lastMsgTime会发生变化 影响排序过程，Collection.sort会产生异常
-         * 保证Conversation在Sort过程中最后一条消息的时间不变 避免并发问题
-         */
-        List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
-        synchronized (conversations) {
-            for (EMConversation conversation : conversations.values()) {
-                if (conversation.getAllMessages().size() != 0) {
-                    sortList.add(new Pair<>(conversation
-                            .getLastMessage().getMsgTime(), conversation));
-                }
-            }
-        }
-        try {
-            sortConversationByLastChatTime(sortList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        List<EMConversation> list = new ArrayList<EMConversation>();
-        for (Pair<Long, EMConversation> sortItem : sortList) {
-            list.add(sortItem.second);
-        }
-        return list;
-    }
-
-    /**
-     * 根据最后一条消息的时间排序
-     */
-    private void sortConversationByLastChatTime(
-            List<Pair<Long, EMConversation>> conversationList) {
-        Collections.sort(conversationList,
-                new Comparator<Pair<Long, EMConversation>>() {
-                    @Override
-                    public int compare(final Pair<Long, EMConversation> con1,
-                                       final Pair<Long, EMConversation> con2) {
-
-                        if (con1.first == con2.first) {
-                            return 0;
-                        } else if (con2.first > con1.first) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-
-                });
     }
 }

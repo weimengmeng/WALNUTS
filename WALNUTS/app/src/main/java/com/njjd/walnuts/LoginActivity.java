@@ -21,9 +21,12 @@ import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.message.PushAgent;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +86,7 @@ public class LoginActivity extends BaseActivity {
             }
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                LogUtils.d("huan"+throwable.toString());
                 ToastUtils.showShortToast(LoginActivity.this, "授权错误");
             }
             @Override
@@ -110,6 +114,12 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_login:
+//                new ShareAction(LoginActivity.this)
+//                        .setPlatform(SHARE_MEDIA.QQ)//传入平台
+//                        .withText("hello")//分享内容
+//                        .withMedia(new UMImage(LoginActivity.this,R.drawable.me_bg))
+//                        .setCallback(shareListener)//回调监听器
+//                        .share();
                 if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
                     ToastUtils.showShortToast(this,"请输入账号和密码");
                     return;
@@ -141,6 +151,45 @@ public class LoginActivity extends BaseActivity {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().userLogin(postEntity);
     }
+//    private UMShareListener shareListener = new UMShareListener() {
+//        /**
+//         * @descrption 分享开始的回调
+//         * @param platform 平台类型
+//         */
+//        @Override
+//        public void onStart(SHARE_MEDIA platform) {
+//
+//        }
+//
+//        /**
+//         * @descrption 分享成功的回调
+//         * @param platform 平台类型
+//         */
+//        @Override
+//        public void onResult(SHARE_MEDIA platform) {
+//            ToastUtils.showShortToast(LoginActivity.this,"成功了");
+//        }
+//
+//        /**
+//         * @descrption 分享失败的回调
+//         * @param platform 平台类型
+//         * @param t 错误原因
+//         */
+//        @Override
+//        public void onError(SHARE_MEDIA platform, Throwable t) {
+//            ToastUtils.showShortToast(LoginActivity.this,t.toString());
+//        }
+//
+//        /**
+//         * @descrption 分享取消的回调
+//         * @param platform 平台类型
+//         */
+//        @Override
+//        public void onCancel(SHARE_MEDIA platform) {
+//            ToastUtils.showShortToast(LoginActivity.this,"取消了");
+//
+//        }
+//    };
 
     @Override
     public void onNext(Object o) {

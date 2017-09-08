@@ -9,5 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="loading"/>
+        android:text="加载更多"
+        android:textSize="@dimen/normal"
+        android:textColor="@color/login"/>
 </LinearLayout>

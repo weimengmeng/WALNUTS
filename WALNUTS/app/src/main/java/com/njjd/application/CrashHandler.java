@@ -2,7 +2,9 @@ package com.njjd.application;
 
 import android.content.Context;
 
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.LoginActivity;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -40,6 +42,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//        android.os.Process.killProcess(android.os.Process.myPid());
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

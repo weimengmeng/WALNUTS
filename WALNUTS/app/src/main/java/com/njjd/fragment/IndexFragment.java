@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -183,6 +184,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             list.setAdapter(questionAdapter);
             list.setEmptyView(currentView.findViewById(R.id.empty));
             list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+            list.setRefreshProgressStyle(ProgressStyle.BallPulse);
             listViews.add(list);
             questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override
@@ -265,7 +267,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             public void onLoadMore() {
                 questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
                 getQuestion(tempKind, tempOrder);
-            }
+                        list.loadMoreComplete();
+                    }
         });
     }
     private void getQuestion(String id, String sort) {

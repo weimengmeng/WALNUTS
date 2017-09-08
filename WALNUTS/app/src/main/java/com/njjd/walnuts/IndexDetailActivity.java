@@ -1,12 +1,13 @@
 package com.njjd.walnuts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -37,11 +39,16 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.scrollablelayout.ScrollableLayout;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,6 +96,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     LinearLayout lvTag;
     @BindView(R.id.et_content)
     EditText etContent;
+    @BindView(R.id.btn_add_help)
+    TextView btnAddHelp;
+    @BindView(R.id.lv_share)
+    LinearLayout lvShare;
     private QuestionEntity questionEntity;
     private RelativeLayout relativeLayout;
     private ImageView imageView;
@@ -107,8 +118,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     private String tempOrder = "time";
     private AnswerEntity tempAnswerInfo;
     private CommentEntity tempComment;
-    private String content="";
-    private int currentId=0;
+    private String content = "";
+    private int currentId = 0;
+    private UMShareListener mShareListener;
+
     @Override
     public int bindLayout() {
         return R.layout.activity_index_detail;
@@ -117,6 +130,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void initView(View view) {
         AndroidBug5497Workaround.assistActivity(this);
+        btnAddHelp.setText("");
+        btnAddHelp.setVisibility(View.VISIBLE);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
@@ -181,6 +196,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (!parent.isGroupExpanded(groupPosition)) {
+                    if (answerEntities.get(groupPosition).getCommentEntityList().size() > 1) {
+                        return false;
+                    }
                     getComments(answerEntities.get(groupPosition).getAnwerId() + "");
                     current_group_id = groupPosition;
                 }
@@ -209,22 +227,23 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         scrollView.setOnScrollListener(new ScrollableLayout.OnScrollListener() {
             @Override
             public void onScroll(int i, int i1) {
-                if(exListVIew.getCount()>0&&exListVIew.getChildAt(exListVIew.getLastVisiblePosition()).getVisibility()==View.VISIBLE)
+                if (exListVIew.getCount() > 0 && exListVIew.getChildAt(exListVIew.getLastVisiblePosition()).getVisibility() == View.VISIBLE)
                     AnswerReplyAdapter.CURRENT_PAGE++;
-                    getAnswerList();
-                }
+                getAnswerList();
+            }
         });
         exListVIew.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 lvRply.setVisibility(View.VISIBLE);
+                lvShare.setVisibility(View.GONE);
                 mask.setVisibility(View.VISIBLE);
-                currentId=groupPosition;
+                currentId = groupPosition;
                 etContent.requestFocus();
-                etContent.setHint("回复"+answerEntities.get(groupPosition).getCommentEntityList().get(childPosition).getName());
-                KeybordS.openKeybord(etContent,IndexDetailActivity.this);
-                tempAnswerInfo=answerEntities.get(groupPosition);
-                tempComment=answerEntities.get(groupPosition).getCommentEntityList().get(childPosition);
+                etContent.setHint("回复" + answerEntities.get(groupPosition).getCommentEntityList().get(childPosition).getName());
+                KeybordS.openKeybord(etContent, IndexDetailActivity.this);
+                tempAnswerInfo = answerEntities.get(groupPosition);
+                tempComment = answerEntities.get(groupPosition).getCommentEntityList().get(childPosition);
                 return false;
             }
         });
@@ -239,6 +258,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
+        mShareListener = new CustomShareListener(this);
     }
 
     private void getDetail() {
@@ -304,9 +324,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         getAnswerList();
         for (int i = 0, count = exListVIew
                 .getExpandableListAdapter().getGroupCount(); i < count; i++) {
-                exListVIew.collapseGroup(i);
+            exListVIew.collapseGroup(i);
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -340,7 +361,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     List<CommentEntity> commentEntities = new ArrayList<>();
                     commentEntities.add(new CommentEntity());
                     answerEntity.setCommentEntityList(commentEntities);
-                    if (getIntent().getStringExtra("type").equals("2")||getIntent().getStringExtra("type").equals("3")) {
+                    if (getIntent().getStringExtra("type").equals("2") || getIntent().getStringExtra("type").equals("3")) {
                         if (String.valueOf(Float.valueOf(answerEntity.getAnwerId()).intValue()).equals(String.valueOf(Float.valueOf(comment_id).intValue()))) {
                             answerEntities.add(answerEntity);
                         }
@@ -349,7 +370,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
                 answerReplyAdapter.notifyDataSetChanged();
-                if (getIntent().getStringExtra("type").equals("2")||getIntent().getStringExtra("type").equals("3")) {
+                if (getIntent().getStringExtra("type").equals("2") || getIntent().getStringExtra("type").equals("3")) {
                     getComments(comment_id);
                     exListVIew.expandGroup(0);
                 }
@@ -384,12 +405,12 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     object = array.getJSONObject(i);
                     commentEntity = new CommentEntity(object);
                     if (getIntent().getStringExtra("type").equals("3")) {
-                       if(commentEntity.getCommentId().equals(getIntent().getStringExtra("current_commentId"))){
-                           answerEntities.get(current_group_id).getCommentEntityList().add(1,commentEntity);
-                       }else{
-                           answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
-                       }
-                    }else {
+                        if (commentEntity.getCommentId().equals(getIntent().getStringExtra("current_commentId"))) {
+                            answerEntities.get(current_group_id).getCommentEntityList().add(1, commentEntity);
+                        } else {
+                            answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
+                        }
+                    } else {
                         answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
                     }
                 }
@@ -400,16 +421,61 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         }
     };
 
-    @OnClick({R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort,R.id.btn_reply,R.id.btn_cancle,R.id.mask})
+    @OnClick({R.id.tv_cancle,R.id.share_aili,R.id.share_qq,R.id.share_qzone,R.id.share_sina,R.id.share_wechat,R.id.share_wechat_circle1,R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.btn_add_help:
+                ToastUtils.showShortToast(this,"功能正在开发，敬请期待");
+//                mask.setVisibility(View.VISIBLE);
+//                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                if(imm != null) {
+//                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+//                            0);
+//                }
+//                lvShare.setVisibility(View.VISIBLE);
+                break;
             case R.id.back:
                 finish();
+                break;
+            case R.id.tv_cancle:
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_aili:
+                ToastUtils.showShortToast(this,"支付宝");
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_qq:
+                ToastUtils.showShortToast(this,"QQ");
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_qzone:
+                ToastUtils.showShortToast(this,"QQ空间");
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_sina:
+                ToastUtils.showShortToast(this,"新浪");
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_wechat:
+                ToastUtils.showShortToast(this,"微信");
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_wechat_circle1:
+                ToastUtils.showShortToast(this,"朋友圈");
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
                 break;
             case R.id.mask:
                 mask.setVisibility(View.GONE);
                 lvRply.setVisibility(View.GONE);
-                KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
+                lvShare.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
                 break;
             case R.id.txt_sort:
                 popupWindow.showAsDropDown(findViewById(R.id.txt_sort), 0, 0);
@@ -419,18 +485,18 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.btn_cancle:
                 mask.setVisibility(View.GONE);
-                KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
-               lvRply.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
+                lvRply.setVisibility(View.GONE);
                 break;
             case R.id.btn_reply:
-                if(etContent.getText().toString().trim().equals("")){
-                    ToastUtils.showShortToast(IndexDetailActivity.this,"请输入回复内容");
-                    return ;
+                if (etContent.getText().toString().trim().equals("")) {
+                    ToastUtils.showShortToast(IndexDetailActivity.this, "请输入回复内容");
+                    return;
                 }
                 addCommentF(etContent.getText().toString().trim());
                 lvRply.setVisibility(View.GONE);
                 mask.setVisibility(View.GONE);
-                KeybordS.closeKeybord(etContent,IndexDetailActivity.this);
+                KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
                 etContent.setText("");
                 break;
             case R.id.img_answer:
@@ -441,41 +507,44 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-    private void addCommentF(String content){
-        this.content=content;
+
+    private void addCommentF(String content) {
+        this.content = content;
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("content", content);
-        if("sec_content".equals(tempComment.getSec_content())){
+        if ("sec_content".equals(tempComment.getSec_content())) {
             map.put("comment_id", tempComment.getCommentId());
-            map.put("sec_comment_id",tempAnswerInfo.getAnwerId());
-        }else{
+            map.put("sec_comment_id", tempAnswerInfo.getAnwerId());
+        } else {
             map.put("comment_id", tempComment.getCommentId());
-            map.put("sec_comment_id",tempAnswerInfo.getAnwerId());
+            map.put("sec_comment_id", tempAnswerInfo.getAnwerId());
         }
-        map.put("token",SPUtils.get(this,"token","").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
         LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, this, false, false), map);
         HttpManager.getInstance().pubComment(postEntity);
     }
+
     HttpOnNextListener commentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            commentEntity=new CommentEntity();
+            commentEntity = new CommentEntity();
             commentEntity.setContent(content);
-            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this,"head","").toString());
-            commentEntity.setName(SPUtils.get(IndexDetailActivity.this,"name","").toString());
-            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this,"message","").toString());
+            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
+            commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());
+            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this, "message", "").toString());
             commentEntity.setSec_uid("sec_uid");
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            answerEntities.get(currentId).getCommentEntityList().add(1,commentEntity);
-            answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue()+1)+"");
+            answerEntities.get(currentId).getCommentEntityList().add(1, commentEntity);
+            answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue() + 1) + "");
             answerReplyAdapter.notifyDataSetChanged();
             ToastUtils.showShortToast(IndexDetailActivity.this, "回复成功");
         }
     };
+
     private void addFocus() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
@@ -496,7 +565,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 txtFocus.setText("取消关注");
                 txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape);
-            }else{
+            } else {
                 txtFocus.setText("+关注问题");
                 txtFocus.setTextColor(getResources().getColor(R.color.login));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape_login);
@@ -511,11 +580,14 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_open:
-                if(!exListVIew.isGroupExpanded(Integer.valueOf(v.getTag().toString()))){
+                if (!exListVIew.isGroupExpanded(Integer.valueOf(v.getTag().toString()))) {
+                    if (answerEntities.get(Integer.valueOf(v.getTag().toString())).getCommentEntityList().size() > 1) {
+                        return;
+                    }
                     getComments(answerEntities.get(Integer.valueOf(v.getTag().toString())).getAnwerId() + "");
                     current_group_id = Integer.valueOf(v.getTag().toString());
-                    exListVIew.expandGroup(Integer.valueOf(v.getTag().toString()),true);
-                }else{
+                    exListVIew.expandGroup(Integer.valueOf(v.getTag().toString()), true);
+                } else {
                     exListVIew.collapseGroup(Integer.valueOf(v.getTag().toString()));
                 }
                 break;
@@ -541,6 +613,80 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+
+    private class CustomShareListener implements UMShareListener {
+
+        private WeakReference<IndexDetailActivity> mActivity;
+
+        private CustomShareListener(IndexDetailActivity activity) {
+            mActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            if (platform.name().equals("WEIXIN_FAVORITE")) {
+                Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            } else {
+                if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                        && platform != SHARE_MEDIA.EMAIL
+                        && platform != SHARE_MEDIA.FLICKR
+                        && platform != SHARE_MEDIA.FOURSQUARE
+                        && platform != SHARE_MEDIA.TUMBLR
+                        && platform != SHARE_MEDIA.POCKET
+                        && platform != SHARE_MEDIA.PINTEREST
+
+                        && platform != SHARE_MEDIA.INSTAGRAM
+                        && platform != SHARE_MEDIA.GOOGLEPLUS
+                        && platform != SHARE_MEDIA.YNOTE
+                        && platform != SHARE_MEDIA.EVERNOTE) {
+                    Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                    && platform != SHARE_MEDIA.EMAIL
+                    && platform != SHARE_MEDIA.FLICKR
+                    && platform != SHARE_MEDIA.FOURSQUARE
+                    && platform != SHARE_MEDIA.TUMBLR
+                    && platform != SHARE_MEDIA.POCKET
+                    && platform != SHARE_MEDIA.PINTEREST
+
+                    && platform != SHARE_MEDIA.INSTAGRAM
+                    && platform != SHARE_MEDIA.GOOGLEPLUS
+                    && platform != SHARE_MEDIA.YNOTE
+                    && platform != SHARE_MEDIA.EVERNOTE) {
+                Toast.makeText(mActivity.get(), platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                if (t != null) {
+                    Log.d("throw", "throw:" + t.getMessage());
+                }
+            }
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+
+            Toast.makeText(mActivity.get(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /** attention to this below ,must add this**/
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

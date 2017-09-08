@@ -51,7 +51,7 @@ public class PersonalActivity extends BaseActivity{
     EditText txtPosition;
     @BindView(R.id.txt_company)
     EditText txtCompany;
-    @BindView(R.id.btn_add_help)
+    @BindView(R.id.btn_add_help2)
     TextView btnAddHelp;
     @BindView(R.id.txt_sale)
     TextView txtSale;
@@ -165,7 +165,7 @@ public class PersonalActivity extends BaseActivity{
         btnAddHelp.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.txt_position,R.id.back,R.id.btn_add_help,R.id.txt_name,R.id.txt_message,R.id.txt_company,R.id.txt_province, R.id.txt_sale, R.id.txt_vocation, R.id.txt_sex})
+    @OnClick({R.id.txt_position,R.id.back,R.id.btn_add_help2,R.id.txt_name,R.id.txt_message,R.id.txt_company,R.id.txt_province, R.id.txt_sale, R.id.txt_vocation, R.id.txt_sex})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.back:
@@ -185,7 +185,7 @@ public class PersonalActivity extends BaseActivity{
             case R.id.txt_sex:
                 sexPickview.show();
                 break;
-            case R.id.btn_add_help:
+            case R.id.btn_add_help2:
                 if(TextUtils.isEmpty(txtName.getText().toString())){
                     ToastUtils.showShortToast(this,"昵称不能为空");
                 }

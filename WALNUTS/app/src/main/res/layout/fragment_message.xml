@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <RadioButton
+            <com.njjd.utils.TipButton
                 android:id="@+id/radio_mess"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -32,12 +32,13 @@
                 android:drawableBottom="@drawable/selector_btn_line"
                 android:gravity="center"
                 android:onClick="onClick"
-                android:paddingRight="@dimen/padding_top"
+                android:layout_marginRight="@dimen/margin"
+                android:paddingRight="@dimen/padding"
                 android:text="消息"
                 android:textColor="@drawable/selector_btn_top"
                 android:textSize="@dimen/big" />
 
-            <RadioButton
+            <com.njjd.utils.TipButton
                 android:id="@+id/radio_inform"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -47,7 +48,8 @@
                 android:drawableBottom="@drawable/selector_btn_line"
                 android:gravity="center"
                 android:onClick="onClick"
-                android:paddingRight="@dimen/padding_top"
+                android:layout_marginRight="@dimen/margin"
+                android:paddingRight="@dimen/padding"
                 android:text="通知"
                 android:textColor="@drawable/selector_btn_top"
                 android:textSize="@dimen/big" />

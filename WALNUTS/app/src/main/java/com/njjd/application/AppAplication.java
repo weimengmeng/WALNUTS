@@ -19,6 +19,7 @@ import com.ios.dialog.AlertDialog;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.LogToFile;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
@@ -57,14 +58,14 @@ public class AppAplication extends Application {
         super.onCreate();
         context = this.getApplicationContext();
         replaceSystemDefaultFont(this, fontPath);
+//        LogToFile.init(this);
         CrashHandler handler = CrashHandler.getInstance();
         handler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(handler);
-        CommonUtils.init(context);
         /**
          * 友盟登录、分享
          */
-//        Config.DEBUG = true;
+        Config.DEBUG = true;
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxaaa88f9a47ec1f98", "35a9eef61c384087a3028686789f2900");
         PlatformConfig.setQQZone("1106091328", "7XJSCwws0c8wFtFx");
@@ -91,8 +92,9 @@ public class AppAplication extends Application {
         options.setAutoLogin(false);
         EMClient.getInstance().init(this, options);
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        EMClient.getInstance().setDebugMode(true);
+//        EMClient.getInstance().setDebugMode(true);
         MultiDex.install(this);
+        CommonUtils.init(context);
     }
 
     public static Context getContext() {
@@ -164,7 +166,11 @@ public class AppAplication extends Application {
                     Intent intent = new Intent(context, WelcomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                } else {
+                } else if(SPUtils.get(context,"isLogin","0").toString().equals("0")){
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }else{
                     try {
                         JSONObject object = msg.getRaw();
                         JSONObject object1 = object.getJSONObject("extra");

@@ -11,6 +11,7 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.njjd.application.AppAplication;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.BannerEntity;
 import com.njjd.domain.CommonEntity;
@@ -247,6 +248,7 @@ public class CommonUtils {
             SPUtils.put(mContext, "sex", json.isNull("sex") ? "0" : json.getString("sex"));
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
             SPUtils.put(mContext, "token", json.getString("token"));
+            SPUtils.put(AppAplication.getContext(),"isLogin","1");
         } catch (JSONException e) {
             e.printStackTrace();
         }

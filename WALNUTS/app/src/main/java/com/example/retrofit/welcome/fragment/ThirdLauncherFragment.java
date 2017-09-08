@@ -26,7 +26,6 @@ public class ThirdLauncherFragment extends LauncherBaseFragment{
 		View rooView=inflater.inflate(R.layout.fragment_third_launcher, null);
 		ivReward=(ImageView) rooView.findViewById(R.id.iv_reward);
 		goldBitmap=BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.introbg9);
-		startAnimation();
 		return rooView;
 	}
 
@@ -39,6 +38,6 @@ public class ThirdLauncherFragment extends LauncherBaseFragment{
 
 	@Override
 	public void stopAnimation(){
-		ivReward.clearAnimation();//清空view上的动画
+		ivReward.clearAnimation();
 	}
 }

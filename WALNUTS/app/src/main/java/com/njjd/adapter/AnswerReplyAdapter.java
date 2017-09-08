@@ -194,13 +194,13 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         });
         if (isExpanded) {
             if(Float.valueOf(answerEntity.getOpen()).intValue()==0){
-                holder.groupOpen.setText("评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+                holder.groupOpen.setText("评论");
             }else{
                 holder.groupOpen.setText("收起评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
             }
         }else{
             if(Float.valueOf(answerEntity.getOpen()).intValue()==0){
-                holder.groupOpen.setText("评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
+                holder.groupOpen.setText("评论");
             }else{
                 holder.groupOpen.setText("展开评论 " + Float.valueOf(answerEntity.getOpen()).intValue());
             }

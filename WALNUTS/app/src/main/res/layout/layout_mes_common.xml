@@ -50,6 +50,8 @@
                 android:layout_height="wrap_content"
                 android:text="您的回答被评论"
                 android:layout_marginTop="@dimen/_top"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
         </LinearLayout>

@@ -28,15 +28,22 @@ public class TipButton extends RadioButton {
         int marginTop;
         int marginRight;
 
-        Dot() {
+        Dot(int n) {
             float density = getContext().getResources().getDisplayMetrics().density;
             radius = (int) (5 * density);
-            marginTop = (int) (3 * density);
-            marginRight = (int) (3 * density);
+            marginTop = (int) (n* density);
+            marginRight = (int) (3* density);
 
             color = getContext().getResources().getColor(R.color.red);
         }
+        Dot() {
+            float density = getContext().getResources().getDisplayMetrics().density;
+            radius = (int) (5 * density);
+            marginTop = (int) (3* density);
+            marginRight = (int) (3* density);
 
+            color = getContext().getResources().getColor(R.color.red);
+        }
     }
 
     public TipButton(Context context) {
@@ -89,12 +96,16 @@ public class TipButton extends RadioButton {
         }
     }
 
-    public void setTipOn(boolean tip) {
+    public void setTipOn(boolean tip,int n) {
         this.mTipOn = tip;
-
+        mDot=new Dot(9);
         invalidate();
     }
-
+    public void setTipOn(boolean tip) {
+        this.mTipOn = tip;
+        mDot=new Dot();
+        invalidate();
+    }
     public boolean isTipOn() {
         return mTipOn;
     }

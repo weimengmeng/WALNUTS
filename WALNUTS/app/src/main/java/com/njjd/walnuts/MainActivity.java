@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity {
     TipButton radio4;
     private FragmentManager fm;
     private Fragment indexFragment, findFragment, messFragment, mineFragment, pubFragment;
-    private int temp = 0;
+    public static int temp = 0;
     public static Activity activity;
     private MyReceiver receiver;
     private LoginPassReceiver passReceiver;
@@ -175,6 +175,9 @@ public class MainActivity extends FragmentActivity {
         fm.beginTransaction().hide(findFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
                 .show(indexFragment).commit();
         initConversionLitener();
+        if(EMClient.getInstance().chatManager().getUnreadMessageCount()>0){
+            handler3.sendEmptyMessage(0);
+        }
     }
 
     private void initConversionLitener() {
@@ -363,6 +366,7 @@ public class MainActivity extends FragmentActivity {
                 exitTime = System.currentTimeMillis();
             } else {
                 MyActivityManager.getInstance().finishAllActivity();
+                SPUtils.put(this,"isLogin","0");
             }
             return true;
         }
