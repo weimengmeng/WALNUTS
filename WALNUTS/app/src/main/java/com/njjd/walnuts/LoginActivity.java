@@ -14,12 +14,14 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -109,21 +111,17 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.txt_register:
+                MobclickAgent.onEvent(this, ConstantsVal.REGISTER);
                 intent = new Intent(this, RegisterActivity.class);
                 intent.putExtra("bind", 0);
                 startActivity(intent);
                 break;
             case R.id.btn_login:
-//                new ShareAction(LoginActivity.this)
-//                        .setPlatform(SHARE_MEDIA.QQ)//传入平台
-//                        .withText("hello")//分享内容
-//                        .withMedia(new UMImage(LoginActivity.this,R.drawable.me_bg))
-//                        .setCallback(shareListener)//回调监听器
-//                        .share();
                 if(etPhone.getText().toString().equals("")||etPwd.getText().toString().equals("")){
                     ToastUtils.showShortToast(this,"请输入账号和密码");
                     return;
                 }
+                MobclickAgent.onEvent(this,ConstantsVal.LOGIN);
                 doLogin();
 //                intent = new Intent(this, MainActivity.class);
 //                startActivity(intent);
@@ -151,46 +149,6 @@ public class LoginActivity extends BaseActivity {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().userLogin(postEntity);
     }
-//    private UMShareListener shareListener = new UMShareListener() {
-//        /**
-//         * @descrption 分享开始的回调
-//         * @param platform 平台类型
-//         */
-//        @Override
-//        public void onStart(SHARE_MEDIA platform) {
-//
-//        }
-//
-//        /**
-//         * @descrption 分享成功的回调
-//         * @param platform 平台类型
-//         */
-//        @Override
-//        public void onResult(SHARE_MEDIA platform) {
-//            ToastUtils.showShortToast(LoginActivity.this,"成功了");
-//        }
-//
-//        /**
-//         * @descrption 分享失败的回调
-//         * @param platform 平台类型
-//         * @param t 错误原因
-//         */
-//        @Override
-//        public void onError(SHARE_MEDIA platform, Throwable t) {
-//            ToastUtils.showShortToast(LoginActivity.this,t.toString());
-//        }
-//
-//        /**
-//         * @descrption 分享取消的回调
-//         * @param platform 平台类型
-//         */
-//        @Override
-//        public void onCancel(SHARE_MEDIA platform) {
-//            ToastUtils.showShortToast(LoginActivity.this,"取消了");
-//
-//        }
-//    };
-
     @Override
     public void onNext(Object o) {
         super.onNext(o);
@@ -199,6 +157,7 @@ public class LoginActivity extends BaseActivity {
         Gson gson = gsonBuilder.create();
         try {
             CommonUtils.initData(new JSONObject(gson.toJson(o)));
+            MobclickAgent.onEvent(LoginActivity.this,ConstantsVal.MAINACITVITY);
             SPUtils.put(LoginActivity.this,"pwd",etPwd.getText().toString().trim());
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -209,6 +168,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doThirdLogin(int type, Map<String, String> result) {
+        MobclickAgent.onEvent(this,ConstantsVal.THIRD_LOGIN);
         //0 qq 1 wechat  2 sina
         Map<String, Object> map = new HashMap<>();
         map.put("logintype", "" + type);
@@ -228,6 +188,7 @@ public class LoginActivity extends BaseActivity {
             gsonBuilder.serializeNulls(); //重点
             Gson gson = gsonBuilder.create();
             JSONObject json = null;
+            MobclickAgent.onEvent(LoginActivity.this,ConstantsVal.THIRD_MAINACITVITY);
             try {
                 json = new JSONObject(gson.toJson(o));
                 if (json.toString().contains("uuid")) {

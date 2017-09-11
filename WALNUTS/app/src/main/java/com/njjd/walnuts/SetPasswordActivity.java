@@ -14,12 +14,14 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonObject;
+import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +55,6 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         temp = getResources().getString(R.string.code);
         temp = String.format(temp, getIntent().getStringExtra("phone"));
         txtTip.setText(temp);
@@ -80,6 +81,7 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
     @Override
     public void onNext(Object o) {
         super.onNext(o);
+        MobclickAgent.onEvent(this, ConstantsVal.REGIST_SETPWD);
         JsonObject object = JSONUtils.getAsJsonObject(o);
         SPUtils.put(this, "phoneNumber", getIntent().getStringExtra("phone"));
         SPUtils.put(this, "userId", object.get("uid").getAsString());

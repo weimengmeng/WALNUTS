@@ -22,18 +22,18 @@ public class SecondLauncherFragment extends LauncherBaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rooView = inflater.inflate(R.layout.fragment_second_launcher, null);
-		imgCase = (ImageView) rooView.findViewById(R.id.img_case);
-		goldBitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.introbg5);
+//		imgCase = (ImageView) rooView.findViewById(R.id.img_case);
+//		goldBitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.introbg5);
 		return rooView;
 	}
 
 	public void startAnimation(){
-		TranslateAnimation translateAnimation=new TranslateAnimation(0,0,goldBitmap.getHeight()*2+80,0);
-		translateAnimation.setDuration(1000);
-		translateAnimation.setFillAfter(true);
-		imgCase.startAnimation(translateAnimation);
+//		TranslateAnimation translateAnimation=new TranslateAnimation(0,0,goldBitmap.getHeight()*2+80,0);
+//		translateAnimation.setDuration(1000);
+//		translateAnimation.setFillAfter(true);
+//		imgCase.startAnimation(translateAnimation);
 	}
 	public void stopAnimation() {
-		imgCase.clearAnimation();
+//		imgCase.clearAnimation();
 	}
 }

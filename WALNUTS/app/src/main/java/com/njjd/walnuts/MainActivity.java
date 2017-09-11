@@ -279,10 +279,16 @@ public class MainActivity extends FragmentActivity {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.radio1:
-                fm.beginTransaction().hide(findFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
-                        .show(indexFragment)
-                        .commitAllowingStateLoss();
-                temp = 0;
+                if(temp==0){
+                    intent = new Intent();
+                    intent.setAction(ConstantsVal.REFRESH);
+                    sendBroadcast(intent);
+                }else {
+                    fm.beginTransaction().hide(findFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
+                            .show(indexFragment)
+                            .commitAllowingStateLoss();
+                    temp = 0;
+                }
                 break;
             case R.id.radio2:
                 fm.beginTransaction().hide(indexFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)

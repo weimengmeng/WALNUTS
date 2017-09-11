@@ -102,6 +102,7 @@
             android:textColor="@color/txt_color"/>
         <TextView
             android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_margin"
             android:layout_height="wrap_content"
             android:text="Copyright©2018 All Rights Reserved"
             android:textSize="@dimen/normal"

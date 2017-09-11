@@ -84,7 +84,6 @@ public class ImageDetailFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		GlideImageLoder.getInstance().displayImage(context,mImageUrl,
 				mImageView);
 	}

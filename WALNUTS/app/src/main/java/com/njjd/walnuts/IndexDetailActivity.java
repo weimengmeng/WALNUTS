@@ -1,13 +1,13 @@
 package com.njjd.walnuts;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -119,7 +119,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     private AnswerEntity tempAnswerInfo;
     private CommentEntity tempComment;
     private String content = "";
-    private int currentId = 0;
+    private int currentId = 0,type=0;
     private UMShareListener mShareListener;
 
     @Override
@@ -235,6 +235,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         exListVIew.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                type=0;
                 lvRply.setVisibility(View.VISIBLE);
                 lvShare.setVisibility(View.GONE);
                 mask.setVisibility(View.VISIBLE);
@@ -493,7 +494,11 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     ToastUtils.showShortToast(IndexDetailActivity.this, "请输入回复内容");
                     return;
                 }
-                addCommentF(etContent.getText().toString().trim());
+                if(type==0) {
+                    addCommentF(etContent.getText().toString().trim());
+                }else{
+                    addComment(etContent.getText().toString().trim());
+                }
                 lvRply.setVisibility(View.GONE);
                 mask.setVisibility(View.GONE);
                 KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
@@ -507,7 +512,36 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+    private void addComment(String comment) {
+        this.content=comment;
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", questionEntity.getQuestionId());
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("content", comment);
+        map.put("comment_id", answerEntities.get(currentId).getAnwerId());
+        map.put("sec_comment_id", answerEntities.get(currentId).getAnwerId());
+        map.put("token",SPUtils.get(this,"token","").toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener1, this, false, false), map);
+        HttpManager.getInstance().pubComment(postEntity);
+    }
 
+    HttpOnNextListener commentListener1 = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            commentEntity=new CommentEntity();
+            commentEntity.setContent(content);
+            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this,"head","").toString());
+            commentEntity.setName(SPUtils.get(IndexDetailActivity.this,"name","").toString());
+            commentEntity.setSec_uid("sec_uid");
+            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this,"message","").toString());
+            commentEntity.setReplyNum("0");
+            commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            answerEntities.get(currentId).getCommentEntityList().add(1,commentEntity);
+            answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue()+1)+"");
+            answerReplyAdapter.notifyDataSetChanged();
+            ToastUtils.showShortToast(IndexDetailActivity.this, "评论成功");
+        }
+    };
     private void addCommentF(String content) {
         this.content = content;
         Map<String, Object> map = new HashMap<>();
@@ -610,6 +644,16 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                         .getExpandableListAdapter().getGroupCount(); i < count; i++) {
                     exListVIew.collapseGroup(i);
                 }
+                break;
+            case R.id.et_comment:
+                type=1;
+                lvRply.setVisibility(View.VISIBLE);
+                lvShare.setVisibility(View.GONE);
+                mask.setVisibility(View.VISIBLE);
+                currentId =Integer.valueOf(v.getTag().toString());
+                etContent.requestFocus();
+                etContent.setHint("回复" + answerEntities.get(Integer.valueOf(v.getTag().toString())).getName());
+                KeybordS.openKeybord(etContent, IndexDetailActivity.this);
                 break;
         }
     }

@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.application.AppAplication;
+import com.njjd.application.ConstantsVal;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
@@ -153,6 +155,9 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     public void onNext(Object o) {
         super.onNext(o);
         List<String> strings = bundle.getStringArrayList("imgs");
+        Intent intent = new Intent();
+        intent.setAction(ConstantsVal.REFRESH);
+        sendBroadcast(intent);
         if (strings != null&&strings.size()>0) {
             File file;
             for (int i = 0; i < strings.size(); i++) {

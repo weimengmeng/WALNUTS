@@ -148,7 +148,6 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
-                LogUtils.d(o.toString());
                 JsonArray array = JSONUtils.getAsJsonArray(o);
                 JsonObject object = null;
                 JsonArray cityArray;
@@ -182,7 +181,6 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
-                LogUtils.d(o.toString());
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
                 IndexNavEntity entity;
@@ -204,13 +202,12 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
-                LogUtils.d(o.toString());
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
                 BannerEntity entity;
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
-                    entity=new BannerEntity(object.get("title").getAsString(),"http://www.baidu.com",object.get("id").getAsString(),object.get("img").getAsString());
+                    entity=new BannerEntity(object.get("title").getAsString(),object.get("url").isJsonNull()?"":object.get("url").getAsString(),object.get("id").getAsString(),object.get("img").getAsString());
                     bannerList.add(entity);
                 }
             }
@@ -222,7 +219,6 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
-                LogUtils.d(o.toString());
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
                 TagEntity entity;

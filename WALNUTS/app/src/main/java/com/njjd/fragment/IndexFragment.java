@@ -2,8 +2,10 @@ package com.njjd.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter;
 import com.njjd.adapter.MyPagerAdapter;
+import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
@@ -44,6 +47,7 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.IndexDetailActivity;
+import com.njjd.walnuts.MainActivity;
 import com.njjd.walnuts.R;
 
 import org.json.JSONArray;
@@ -91,6 +95,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private List<IndexNavEntity> navList;
     private String tempKind = "1";
     private String tempOrder = "time";
+    private MyReceiver receiver;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -104,11 +109,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-        if(tempList!=null&&questionAdapter!=null&&list!=null){
-            questionAdapter.setCurrentPage(1);
-            getQuestion(tempKind, tempOrder);
-        }
-
     }
 
     @Override
@@ -118,6 +118,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        receiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConstantsVal.REFRESH);
+        context.registerReceiver(receiver, filter);
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
         layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
         layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
@@ -250,6 +254,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //             ) {
 //            tempList.add(e);
 //        }
+        list.setPullRefreshEnabled(true);
+        list.refresh();
         getQuestion(tempKind, tempOrder);
 //        questionAdapter.notifyDataSetChanged();
 //        LogUtils.d(tempList.size());
@@ -359,6 +365,24 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 break;
         }
     }
+    private class MyReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            if(tempList!=null&&questionAdapter!=null&&list!=null){
+                list.smoothScrollToPosition(0);
+                list.setPullRefreshEnabled(true);
+                list.refresh();
+                questionAdapter.setCurrentPage(1);
+                getQuestion(tempKind, tempOrder);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        context.unregisterReceiver(receiver);
+    }
+
     @Override
     public void onStop() {
         super.onStop();

@@ -49,6 +49,9 @@ public class WebViewActivity extends BaseActivity {
         web.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         WebSettings webSettings = web.getSettings();
         webSettings.setAllowFileAccess(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setDisplayZoomControls(false); //隐藏webview缩放按钮
+        webSettings.setLoadWithOverviewMode(true);
         webSettings.setBuiltInZoomControls(true);
         System.out.println(getIntent().getStringExtra("url"));
         web.loadUrl(getIntent().getStringExtra("url"));

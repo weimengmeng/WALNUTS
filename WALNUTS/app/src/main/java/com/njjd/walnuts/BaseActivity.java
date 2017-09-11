@@ -41,6 +41,10 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
         if (isSetStatusBar) {
             steepStatusBar();
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.setStatusBarColor(getResources().getColor(R.color.white));
+        }
         MyActivityManager.getInstance().pushOneActivity(this);
         initView(mContextView);
         PushAgent.getInstance(this).onAppStart();

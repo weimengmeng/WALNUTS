@@ -56,6 +56,7 @@
                     android:layout_height="@dimen/height"
                     android:background="@null"
                     android:gravity="center|bottom"
+                    android:textCursorDrawable="@drawable/color_cusor"
                     android:hint="请输入验证码"
                     android:inputType="text"
                     android:maxLength="4"

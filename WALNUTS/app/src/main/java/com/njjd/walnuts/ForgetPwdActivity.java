@@ -56,7 +56,6 @@ public class ForgetPwdActivity extends BaseActivity implements TimeCountDown2.On
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         inflater = LayoutInflater.from(this);
         lvImgcode = inflater.inflate(R.layout.lay_code, null);
         popupWindow = new BasePopupWindow(this);

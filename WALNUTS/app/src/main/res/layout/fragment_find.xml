@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:alpha="0.15"
-        android:background="#000000"></View>
+        android:background="@color/txt_color"></View>
     <com.njjd.utils.VpSwipeRefreshLayout
         android:layout_width="match_parent"
         android:id="@+id/layout_refresh"

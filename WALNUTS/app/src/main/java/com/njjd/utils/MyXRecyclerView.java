@@ -43,7 +43,7 @@ public class MyXRecyclerView extends XRecyclerView {
     private void checkIfEmpty() {
         if (emptyView != null && getAdapter() != null) {
             final boolean emptyViewVisible =
-                    getAdapter().getItemCount() == 1;
+                    getAdapter().getItemCount() ==1;
             emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
             setVisibility(emptyViewVisible ? GONE : VISIBLE);
         }

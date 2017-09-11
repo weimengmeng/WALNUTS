@@ -34,7 +34,13 @@ public class KeybordS {
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
-
+    public static void closeBoard(Context context){
+        InputMethodManager imm =  (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null) {
+            imm.hideSoftInputFromWindow(((Activity)context).getWindow().getDecorView().getWindowToken(),
+                    0);
+        }
+    }
     /**
      * 判断当前软键盘是否打开
      *

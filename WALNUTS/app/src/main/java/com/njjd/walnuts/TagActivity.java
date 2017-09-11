@@ -14,6 +14,7 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter2;
 import com.njjd.domain.QuestionEntity;
@@ -50,7 +51,6 @@ public class TagActivity extends BaseActivity  {
     TextView txtFocus;
     private List<QuestionEntity> list=new ArrayList<>();
     private IndexQuestionAdapter2 adapter;
-    private boolean isLoading=false;
     @Override
     public int bindLayout() {
         return R.layout.activity_tag;
@@ -64,6 +64,8 @@ public class TagActivity extends BaseActivity  {
         adapter=new IndexQuestionAdapter2(this,list);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         listview.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
+        listview.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+        listview.setRefreshProgressStyle(ProgressStyle.BallPulse);
         listview.setAdapter(adapter);
         getTagQuestion();
         setRefreshListener();
@@ -92,7 +94,6 @@ public class TagActivity extends BaseActivity  {
             public void onLoadMore() {
                 adapter.setCurrentPage(adapter.getCurrentPage() + 1);
                getTagQuestion();
-                isLoading=true;
             }
         });
     }
@@ -129,10 +130,11 @@ public class TagActivity extends BaseActivity  {
             if (adapter.getCurrentPage() == 1) {
                 listview.refreshComplete();
                 list.clear();
-            }
-            if(isLoading){
-                isLoading=false;
+            }else{
                 listview.loadMoreComplete();
+            }
+            if(array.length()<10){
+                listview.setNoMore(true);
             }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i),"");

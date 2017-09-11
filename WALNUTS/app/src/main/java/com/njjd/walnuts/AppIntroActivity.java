@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Window;
 
 import com.example.retrofit.welcome.adapter.BaseFragmentAdapter;
 import com.example.retrofit.welcome.fragment.FirstLauncherFragment;
@@ -29,9 +30,6 @@ public class AppIntroActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appintro);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
-        }
         /**
          * 初始化三个fragment  并且添加到list中
          */
@@ -57,6 +55,17 @@ public class AppIntroActivity extends FragmentActivity {
     ViewPager.OnPageChangeListener changeListener=new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageSelected(int index) {
+            if(index!=3){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Window window = getWindow();
+                    window.setStatusBarColor(getResources().getColor(R.color.white));
+                }
+            }else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Window window = getWindow();
+                    window.setStatusBarColor(getResources().getColor(R.color.login));
+                }
+            }
             fragment=list.get(index);
             list.get(currentSelect).stopAnimation();//停止前一个页面的动画
             fragment.startAnimation();//开启当前页面的动画

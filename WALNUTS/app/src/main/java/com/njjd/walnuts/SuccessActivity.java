@@ -15,6 +15,7 @@ import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonObject;
+import com.njjd.application.ConstantsVal;
 import com.njjd.domain.CommonEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
@@ -24,6 +25,7 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -209,6 +211,7 @@ public class SuccessActivity extends BaseActivity {
     }
 
     private void completeInfo() {
+        MobclickAgent.onEvent(this, ConstantsVal.REGIST_COMINFO);
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());

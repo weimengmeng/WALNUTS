@@ -37,7 +37,7 @@
             android:textColor="@color/gray"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
-            android:singleLine="true"
+            android:maxLines="2"
             android:typeface="sans"
             android:paddingBottom="@dimen/margin"
             android:ellipsize="end"

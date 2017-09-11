@@ -1,12 +1,14 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -21,13 +23,16 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.example.retrofit.util.StringUtil;
 import com.google.gson.JsonObject;
+import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BasePopupWindow;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -73,7 +78,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         popupWindow = new BasePopupWindow(this);
         popupWindow.setContentView(lvImgcode);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
         web = (WebView) lvImgcode.findViewById(R.id.web);
         imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);
@@ -88,7 +92,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -141,6 +144,8 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     ToastUtils.showShortToast(RegisterActivity.this, "请输入邀请码");
                     return;
                 }
+                KeybordS.closeBoard(this);
+                MobclickAgent.onEvent(this, ConstantsVal.GETPHONECODE);
                 isUserExist();
 //                Intent intent = new Intent(this, SetPasswordActivity.class);
 //                startActivity(intent);
@@ -177,7 +182,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());
         map.put("imgcode", code);
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().phoneCode(postEntity);
     }
@@ -190,6 +194,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
             ToastUtils.showShortToast(this, "手机号已注册");
         } else {
             btnGetCode.initTimer();
+            MobclickAgent.onEvent(RegisterActivity.this,ConstantsVal.REGIST_NEXT);
             ToastUtils.showShortToast(this, "已发送");
             Intent intent = new Intent(this, SetPasswordActivity.class);
             intent.putExtra("phone", etPhone.getText().toString().trim());

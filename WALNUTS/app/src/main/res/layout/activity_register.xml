@@ -1,103 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff">
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:gravity="bottom">
     <LinearLayout
-        android:id="@+id/img_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin"
-            android:src="@drawable/btn_back_select" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/margin_big"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="@dimen/margin">
+        android:layout_weight="1.0">
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            android:scrollbars="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/img_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin">
 
-        <TextView
-            android:id="@+id/txt_tips"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:layout_marginRight="@dimen/margin"
+                        android:layout_marginTop="@dimen/margin"
+                        android:src="@drawable/btn_back_select" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/margin_big"
+                    android:layout_marginRight="@dimen/margin_big"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin">
+
+                    <TextView
+                        android:id="@+id/txt_tips"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="欢迎来到核桃"
+                        android:textColor="@color/login"
+                        android:textSize="@dimen/largest" />
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:layout_marginTop="@dimen/margin"
+                        android:background="@null"
+                        android:gravity="center|bottom"
+                        android:hint="请输入手机号"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/txt_color"
+                        android:textCursorDrawable="@drawable/color_cusor"
+                        android:textSize="@dimen/normal"
+                        android:typeface="sans" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:layout_marginRight="@dimen/margin"
+                        android:alpha="0.1"
+                        android:background="@color/gray" />
+
+                    <EditText
+                        android:id="@+id/et_invite_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:background="@null"
+                        android:gravity="center|bottom"
+                        android:hint="请输入邀请码"
+
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/txt_color"
+                        android:textCursorDrawable="@drawable/color_cusor"
+                        android:textSize="@dimen/normal"
+                        android:typeface="sans" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:layout_marginRight="@dimen/margin"
+                        android:alpha="0.1"
+                        android:background="@color/gray" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:text="没有邀请码？请联系客服微信：heardtalk"
+                        android:textSize="@dimen/small"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        >
+        <com.njjd.utils.TimeCountDown
+            android:id="@+id/btn_get_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/round"
-            android:gravity="center"
-            android:text="欢迎来到核桃"
-            android:textColor="@color/login"
-            android:textSize="@dimen/largest" />
-
-
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height"
-            android:layout_marginLeft="@dimen/margin"
-            android:textCursorDrawable="@drawable/color_cusor"
-
-            android:layout_marginTop="@dimen/margin_big"
-            android:background="@null"
-            android:typeface="sans"
-            android:gravity="center|bottom"
-            android:hint="请输入手机号"
-            android:inputType="phone"
-            android:maxLength="11"
-            android:textColorHint="@color/txt_color"
-            android:textColor="@color/gray"
+            android:layout_alignParentBottom="true"
+            android:background="@color/yellow"
+            android:text="获取验证码"
+            android:textColor="@color/white"
             android:textSize="@dimen/normal" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
-            android:alpha="0.1"
-            android:background="@color/gray" />
-
-        <EditText
-            android:id="@+id/et_invite_code"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height"
-            android:layout_marginLeft="@dimen/margin"
-            android:background="@null"
-            android:gravity="center|bottom"
-            android:textCursorDrawable="@drawable/color_cusor"
-
-            android:textColorHint="@color/txt_color"
-            android:hint="请输入邀请码"
-            android:inputType="number"
-            android:typeface="sans"
-            android:maxLength="6"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/normal" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
-            android:alpha="0.1"
-            android:background="@color/gray" />
     </LinearLayout>
-
-    <com.njjd.utils.TimeCountDown
-        android:id="@+id/btn_get_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/yellow"
-        android:text="获取验证码"
-        android:textColor="@color/white"
-        android:textSize="@dimen/normal" />
-</RelativeLayout>
+</LinearLayout>

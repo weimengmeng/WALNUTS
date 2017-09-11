@@ -129,7 +129,7 @@ public class AskActivity extends BaseActivity {
             List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
             for (int i = 0; i < mSelected.size(); i++) {
                 Map<String, Object> map = new HashMap<>();
-                String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(this,mSelected.get(0)), 480,800);
+                String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(this,mSelected.get(i)), 480,800);
                 map.put("path",imgpath);
                 datas.add(map);
             }

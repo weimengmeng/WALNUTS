@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -216,6 +217,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         if (view == null) {
             holder = new ChildHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.item_group_child, null);
+            holder.editText=(EditText) view.findViewById(R.id.et_comment);
             holder.childHead = (ImageView) view.findViewById(R.id.img_answer_head);
             holder.childName = (TextView) view.findViewById(R.id.txt_answer_name);
             holder.childTime = (TextView) view.findViewById(R.id.txt_time);
@@ -229,23 +231,11 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             holder = (ChildHolder) view.getTag();
         }
         if (childPosition != 0) {
-            view.findViewById(R.id.lv_comment).setVisibility(View.GONE);
+           holder.editText.setVisibility(View.GONE);
             view.findViewById(R.id.ll_reply).setVisibility(View.VISIBLE);
         } else {
-            view.findViewById(R.id.lv_comment).setVisibility(View.VISIBLE);
-            final TextView textView = (TextView) view.findViewById(R.id.et_comment);
-            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (textView.getText().toString().trim().equals("")) {
-                        ToastUtils.showShortToast(mContext, "请先输入评论哦");
-                        return;
-                    }
-                    currentPosition = groupPosition;
-                    addComment(groupPosition, textView.getText().toString().trim());
-                    textView.setText("");
-                }
-            });
+            holder.editText.setVisibility(View.VISIBLE);
+            holder.editText.setTag(groupPosition);
             view.findViewById(R.id.ll_reply).setVisibility(View.GONE);
         }
         if(childPosition!=0) {
@@ -307,6 +297,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
     }
 
     class ChildHolder {
+        public EditText editText;
         public ImageView childHead;
         public TextView childName;
         public TextView childTime;
@@ -326,39 +317,6 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, mContext, true, false), map);
         HttpManager.getInstance().agreeOrPraise(postEntity);
     }
-
-    private void addComment(int position, String comment) {
-        this.comment=comment;
-        currentPosition= position;
-        Map<String, Object> map = new HashMap<>();
-        map.put("article_id", article_id);
-        map.put("uid", SPUtils.get(mContext, "userId", ""));
-        map.put("content", comment);
-        map.put("comment_id", groupArray.get(position).getAnwerId());
-        map.put("sec_comment_id", groupArray.get(position).getAnwerId());
-        map.put("token",SPUtils.get(mContext,"token","").toString());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, mContext, false, false), map);
-        HttpManager.getInstance().pubComment(postEntity);
-    }
-
-    HttpOnNextListener commentListener = new HttpOnNextListener() {
-        @Override
-        public void onNext(Object o) {
-            commentEntity=new CommentEntity();
-            commentEntity.setContent(comment);
-            commentEntity.setHead(SPUtils.get(mContext,"head","").toString());
-            commentEntity.setName(SPUtils.get(mContext,"name","").toString());
-            commentEntity.setSec_uid("sec_uid");
-            commentEntity.setMessage(SPUtils.get(mContext,"message","").toString());
-            commentEntity.setReplyNum("0");
-            commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            groupArray.get(currentid).getCommentEntityList().add(1,commentEntity);
-            groupArray.get(currentPosition).setOpen((Float.valueOf(groupArray.get(currentPosition).getOpen()).intValue()+1)+"");
-            notifyDataSetChanged();
-            ToastUtils.showShortToast(mContext, "评论成功");
-        }
-    };
-
     @Override
     public void onNext(Object o) {
         switch (temp) {
@@ -372,7 +330,10 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                 break;
             case 1:
                 ToastUtils.showShortToast(mContext, "认同－1");
-
+                tempView.setBackgroundResource(R.drawable.background_button_div_grey);
+                tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
+                tempView.setSelected(false);
+                tempView.setText((Integer.valueOf(tempView.getText().toString())-1)+"");
                 groupArray.get(currentid).setIsPrise("0");
                 break;
             case 2:

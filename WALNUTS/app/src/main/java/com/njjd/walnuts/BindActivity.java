@@ -1,12 +1,14 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -84,7 +86,6 @@ public class BindActivity extends BaseActivity {
         popupWindow = new BasePopupWindow(this);
         popupWindow.setContentView(lvImgcode);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
         web = (WebView) lvImgcode.findViewById(R.id.web);
         imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);

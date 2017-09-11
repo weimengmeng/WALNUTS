@@ -23,21 +23,21 @@ public class FirstLauncherFragment extends LauncherBaseFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View rooView=inflater.inflate(R.layout.fragment_first_launcher, null);
-		ivReward=(ImageView) rooView.findViewById(R.id.iv_reward);
-		goldBitmap=BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.introbg3);
-		startAnimation();
+//		ivReward=(ImageView) rooView.findViewById(R.id.iv_reward);
+//		goldBitmap=BitmapFactory.decodeResource(getActivity().getResources(),R.drawable.introbg3);
+//		startAnimation();
 		return rooView;
 	}
 	
 	public void startAnimation(){
-		TranslateAnimation translateAnimation=new TranslateAnimation(0,0,-(goldBitmap.getHeight()*2+80),0);
-		translateAnimation.setDuration(1000);
-		translateAnimation.setFillAfter(true);
-		ivReward.startAnimation(translateAnimation);
+//		TranslateAnimation translateAnimation=new TranslateAnimation(0,0,-(goldBitmap.getHeight()*2+80),0);
+//		translateAnimation.setDuration(1000);
+//		translateAnimation.setFillAfter(true);
+//		ivReward.startAnimation(translateAnimation);
 	}
 	
 	@Override
 	public void stopAnimation(){
-		ivReward.clearAnimation();
+//		ivReward.clearAnimation();
 	}
 }

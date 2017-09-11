@@ -1,9 +1,13 @@
 package com.njjd.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.njjd.application.AppAplication;
 import com.njjd.http.HttpManager;
 import com.njjd.walnuts.R;
@@ -22,6 +26,8 @@ public class GlideImageLoder extends ImageLoader {
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.error)
                 .error(R.drawable.error)
+                .fitCenter()
+                .override(400,300)
                 .dontAnimate().into(imageView);
     }
 
