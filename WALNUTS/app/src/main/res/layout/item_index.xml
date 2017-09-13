@@ -8,42 +8,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_layout_div"
         android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/background_layout_div"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.1"
+            android:maxLines="2"
             android:padding="@dimen/margin"
+            android:textStyle="bold"
             android:text="工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?"
             android:textColor="@color/black"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:typeface="sans"
-            android:lineSpacingMultiplier="1.1"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/big"
+            android:typeface="sans" />
 
         <ImageView
             android:id="@+id/img1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/post_height"
             android:scaleType="centerCrop" />
+
         <TextView
+            android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_margin"
-            android:textColor="@color/gray"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:lineSpacingMultiplier="1.2"
+            android:paddingBottom="@dimen/margin"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
-            android:maxLines="2"
-            android:typeface="sans"
-            android:paddingBottom="@dimen/margin"
-            android:ellipsize="end"
+            android:textColor="@color/gray"
             android:textSize="@dimen/normal"
-            android:id="@+id/txt_content"/>
-        <View
+            android:typeface="sans" />
+
+       <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="@dimen/margin"
@@ -54,20 +58,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:weightSum="1">
 
             <LinearLayout
                 android:id="@+id/lv_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding"
-                android:paddingTop="@dimen/padding"
                 android:paddingLeft="@dimen/margin"
-                ></LinearLayout>
+                android:paddingTop="@dimen/padding"></LinearLayout>
+
             <TextView
                 android:id="@+id/txt_total"
                 android:layout_width="wrap_content"
@@ -76,6 +80,7 @@
                 android:text="300人参与讨论"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
+
             <TextView
                 android:id="@+id/txt_time"
                 android:layout_width="0dp"

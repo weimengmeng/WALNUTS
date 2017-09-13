@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.example.retrofit.mywidget.LoadingDialog;
 import com.hyphenate.chat.EMClient;
 import com.ios.dialog.AlertDialog;
+import com.njjd.application.ConstantsVal;
 import com.njjd.utils.CleanMessageUtil;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -126,6 +128,7 @@ public class SettingActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         EMClient.getInstance().logout(true);
+                        SPUtils.put(SettingActivity.this, ConstantsVal.AUTOLOGIN,"false");
                     }
                 }).setPositiveButton("退出", new View.OnClickListener() {
 

@@ -1,13 +1,12 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -100,16 +99,18 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     TextView btnAddHelp;
     @BindView(R.id.lv_share)
     LinearLayout lvShare;
+    @BindView(R.id.btn_cancle)
+    Button btnCancle;
+    @BindView(R.id.btn_reply)
+    Button btnReply;
     private QuestionEntity questionEntity;
     private RelativeLayout relativeLayout;
     private ImageView imageView;
     private LayoutInflater inflater;
     private List<AnswerEntity> answerEntities = new ArrayList<>();
-    private List<CommentEntity> commentEntities = new ArrayList<>();
     private AnswerEntity answerEntity;
     private CommentEntity commentEntity;
     private AnswerReplyAdapter answerReplyAdapter;
-    private List<String> list = new ArrayList<>();
     private int current_group_id = 0, tempFocus = 0, tempAnswer = 0;
     private String comment_id = "";
     private PopupWindow popupWindow;
@@ -119,7 +120,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     private AnswerEntity tempAnswerInfo;
     private CommentEntity tempComment;
     private String content = "";
-    private int currentId = 0,type=0;
+    private int currentId = 0, type = 0;
     private UMShareListener mShareListener;
 
     @Override
@@ -235,12 +236,14 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         exListVIew.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                type=0;
+                type = 0;
                 lvRply.setVisibility(View.VISIBLE);
                 lvShare.setVisibility(View.GONE);
                 mask.setVisibility(View.VISIBLE);
                 currentId = groupPosition;
                 etContent.requestFocus();
+                btnCancle.setText("取消回复");
+                btnReply.setText("立即回复");
                 etContent.setHint("回复" + answerEntities.get(groupPosition).getCommentEntityList().get(childPosition).getName());
                 KeybordS.openKeybord(etContent, IndexDetailActivity.this);
                 tempAnswerInfo = answerEntities.get(groupPosition);
@@ -422,11 +425,11 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         }
     };
 
-    @OnClick({R.id.tv_cancle,R.id.share_aili,R.id.share_qq,R.id.share_qzone,R.id.share_sina,R.id.share_wechat,R.id.share_wechat_circle1,R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
+    @OnClick({R.id.tv_cancle, R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_add_help:
-                ToastUtils.showShortToast(this,"功能正在开发，敬请期待");
+                ToastUtils.showShortToast(this, "功能正在开发，敬请期待");
 //                mask.setVisibility(View.VISIBLE);
 //                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //                if(imm != null) {
@@ -443,32 +446,32 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_aili:
-                ToastUtils.showShortToast(this,"支付宝");
+                ToastUtils.showShortToast(this, "支付宝");
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_qq:
-                ToastUtils.showShortToast(this,"QQ");
+                ToastUtils.showShortToast(this, "QQ");
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_qzone:
-                ToastUtils.showShortToast(this,"QQ空间");
+                ToastUtils.showShortToast(this, "QQ空间");
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_sina:
-                ToastUtils.showShortToast(this,"新浪");
+                ToastUtils.showShortToast(this, "新浪");
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_wechat:
-                ToastUtils.showShortToast(this,"微信");
+                ToastUtils.showShortToast(this, "微信");
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_wechat_circle1:
-                ToastUtils.showShortToast(this,"朋友圈");
+                ToastUtils.showShortToast(this, "朋友圈");
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
@@ -494,9 +497,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     ToastUtils.showShortToast(IndexDetailActivity.this, "请输入回复内容");
                     return;
                 }
-                if(type==0) {
+                if (type == 0) {
                     addCommentF(etContent.getText().toString().trim());
-                }else{
+                } else {
                     addComment(etContent.getText().toString().trim());
                 }
                 lvRply.setVisibility(View.GONE);
@@ -512,15 +515,16 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+
     private void addComment(String comment) {
-        this.content=comment;
+        this.content = comment;
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("content", comment);
         map.put("comment_id", answerEntities.get(currentId).getAnwerId());
         map.put("sec_comment_id", answerEntities.get(currentId).getAnwerId());
-        map.put("token",SPUtils.get(this,"token","").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener1, this, false, false), map);
         HttpManager.getInstance().pubComment(postEntity);
     }
@@ -528,20 +532,21 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     HttpOnNextListener commentListener1 = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            commentEntity=new CommentEntity();
+            commentEntity = new CommentEntity();
             commentEntity.setContent(content);
-            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this,"head","").toString());
-            commentEntity.setName(SPUtils.get(IndexDetailActivity.this,"name","").toString());
+            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
+            commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());
             commentEntity.setSec_uid("sec_uid");
-            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this,"message","").toString());
+            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this, "message", "").toString());
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            answerEntities.get(currentId).getCommentEntityList().add(1,commentEntity);
-            answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue()+1)+"");
+            answerEntities.get(currentId).getCommentEntityList().add(1, commentEntity);
+            answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue() + 1) + "");
             answerReplyAdapter.notifyDataSetChanged();
             ToastUtils.showShortToast(IndexDetailActivity.this, "评论成功");
         }
     };
+
     private void addCommentF(String content) {
         this.content = content;
         Map<String, Object> map = new HashMap<>();
@@ -614,13 +619,34 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_open:
+                if(((TextView)v).getText().toString().equals("评论")){
+                    type = 1;
+                    lvRply.setVisibility(View.VISIBLE);
+                    lvShare.setVisibility(View.GONE);
+                    mask.setVisibility(View.VISIBLE);
+                    currentId = Integer.valueOf(v.getTag().toString());
+                    for (int i = 0, count = exListVIew
+                            .getExpandableListAdapter().getGroupCount(); i < count; i++) {
+                        if (currentId != i) {// 关闭其他分组
+                            exListVIew.collapseGroup(i);
+                        }else{
+                            exListVIew.expandGroup(i,true);
+                        }
+                    }
+                    etContent.requestFocus();
+                    etContent.setHint("回复" + answerEntities.get(Integer.valueOf(v.getTag().toString())).getName());
+                    KeybordS.openKeybord(etContent, IndexDetailActivity.this);
+                    btnCancle.setText("取消评论");
+                    btnReply.setText("立即评论");
+                    return;
+                }
                 if (!exListVIew.isGroupExpanded(Integer.valueOf(v.getTag().toString()))) {
+                    exListVIew.expandGroup(Integer.valueOf(v.getTag().toString()), true);
                     if (answerEntities.get(Integer.valueOf(v.getTag().toString())).getCommentEntityList().size() > 1) {
                         return;
                     }
                     getComments(answerEntities.get(Integer.valueOf(v.getTag().toString())).getAnwerId() + "");
                     current_group_id = Integer.valueOf(v.getTag().toString());
-                    exListVIew.expandGroup(Integer.valueOf(v.getTag().toString()), true);
                 } else {
                     exListVIew.collapseGroup(Integer.valueOf(v.getTag().toString()));
                 }
@@ -646,11 +672,13 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.et_comment:
-                type=1;
+                type = 1;
+                btnCancle.setText("取消评论");
+                btnReply.setText("立即评论");
                 lvRply.setVisibility(View.VISIBLE);
                 lvShare.setVisibility(View.GONE);
                 mask.setVisibility(View.VISIBLE);
-                currentId =Integer.valueOf(v.getTag().toString());
+                currentId = Integer.valueOf(v.getTag().toString());
                 etContent.requestFocus();
                 etContent.setHint("回复" + answerEntities.get(Integer.valueOf(v.getTag().toString())).getName());
                 KeybordS.openKeybord(etContent, IndexDetailActivity.this);

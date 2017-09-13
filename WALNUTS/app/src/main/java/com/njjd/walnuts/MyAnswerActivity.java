@@ -21,6 +21,7 @@ import com.njjd.domain.MyAnswerEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.ItemRemoveRecyclerView;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 
@@ -61,6 +62,8 @@ public class MyAnswerActivity extends BaseActivity {
         back.setText("我的");
         txtTitle.setText("我的回答");
         saveAdapter = new MyAnswerAdapter(list, this);
+        listSave.setEmptyView(findViewById(R.id.empty));
+        ((TextView)findViewById(R.id.txt_content)).setText("快去回答问题吧");
         listSave.setAdapter(saveAdapter);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

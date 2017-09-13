@@ -120,7 +120,7 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
         @Override
         public void onNext(Object o) {
             JsonObject object=JSONUtils.getAsJsonObject(o);
-            if(object.get("code").getAsString().equals("")){
+            if(object.get("code").getAsString().equals("1.0")){
                 ToastUtils.showShortToast(RegisterActivity.this,"邀请码错误");
             }else{
                 getPhoneCode();

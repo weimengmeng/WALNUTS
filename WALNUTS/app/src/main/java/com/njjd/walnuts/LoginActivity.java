@@ -82,7 +82,6 @@ public class LoginActivity extends BaseActivity {
             }
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                ToastUtils.showShortToast(LoginActivity.this, "授权成功");
                 thirdMap = map;
                 doThirdLogin((share_media == SHARE_MEDIA.QQ ? 1 : share_media == SHARE_MEDIA.WEIXIN ? 2 : 3), map);
             }
@@ -157,6 +156,8 @@ public class LoginActivity extends BaseActivity {
         Gson gson = gsonBuilder.create();
         try {
             CommonUtils.initData(new JSONObject(gson.toJson(o)));
+            SPUtils.put(LoginActivity.this,ConstantsVal.AUTOLOGIN,"true");
+            SPUtils.put(LoginActivity.this,ConstantsVal.LOGINTYPE,"0");
             MobclickAgent.onEvent(LoginActivity.this,ConstantsVal.MAINACITVITY);
             SPUtils.put(LoginActivity.this,"pwd",etPwd.getText().toString().trim());
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -206,6 +207,10 @@ public class LoginActivity extends BaseActivity {
                     ToastUtils.showShortToast(LoginActivity.this, "请先绑定手机号");
                 } else {
                     CommonUtils.initData(new JSONObject(gson.toJson(o)));
+                    SPUtils.put(LoginActivity.this,ConstantsVal.AUTOLOGIN,"true");
+                    SPUtils.put(LoginActivity.this,ConstantsVal.LOGINTYPE,"1");
+                    SPUtils.put(LoginActivity.this, "uuid", json.isNull("uuid") ? "" : json.getString("uuid"));
+                    SPUtils.put(LoginActivity.this, "logintype", json.isNull("logintype") ? "" : json.getString("logintype"));
                     intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

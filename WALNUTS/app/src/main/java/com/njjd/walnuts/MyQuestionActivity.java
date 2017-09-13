@@ -65,6 +65,8 @@ public class MyQuestionActivity extends BaseActivity {
         back.setText("我的");
         txtTitle.setText("我的问题");
         questionAdapter = new MyQuestionAdapter(list, this);
+        listQues.setEmptyView(findViewById(R.id.empty));
+        ((TextView)findViewById(R.id.txt_content)).setText("快去发表话题吧");
         listQues.setAdapter(questionAdapter);
         MyQuestionAdapter.CURRENT_PAGE = 1;
         getMyQuestion();

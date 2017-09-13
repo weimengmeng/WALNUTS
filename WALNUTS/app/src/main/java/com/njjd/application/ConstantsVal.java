@@ -18,4 +18,10 @@ public class ConstantsVal {
     public static String REGIST_NEXT="register_next";
     public static String REGIST_SETPWD="register_setpwd";
     public static String REGIST_COMINFO="completeInfo";
+    public static String PUBQUESTION="pubQuestion";
+    public static String PUBRESULT="pubResult";
+    public static String ANSWERQUESTION="answerQuestion";
+    public static String ANSWERRESULT="answerResul";
+    public static String AUTOLOGIN="autologin";
+    public static String LOGINTYPE="logintype";
 }

@@ -36,8 +36,6 @@ import butterknife.OnClick;
 public class SetPasswordActivity extends BaseActivity implements TimeCountDown.OnTimerCountDownListener{
     @BindView(R.id.et_pwd)
     EditText etPwd;
-    @BindView(R.id.et_confirm_pwd)
-    EditText etConfirmPwd;
     @BindView(R.id.et_code)
     EditText etCode;
     @BindView(R.id.img_back)
@@ -59,8 +57,7 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
         temp = String.format(temp, getIntent().getStringExtra("phone"));
         txtTip.setText(temp);
         txtTip.setVisibility(View.VISIBLE);
-        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        etConfirmPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        btnResend.initTimer();
     }
 
     private void userRegister() {
@@ -114,10 +111,6 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
                 }
                 if (etCode.getText().toString().trim().equals("")) {
                     ToastUtils.showShortToast(this, "请输入短信验证码");
-                    return;
-                }
-                if (!etConfirmPwd.getText().toString().trim().equals(etPwd.getText().toString().trim())) {
-                    ToastUtils.showShortToast(this, "密码不一致");
                     return;
                 }
                 verifyPhone();

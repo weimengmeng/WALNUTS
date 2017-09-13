@@ -180,7 +180,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
             if ("".equals(temp.getPhoto())) {
                 ((ContentViewHolder) holder).imageView.setVisibility(View.GONE);
                 ((ContentViewHolder) holder).content.setVisibility(View.VISIBLE);
-                ((ContentViewHolder) holder).content.setText("问题描述: "+temp.getContent());
+                ((ContentViewHolder) holder).content.setText(temp.getContent());
             } else {
                 ((ContentViewHolder) holder).content.setVisibility(View.GONE);
                 ((ContentViewHolder) holder).imageView.setVisibility(View.VISIBLE);

@@ -70,6 +70,8 @@ public class MySaveActivity extends BaseActivity {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的收藏");
+        listSave.setEmptyView(findViewById(R.id.empty));
+        ((TextView)findViewById(R.id.txt_content)).setText("暂无收藏");
         saveAdapter = new MySaveAdapter(list, this);
         listSave.setAdapter(saveAdapter);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

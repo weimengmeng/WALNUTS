@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -161,10 +162,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         initAfterSetContentView(getActivity(), top);
         LinearLayout linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_chat, null);
         listMes = (ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
+        listMes.setEmptyView(linearLayout.findViewById(R.id.empty));
+        ((TextView)linearLayout.findViewById(R.id.txt_content)).setText("暂无新消息");
         viewList = new ArrayList<>();
         viewList.add(linearLayout);
         linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_inform, null);
         listInform = (XRecyclerView) linearLayout.findViewById(R.id.list_inform);
+        listInform.setEmptyView(linearLayout.findViewById(R.id.empty));
+        ((TextView)linearLayout.findViewById(R.id.txt_content)).setText("暂无新通知");
         viewList.add(linearLayout);
         pagerAdapter = new MyPagerAdapter(viewList);
         messPage.setAdapter(pagerAdapter);

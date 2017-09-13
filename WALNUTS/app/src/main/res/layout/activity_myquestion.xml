@@ -16,14 +16,28 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
-        <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/list_ques"
-            android:listSelector="#00000000"
-            android:background="@color/grey"
-            android:divider="#00000000"
-            android:dividerHeight="0dp"
-            style="@style/Width_m_Height_m"></com.baoyz.swipemenulistview.SwipeMenuListView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.baoyz.swipemenulistview.SwipeMenuListView
+                    android:id="@+id/list_ques"
+                    android:listSelector="#00000000"
+                    android:background="@color/grey"
+                    android:divider="#00000000"
+                    android:dividerHeight="0dp"
+                    style="@style/Width_m_Height_m"></com.baoyz.swipemenulistview.SwipeMenuListView>
+                <include
+                    android:id="@+id/empty"
+                    layout="@layout/layout_nodata"></include>
+            </LinearLayout>
+        </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <include
+        android:id="@+id/empty"
+        layout="@layout/layout_nodata"></include>
 </LinearLayout>

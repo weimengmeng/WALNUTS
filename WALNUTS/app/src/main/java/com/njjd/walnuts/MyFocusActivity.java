@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -95,6 +96,7 @@ public class MyFocusActivity extends BaseActivity {
             }
         };
         peopleAdapter = new FocusPeopleAdapter(userList, this);
+        listUser.setEmptyView(findViewById(R.id.empty));
         listUser.setAdapter(peopleAdapter);
         listUser.setMenuCreator(creator);
         listUser.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
@@ -282,18 +284,21 @@ public class MyFocusActivity extends BaseActivity {
                 listUser.setVisibility(View.VISIBLE);
                 listQues.setVisibility(View.GONE);
                 listTag.setVisibility(View.GONE);
+                listUser.setEmptyView(findViewById(R.id.empty));
                 currentPage=1;
                 break;
             case R.id.radio_two:
                 listUser.setVisibility(View.GONE);
                 listQues.setVisibility(View.VISIBLE);
                 listTag.setVisibility(View.GONE);
+                listQues.setEmptyView(findViewById(R.id.empty));
                 currentPage=2;
                 break;
             case R.id.radio_three:
                 listUser.setVisibility(View.GONE);
                 listQues.setVisibility(View.GONE);
                 listTag.setVisibility(View.VISIBLE);
+                listTag.setEmptyView(findViewById(R.id.empty));
                 currentPage=3;
                 break;
         }

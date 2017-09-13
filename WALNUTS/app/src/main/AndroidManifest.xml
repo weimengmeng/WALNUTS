@@ -146,6 +146,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name="com.njjd.utils.SpaceImageDetailActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".FeedBackActivity"
             android:screenOrientation="portrait"></activity>
         <!-- 友盟key-->

@@ -11,6 +11,7 @@
     <item name="windowActionBar">false</item>
     <item name="android:windowLightStatusBar">true</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
 </style>
 <!-- 自定义仿IOS的AlertDialog的样式 -->
 <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">

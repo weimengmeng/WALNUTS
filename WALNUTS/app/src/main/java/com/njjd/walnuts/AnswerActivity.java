@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +68,7 @@ public class AnswerActivity extends BaseActivity {
                     ToastUtils.showShortToast(this,"请输入回答");
                     return;
                 }
+                MobclickAgent.onEvent(this, ConstantsVal.ANSWERQUESTION);
                 pubAnswer();
                 break;
         }
@@ -84,6 +87,7 @@ public class AnswerActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         ToastUtils.showShortToast(this, "回答成功");
+        MobclickAgent.onEvent(this,ConstantsVal.ANSWERRESULT);
         finish();
     }
 

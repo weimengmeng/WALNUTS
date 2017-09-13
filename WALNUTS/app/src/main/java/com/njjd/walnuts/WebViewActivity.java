@@ -1,6 +1,7 @@
 package com.njjd.walnuts;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,6 +27,8 @@ public class WebViewActivity extends BaseActivity {
     TextView txtTitle;
     @BindView(R.id.top)
     LinearLayout top;
+    @BindView(R.id.lv_web)
+    LinearLayout lvWeb;
     @BindView(R.id.web)
     WebView web;
     private Context context;
@@ -48,12 +51,12 @@ public class WebViewActivity extends BaseActivity {
         web.getSettings().setJavaScriptEnabled(true);
         web.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         WebSettings webSettings = web.getSettings();
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setAllowFileAccess(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setDisplayZoomControls(false); //隐藏webview缩放按钮
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setBuiltInZoomControls(true);
-        System.out.println(getIntent().getStringExtra("url"));
         web.loadUrl(getIntent().getStringExtra("url"));
         // 加载数据
         web.setWebChromeClient(new WebChromeClient() {

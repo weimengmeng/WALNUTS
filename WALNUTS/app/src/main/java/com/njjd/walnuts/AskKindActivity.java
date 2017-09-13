@@ -21,6 +21,7 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -112,6 +113,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                     ToastUtils.showShortToast(this, "至少选择一个标签");
                     return;
                 }
+                MobclickAgent.onEvent(this, ConstantsVal.PUBQUESTION);
                 pubArticle();
                 break;
         }
@@ -154,6 +156,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onNext(Object o) {
         super.onNext(o);
+        MobclickAgent.onEvent(this, ConstantsVal.PUBRESULT);
         List<String> strings = bundle.getStringArrayList("imgs");
         Intent intent = new Intent();
         intent.setAction(ConstantsVal.REFRESH);

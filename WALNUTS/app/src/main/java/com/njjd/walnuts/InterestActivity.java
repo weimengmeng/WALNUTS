@@ -124,7 +124,7 @@ public class InterestActivity extends BaseActivity{
             case R.id.btn_eight:
                 break;
             case R.id.btn_skip:
-                if("".equals(strs)){
+                if(ids.size()==0){
                     doLogin();
                 }else{
                     addFocus();
@@ -133,9 +133,11 @@ public class InterestActivity extends BaseActivity{
         }
     }
     private void addFocus() {
+        LogUtils.d("huan"+entities.toString());
         for(int i=0;i<entities.size();i++){
+            LogUtils.d("huan"+entities.get(i).getName());
             if(ids.contains(entities.get(i).getName())){
-                strs+=entities.get(i).getId()+",";
+                strs+=String.valueOf(Float.valueOf(entities.get(i).getId()).intValue())+",";
             }
         }
         Map<String, Object> map = new HashMap<>();
@@ -143,12 +145,13 @@ public class InterestActivity extends BaseActivity{
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("select", "1");
         map.put("label_id", strs);
+        LogUtils.d("huan"+strs);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {
                doLogin();
             }
-        }, this, false, false), map);
+        }, this, true, false), map);
         HttpManager.getInstance().focusLabel(postEntity);
     }
     private void doLogin() {

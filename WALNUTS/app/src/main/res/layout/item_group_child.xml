@@ -68,8 +68,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="2dp"
                     android:text="刘建设的建设"
+                    android:typeface="sans"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small" />
                 <TextView
@@ -79,14 +79,13 @@
                     android:layout_weight="0.5"
                     android:gravity="center_vertical"
                     android:text="职业的小逗比"
-                    android:layout_marginTop="@dimen/_top"
+                    android:typeface="sans"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/mini" />
             </LinearLayout>
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="-10dp"
             android:id="@+id/txt_answer_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -367,13 +367,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
-            if((System.currentTimeMillis()-exitTime) > 1000){
-                ToastUtils.showShortToast(getApplicationContext(), "再按一次退出程序");
-                exitTime = System.currentTimeMillis();
-            } else {
-                MyActivityManager.getInstance().finishAllActivity();
-                SPUtils.put(this,"isLogin","0");
-            }
+            moveTaskToBack(false);
             return true;
         }
         return super.onKeyDown(keyCode, event);

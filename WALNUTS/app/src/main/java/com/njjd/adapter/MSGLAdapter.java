@@ -1,5 +1,6 @@
 package com.njjd.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -19,12 +20,14 @@ import com.hyphenate.chat.EMVoiceMessageBody;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.SpaceImageDetailActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
 import java.io.IOException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +41,7 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 	List<EMMessage> list;
 	MediaPlayer mediaPlayer;
 	String avatar;
-
+	ArrayList<String> datas;
 	public MSGLAdapter(Context context, List<EMMessage> list) {
 		this.context = context;
 		this.list = list;
@@ -66,7 +69,7 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		EMMessage vo = list.get(position);
+		final EMMessage vo = list.get(position);
 		if (vo.direct() == EMMessage.Direct.RECEIVE) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.layout_chat_receive, null);
@@ -94,7 +97,7 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 		String time=format.format(new Date(vo.getMsgTime()));
 		ParsePosition pos = new ParsePosition(0);
 		text_time.setText(DateUtils.formationDate(format.parse(time, pos)));
-		ImageView img_msg = (ImageView) convertView.findViewById(R.id.chat_img_pic);
+		final ImageView img_msg = (ImageView) convertView.findViewById(R.id.chat_img_pic);
 		TextView voice_msg = (TextView) convertView
 				.findViewById(R.id.chat_voice);
 		text_msg.setVisibility(View.GONE);
@@ -104,11 +107,48 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 			text_msg.setText(((EMTextMessageBody) vo.getBody()).getMessage());
 			text_msg.setVisibility(View.VISIBLE);
 		} else if (vo.getType() == EMMessage.Type.IMAGE) {
-			if (vo.direct() == EMMessage.Direct.RECEIVE)
-					GlideImageLoder.getInstance().displayImage(context,((EMImageMessageBody)vo.getBody()).getThumbnailUrl(),img_msg);
-			else if (vo.direct() == EMMessage.Direct.SEND)
-				GlideImageLoder.getInstance().displayImage(context,((EMImageMessageBody)vo.getBody()).thumbnailLocalPath(),img_msg);
-			img_msg.setVisibility(View.VISIBLE);
+			if (vo.direct() == EMMessage.Direct.RECEIVE) {
+				GlideImageLoder.getInstance().displayImage(context, ((EMImageMessageBody) vo.getBody()).getThumbnailUrl(), img_msg);
+				img_msg.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(context, SpaceImageDetailActivity.class);
+						datas=new ArrayList<>();
+						datas.add(((EMImageMessageBody) vo.getBody()).getThumbnailUrl());
+						intent.putExtra("images", datas);
+						intent.putExtra("position", 0);
+						int[] location = new int[2];
+						img_msg.getLocationOnScreen(location);
+						intent.putExtra("locationX", location[0]);
+						intent.putExtra("locationY", location[1]);
+						intent.putExtra("width", img_msg.getWidth());
+						intent.putExtra("height", img_msg.getHeight());
+						context.startActivity(intent);
+						((Activity)context).overridePendingTransition(0, 0);
+					}
+				});
+			}else if (vo.direct() == EMMessage.Direct.SEND) {
+				GlideImageLoder.getInstance().displayImage(context, ((EMImageMessageBody) vo.getBody()).thumbnailLocalPath(), img_msg);
+				img_msg.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(context, SpaceImageDetailActivity.class);
+						datas=new ArrayList<>();
+						datas.add(((EMImageMessageBody) vo.getBody()).thumbnailLocalPath());
+						intent.putExtra("images", datas);
+						intent.putExtra("position", 0);
+						int[] location = new int[2];
+						img_msg.getLocationOnScreen(location);
+						intent.putExtra("locationX", location[0]);
+						intent.putExtra("locationY", location[1]);
+						intent.putExtra("width", img_msg.getWidth());
+						intent.putExtra("height", img_msg.getHeight());
+						context.startActivity(intent);
+						((Activity)context).overridePendingTransition(0, 0);
+					}
+				});
+			}
+				img_msg.setVisibility(View.VISIBLE);
 		} else if (vo.getType() == EMMessage.Type.VOICE) {
 			voice_msg.setVisibility(View.VISIBLE);
 			voice_msg.setText(((EMVoiceMessageBody) vo.getBody()).getLength()

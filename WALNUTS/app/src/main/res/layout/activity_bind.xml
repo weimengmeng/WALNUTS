@@ -62,7 +62,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height"
                         android:layout_marginLeft="@dimen/margin"
-                        android:layout_marginTop="@dimen/margin"
                         android:textCursorDrawable="@drawable/color_cusor"
 
                         android:textColorHint="@color/txt_color"
@@ -94,6 +93,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/height"
                             android:background="@null"
+                            android:textCursorDrawable="@drawable/color_cusor"
+
                             android:gravity="center|bottom"
                             android:hint="请输入验证码"
                             android:inputType="number"
@@ -122,6 +123,7 @@
                             android:background="@null"
                             android:gravity="center|bottom"
                             android:hint="请输入邀请码"
+                            android:textCursorDrawable="@drawable/color_cusor"
                             android:textColorHint="@color/txt_color"
                             android:inputType="number"
                             android:maxLength="6"

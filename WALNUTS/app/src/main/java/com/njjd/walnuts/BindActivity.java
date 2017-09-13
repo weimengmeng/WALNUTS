@@ -24,6 +24,7 @@ import com.example.retrofit.util.StringUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BasePopupWindow;
 import com.njjd.utils.CommonUtils;
@@ -236,6 +237,8 @@ public class BindActivity extends BaseActivity {
             try {
                 CommonUtils.initData(new JSONObject(gson.toJson(o)));
                 MyActivityManager.getInstance().popOneActivity(LoginActivity.activity);
+                SPUtils.put(BindActivity.this, ConstantsVal.AUTOLOGIN,"true");
+                SPUtils.put(BindActivity.this,ConstantsVal.LOGINTYPE,"1");
                 intent = new Intent(BindActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

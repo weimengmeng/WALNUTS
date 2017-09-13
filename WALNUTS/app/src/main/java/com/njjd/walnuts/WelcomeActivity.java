@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.view.View;
 
+import com.njjd.application.ConstantsVal;
 import com.njjd.utils.SPUtils;
 
 /**
