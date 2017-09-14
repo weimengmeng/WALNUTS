@@ -33,6 +33,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
@@ -41,6 +42,7 @@ import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
 import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,23 +71,23 @@ public class MainActivity extends FragmentActivity {
     private MyReceiver receiver;
     private LoginPassReceiver passReceiver;
     private JSONObject object;
-    private String message="";
-    private long exitTime=0;
-    private Handler handler=new Handler(){
+    private String message = "";
+    private long exitTime = 0;
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             sendNotify();
         }
     };
-    private Handler handler2=new Handler(){
+    private Handler handler2 = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             getUserInfoByOpenId(msg.getData().getString("uid"));
         }
     };
-    private Handler handler3=new Handler(){
+    private Handler handler3 = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -93,6 +95,7 @@ public class MainActivity extends FragmentActivity {
             radio4.invalidate();
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +178,7 @@ public class MainActivity extends FragmentActivity {
         fm.beginTransaction().hide(findFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
                 .show(indexFragment).commit();
         initConversionLitener();
-        if(EMClient.getInstance().chatManager().getUnreadMessageCount()>0){
+        if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
             handler3.sendEmptyMessage(0);
         }
     }
@@ -188,15 +191,15 @@ public class MainActivity extends FragmentActivity {
                 if (AppAplication.isApplicationBroughtToBackground(AppAplication.getContext())) {
                     Message msg = new Message();
                     Bundle b = new Bundle();// 存放数据
-                    b.putString("uid",messages.get(0).getFrom());
+                    b.putString("uid", messages.get(0).getFrom());
                     msg.setData(b);
                     handler2.sendMessage(msg); // 向Handler发送消息，更新UI
                     if (messages.get(0).getType() == EMMessage.Type.TXT) {
-                        message=((EMTextMessageBody) messages.get(0).getBody()).getMessage();
+                        message = ((EMTextMessageBody) messages.get(0).getBody()).getMessage();
                     } else if (messages.get(0).getType() == EMMessage.Type.IMAGE) {
-                        message="[图片]";
+                        message = "[图片]";
                     } else if (messages.get(0).getType() == EMMessage.Type.VOICE) {
-                        message="[语音]";
+                        message = "[语音]";
                     }
                     radio4.setTipOn(true);
                     radio4.invalidate();
@@ -207,7 +210,7 @@ public class MainActivity extends FragmentActivity {
                 Intent intent = new Intent();
                 intent.setAction(ConstantsVal.MESSAGE_RECEIVE);
                 sendBroadcast(intent);
-                if(temp!=2){
+                if (temp != 2) {
                     handler3.sendEmptyMessage(0);
                 }
             }
@@ -233,6 +236,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
+
     private void getUserInfoByOpenId(final String uid) {
         Map<String, Object> map = new HashMap<>();
         map.put("uids", uid);
@@ -246,7 +250,7 @@ public class MainActivity extends FragmentActivity {
                 Gson gson = gsonBuilder.create();
                 try {
                     JSONArray array = new JSONArray(gson.toJson(o));
-                    object=array.getJSONObject(0);
+                    object = array.getJSONObject(0);
                     handler.sendEmptyMessage(0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -255,17 +259,19 @@ public class MainActivity extends FragmentActivity {
         }, this, false, false), map);
         HttpManager.getInstance().getUserUids(postEntity);
     }
-    private void sendNotify(){
+
+    private void sendNotify() {
         Intent intent = new Intent(AppAplication.getContext(), ChatActivity.class);
         try {
-            intent.putExtra("openId",object.getString("uid"));
-            intent.putExtra("name",object.isNull("uname") ? "未填写" : object.getString("uname"));
-            intent.putExtra("avatar",object.isNull("headimg") ? "" : object.getString("headimg"));
-            NotificationUtils.createNotif(AppAplication.getContext(), R.drawable.logo, "", object.isNull("uname") ? "未填写" :object.getString("uname"),message, intent, 1);
+            intent.putExtra("openId", object.getString("uid"));
+            intent.putExtra("name", object.isNull("uname") ? "未填写" : object.getString("uname"));
+            intent.putExtra("avatar", object.isNull("headimg") ? "" : object.getString("headimg"));
+            NotificationUtils.createNotif(AppAplication.getContext(), R.drawable.logo, "", object.isNull("uname") ? "未填写" : object.getString("uname"), message, intent, 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -279,11 +285,11 @@ public class MainActivity extends FragmentActivity {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.radio1:
-                if(temp==0){
+                if (temp == 0) {
                     intent = new Intent();
                     intent.setAction(ConstantsVal.REFRESH);
                     sendBroadcast(intent);
-                }else {
+                } else {
                     fm.beginTransaction().hide(findFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
                             .show(indexFragment)
                             .commitAllowingStateLoss();
@@ -357,16 +363,67 @@ public class MainActivity extends FragmentActivity {
             radio4.invalidate();
         }
     }
+
     private class LoginPassReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
-            MyActivityManager.getInstance().finishAllActivity();
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            ToastUtils.showShortToast(MainActivity.this,"用户登录已过期，请重新登录");
+            if (SPUtils.get(MainActivity.this, ConstantsVal.LOGINTYPE, "0").equals("0")) {
+                autoLogin();
+            } else {
+                autoLoginThird();
+            }
         }
     }
+
+    private void autoLogin() {
+        SPUtils.put(this, "deviceToken", PushAgent.getInstance(this).getRegistrationId());
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", SPUtils.get(this, "phoneNumber", "").toString());
+        map.put("pwd", SPUtils.get(this, "pwd", "").toString());
+        map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                try {
+                    CommonUtils.initData(new JSONObject(gson.toJson(o)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, this, true, false), map);
+        HttpManager.getInstance().userLogin(postEntity);
+    }
+
+    private void autoLoginThird() {
+        //0 qq 1 wechat  2 sina
+        Map<String, Object> map = new HashMap<>();
+        map.put("logintype", SPUtils.get(this, "logintype", "").toString());
+        map.put("uuid", SPUtils.get(this, "uuid", "").toString());
+        map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
+        map.put("authimg", SPUtils.get(this, "authimg", "").toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, this, true, false), map);
+        HttpManager.getInstance().thirdLogin(postEntity);
+    }
+
+    HttpOnNextListener thirdLoginListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            try {
+                CommonUtils.initData(new JSONObject(gson.toJson(o)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             moveTaskToBack(false);
             return true;
         }

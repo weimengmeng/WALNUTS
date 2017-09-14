@@ -147,8 +147,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                 KeybordS.closeBoard(this);
                 MobclickAgent.onEvent(this, ConstantsVal.GETPHONECODE);
                 isUserExist();
-//                Intent intent = new Intent(this, SetPasswordActivity.class);
-//                startActivity(intent);
                 break;
             case R.id.img_back:
                 finish();

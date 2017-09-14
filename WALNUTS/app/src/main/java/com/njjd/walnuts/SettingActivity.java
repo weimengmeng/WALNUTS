@@ -13,6 +13,7 @@ import com.ios.dialog.AlertDialog;
 import com.njjd.application.ConstantsVal;
 import com.njjd.utils.CleanMessageUtil;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -127,15 +128,14 @@ public class SettingActivity extends BaseActivity {
                 .setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EMClient.getInstance().logout(true);
-                        SPUtils.put(SettingActivity.this, ConstantsVal.AUTOLOGIN,"false");
                     }
                 }).setPositiveButton("退出", new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                finish();
-                MainActivity.activity.finish();
+                EMClient.getInstance().logout(true);
+                SPUtils.put(SettingActivity.this, ConstantsVal.AUTOLOGIN,"false");
+                MyActivityManager.getInstance().finishAllActivity();
             }
         }).setCancelable(false).show();
     }

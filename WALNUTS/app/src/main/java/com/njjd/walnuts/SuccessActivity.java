@@ -233,8 +233,6 @@ public class SuccessActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         ToastUtils.showShortToast(SuccessActivity.this, "完善成功");
-        SPUtils.put(SuccessActivity.this, ConstantsVal.AUTOLOGIN,"true");
-        SPUtils.put(SuccessActivity.this,ConstantsVal.LOGINTYPE,"0");
         startActivity(new Intent(this,InterestActivity.class));
         finish();
     }

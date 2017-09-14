@@ -176,6 +176,7 @@ public class LoginActivity extends BaseActivity {
         map.put("uuid", result.get("uid"));
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
         map.put("authimg",result.get("iconurl"));
+        SPUtils.put(this,"authimg",result.get("iconurl").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(thirdLoginListener, this, true, false), map);
         HttpManager.getInstance().thirdLogin(postEntity);
     }
