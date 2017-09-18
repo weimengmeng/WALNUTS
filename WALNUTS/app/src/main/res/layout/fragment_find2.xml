@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="@color/white"
     android:orientation="vertical">
     <LinearLayout
         android:id="@+id/top"
@@ -16,6 +16,7 @@
         android:alpha="0.15"
         android:background="@color/txt_color"></View>
    <com.jcodecraeer.xrecyclerview.XRecyclerView
+       android:background="@color/grey"
        android:id="@+id/list_find"
        android:layout_width="match_parent"
        android:layout_height="match_parent"></com.jcodecraeer.xrecyclerview.XRecyclerView>

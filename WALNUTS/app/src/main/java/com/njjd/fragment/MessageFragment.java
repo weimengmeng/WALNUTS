@@ -137,8 +137,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             if (titleViewGroup == null)
                 return;
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠

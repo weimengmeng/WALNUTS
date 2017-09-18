@@ -38,11 +38,15 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
                     .inflate(bindLayout(), null);
         setContentView(mContextView);
         ButterKnife.bind(this);
+        //让虚拟键盘一直不显示
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_IMMERSIVE;
+        window.setAttributes(params);
         if (isSetStatusBar) {
             steepStatusBar();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
             window.setStatusBarColor(getResources().getColor(R.color.white));
         }
         MyActivityManager.getInstance().pushOneActivity(this);

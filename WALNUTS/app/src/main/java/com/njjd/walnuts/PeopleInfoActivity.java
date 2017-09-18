@@ -62,6 +62,8 @@ public class PeopleInfoActivity extends BaseActivity {
     TextView txtPosition;
     @BindView(R.id.txt_company)
     TextView txtCompany;
+    @BindView(R.id.txt_message)
+    TextView txtMessage;
     private String tempUser = "";
     private String tempHead="";
     @Override
@@ -125,6 +127,7 @@ public class PeopleInfoActivity extends BaseActivity {
             txtFocusNum.setText("关注的人\n" + Float.valueOf(object.getString("follow_numm")).intValue());
             txtFocusedNum.setText("被关注\n" + Float.valueOf(object.getString("be_follow_numm")).intValue());
             txtVocation.setText(object.getString("industry_name"));
+            txtMessage.setText(object.getString("introduction"));
             txtPosition.setText(object.isNull("position")?"未填写":object.getString("position"));
             txtArea.setText(object.getString("province_name")+object.getString("city_name"));
             txtCompany.setText(object.isNull("company")?"未填写":object.getString("company"));

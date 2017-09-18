@@ -13,6 +13,24 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 public class MyXRecyclerView extends XRecyclerView {
     private View emptyView;
     private static final String TAG = "hiwhitley";
+    public interface ScrollViewListener {
+
+        void onScrollChanged(MyXRecyclerView scrollView, int x, int y,
+                             int oldx, int oldy);
+
+    }
+    public void setScrollViewListener(ScrollViewListener scrollViewListener) {
+        this.scrollViewListener = scrollViewListener;
+    }
+
+    @Override
+    protected void onScrollChanged(int x, int y, int oldx, int oldy) {
+        super.onScrollChanged(x, y, oldx, oldy);
+        if (scrollViewListener != null) {
+            scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
+        }
+    }
+    private ScrollViewListener scrollViewListener = null;
     public MyXRecyclerView(Context context) {
         super(context);
     }

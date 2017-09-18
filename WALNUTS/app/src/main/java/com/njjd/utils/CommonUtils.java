@@ -205,9 +205,10 @@ public class CommonUtils {
                 JsonArray array=JSONUtils.getAsJsonArray(o);
                 JsonObject object;
                 BannerEntity entity;
+//                bannerList.add(new BannerEntity("demo","www.baidu.com","","http://a3.qpic.cn/psb?/V12c0Hyy4MD9Xl/Lv19gm0cYbuUu9OHp2C2lN*5ewZnPGWhlekq9STc1u8!/b/dPIAAAAAAAAA&bo=OAR3AQAAAAADB2g!&rf=viewer_4","1"));
                 for(int i=0;i<array.size();i++){
                     object=array.get(i).getAsJsonObject();
-                    entity=new BannerEntity(object.get("title").getAsString(),object.get("url").isJsonNull()?"":object.get("url").getAsString(),object.get("id").getAsString(),object.get("img").getAsString());
+                    entity=new BannerEntity(object.get("title").getAsString(),object.get("url").isJsonNull()?"":object.get("url").getAsString(),object.get("id").getAsString(),object.get("img").getAsString(),"0");
                     bannerList.add(entity);
                 }
             }

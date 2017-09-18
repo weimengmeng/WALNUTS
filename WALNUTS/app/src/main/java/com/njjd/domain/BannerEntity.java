@@ -9,16 +9,26 @@ public class BannerEntity {
     private String url;
     private String id;
     private String img;
-
-    public BannerEntity(String title, String url, String id, String img) {
+    private String type;
+    public BannerEntity(String title, String url, String id, String img,String type) {
         this.title = title;
         this.url = url;
         this.id = id;
         this.img = img;
+        this.type=type;
     }
     public BannerEntity(){
 
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getTitle() {
         return title;
     }

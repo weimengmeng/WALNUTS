@@ -10,7 +10,7 @@
     <dimen name="padding">7dp</dimen>
     <dimen name="margin_small">7dp</dimen>
     <dimen name="margin">10dp</dimen>
-    <dimen name="banner">160dp</dimen>
+    <dimen name="banner">130dp</dimen>
     <dimen name="margin_big">30dp</dimen>
     <dimen name="margin_top">60dp</dimen>
     <dimen name="padding_top">15dp</dimen>

@@ -100,9 +100,9 @@ public class MineFragment extends BaseFragment {
             // 透明状态栏
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            // 透明导航栏
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         initAfterSetContentView(getActivity(),txtChange);
         getUserInfo();

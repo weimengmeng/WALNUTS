@@ -53,10 +53,12 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<String> urls = new ArrayList<>();
     private IndexQuestionAdapter.OnItemClickListener mOnItemClickListener = null;
     private int mHeaderCount = 1;//头部View个数
-    public IndexQuestionAdapter(Context context, List<QuestionEntity> list) {
+    private String kind="0";
+    public IndexQuestionAdapter(Context context, List<QuestionEntity> list,String kind) {
         this.mContext = context;
         this.mList = list;
         inflater = LayoutInflater.from(context);
+        this.kind=kind;
 
     }
 
@@ -82,7 +84,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     //判断当前item类型
     @Override
     public int getItemViewType(int position) {
-        int dataItemCount = getContentItemCount();
         if (mHeaderCount != 0 && position < mHeaderCount) {
             return ITEM_TYPE_HEADER;
         } else {
@@ -133,10 +134,13 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == ITEM_TYPE_HEADER) {
             if(banner==null){
                 banner = (Banner) inflater.inflate(R.layout.layout_banner, parent, false);
+//                images.clear();
                 for(int i=0;i<bannerList.size();i++){
-                    images.add(bannerList.get(i).getImg());
-                    titles.add(bannerList.get(i).getTitle());
-                    urls.add(bannerList.get(i).getUrl());
+//                    if(bannerList.get(i).getType().equals(kind)) {
+                        images.add(bannerList.get(i).getImg());
+                        titles.add(bannerList.get(i).getTitle());
+                        urls.add(bannerList.get(i).getUrl());
+//                    }
                 }
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
                 banner.setIndicatorGravity(BannerConfig.RIGHT);

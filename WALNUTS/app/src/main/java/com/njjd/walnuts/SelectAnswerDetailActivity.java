@@ -20,7 +20,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
 
     @Override
     public int bindLayout() {
-        return R.layout.activity_save_detail;
+        return R.layout.activity_selected_detail;
     }
 
     @Override

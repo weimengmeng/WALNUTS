@@ -6,10 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +31,6 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.jcodecraeer.xrecyclerview.LoadingMoreFooter;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter;
@@ -47,7 +46,6 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.IndexDetailActivity;
-import com.njjd.walnuts.MainActivity;
 import com.njjd.walnuts.R;
 
 import org.json.JSONArray;
@@ -67,7 +65,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/10.
  */
 
-public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener {
+public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener{
     @BindView(R.id.img_order)
     LinearLayout imgOrder;
     @BindView(R.id.button_group)
@@ -96,6 +94,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private String tempKind = "1";
     private String tempOrder = "time";
     private MyReceiver receiver;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -105,6 +104,25 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         ButterKnife.bind(this, view);
         return view;
     }
+//    @Override
+//    public void onScrollChanged(MyXRecyclerView scrollView, int x, int y,
+//                                int oldx, int oldy) {
+//        // TODO Auto-generated method stub
+//        View c = list.getChildAt(0);
+//        int firstVisiblePosition = ((LinearLayoutManager) list.getLayoutManager()).findFirstVisibleItemPosition();
+//        int top1 = c.getTop();
+//        y= firstVisiblePosition * c.getHeight()-top1-400;
+//        if (y <= 0) {
+//            top.setBackgroundColor(Color.argb(0, 227, 29, 26));//AGB由相关工具获得，或者美工提供
+//        } else if (y > 0 && y <= 350) {
+//            float scale = (float) y / 350;
+//            float alpha = (255 * scale);
+//            // 只是layout背景透明(仿知乎滑动效果)
+//            top.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+//        } else {
+//            top.setBackgroundColor(Color.argb(255, 255, 255, 255));
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -115,6 +133,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void lazyInitData() {
         //获取问题
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -143,8 +162,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         popupWindow.update();
         initRefresh();
         initTop(view);
-        initAfterSetContentView(getActivity(),top);
+        initAfterSetContentView(getActivity(), top);
     }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void initAfterSetContentView(Activity activity,
                                                View titleViewGroup) {
@@ -155,16 +175,17 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             // 透明状态栏
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            // 透明导航栏
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             if (titleViewGroup == null)
                 return;
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
             int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
+            titleViewGroup.setPadding(0, statusBarHeight, 0, 0);
         }
     }
+
     private void initTop(View view) {
         viewList = new ArrayList<>();
         for (int i = 0; i < navList.size(); i++) {
@@ -181,7 +202,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
             list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
-            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1);
+            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, i + "");
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
@@ -189,6 +210,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             list.setEmptyView(currentView.findViewById(R.id.empty));
             list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
             list.setRefreshProgressStyle(ProgressStyle.BallPulse);
+//            list.setScrollViewListener(this);
             listViews.add(list);
             questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override
@@ -197,7 +219,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("question", list1.get(position));
                     intent.putExtra("question", bundle);
-                    intent.putExtra("type","1");
+                    intent.putExtra("type", "1");
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                 }
@@ -234,7 +256,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 questionAdapter = adapterList.get(position);
                 tempKind = navList.get(position).getId();
                 setRefreshListener();
-                if(tempList.size()==0) {
+                if (tempList.size() == 0) {
                     getQuestion(tempKind, tempOrder);
                 }
             }
@@ -261,7 +283,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //        LogUtils.d(tempList.size());
         setRefreshListener();
     }
-    private void setRefreshListener(){
+
+    private void setRefreshListener() {
         list.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -273,12 +296,13 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             public void onLoadMore() {
                 questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
                 getQuestion(tempKind, tempOrder);
-                        list.loadMoreComplete();
-                    }
+                list.loadMoreComplete();
+            }
         });
     }
+
     private void getQuestion(String id, String sort) {
-        if(tempList.size()==0){
+        if (tempList.size() == 0) {
             questionAdapter.setCurrentPage(1);
         }
         Map<String, Object> map = new HashMap<>();
@@ -286,8 +310,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         map.put("page", questionAdapter.getCurrentPage());
         map.put("order", sort);
         map.put("keywords", "");
-        map.put("uid", SPUtils.get(context,"userId","").toString());
-        map.put("token",SPUtils.get(context,"token","").toString());
+        map.put("uid", SPUtils.get(context, "userId", "").toString());
+        map.put("token", SPUtils.get(context, "token", "").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getQuestionList(postEntity);
     }
@@ -297,19 +321,19 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls(); //重点
         Gson gson = gsonBuilder.create();
-        JSONObject object= null;
+        JSONObject object = null;
         JSONArray array = null;
         QuestionEntity entity;
         try {
-            object=new JSONObject(gson.toJson(o));
+            object = new JSONObject(gson.toJson(o));
             array = object.getJSONArray("article");
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
                 tempList.clear();
-            }else{
+            } else {
                 list.loadMoreComplete();
             }
-            if(array.length()<10){
+            if (array.length() < 10) {
                 list.setNoMore(true);
             }
             for (int i = 0; i < array.length(); i++) {
@@ -365,9 +389,15 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 break;
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     private class MyReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
-            if(tempList!=null&&questionAdapter!=null&&list!=null){
+            if (tempList != null && questionAdapter != null && list != null) {
                 list.smoothScrollToPosition(0);
                 list.setPullRefreshEnabled(true);
                 list.refresh();

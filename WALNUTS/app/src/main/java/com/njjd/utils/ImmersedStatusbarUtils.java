@@ -34,9 +34,9 @@ public class ImmersedStatusbarUtils {
             // 透明状态栏
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            // 透明导航栏
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.setStatusBarColor(activity.getResources().getColor(R.color.white));
             if (titleViewGroup == null)
                 return;
@@ -56,8 +56,8 @@ public class ImmersedStatusbarUtils {
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.addFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.setStatusBarColor(activity.getResources().getColor(R.color.white));
             if (titleViewGroup == null)
                 return;
