@@ -140,13 +140,17 @@ public class SaveDetailActivity extends BaseActivity {
         txtName.setText(saveEntity.getComment_uid_name());
         txtMessage.setText(saveEntity.getComment_uid_introduction());
         txtAgree.setText(Float.valueOf(saveEntity.getComment_point_num()).intValue()+"");
+        if(saveEntity.getPoint_comment_stat().equals("1")||saveEntity.getPoint_comment_stat().equals("1.0")){
+            txtAgree.setBackgroundResource(R.drawable.background_button_div);
+            txtAgree.setTextColor(getResources().getColor(R.color.white));
+            txtAgree.setSelected(true);
+        }else{
+            txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+            txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
+            txtAgree.setSelected(false);
+        }
         txtcontent.setText(saveEntity.getComment_content());
         txtOpen.setText("评论 " + Float.valueOf(saveEntity.getComment_collect_num()).intValue());
-        if (saveEntity.getPoint_comment_stat().equals("1")) {
-            txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
-        } else {
-            txtAgree.setBackgroundResource(R.drawable.background_button_div);
-        }
         txtSave.setText("取消收藏");
         txtSave.setTextColor(getResources().getColor(R.color.txt_color));
         txtSave.setTag("0");

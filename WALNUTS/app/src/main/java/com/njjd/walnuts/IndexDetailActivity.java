@@ -1,11 +1,13 @@
 package com.njjd.walnuts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
+import com.example.retrofit.mywidget.LoadingDialog;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,9 +41,12 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.scrollablelayout.ScrollableLayout;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
@@ -69,6 +75,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     TextView txtTitle;
     @BindView(R.id.txt_quesTitle)
     TextView quesTitle;
+    @BindView(R.id.txt_sort)
+    TextView txtSort;
     @BindView(R.id.top)
     LinearLayout topView;
     @BindView(R.id.mask)
@@ -103,6 +111,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     Button btnCancle;
     @BindView(R.id.btn_reply)
     Button btnReply;
+    private LoadingDialog loadingDialog;
     private QuestionEntity questionEntity;
     private RelativeLayout relativeLayout;
     private ImageView imageView;
@@ -131,6 +140,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void initView(View view) {
         AndroidBug5497Workaround.assistActivity(this);
+        loadingDialog=new LoadingDialog(this);
         btnAddHelp.setText("");
         btnAddHelp.setVisibility(View.VISIBLE);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
@@ -427,6 +437,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
     @OnClick({R.id.tv_cancle, R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
     public void onViewClicked(View view) {
+        UMWeb web;
+        UMImage image;
         switch (view.getId()) {
             case R.id.btn_add_help:
                 ToastUtils.showShortToast(this, "功能正在开发，敬请期待");
@@ -466,12 +478,22 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_wechat:
-                ToastUtils.showShortToast(this, "微信");
+                web = new UMWeb("https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIyMzc0Mjc1Ng==&scene=124#wechat_redirect");
+                web.setTitle(questionEntity.getTitle());//标题
+                image = new UMImage(IndexDetailActivity.this, R.drawable.logo);//资源文件
+                web.setThumb(image);
+                web.setDescription("有营养的销售社区");//描述
+                new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN).withMedia(web).setCallback(mShareListener).share();
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_wechat_circle1:
-                ToastUtils.showShortToast(this, "朋友圈");
+                web = new UMWeb("https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIyMzc0Mjc1Ng==&scene=124#wechat_redirect");
+                web.setTitle(questionEntity.getTitle());//标题
+                image = new UMImage(IndexDetailActivity.this, R.drawable.logo);//资源文件
+                web.setThumb(image);
+                web.setDescription("有营养的销售社区");//描述
+                new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).withMedia(web).setCallback(mShareListener).share();
                 mask.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
                 break;
@@ -655,6 +677,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 tempOrder = "hot";
                 AnswerReplyAdapter.CURRENT_PAGE = 1;
                 getAnswerList();
+                txtSort.setText("按质量排序");
                 popupWindow.dismiss();
                 for (int i = 0, count = exListVIew
                         .getExpandableListAdapter().getGroupCount(); i < count; i++) {
@@ -664,6 +687,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             case R.id.rb_time:
                 tempOrder = "time";
                 AnswerReplyAdapter.CURRENT_PAGE = 1;
+                txtSort.setText("按时间排序");
                 getAnswerList();
                 popupWindow.dismiss();
                 for (int i = 0, count = exListVIew
@@ -696,7 +720,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
         @Override
         public void onStart(SHARE_MEDIA platform) {
-
+//            loadingDialog.show();
         }
 
         @Override
@@ -717,7 +741,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                         && platform != SHARE_MEDIA.GOOGLEPLUS
                         && platform != SHARE_MEDIA.YNOTE
                         && platform != SHARE_MEDIA.EVERNOTE) {
-                    Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -747,8 +770,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-
-            Toast.makeText(mActivity.get(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(IndexDetailActivity.this,"分享取消");
         }
     }
 
@@ -762,5 +784,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        UMShareAPI.get(this).release();
     }
 }

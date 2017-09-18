@@ -1,43 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:text="精选回答"
+        android:id="@+id/txt_select"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin"
+        android:typeface="sans"
+        android:textSize="@dimen/normal"
+        android:textColor="@color/txt_color"
+        android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:paddingBottom="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
         android:background="@drawable/background_layout_div"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/txt_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:layout_marginTop="@dimen/margin"
-            android:lineSpacingMultiplier="1.1"
-            android:maxLines="2"
-            android:paddingLeft="@dimen/margin"
-            android:text=""
-            android:typeface="sans"
-            android:textColor="@color/gray"
-            android:textScaleX="1"
-            android:textSize="@dimen/large" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginRight="@dimen/margin_big"
-            android:background="@color/grey"></View>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding"
             android:orientation="horizontal"
+            android:paddingTop="@dimen/margin_small"
             android:weightSum="1">
 
             <LinearLayout
@@ -92,37 +81,59 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
-                android:gravity="center_vertical|right"
+                android:gravity="center|right"
                 android:paddingRight="@dimen/margin">
 
                 <TextView
-                    android:id="@+id/txt_time"
+                    android:id="@+id/txt_focus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/background_button_div_grey"
                     android:gravity="center_vertical"
-                    android:paddingBottom="@dimen/padding"
-                    android:paddingTop="@dimen/padding"
-                    android:text=""
+                    android:padding="@dimen/padding"
+                    android:text="＋关注TA"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small"
                     android:typeface="sans"></TextView>
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:layout_marginTop="@dimen/margin"
+            android:lineSpacingMultiplier="1.1"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/margin"
+            android:text="个个人个人个人"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textScaleX="1"
+            android:textSize="@dimen/big" />
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/post_height"
+            android:src="@drawable/demo"
+            android:scaleType="centerCrop" />
         <TextView
             android:id="@+id/txt_reply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-6dp"
             android:maxLines="2"
-            android:paddingTop="@dimen/margin"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             android:typeface="sans"
             android:ellipsize="end"
+            android:layout_marginTop="@dimen/margin_small"
             android:lineSpacingMultiplier="1.2"
-            android:text=""
-            android:textColor="#666666"
+            android:text="开车不喝酒河车不开酒"
+            android:textColor="@color/gray"
             android:textScaleX="1"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 </LinearLayout>

@@ -112,7 +112,7 @@
             android:id="@+id/txt_sort"
             android:drawableRight="@drawable/btn_sort"
             android:gravity="right"
-            android:text="认同数"
+            android:text="按时间排序"
             android:textColor="@color/txt_color"
             android:textSize="@dimen/small" />
     </LinearLayout>

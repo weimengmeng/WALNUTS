@@ -16,7 +16,7 @@
 
         <fragment
             android:id="@+id/find_fragment"
-            android:name="com.njjd.fragment.FindFragment"
+            android:name="com.njjd.fragment.FindFragment2"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

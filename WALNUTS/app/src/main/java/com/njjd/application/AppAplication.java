@@ -59,9 +59,9 @@ public class AppAplication extends Application {
         context = this.getApplicationContext();
         replaceSystemDefaultFont(this, fontPath);
 //        LogToFile.init(this);
-        CrashHandler handler = CrashHandler.getInstance();
-        handler.init(getApplicationContext());
-        Thread.setDefaultUncaughtExceptionHandler(handler);
+//        CrashHandler handler = CrashHandler.getInstance();
+//        handler.init(getApplicationContext());
+//        Thread.setDefaultUncaughtExceptionHandler(handler);
         /**
          * 友盟登录、分享
          */

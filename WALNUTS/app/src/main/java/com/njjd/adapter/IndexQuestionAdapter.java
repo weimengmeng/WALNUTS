@@ -20,6 +20,7 @@ import com.njjd.domain.QuestionEntity;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.GlideImageLoder2;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
@@ -141,7 +142,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 banner.setIndicatorGravity(BannerConfig.RIGHT);
                 banner.isAutoPlay(true);
                 banner.setDelayTime(3000);
-                banner.setImages(images).setImageLoader(GlideImageLoder.getInstance()).start();
+                banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
                 banner.setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
@@ -185,7 +186,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((ContentViewHolder) holder).content.setVisibility(View.GONE);
                 ((ContentViewHolder) holder).imageView.setVisibility(View.VISIBLE);
                 String[] strings = temp.getPhoto().split(",");
-                GlideImageLoder.getInstance().displayImage(mContext, strings[0].replace("\"", ""), ((ContentViewHolder) holder).imageView);
+                GlideImageLoder2.getInstance().displayImage(mContext, strings[0].replace("\"", ""), ((ContentViewHolder) holder).imageView);
             }
             String[] strs = temp.getPic().split(",");
             final String[] uids=temp.getUids().split(",");

@@ -157,7 +157,6 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
     private void isUserExist(){
         Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {

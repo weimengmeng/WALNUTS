@@ -78,6 +78,9 @@
             android:name=".AttentionActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".ColumnDetailActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".SuccessActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -96,6 +99,9 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AgreementActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SelectAnswerDetailActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AskActivity"

@@ -12,12 +12,14 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.njjd.application.ConstantsVal;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,9 +135,7 @@ public class InterestActivity extends BaseActivity{
         }
     }
     private void addFocus() {
-        LogUtils.d("huan"+entities.toString());
         for(int i=0;i<entities.size();i++){
-            LogUtils.d("huan"+entities.get(i).getName());
             if(ids.contains(entities.get(i).getName())){
                 strs+=String.valueOf(Float.valueOf(entities.get(i).getId()).intValue())+",";
             }
@@ -145,10 +145,10 @@ public class InterestActivity extends BaseActivity{
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("select", "1");
         map.put("label_id", strs);
-        LogUtils.d("huan"+strs);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {
+                MobclickAgent.onEvent(InterestActivity.this, ConstantsVal.SELECTTAG);
                doLogin();
             }
         }, this, true, false), map);

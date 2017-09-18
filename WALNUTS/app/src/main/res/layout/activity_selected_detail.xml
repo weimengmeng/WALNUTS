@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Width_m_Height_m"
+    android:background="@color/grey">
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <include layout="@layout/top"></include>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.15"
+        android:background="@color/txt_color"></View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_quesTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.2"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:text="工业项目一定要能喝酒吗?"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/big" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.15"
+            android:background="@color/txt_color"></View>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/lv_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding"
+                android:layout_marginRight="@dimen/padding_top"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/margin"
+                android:text="回答"
+                android:typeface="sans"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_layout_div">
+                <include layout="@layout/item_group"></include>
+            </LinearLayout>
+            <ListView
+                android:id="@+id/list_comment"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="100dp"></ListView>
+            <TextView
+                android:id="@+id/txt_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:background="@drawable/background_layout_div"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding"
+                android:text="查看其他回答\n..."
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

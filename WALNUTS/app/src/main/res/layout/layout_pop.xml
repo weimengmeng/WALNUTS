@@ -22,7 +22,7 @@
             android:padding="@dimen/padding"
             android:textColor="@color/gray"
             android:layout_marginLeft="5dp"
-            android:text="时间排序" />
+            android:text="按时间排序" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -40,6 +40,6 @@
             android:padding="@dimen/padding"
             android:textColor="@color/gray"
             android:layout_marginLeft="5dp"
-            android:text="热度排序" />
+            android:text="按质量排序" />
     </RadioGroup>
 </LinearLayout>

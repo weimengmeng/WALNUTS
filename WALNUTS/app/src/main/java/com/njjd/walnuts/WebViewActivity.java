@@ -58,6 +58,7 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setBuiltInZoomControls(true);
         web.loadUrl(getIntent().getStringExtra("url"));
+
         // 加载数据
         web.setWebChromeClient(new WebChromeClient() {
             @Override

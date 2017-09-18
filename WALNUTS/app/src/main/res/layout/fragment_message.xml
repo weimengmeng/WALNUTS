@@ -14,7 +14,7 @@
 
         <RadioGroup
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/round"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
@@ -29,12 +29,15 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.5"
                 android:button="@null"
+                android:drawablePadding="@dimen/margin"
                 android:drawableBottom="@drawable/selector_btn_line"
                 android:gravity="center"
                 android:onClick="onClick"
                 android:layout_marginRight="@dimen/margin"
                 android:paddingRight="@dimen/padding"
+                android:paddingTop="@dimen/margin"
                 android:text="消息"
+                android:typeface="sans"
                 android:textColor="@drawable/selector_btn_top"
                 android:textSize="@dimen/big" />
 
@@ -45,9 +48,12 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.5"
                 android:button="@null"
+                android:drawablePadding="@dimen/margin"
                 android:drawableBottom="@drawable/selector_btn_line"
                 android:gravity="center"
                 android:onClick="onClick"
+                android:typeface="sans"
+                android:paddingTop="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
                 android:paddingRight="@dimen/padding"
                 android:text="通知"

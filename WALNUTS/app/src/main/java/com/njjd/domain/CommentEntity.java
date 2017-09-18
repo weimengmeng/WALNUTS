@@ -36,7 +36,7 @@ public class CommentEntity implements Serializable {
             this.message=object.isNull("introduction")?"":object.getString("introduction");
             this.content=object.isNull("content")?"":object.getString("content");
             this.time= object.isNull("add_time")?"":object.getString("add_time");
-            this.replyNum =object.isNull("answer_num")?"":object.getString("answer_num");
+            this.replyNum =object.isNull("answer_num")?"0":object.getString("answer_num");
 
             this.sec_uid=object.isNull("sec_uid")?"":object.getString("sec_uid");
             this.sec_com_id=object.isNull("sec_com_id")?"":object.getString("sec_com_id");

@@ -366,6 +366,7 @@ public class MainActivity extends FragmentActivity {
 
     private class LoginPassReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
+            CommonUtils.init(MainActivity.activity);
             if (SPUtils.get(MainActivity.this, ConstantsVal.LOGINTYPE, "0").equals("0")) {
                 autoLogin();
             } else {
