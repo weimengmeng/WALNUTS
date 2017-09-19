@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +13,10 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RadioButton;
@@ -33,6 +36,8 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.AndroidBug54971Workaround;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
@@ -95,18 +100,17 @@ public class MainActivity extends FragmentActivity {
             radio4.invalidate();
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AndroidBug54971Workaround.assistActivity(findViewById(R.id.main));
         activity = this;
         ButterKnife.bind(this);
         initView();
         MyActivityManager.getInstance().pushOneActivity(this);
         loginHuanxin();
     }
-
     private static void loginHuanxin() {
         EMClient.getInstance().login(SPUtils.get(activity, "userId", "").toString(), "Walnut2017", new EMCallBack() {
             @Override

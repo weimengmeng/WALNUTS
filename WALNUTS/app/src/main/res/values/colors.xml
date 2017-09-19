@@ -15,6 +15,6 @@
     <color name="alertdialog_line">#c6c6c6</color>
     <color name="actionsheet_blue">#037BFF</color>
     <color name="actionsheet_gray">#8F8F8F</color>
-    <color name="colorGray">#33000000</color>
+    <color name="colorGray">#e90b0b0b</color>
     <color name="tag">#F4B975</color>
 </resources>

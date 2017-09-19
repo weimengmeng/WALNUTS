@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.njjd.adapter.ColumnAdapter;
@@ -27,6 +28,8 @@ public class ColumnDetailActivity extends BaseActivity {
     TextView txtTitle;
     @BindView(R.id.btn_add_help)
     TextView btnAddHelp;
+    @BindView(R.id.lv_root)
+    ScrollView root;
     @BindView(R.id.list_select)
     ListViewForScrollView listSelect;
     private ColumnAdapter adapter;
@@ -45,6 +48,7 @@ public class ColumnDetailActivity extends BaseActivity {
         entities.add(new ColumnEntity("1","http://img3.imgtn.bdimg.com/it/u=3553261757,602330486&fm=214&gp=0.jpg","核桃小编","超级大美女","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
         adapter=new ColumnAdapter(this,entities);
         listSelect.setAdapter(adapter);
+        root.smoothScrollTo(0, 0);
     }
 
     @Override

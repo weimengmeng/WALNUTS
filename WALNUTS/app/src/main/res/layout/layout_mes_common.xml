@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_div"
         android:orientation="horizontal"
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding"
         android:gravity="center_vertical"
         android:weightSum="1">
 

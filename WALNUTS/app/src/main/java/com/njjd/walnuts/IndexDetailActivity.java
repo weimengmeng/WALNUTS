@@ -301,6 +301,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             questionEntity.setTag_id(object.getString("label_id"));
             if (object.getInt("stat") == 1) {
                 txtFocus.setText("取消关注");
+                txtFocus.setTextColor(getResources().getColor(R.color.white));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape);
             }
             txtAnswerNum.setText("回答 " + Float.valueOf(object.getString("answer_num")).intValue());
             txtFocusNum.setText("关注 " + Float.valueOf(object.getString("follow_num")).intValue());
@@ -624,7 +626,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消关注");
             if (questionEntity.getIsFocus() == 0) {
                 txtFocus.setText("取消关注");
-                txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
+                txtFocus.setTextColor(getResources().getColor(R.color.white));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape);
             } else {
                 txtFocus.setText("+关注问题");

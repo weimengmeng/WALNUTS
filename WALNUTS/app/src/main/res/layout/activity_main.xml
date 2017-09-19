@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
+    android:id="@+id/main"
     android:clipChildren="true">
 
     <FrameLayout
@@ -16,7 +17,7 @@
 
         <fragment
             android:id="@+id/find_fragment"
-            android:name="com.njjd.fragment.FindFragment2"
+            android:name="com.njjd.fragment.FindFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

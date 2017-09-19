@@ -127,6 +127,7 @@
         android:dividerHeight="0dp"
         android:focusable="false"
         android:groupIndicator="@null"
+        android:layout_marginBottom="@dimen/margin_big"
         android:listSelector="@color/grey"></com.njjd.utils.CustomExpandableListView>
     <include
         android:id="@+id/empty"

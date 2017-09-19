@@ -224,7 +224,10 @@ public class SuccessActivity extends BaseActivity {
         map.put("message", "");
         map.put("position", "");
         map.put("headimg", path);
-        map.put("upload_stat", 1);
+        if(getIntent().getIntExtra("bind", 0) == 1&&file==null)
+            map.put("upload_stat", 1);
+        else
+            map.put("upload_stat", 0);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().completeInfo(postEntity);
     }

@@ -4,9 +4,10 @@
     <!-- 边框 -->
     <stroke
         android:width="0.5dp"
-        android:color="@color/txt_color" />
+        android:color="#FFD2D1D1" />
     <!-- 圆角 -->
     <corners android:radius="4dp" />
+    <solid android:color="#FFD2D1D1"></solid>
     <!-- 边距 -->
     <padding
         android:left="10dp"

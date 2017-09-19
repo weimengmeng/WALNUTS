@@ -143,7 +143,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/code"
-                        android:layout_marginTop="@dimen/padding"
                         android:textColor="@color/txt_color"
                         android:textSize="@dimen/small"
                         android:visibility="gone" />
