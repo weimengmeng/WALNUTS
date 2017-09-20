@@ -23,7 +23,7 @@ public class ConstantsVal {
     public static String PUBQUESTION="pubQuestion";
     public static String PUBRESULT="pubResult";
     public static String ANSWERQUESTION="answerQuestion";
-    public static String ANSWERRESULT="answerResul";
+    public static String ANSWERRESULT="answerResult";
     public static String AUTOLOGIN="autologin";
     public static String LOGINTYPE="logintype";
 }

@@ -197,7 +197,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
             }
         });
-        messPage.setPageTransformer(true, new DepthPageTransformer());
         adapter = new ConversationAdapter(getContext(), conversations);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview

@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_div"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/padding"
-        android:paddingBottom="@dimen/padding"
+        android:paddingTop="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
         android:gravity="center_vertical"
         android:weightSum="1">
 
@@ -41,6 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="通知"
+                android:typeface="sans"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
 

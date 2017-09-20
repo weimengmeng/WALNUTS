@@ -32,11 +32,11 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
-                <com.njjd.utils.MyWebView
+                <WebView
                     android:id="@+id/web"
                     android:layout_width="150dp"
                     android:layout_marginLeft="@dimen/margin"
-                    android:layout_height="50dp"></com.njjd.utils.MyWebView>
+                    android:layout_height="50dp"></WebView>
                 <ImageView
                     android:id="@+id/btn_resend"
                     android:layout_width="wrap_content"

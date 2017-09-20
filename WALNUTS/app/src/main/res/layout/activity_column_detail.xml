@@ -1,196 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/top"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
         <include layout="@layout/top"></include>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:alpha="0.15"
         android:background="@color/txt_color"></View>
+
     <ScrollView
         android:id="@+id/lv_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:typeface="sans"
-            android:paddingLeft="@dimen/margin"
-            android:paddingRight="@dimen/margin"
-            android:paddingTop="@dimen/padding"
-            android:text="工业项目一定要喝酒吗？"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/big"/>
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/margin"
-            android:paddingRight="@dimen/margin"
-            android:paddingTop="@dimen/padding"
-            android:paddingBottom="@dimen/padding"
-            >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_head"
-                android:layout_width="@dimen/head"
-                android:layout_height="@dimen/head"
-                android:src="@drawable/head" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="刘建设的建设"
-                android:gravity="center"
-                android:padding="@dimen/padding"
-                android:typeface="sans"
-                android:textSize="@dimen/normal"
-                android:textColor="@color/login"
-                />
-            <View
-                android:layout_width="1dp"
-                android:layout_margin="@dimen/padding"
-                android:layout_height="match_parent"
-                android:background="@color/txt_color"></View>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="2017-09-15"
-                android:padding="@dimen/padding"
-                android:typeface="sans"
-                android:gravity="center"
-                android:textSize="@dimen/small"
-                android:textColor="@color/txt_color"
-                />
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="hello,我是董大哥，唔咻咻咻！hello,我是董大哥，唔咻咻咻！"
-            android:textColor="@color/gray"
-            android:background="#e5e5e5"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_margin="@dimen/margin"
-            android:padding="@dimen/padding"
-            android:typeface="sans"
-            android:textSize="@dimen/normal"
-            android:layout_marginBottom="@dimen/padding"/>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
-            android:layout_marginBottom="@dimen/padding"
-            android:layout_marginTop="@dimen/padding"
-            android:src="@drawable/demo"
-            android:scaleType="centerCrop"
-            android:layout_height="@dimen/post_height" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。"
-            android:textColor="@color/gray"
-            android:lineSpacingMultiplier="1.2"
-            android:paddingLeft="@dimen/margin"
-            android:paddingRight="@dimen/margin"
-            android:paddingTop="@dimen/padding"
-            android:typeface="sans"
-            android:textSize="@dimen/normal"
-            android:layout_marginBottom="@dimen/padding"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/txt_color"
-            android:alpha="0.15"
-            android:layout_marginLeft="@dimen/padding"
-            android:layout_marginRight="@dimen/margin"></View>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/margin"
-            android:paddingRight="@dimen/margin"
-            android:weightSum="1"
-           >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.25"
-                android:text="评论30"
-                android:typeface="sans"
-                android:textSize="@dimen/small"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textColor="@color/login" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.25"
-                android:text="收藏"
-                android:textSize="@dimen/small"
-                android:typeface="sans"
-                android:gravity="center_vertical"
-                android:layout_height="match_parent"
-                android:textColor="@color/login" />
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding"
-                android:layout_weight="0.5"
-                android:gravity="center|right">
-                <TextView
-                    android:id="@+id/txt_agree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_button_div_grey"
-                    android:drawableLeft="@drawable/slector_btn_like"
-                    android:drawablePadding="@dimen/padding"
-                    android:paddingLeft="@dimen/padding"
-                    android:paddingRight="@dimen/padding"
-                    android:text="25 "
-                    android:gravity="center"
-                    android:textColor="@color/txt_color"
-                    android:textSize="@dimen/small"
-                    android:typeface="sans"></TextView>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="@dimen/padding"
-            android:background="@color/grey">
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/margin"
+                android:paddingTop="@dimen/padding"
+                android:text="工业项目一定要喝酒吗？"
+                android:textColor="@color/black"
+                android:textSize="@dimen/big"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/margin"
+                android:paddingTop="@dimen/padding">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_head"
+                    android:layout_width="@dimen/head"
+                    android:layout_height="@dimen/head"
+                    android:src="@drawable/head" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/padding"
+                    android:text="刘建设的建设"
+                    android:textColor="@color/login"
+                    android:textSize="@dimen/normal"
+                    android:typeface="sans" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/padding"
+                    android:background="@color/txt_color"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="@dimen/padding"
+                    android:text="2017-09-15"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/small"
+                    android:typeface="sans" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:layout_marginBottom="@dimen/padding"
+                android:background="#e5e5e5"
+                android:lineSpacingMultiplier="1.2"
+                android:padding="@dimen/padding"
+                android:text="hello,我是董大哥，唔咻咻咻！hello,我是董大哥，唔咻咻咻！"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal"
+                android:typeface="sans" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/post_height"
+                android:layout_marginBottom="@dimen/padding"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginRight="@dimen/margin"
+                android:layout_marginTop="@dimen/padding"
+                android:scaleType="centerCrop"
+                android:src="@drawable/demo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding"
+                android:lineSpacingMultiplier="1.2"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/margin"
+                android:paddingTop="@dimen/padding"
+                android:text="你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal"
+                android:typeface="sans" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/margin"
+                android:alpha="0.15"
+                android:background="@color/txt_color"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/margin"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:gravity="center_vertical"
+                    android:text="评论30"
+                    android:textColor="@color/login"
+                    android:textSize="@dimen/small"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:gravity="center_vertical"
+                    android:text="收藏"
+                    android:textColor="@color/login"
+                    android:textSize="@dimen/small"
+                    android:typeface="sans" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center|right"
+                    android:paddingTop="@dimen/padding">
+
+                    <TextView
+                        android:id="@+id/txt_agree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_button_div_grey"
+                        android:drawableLeft="@drawable/slector_btn_like"
+                        android:drawablePadding="@dimen/padding"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/padding"
+                        android:paddingRight="@dimen/padding"
+                        android:text="25 "
+                        android:textColor="@color/txt_color"
+                        android:textSize="@dimen/small"
+                        android:typeface="sans"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="@dimen/padding"
+                android:background="@color/grey">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="评论区域" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="评论区域"/>
+                android:padding="@dimen/padding"
+                android:text="TA的更多文章"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal"
+                android:typeface="sans" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:alpha="0.15"
+                android:background="@color/txt_color"></View>
+
+            <com.njjd.utils.ListViewForScrollView
+                android:id="@+id/list_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.njjd.utils.ListViewForScrollView>
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:typeface="sans"
-            android:padding="@dimen/padding"
-            android:text="TA的更多文章"
-            android:textSize="@dimen/normal"
-            android:textColor="@color/txt_color"
-            android:gravity="center"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/padding"
-            android:layout_marginRight="@dimen/padding"
-            android:layout_height="1dp"
-            android:alpha="0.15"
-            android:background="@color/txt_color"></View>
-        <com.njjd.utils.ListViewForScrollView
-            android:id="@+id/list_select"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.njjd.utils.ListViewForScrollView>
-    </LinearLayout>
     </ScrollView>
 </LinearLayout>

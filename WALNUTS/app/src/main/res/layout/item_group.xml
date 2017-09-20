@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding"
+            android:paddingTop="@dimen/margin"
             android:paddingBottom="@dimen/padding"
             android:weightSum="1">
 

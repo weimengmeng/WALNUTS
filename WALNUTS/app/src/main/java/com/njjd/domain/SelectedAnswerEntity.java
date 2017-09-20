@@ -10,13 +10,13 @@ public class SelectedAnswerEntity implements Serializable {
     private String uid;//回答者id
     private String article_id;//文章ID
     private String answer_id;//回答ID
-    private String head;
-    private String name;
-    private String message;
-    private String title;
-    private String isFocus="0";
-    private String photo;
-    private String replyContent;
+    private String head;//回答人头像
+    private String name;//回答人name
+    private String message;//回答人indrotuction
+    private String title;//原问题标题
+    private String isFocus="0";//是否关注了用户
+    private String photo;//问题的图片
+    private String replyContent;//回答的内容
 
     public SelectedAnswerEntity(String uid, String article_id, String answer_id, String head, String name, String message, String title, String isFocus, String photo, String replyContent) {
         this.uid = uid;

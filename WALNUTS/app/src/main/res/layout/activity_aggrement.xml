@@ -14,8 +14,5 @@
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdf_view"
         style="@style/Width_m_Height_m"
-        android:layout_marginLeft="@dimen/margin"
-        android:layout_marginRight="@dimen/margin"
-        android:layout_marginTop="@dimen/margin"
         android:background="@drawable/background_layout_div" />
 </LinearLayout>

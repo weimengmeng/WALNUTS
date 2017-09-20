@@ -21,6 +21,7 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.GlideImageLoder2;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
@@ -132,15 +133,16 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_TYPE_HEADER) {
-            if(banner==null){
                 banner = (Banner) inflater.inflate(R.layout.layout_banner, parent, false);
-//                images.clear();
+                images.clear();
+                titles.clear();
+                urls.clear();
                 for(int i=0;i<bannerList.size();i++){
-//                    if(bannerList.get(i).getType().equals(kind)) {
+                    if(bannerList.get(i).getType().equals(this.kind)) {
                         images.add(bannerList.get(i).getImg());
                         titles.add(bannerList.get(i).getTitle());
                         urls.add(bannerList.get(i).getUrl());
-//                    }
+                    }
                 }
                 banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
                 banner.setIndicatorGravity(BannerConfig.RIGHT);
@@ -156,7 +158,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                         mContext.startActivity(intent);
                     }
                 });
-            }
             return new HeaderViewHolder(banner);
         } else if (viewType == mHeaderCount) {
             View layout = LayoutInflater.from(mContext).inflate(R.layout.item_index, parent, false);

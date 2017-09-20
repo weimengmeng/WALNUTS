@@ -41,6 +41,7 @@ import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
@@ -104,26 +105,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         ButterKnife.bind(this, view);
         return view;
     }
-//    @Override
-//    public void onScrollChanged(MyXRecyclerView scrollView, int x, int y,
-//                                int oldx, int oldy) {
-//        // TODO Auto-generated method stub
-//        View c = list.getChildAt(0);
-//        int firstVisiblePosition = ((LinearLayoutManager) list.getLayoutManager()).findFirstVisibleItemPosition();
-//        int top1 = c.getTop();
-//        y= firstVisiblePosition * c.getHeight()-top1-400;
-//        if (y <= 0) {
-//            top.setBackgroundColor(Color.argb(0, 227, 29, 26));//AGB由相关工具获得，或者美工提供
-//        } else if (y > 0 && y <= 350) {
-//            float scale = (float) y / 350;
-//            float alpha = (255 * scale);
-//            // 只是layout背景透明(仿知乎滑动效果)
-//            top.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-//        } else {
-//            top.setBackgroundColor(Color.argb(255, 255, 255, 255));
-//        }
-//    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -202,7 +183,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
             list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
-            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, i + "");
+            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, navList.get(i).getId());
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
@@ -210,7 +191,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             list.setEmptyView(currentView.findViewById(R.id.empty));
             list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
             list.setRefreshProgressStyle(ProgressStyle.BallPulse);
-//            list.setScrollViewListener(this);
             listViews.add(list);
             questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
                 @Override
@@ -276,8 +256,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //             ) {
 //            tempList.add(e);
 //        }
-        list.setPullRefreshEnabled(true);
-        list.refresh();
         getQuestion(tempKind, tempOrder);
 //        questionAdapter.notifyDataSetChanged();
 //        LogUtils.d(tempList.size());

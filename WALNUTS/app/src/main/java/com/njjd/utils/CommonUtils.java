@@ -9,6 +9,8 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.application.AppAplication;
@@ -20,6 +22,7 @@ import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -202,14 +205,21 @@ public class CommonUtils {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
-                JsonArray array=JSONUtils.getAsJsonArray(o);
-                JsonObject object;
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                JSONObject object = null;
+                JSONArray array = null;
                 BannerEntity entity;
-//                bannerList.add(new BannerEntity("demo","www.baidu.com","","http://a3.qpic.cn/psb?/V12c0Hyy4MD9Xl/Lv19gm0cYbuUu9OHp2C2lN*5ewZnPGWhlekq9STc1u8!/b/dPIAAAAAAAAA&bo=OAR3AQAAAAADB2g!&rf=viewer_4","1"));
-                for(int i=0;i<array.size();i++){
-                    object=array.get(i).getAsJsonObject();
-                    entity=new BannerEntity(object.get("title").getAsString(),object.get("url").isJsonNull()?"":object.get("url").getAsString(),object.get("id").getAsString(),object.get("img").getAsString(),"0");
-                    bannerList.add(entity);
+                try {
+                    array = new JSONArray(gson.toJson(o));
+                    for(int i=0;i<array.length();i++){
+                        object=array.getJSONObject(i);
+                        entity=new BannerEntity(object.getString("title"),object.isNull("url")?"":object.getString("url"),object.getString("id"),object.getString("img"),object.getString("cate_article_id"));
+                        bannerList.add(entity);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }, mContext, false, false), map);

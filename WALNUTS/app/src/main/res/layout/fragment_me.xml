@@ -111,7 +111,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="@dimen/margin"
         android:layout_weight="0.6">
         <LinearLayout
             android:layout_width="match_parent"
@@ -506,6 +505,7 @@
                 style="@style/view_me"
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
+                android:layout_marginBottom="@dimen/margin"
                 android:background="@drawable/background_layout_div"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/margin"
