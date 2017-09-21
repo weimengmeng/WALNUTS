@@ -210,8 +210,7 @@ public class PersonalActivity extends BaseActivity{
         map.put("message", txtMessage.getText().toString().trim());
         map.put("position", txtPosition.getText().toString().trim());
         map.put("company", txtCompany.getText().toString().trim());
-        map.put("upload_stat",0);
-        LogUtils.d(map.toString());
+        map.put("upload_stat",1);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().completeInfo(postEntity);
     }

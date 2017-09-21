@@ -1,5 +1,6 @@
 package com.njjd.application;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Notification;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
@@ -41,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -96,7 +100,6 @@ public class AppAplication extends Application {
         MultiDex.install(this);
         CommonUtils.init(context);
     }
-
     public static Context getContext() {
         return context;
     }
@@ -105,7 +108,9 @@ public class AppAplication extends Application {
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
             @Override
             public Notification getNotification(Context context, UMessage msg) {
-                LogUtils.d("收到通知啦－－－－－－－》" + msg.getRaw().toString());
+                Intent intent = new Intent();
+                intent.setAction(ConstantsVal.NEW_INFORM);
+                sendBroadcast(intent);
                 return null;
             }
 

@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/margin_small"
             android:weightSum="1">
 
             <LinearLayout
@@ -38,8 +37,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_head"
-                    android:layout_width="@dimen/height"
-                    android:layout_height="@dimen/height"
+                    android:layout_width="@dimen/margin_big"
+                    android:layout_height="@dimen/margin_big"
                     android:src="@drawable/head" />
             </LinearLayout>
 
@@ -91,6 +90,7 @@
                     android:background="@drawable/background_button_div_grey"
                     android:gravity="center_vertical"
                     android:padding="@dimen/padding"
+                    android:onClick="onClick"
                     android:text="＋关注TA"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small"
@@ -107,6 +107,7 @@
             android:lineSpacingMultiplier="1.1"
             android:maxLines="2"
             android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:text="个个人个人个人"
             android:typeface="sans"
             android:textStyle="bold"
@@ -124,7 +125,7 @@
             android:id="@+id/txt_reply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:maxLines="3"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             android:typeface="sans"

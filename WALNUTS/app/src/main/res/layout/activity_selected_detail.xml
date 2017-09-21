@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
     android:background="@color/grey">
     <LinearLayout
@@ -9,13 +9,15 @@
         android:background="@color/white"
         android:orientation="vertical">
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txt_color"
+            android:alpha="0.15"></View>
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha="0.15"
-        android:background="@color/txt_color"></View>
     <LinearLayout
+        android:layout_below="@id/top"
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -27,6 +29,7 @@
             android:lineSpacingMultiplier="1.2"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
+            android:textStyle="bold"
             android:text="工业项目一定要能喝酒吗?"
             android:textColor="@color/gray"
             android:textSize="@dimen/big" />
@@ -38,6 +41,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:layout_below="@id/ll"
         android:id="@+id/lv_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,16 +61,21 @@
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
             <LinearLayout
+                android:id="@+id/lv_answer"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_layout_div">
                 <include layout="@layout/item_group"></include>
             </LinearLayout>
-            <ListView
+            <com.njjd.utils.ListViewForScrollView
                 android:id="@+id/list_comment"
                 android:layout_width="match_parent"
                 android:visibility="gone"
-                android:layout_height="100dp"></ListView>
+                android:listSelector="#00000000"
+                android:dividerHeight="0dp"
+                android:divider="#00000000"
+                android:layout_height="match_parent"></com.njjd.utils.ListViewForScrollView>
             <TextView
                 android:id="@+id/txt_more"
                 android:layout_width="match_parent"
@@ -75,9 +84,80 @@
                 android:background="@drawable/background_layout_div"
                 android:gravity="center"
                 android:paddingBottom="@dimen/padding"
-                android:text="查看其他回答\n..."
+                android:text="查看更多内容\n..."
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:onClick="onClick">
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/lv_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:padding="@dimen/padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btn_cancle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@null"
+                android:layout_marginLeft="2dp"
+                android:typeface="sans"
+                android:gravity="left|center"
+                android:paddingBottom="@dimen/padding"
+                android:text="取消回复"
+                android:onClick="onClick"
+                android:textColor="@color/login"
+                android:textSize="@dimen/normal" />
+
+            <Button
+                android:id="@+id/btn_reply"
+                android:layout_width="0dp"
+                android:typeface="sans"
+                android:layout_marginRight="2dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@null"
+                android:gravity="right|center"
+                android:paddingBottom="@dimen/padding"
+                android:text="立即回复"
+                android:onClick="onClick"
+                android:textColor="@color/login"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/background_layout_et"
+            android:hint="输入文字"
+            android:lines="4"
+            android:gravity="top"
+            android:padding="@dimen/padding"
+            android:textColor="@color/gray"
+            android:textColorHint="@color/txt_color"
+            android:textCursorDrawable="@drawable/color_cusor"
+            android:textSize="@dimen/small" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -16,10 +17,14 @@ import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.njjd.utils.AndroidBug5497Workaround;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import butterknife.ButterKnife;
 
@@ -53,8 +58,9 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
         MyActivityManager.getInstance().pushOneActivity(this);
         initView(mContextView);
         PushAgent.getInstance(this).onAppStart();
+        CommonUtils.setMeizuStatusBarDarkIcon(this,true);
+        CommonUtils.setMiuiStatusBarDarkMode(this,true);
     }
-
     @Override
     public void onNext(Object o) {
         if(o!=null)

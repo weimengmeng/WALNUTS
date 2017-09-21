@@ -70,13 +70,13 @@
                 android:layout_height="wrap_content"
                 android:text="2017-07-12"
                 android:paddingRight="@dimen/padding_left"
+                android:typeface="sans"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
             <cn.bingoogolapple.badgeview.BGABadgeTextView
                 android:id="@+id/txt_badge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
                 android:text=""
                 android:layout_marginRight="@dimen/margin"
                 android:paddingRight="@dimen/padding_top"

@@ -87,6 +87,8 @@ public interface HttpService {
     Observable<HttpResult<Object>> getArticleDetail(@QueryMap Map<String, String> params);
     @POST("index/getCommentF")
     Observable<HttpResult<Object>> getAnswerList(@QueryMap Map<String, String> params);
+    @POST("index/getHotComment")
+    Observable<HttpResult<Object>> getHotComment(@QueryMap Map<String, String> params);
     @POST("index/getCommentFt")
     Observable<HttpResult<Object>> getCommentList(@QueryMap Map<String, String> params);
     @POST("index/addArticle")

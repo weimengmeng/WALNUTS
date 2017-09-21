@@ -8,11 +8,13 @@ import java.io.Serializable;
 
 public class ColumnEntity implements Serializable{
     private String id;//栏目ID
-    private String head;
-    private String name;
-    private String title;
-    private String content;
-    private String pic;
+    private String article_id;//文章ID
+    private String columnName;//栏目名称
+    private String head;//作者头像
+    private String name;//作者名称
+    private String title;//文章标题
+    private String content;//文章内容
+    private String pic;//文章配图
 
     public ColumnEntity(String id, String head, String name, String title, String content, String pic) {
         this.id = id;

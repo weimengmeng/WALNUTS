@@ -53,6 +53,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +112,8 @@ public class MainActivity extends FragmentActivity {
         initView();
         MyActivityManager.getInstance().pushOneActivity(this);
         loginHuanxin();
+        CommonUtils.setMeizuStatusBarDarkIcon(this,true);
+        CommonUtils.setMiuiStatusBarDarkMode(this,true);
     }
     private static void loginHuanxin() {
         EMClient.getInstance().login(SPUtils.get(activity, "userId", "").toString(), "Walnut2017", new EMCallBack() {
@@ -163,7 +167,6 @@ public class MainActivity extends FragmentActivity {
             };
         }
     }
-
     private void initView() {
         receiver = new MyReceiver();
         IntentFilter filter = new IntentFilter();
@@ -347,6 +350,7 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        CommonUtils.init(this);
     }
 
     @Override

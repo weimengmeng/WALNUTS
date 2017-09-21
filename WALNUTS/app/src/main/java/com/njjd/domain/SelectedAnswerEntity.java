@@ -1,5 +1,8 @@
 package com.njjd.domain;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -17,7 +20,23 @@ public class SelectedAnswerEntity implements Serializable {
     private String isFocus="0";//是否关注了用户
     private String photo;//问题的图片
     private String replyContent;//回答的内容
+    public SelectedAnswerEntity(JSONObject object) {
+        try {
+            name = object.isNull("uname") ? "" : object.getString("uname");
+            uid = object.isNull("uid") ? "" : object.getString("uid");
+            head = object.isNull("headimg") ? "" : object.getString("headimg");
+            article_id = object.isNull("article_id") ? "" : object.getString("article_id");
+            message = object.isNull("introduction") ? "" : object.getString("introduction");
+            answer_id = object.isNull("comment_id") ? "" : object.getString("comment_id");
+            isFocus = object.isNull("is_focus") ? "0" : object.getString("is_focus");
+            title = object.isNull("article_title") ? "" : object.getString("article_title");
+            photo = object.isNull("imgs") ? "" : object.getString("imgs");
+            replyContent = object.isNull("comment_content") ? "" : object.getString("comment_content");
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public SelectedAnswerEntity(String uid, String article_id, String answer_id, String head, String name, String message, String title, String isFocus, String photo, String replyContent) {
         this.uid = uid;
         this.article_id = article_id;

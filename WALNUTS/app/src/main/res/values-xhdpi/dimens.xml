@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="mini">8sp</dimen>
-    <dimen name="small">10sp</dimen>
-    <dimen name="normal">12sp</dimen>
-    <dimen name="big">14sp</dimen>
-    <dimen name="large">16sp</dimen>
+    <dimen name="small">12sp</dimen>
+    <dimen name="normal">14sp</dimen>
+    <dimen name="big">16sp</dimen>
+    <dimen name="large">18sp</dimen>
     <dimen name="large_big">22sp</dimen>
     <dimen name="largest">38sp</dimen>
     <dimen name="padding">7dp</dimen>

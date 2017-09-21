@@ -231,7 +231,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             holder = (ChildHolder) view.getTag();
         }
         if (childPosition != 0) {
-           holder.editText.setVisibility(View.GONE);
+            holder.editText.setVisibility(View.GONE);
             view.findViewById(R.id.ll_reply).setVisibility(View.VISIBLE);
         } else {
             holder.editText.setVisibility(View.VISIBLE);

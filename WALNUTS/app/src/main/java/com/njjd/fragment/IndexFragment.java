@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +40,6 @@ import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
@@ -183,7 +181,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
             list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
-            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, navList.get(i).getId());
+            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1,navList.get(i).getId());
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
@@ -286,6 +284,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         Map<String, Object> map = new HashMap<>();
         map.put("cate_article_id", id);
         map.put("page", questionAdapter.getCurrentPage());
+        if(questionAdapter.getCurrentPage()==1){
+            map.put("refresh","1");
+        }else {
+            map.put("refresh","0");
+        }
         map.put("order", sort);
         map.put("keywords", "");
         map.put("uid", SPUtils.get(context, "userId", "").toString());

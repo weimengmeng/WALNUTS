@@ -41,6 +41,7 @@
                     android:lineSpacingMultiplier="1.2"
                     android:paddingLeft="@dimen/margin"
                     android:paddingRight="@dimen/margin"
+                    android:textStyle="bold"
                     android:text="工业项目一定要能喝酒吗?"
                     android:textColor="@color/black"
                     android:textSize="@dimen/big" />
@@ -106,6 +107,7 @@
                 android:typeface="sans"
                 android:gravity="left|center"
                 android:paddingBottom="@dimen/padding"
+                android:onClick="onClick"
                 android:text="取消回复"
                 android:textColor="@color/login"
                 android:textSize="@dimen/normal" />
@@ -117,6 +119,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:onClick="onClick"
                 android:background="@null"
                 android:gravity="right|center"
                 android:paddingBottom="@dimen/padding"

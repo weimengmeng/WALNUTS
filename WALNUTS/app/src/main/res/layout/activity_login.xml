@@ -116,7 +116,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:padding="@dimen/padding"
                 android:text="@string/forget_pwd"
                 android:textColor="@color/login"
                 android:textSize="@dimen/normal" />
@@ -124,9 +123,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.35"
+                android:layout_weight="0.3"
                 android:gravity="center|right"
-                android:padding="@dimen/padding"
                 android:text="没有账号?"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
@@ -135,9 +133,8 @@
                 android:id="@+id/txt_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.25"
+                android:layout_weight="0.3"
                 android:gravity="center|right"
-                android:paddingRight="@dimen/padding"
                 android:text="@string/register"
                 android:textColor="@color/login"
                 android:textSize="@dimen/normal" />
