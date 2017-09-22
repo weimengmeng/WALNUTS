@@ -1,30 +1,19 @@
 package com.njjd.walnuts;
 
-import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
-import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import butterknife.ButterKnife;
 

@@ -73,4 +73,29 @@
     <item name="android:background">@color/white</item>
     <item name="android:weightSum">1</item>
 </style>
+    <style name="StyleEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_search_bar</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:drawableStart">@drawable/icon_search</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/txt_color</item>
+        <item name="android:textCursorDrawable">@drawable/color_cusor</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">@dimen/normal</item>
+        <item name="android:hint">搜索核桃内容</item>
+    </style>
+
+    <style name="StyleTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">@dimen/normal</item>
+    </style>
+
 </resources>

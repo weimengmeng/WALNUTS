@@ -25,6 +25,7 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
+import com.njjd.walnuts.SelectQuestionActivity;
 import com.njjd.walnuts.WebViewActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -62,7 +63,6 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.kind=kind;
 
     }
-
     //内容长度
     public int getContentItemCount() {
         return mList.size();
@@ -86,6 +86,7 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public int getItemViewType(int position) {
         if (mHeaderCount != 0 && position < mHeaderCount) {
+            bannerList= CommonUtils.getInstance().getBannerList();
             return ITEM_TYPE_HEADER;
         } else {
             return ITEM_TYPE_CONTENT;
@@ -152,10 +153,17 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 banner.setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                        Intent intent=new Intent(mContext, WebViewActivity.class);
-                        intent.putExtra("title",titles.get(position));
-                        intent.putExtra("url",urls.get(position));
-                        mContext.startActivity(intent);
+                        Intent intent;
+                        if(!"".equals(urls.get(position))){
+                            intent = new Intent(mContext, WebViewActivity.class);
+                            intent.putExtra("title", titles.get(position));
+                            intent.putExtra("url", urls.get(position));
+                            mContext.startActivity(intent);
+                        }else{
+                            intent = new Intent(mContext, SelectQuestionActivity.class);
+                            intent.putExtra("title", titles.get(position));
+                            mContext.startActivity(intent);
+                        }
                     }
                 });
             return new HeaderViewHolder(banner);

@@ -59,6 +59,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".SelectQuestionActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"></activity>
         <activity

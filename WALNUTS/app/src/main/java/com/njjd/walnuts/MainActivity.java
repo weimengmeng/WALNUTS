@@ -106,7 +106,6 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AndroidBug54971Workaround.assistActivity(findViewById(R.id.main));
         activity = this;
         ButterKnife.bind(this);
         initView();

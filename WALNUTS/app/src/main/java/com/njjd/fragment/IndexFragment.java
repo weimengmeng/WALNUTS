@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -40,10 +41,13 @@ import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.IconCenterEditText;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
 
@@ -64,7 +68,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/10.
  */
 
-public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener{
+public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener {
     @BindView(R.id.img_order)
     LinearLayout imgOrder;
     @BindView(R.id.button_group)
@@ -73,6 +77,10 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     HorizontalScrollView scrollView;
     @BindView(R.id.index_page)
     ViewPager indexPage;
+    @BindView(R.id.et_search)
+    IconCenterEditText etSearch;
+    @BindView(R.id.txt_cancel)
+    TextView txtCancel;
     private List<View> viewList;
     private MyPagerAdapter adapter;
     private Context context;
@@ -90,7 +98,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private List<MyXRecyclerView> listViews = new ArrayList<>();
     private List<IndexQuestionAdapter> adapterList = new ArrayList<>();
     private List<IndexNavEntity> navList;
-    private String tempKind = "1";
+    private String tempKind = "1", ids = "";
     private String tempOrder = "time";
     private MyReceiver receiver;
 
@@ -103,6 +111,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         ButterKnife.bind(this, view);
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -181,7 +190,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
             list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
-            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1,navList.get(i).getId());
+            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, navList.get(i).getId());
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
             adapterList.add(questionAdapter);
@@ -258,6 +267,27 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //        questionAdapter.notifyDataSetChanged();
 //        LogUtils.d(tempList.size());
         setRefreshListener();
+        etSearch.setOnSearchClickListener(new IconCenterEditText.OnSearchClickListener() {
+            @Override
+            public void onSearchClick(View view) {
+//                txtCancel.setVisibility(View.VISIBLE);
+                //做搜索操作
+                etSearch.onFocusChange(etSearch,false);
+                etSearch.clearFocus();
+                txtCancel.setVisibility(View.GONE);
+            }
+        });
+        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                etSearch.onFocusChange(etSearch,hasFocus);
+                if(hasFocus){
+                    txtCancel.setVisibility(View.VISIBLE);
+                }else{
+                    txtCancel.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void setRefreshListener() {
@@ -282,12 +312,16 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             questionAdapter.setCurrentPage(1);
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("cate_article_id", id);
+        map.put("cate_article_id", Float.valueOf(id).intValue());
         map.put("page", questionAdapter.getCurrentPage());
-        if(questionAdapter.getCurrentPage()==1){
-            map.put("refresh","1");
-        }else {
-            map.put("refresh","0");
+        if (questionAdapter.getCurrentPage() == 1 && indexPage.getCurrentItem() == 0) {
+            map.put("refresh", "1");
+            map.put("article_id", ids);
+        } else {
+            if (indexPage.getCurrentItem() == 0) {
+                map.put("article_id", ids);
+            }
+            map.put("refresh", "0");
         }
         map.put("order", sort);
         map.put("keywords", "");
@@ -308,17 +342,30 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         try {
             object = new JSONObject(gson.toJson(o));
             array = object.getJSONArray("article");
+            if(array.length()==0){
+                list.setNoMore(true);
+                return;
+            }
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
+                if (indexPage.getCurrentItem() == 0)
+                    ids = "";
                 tempList.clear();
             } else {
                 list.loadMoreComplete();
             }
-            if (array.length() < 10) {
-                list.setNoMore(true);
-            }
+//            if (array.length() < 10) {
+//                list.setNoMore(true);
+//            }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i), tempKind);
+                if (indexPage.getCurrentItem() == 0 && questionAdapter.getCurrentPage() == 1) {
+                    if(i==(array.length()-1)){
+                        ids += Float.valueOf(entity.getQuestionId()).intValue();
+                    }else {
+                        ids += Float.valueOf(entity.getQuestionId()).intValue() + ",";
+                    }
+                }
                 tempList.add(entity);
                 if (DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entity.getQuestionId()) != null) {
                     QuestionEntity temp = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entity.getQuestionId());
@@ -344,9 +391,19 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private void initRefresh() {
     }
 
-    @OnClick(R.id.img_order)
-    public void onViewClicked() {
-        popupWindow.showAsDropDown(imgOrder, 0, 0);
+    @OnClick({R.id.img_order, R.id.txt_cancel})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_order:
+                popupWindow.showAsDropDown(imgOrder, 0, 0);
+                break;
+            case R.id.txt_cancel:
+                KeybordS.closeBoard(context);
+                etSearch.clearFocus();
+                txtCancel.setVisibility(View.GONE);
+                etSearch.onFocusChange(etSearch,false);
+                break;
+        }
     }
 
     @Override

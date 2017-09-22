@@ -11,7 +11,7 @@ android {
     }
     defaultConfig {
         applicationId "com.njjd.walnuts"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 22
         versionCode 10
         versionName "1.0.3"

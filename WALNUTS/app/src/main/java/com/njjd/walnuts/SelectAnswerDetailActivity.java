@@ -127,6 +127,14 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 KeybordS.openKeybord(etContent, SelectAnswerDetailActivity.this);
             }
         });
+        imgHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectAnswerDetailActivity.this, PeopleInfoActivity.class);
+                intent.putExtra("uid", imgHead.getTag().toString());
+                startActivity(intent);
+            }
+        });
     }
     private void getDetail() {
         Map<String, Object> map = new HashMap<>();
@@ -178,7 +186,6 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                         txtName.setText(object.getString("uname"));
                         txtMessage.setText(object.getString("introduction"));
                         txtContent.setText(object.getString("content"));
-                        LogUtils.d("huan"+object.getString("p_stat"));
                         if (object.getString("p_stat").equals("1")) {
                             txtAgree.setBackgroundResource(R.drawable.background_button_div);
                             txtAgree.setSelected(true);
