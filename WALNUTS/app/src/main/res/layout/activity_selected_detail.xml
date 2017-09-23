@@ -83,7 +83,8 @@
                 android:layout_marginTop="@dimen/margin"
                 android:background="@drawable/background_layout_div"
                 android:gravity="center"
-                android:paddingBottom="@dimen/padding"
+                android:padding="@dimen/padding"
+                android:typeface="sans"
                 android:text="查看更多内容\n..."
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />

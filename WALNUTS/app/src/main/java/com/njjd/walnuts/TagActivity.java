@@ -124,8 +124,7 @@ public class TagActivity extends BaseActivity  {
             object = new JSONObject(gson.toJson(o));
             array=object.getJSONArray("article");
             if(object.getString("label_stat").equals("1.0")){
-                txtFocus.setText("已关注");
-                txtFocus.setEnabled(false);
+                txtFocus.setText("取消关注");
             }
             if (adapter.getCurrentPage() == 1) {
                 listview.refreshComplete();
@@ -161,16 +160,22 @@ public class TagActivity extends BaseActivity  {
         map.put("label_id",getIntent().getStringExtra("tag_id"));
         map.put("token", SPUtils.get(this,"token","").toString());
         map.put("uid",SPUtils.get(this,"userId","").toString());
-        map.put("select","1");
+        if(txtFocus.getText().toString().equals("取消关注")){
+            map.put("select","0");
+        }else{
+            map.put("select","1");
+        }
         SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(focusListener,this,false,false),map);
         HttpManager.getInstance().focusLabel(postEntity);
     }
     HttpOnNextListener focusListener=new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            ToastUtils.showShortToast(TagActivity.this," 关注成功");
-            txtFocus.setText("已关注");
-            txtFocus.setEnabled(false);
+            if(txtFocus.getText().toString().equals("取消关注")){
+                txtFocus.setText("+关注标签");
+            }else{
+                txtFocus.setText("取消关注");
+            }
         }
     };
 }

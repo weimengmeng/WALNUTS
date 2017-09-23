@@ -88,9 +88,9 @@ public class MyFocusActivity extends BaseActivity {
                 SwipeMenuItem focusItem = new SwipeMenuItem(
                         MyFocusActivity.this);
                 focusItem.setBackground(R.color.login);
-                focusItem.setWidth(240);
+                focusItem.setWidth(200);
                 focusItem.setTitle("取消关注");
-                focusItem.setTitleSize(16);
+                focusItem.setTitleSize(14);
                 focusItem.setTitleColor(Color.WHITE);
                 menu.addMenuItem(focusItem);
             }
@@ -360,12 +360,21 @@ public class MyFocusActivity extends BaseActivity {
             if (!o.toString().equals("")) {
                 JsonObject jsonObject = JSONUtils.getAsJsonObject(o);
                 JsonArray array = JSONUtils.getAsJsonArray(jsonObject.get("article"));
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                JSONObject object;
                 if (array != null) {
                     if(FocusQuesAdapter.CURRENT_PAGE==1) {
                         quesList.clear();
                     }
                     for (int i = 0; i < array.size(); i++) {
-                        quesList.add(new QuestionEntity(array.get(i).getAsJsonObject()));
+                        try {
+                            object=new JSONObject(gson.toJson(array.get(i)));
+                            quesList.add(new QuestionEntity(object,""));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                     quesAdapter.notifyDataSetChanged();
                 }

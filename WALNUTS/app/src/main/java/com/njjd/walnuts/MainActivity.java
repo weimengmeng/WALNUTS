@@ -303,10 +303,16 @@ public class MainActivity extends FragmentActivity {
                 }
                 break;
             case R.id.radio2:
-                fm.beginTransaction().hide(indexFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
-                        .show(findFragment)
-                        .commitAllowingStateLoss();
-                temp = 1;
+                if (temp == 1) {
+                    intent = new Intent();
+                    intent.setAction(ConstantsVal.REFRESH_FIND);
+                    sendBroadcast(intent);
+                } else {
+                    fm.beginTransaction().hide(indexFragment).hide(messFragment).hide(mineFragment).hide(pubFragment)
+                            .show(findFragment)
+                            .commitAllowingStateLoss();
+                    temp = 1;
+                }
                 break;
             case R.id.radio3:
                 intent = new Intent(this, AskActivity.class);
@@ -344,7 +350,6 @@ public class MainActivity extends FragmentActivity {
             }
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();

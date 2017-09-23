@@ -11,15 +11,45 @@
         android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/background_layout_div"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
+            <LinearLayout
+                android:id="@+id/lv_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin"
+                android:paddingTop="@dimen/margin"></LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_total"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/margin"
+                android:gravity="center_vertical|left"
+                android:text="300人参与讨论"
+                android:typeface="sans"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small" />
+
+        </LinearLayout>
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:lineSpacingMultiplier="1.1"
+            android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
-            android:padding="@dimen/margin"
+            android:paddingLeft="@dimen/margin"
+            android:paddingTop="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:textStyle="bold"
             android:text="工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?工业项目一定要能喝酒吗?"
             android:textColor="@color/black"
@@ -36,13 +66,13 @@
             android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_margin"
             android:ellipsize="end"
             android:maxLines="2"
-            android:lineSpacingMultiplier="1.2"
-            android:paddingBottom="@dimen/margin"
+            android:lineSpacingMultiplier="1.3"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal"
             android:typeface="sans" />
@@ -61,23 +91,25 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="1">
-
-            <LinearLayout
-                android:id="@+id/lv_head"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txt_focusNum"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/padding"
+                android:gravity="center|left"
                 android:paddingLeft="@dimen/margin"
-                android:paddingTop="@dimen/padding"></LinearLayout>
+                android:text=""
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small" />
 
             <TextView
-                android:id="@+id/txt_total"
-                android:layout_width="wrap_content"
+                android:id="@+id/txt_answerNum"
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:paddingLeft="@dimen/margin"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|left"
-                android:text="300人参与讨论"
+                android:gravity="center|left"
+                android:text=""
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
 
@@ -85,7 +117,7 @@
                 android:id="@+id/txt_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
                 android:text="15分钟前"

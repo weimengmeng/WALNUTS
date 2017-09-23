@@ -59,7 +59,6 @@ public class CommonUtils {
     //销售模式一级菜单
     private static List<String> sales = new ArrayList<>();
     private static List<CommonEntity> saleList = new ArrayList<>();
-    private static IndexNavEntity entity;
     private static List<TagEntity> tagsList=new ArrayList<>();
     private static List<IndexNavEntity> navList=new ArrayList<>();
     private static List<BannerEntity> bannerList=new ArrayList<>();

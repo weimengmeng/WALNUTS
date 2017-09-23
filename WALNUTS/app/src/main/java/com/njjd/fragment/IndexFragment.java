@@ -327,6 +327,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         map.put("keywords", "");
         map.put("uid", SPUtils.get(context, "userId", "").toString());
         map.put("token", SPUtils.get(context, "token", "").toString());
+        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getQuestionList(postEntity);
     }
@@ -354,9 +355,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             } else {
                 list.loadMoreComplete();
             }
-//            if (array.length() < 10) {
-//                list.setNoMore(true);
-//            }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i), tempKind);
                 if (indexPage.getCurrentItem() == 0 && questionAdapter.getCurrentPage() == 1) {

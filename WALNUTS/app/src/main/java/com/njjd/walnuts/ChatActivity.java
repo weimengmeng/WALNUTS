@@ -224,6 +224,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         EMClient.getInstance().chatManager().sendMessage(message);
         LogUtils.d(getIntent().getStringExtra("openId"));
         messagesList.add(message);
+        handler.sendEmptyMessage(0);
         message.setMessageStatusCallback(emCallBack);
         etContent.setText("");
     }
@@ -233,6 +234,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         EMMessage message = EMMessage.createImageSendMessage(imagePath, false, getIntent().getStringExtra("openId"));
         EMClient.getInstance().chatManager().sendMessage(message);
         messagesList.add(message);
+        handler.sendEmptyMessage(0);
         message.setMessageStatusCallback(emCallBack);
     }
 
@@ -241,6 +243,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         EMMessage message = EMMessage.createVoiceSendMessage(tempFilePath, length, getIntent().getStringExtra("openId"));
         EMClient.getInstance().chatManager().sendMessage(message);
         messagesList.add(message);
+        handler.sendEmptyMessage(0);
         message.setMessageStatusCallback(emCallBack);
     }
 
@@ -252,7 +255,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
 
         @Override
         public void onError(int code, String error) {
-            LogUtils.d("huanxin" + error.toString());
         }
 
         @Override

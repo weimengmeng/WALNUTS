@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,7 +10,6 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1">
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -19,54 +17,51 @@
             android:paddingTop="@dimen/margin"
             android:paddingBottom="@dimen/margin"
             android:gravity="center">
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
-                android:layout_width="@dimen/head_big"
-                android:layout_height="@dimen/head_big"
+                android:layout_width="@dimen/height"
+                android:layout_height="@dimen/height"
                 android:src="@drawable/head" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
+            android:gravity="center_vertical"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:text="通知"
+                android:gravity="bottom"
+                android:typeface="sans"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/big" />
-
+                android:textSize="@dimen/normal" />
             <TextView
                 android:id="@+id/txt_intro"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
-                android:layout_marginTop="@dimen/_top"
-                android:paddingTop="@dimen/padding"
+                android:typeface="sans"
                 android:text="您的回答被评论"
+                android:gravity="center_vertical"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal" />
+                android:textSize="@dimen/small" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
             android:gravity="center|right">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/padding"
-                android:lineSpacingExtra="@dimen/space"
                 android:text=".\n.\n."
-                android:layout_marginTop="@dimen/_margin"
+                android:layout_marginTop="@dimen/_top"
+                android:lineSpacingExtra="-15dp"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/large_big"
                 android:textStyle="bold" />

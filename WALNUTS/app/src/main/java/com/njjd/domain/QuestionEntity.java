@@ -40,7 +40,7 @@ public class QuestionEntity implements Serializable{
             this.content=object.isNull("contents")?"":object.getString("contents");
             this.answerNum=object.isNull("answer_num")?"0":object.getString("answer_num");
             this.focusNum=object.isNull("follow_num")?"0":object.getString("follow_num");
-            this.dateTime=object.isNull("change_time")?"":object.getString("change_time");
+            this.dateTime=object.isNull("change_time")?(object.isNull("add_time")?"":object.getString("add_time")):object.getString("change_time");
             this.photo=object.isNull("imgs")?"":object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.pic=object.isNull("headimgs")?(object.isNull("authheadimg")?"":object.getString("authheadimg")):object.getString("headimgs");
             this.uids=object.isNull("uids")?(object.isNull("auth_uid")?"":object.getString("auth_uid")):object.getString("uids");

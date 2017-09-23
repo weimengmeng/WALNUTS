@@ -87,7 +87,7 @@
             android:textSize="@dimen/normal" />
     </RadioGroup>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.njjd.utils.VpSwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/padding"
@@ -104,15 +104,21 @@
                 android:id="@+id/list_user"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="#00000000"
                 android:listSelector="#00000000"></com.baoyz.swipemenulistview.SwipeMenuListView>
             <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/list_ques"
+                android:dividerHeight="0dp"
+                android:divider="#00000000"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:listSelector="#00000000"
                 android:visibility="gone"></com.baoyz.swipemenulistview.SwipeMenuListView>
             <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/list_tag"
+                android:dividerHeight="0dp"
+                android:divider="#00000000"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:listSelector="#00000000"
@@ -121,5 +127,5 @@
                 android:id="@+id/empty"
                 layout="@layout/layout_nodata"></include>
         </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.njjd.utils.VpSwipeRefreshLayout>
 </LinearLayout>

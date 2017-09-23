@@ -2,8 +2,10 @@ package com.njjd.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.FindAnswerAdapter;
+import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.BannerEntity;
 import com.njjd.domain.ColumnEntity;
@@ -35,6 +38,7 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.GlideImageLoder2;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.ColumnDetailActivity;
@@ -65,7 +69,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.list_find)
-    XRecyclerView listFind;
+    MyXRecyclerView listFind;
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.top)
@@ -76,6 +80,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     private List<ColumnEntity> columnEntities=new ArrayList<>();
     private List<SelectedAnswerEntity> selectedAnswerEntities=new ArrayList<>();
     private SpecialEntity entity;
+    private MyReceiver receiver;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -106,6 +111,10 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initAfterSetContentView(getActivity(), top);
+        receiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConstantsVal.REFRESH_FIND);
+        context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
         txtTitle.setText("精选");
         adapter=new FindAnswerAdapter(context,specialEntities,columnEntities);
@@ -117,6 +126,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
 //        specialEntities.add(new SpecialEntity(null,new SelectedAnswerEntity("1","1","1","http://www.qq745.com/uploads/allimg/141015/1-1410150T344.jpg","丽丽","超级大美女","我被客户说服了怎么办？","1","","想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你")));
         listFind.setLayoutManager(new LinearLayoutManager(context));
         listFind.setAdapter(adapter);
+        listFind.setEmptyView(view.findViewById(R.id.empty));
         listFind.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
         listFind.setRefreshProgressStyle(ProgressStyle.BallPulse);
         adapter.setOnItemClickListener(new FindAnswerAdapter.OnItemClickListener() {
@@ -193,6 +203,15 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         }
     }
 
+    private class MyReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+                listFind.smoothScrollToPosition(0);
+                listFind.setPullRefreshEnabled(true);
+                listFind.refresh();
+                adapter.setCurrentPage(1);
+            getSelectedAnswerList();
+        }
+    }
     @Override
     public void lazyInitData() {
 
@@ -200,5 +219,6 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        context.unregisterReceiver(receiver);
     }
 }

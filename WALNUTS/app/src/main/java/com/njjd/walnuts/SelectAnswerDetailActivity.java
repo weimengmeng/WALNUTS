@@ -260,12 +260,13 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.txt_save,R.id.txt_agree,R.id.txt_more})
+    @OnClick({R.id.back, R.id.txt_save,R.id.txt_agree,R.id.txt_more,R.id.txt_quesTitle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
+            case R.id.txt_quesTitle:
             case R.id.txt_more:
                 Intent intent = new Intent(this, IndexDetailActivity.class);
                 Bundle bundle = new Bundle();
@@ -456,8 +457,4 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             ToastUtils.showShortToast(SelectAnswerDetailActivity.this, "回复成功");
         }
     };
-
-    @OnClick(R.id.txt_more)
-    public void onViewClicked() {
-    }
 }

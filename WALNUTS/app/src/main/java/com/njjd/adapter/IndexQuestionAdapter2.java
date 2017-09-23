@@ -37,13 +37,7 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
     private Context mContext;
     private ImageView head;
     private LayoutInflater inflater;
-    private int index = 0;
     public static int currentPage = 1;
-    private Banner banner;
-    private List<BannerEntity> bannerList= CommonUtils.getInstance().getBannerList();
-    private List<String> images = new ArrayList<>();
-    private List<String> titles = new ArrayList<>();
-    private List<String> urls = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener = null;
     public IndexQuestionAdapter2(Context context, List<QuestionEntity> list) {
         this.mContext = context;
@@ -51,21 +45,16 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
         inflater = LayoutInflater.from(context);
 
     }
-
     //内容长度
     public int getContentItemCount() {
         return mList.size();
     }
-
-
     public int getCurrentPage() {
         return currentPage;
     }
-
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
     }
-
     //判断当前item类型
     @Override
     public int getItemViewType(int position) {
@@ -80,7 +69,8 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
         TextView total;
         TextView createTime;
         TextView content;
-
+        TextView focusNum;
+        TextView answerNum;
         public ContentViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.txt_title);
@@ -92,6 +82,10 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
             total = (TextView) itemView.findViewById(R.id.txt_total);
             createTime = (TextView) itemView
                     .findViewById(R.id.txt_time);
+            focusNum = (TextView) itemView
+                    .findViewById(R.id.txt_focusNum);
+            answerNum = (TextView) itemView
+                    .findViewById(R.id.txt_answerNum);
         }
     }
 
@@ -123,11 +117,14 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
             holder.itemView.setTag(position);
             final QuestionEntity temp = mList.get(position);
             ((ContentViewHolder) holder).title.setText(temp.getTitle());
+           ((ContentViewHolder) holder).focusNum.setText("关注 "+Float.valueOf(temp.getFocusNum()).intValue());
+           ((ContentViewHolder) holder).answerNum.setText("回答 "+Float.valueOf(temp.getAnswerNum()).intValue());
            if(Float.valueOf(temp.getAnswerNum()).intValue() + Float.valueOf(temp.getFocusNum()).intValue()==0){
                ((ContentViewHolder) holder).total.setText("提出了该问题");
            }else{
                ((ContentViewHolder) holder).total.setText("等  " + (Float.valueOf(temp.getPart_num()).intValue()) + "  人参与");
-           }            ParsePosition pos = new ParsePosition(0);
+           }
+           ParsePosition pos = new ParsePosition(0);
             ((ContentViewHolder) holder).createTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(temp.getDateTime(), pos)));
             if ("".equals(temp.getPhoto())) {
                 ((ContentViewHolder) holder).imageView.setVisibility(View.GONE);
@@ -147,7 +144,7 @@ public class IndexQuestionAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ContentViewHolder) holder).lvHead.removeAllViews();
                 ((ContentViewHolder) holder).lvHead.setVisibility(View.VISIBLE);
                 LinearLayout layout;
-                for (int i = 0; i < strs.length && i < 3; i++) {
+                for (int i = 0; i < strs.length && i < 1; i++) {
                     layout = (LinearLayout) inflater.inflate(R.layout.layout_head, null);
                     head = (ImageView) layout.findViewById(R.id.head);
                     GlideImageLoder.getInstance().displayImage(mContext, strs[i], head);

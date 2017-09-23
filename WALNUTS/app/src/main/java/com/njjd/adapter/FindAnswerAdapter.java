@@ -156,29 +156,47 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ((ContentViewHolder) holder).focus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(list.get(position).getAnswerEntity().getIsFocus().equals("1.0")){
-                            return;
-                        }
-                        Map<String, Object> map = new HashMap<>();
+                        final Map<String, Object> map = new HashMap<>();
                         map.put("uid", SPUtils.get(context, "userId", "").toString());
                         map.put("token", SPUtils.get(context, "token", "").toString());
                         map.put("be_uid", list.get(position).getAnswerEntity().getUid());
-                        map.put("select",1);
+                        if(list.get(position).getAnswerEntity().getIsFocus().equals("1.0")){
+                            map.put("select",0);
+                        }else{
+                            map.put("select",1);
+                        }
                         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
                             @Override
                             public void onNext(Object o) {
-                                list.get(position).getAnswerEntity().setIsFocus("1.0");
+                                if(map.get("select").toString().equals("0")){
+                                    list.get(position).getAnswerEntity().setIsFocus("0.0");
+                                    for(int i=0;i<list.size();i++){
+                                        if(list.get(i).getAnswerEntity().getUid().equals(list.get(position).getAnswerEntity().getUid())){
+                                            list.get(i).getAnswerEntity().setIsFocus("0.0");
+                                        }
+                                    }
+                                    ((ContentViewHolder) holder).focus.setText("取消关注");
+                                    ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
+                                    ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
+                                }else{
+                                    list.get(position).getAnswerEntity().setIsFocus("1.0");
+                                    for(int i=0;i<list.size();i++){
+                                        if(list.get(i).getAnswerEntity().getUid().equals(list.get(position).getAnswerEntity().getUid())){
+                                            list.get(i).getAnswerEntity().setIsFocus("1.0");
+                                        }
+                                    }
+                                    ((ContentViewHolder) holder).focus.setText("+关注TA");
+                                    ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.txt_color));
+                                    ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+                                }
                                 notifyDataSetChanged();
-                                ((ContentViewHolder) holder).focus.setText("已关注");
-                                ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
-                                ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
                             }
                         }, context, true, false), map);
                         HttpManager.getInstance().followUser(postEntity);
                     }
                 });
                 if (selectedAnswerEntity.getIsFocus().equals("1.0")) {
-                    ((ContentViewHolder) holder).focus.setText("已关注");
+                    ((ContentViewHolder) holder).focus.setText("取消关注");
                     ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
                     ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
                 } else {

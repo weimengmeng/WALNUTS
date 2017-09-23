@@ -60,8 +60,8 @@
             android:layout_height="match_parent">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
-                android:layout_width="@dimen/head_big"
-                android:layout_height="@dimen/head_big"
+                android:layout_width="@dimen/height"
+                android:layout_height="@dimen/height"
                 android:src="@drawable/head"/>
         </LinearLayout>
     </LinearLayout>

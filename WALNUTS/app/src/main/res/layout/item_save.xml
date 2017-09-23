@@ -23,6 +23,7 @@
             android:paddingLeft="@dimen/margin"
             android:text=""
             android:typeface="sans"
+            android:textStyle="bold"
             android:textColor="@color/gray"
             android:textScaleX="1"
             android:textSize="@dimen/large" />

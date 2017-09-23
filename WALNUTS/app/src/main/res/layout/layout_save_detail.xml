@@ -115,10 +115,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:typeface="sans"
         android:background="@drawable/background_layout_div"
         android:gravity="center"
         android:text="查看其他回答\n..."
         android:textColor="@color/txt_color"
-        android:paddingBottom="@dimen/padding"
+        android:padding="@dimen/padding"
         android:textSize="@dimen/normal" />
 </LinearLayout>

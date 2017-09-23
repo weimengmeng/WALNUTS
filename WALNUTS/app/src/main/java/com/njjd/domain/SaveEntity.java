@@ -42,7 +42,7 @@ public class SaveEntity implements Serializable{
             this.article_content=object.getString("article_content");
             this.article_id=object.getString("article_id");
             this.title=object.getString("title");
-            this.article_imgs=object.getString("article_imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.article_imgs=object.isNull("article_imgs")?"":object.getString("article_imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.article_answer_num=object.getString("article_answer_num");
             this.article_follow_num=object.getString("article_follow_num");
             this.article_point_num=object.getString("article_point_num");

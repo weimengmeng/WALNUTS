@@ -19,7 +19,7 @@
     <dimen name="line_height">8dp</dimen>
     <dimen name="height">40dp</dimen>
     <dimen name="round">45dp</dimen>
-    <dimen name="head">30dp</dimen>
+    <dimen name="head">25dp</dimen>
     <dimen name="head_big">50dp</dimen>
     <dimen name="head_large">80dp</dimen>
     <dimen name="shadow">19dp</dimen>

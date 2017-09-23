@@ -9,9 +9,13 @@ import android.widget.TextView;
 
 import com.njjd.domain.FocusEntity;
 import com.njjd.domain.QuestionEntity;
+import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.walnuts.R;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,7 +72,12 @@ public class FocusQuesAdapter extends BaseAdapter {
         focusEntity=list.get(position);
         hodel.title.setText(focusEntity.getTitle());
         hodel.tag.setText("关注量: "+Float.valueOf(focusEntity.getFocusNum()).intValue());
-        hodel.date.setText(focusEntity.getDateTime());
+        ParsePosition pos = new ParsePosition(0);
+        try {
+            hodel.date.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(focusEntity.getDateTime())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return convertView;
     }
     private class ViewHodel{

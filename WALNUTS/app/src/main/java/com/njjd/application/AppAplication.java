@@ -1,6 +1,5 @@
 package com.njjd.application;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Notification;
@@ -13,16 +12,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
+import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.ios.dialog.AlertDialog;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.LogToFile;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
@@ -44,7 +41,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,6 +59,7 @@ public class AppAplication extends Application {
         context = this.getApplicationContext();
         replaceSystemDefaultFont(this, fontPath);
 //        LogToFile.init(this);
+        registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
         CrashHandler handler = CrashHandler.getInstance();
         handler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(handler);

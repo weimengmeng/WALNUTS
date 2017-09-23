@@ -6,6 +6,7 @@ package com.njjd.application;
 
 public class ConstantsVal {
     public static String REFRESH="refresh";
+    public static String REFRESH_FIND="refresh_find";
     public static String MESSAGE_RECEIVE="messreceive";
     public static String NEW_INFORM="newinform";
     public static String LOGIN_PASS="loginpass";

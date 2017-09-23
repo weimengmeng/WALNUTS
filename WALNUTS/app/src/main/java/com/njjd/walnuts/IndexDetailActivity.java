@@ -111,7 +111,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     Button btnCancle;
     @BindView(R.id.btn_reply)
     Button btnReply;
-    private LoadingDialog loadingDialog;
     private QuestionEntity questionEntity;
     private RelativeLayout relativeLayout;
     private ImageView imageView;
@@ -140,7 +139,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void initView(View view) {
         AndroidBug5497Workaround.assistActivity(this);
-        loadingDialog=new LoadingDialog(this);
         btnAddHelp.setText("");
         btnAddHelp.setVisibility(View.VISIBLE);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);

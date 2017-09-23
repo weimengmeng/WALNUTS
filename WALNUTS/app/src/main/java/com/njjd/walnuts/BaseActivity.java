@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
+import com.github.anzewei.parallaxbacklayout.ParallaxBack;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by mrwim on 17/7/13.
  */
-
+@ParallaxBack
 public abstract class BaseActivity extends AppCompatActivity implements HttpOnNextListener{
     /** 是否沉浸状态栏 **/
     private boolean isSetStatusBar = true;

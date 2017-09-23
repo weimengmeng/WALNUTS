@@ -26,21 +26,21 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
+                android:layout_weight="0.16"
                 android:paddingLeft="@dimen/margin"
                 android:gravity="center|left">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_head"
-                    android:layout_width="@dimen/round"
-                    android:layout_height="@dimen/round"
+                    android:layout_width="@dimen/height"
+                    android:layout_height="@dimen/height"
                     android:src="@drawable/head" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
+                android:layout_weight="0.54"
                 android:gravity="center_vertical|left"
                 android:orientation="vertical"
                 android:weightSum="1">
@@ -97,6 +97,7 @@
 
         <TextView
             android:id="@+id/txt_content"
+            android:layout_margin="@dimen/padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="@dimen/line_height"
