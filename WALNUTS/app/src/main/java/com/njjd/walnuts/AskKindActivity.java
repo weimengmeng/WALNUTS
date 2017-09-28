@@ -68,7 +68,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     public void initView(View view) {
         ImmersedStatusbarUtils.initAfterSetContentView(this, top);
         back.setText("提问");
-        txtTitle.setText("问题标签");
+        txtTitle.setText("问题话题");
         bundle = getIntent().getBundleExtra("question");
         inflater = LayoutInflater.from(this);
         entities = CommonUtils.getInstance().getTagsList();
@@ -110,7 +110,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.btn_submit:
                 if (list.size() < 1) {
-                    ToastUtils.showShortToast(this, "至少选择一个标签");
+                    ToastUtils.showShortToast(this, "至少选择一个话题");
                     return;
                 }
                 MobclickAgent.onEvent(this, ConstantsVal.PUBQUESTION);
@@ -192,7 +192,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             list.remove(v.getTag());
         } else {
             if(list.size()>3){
-                ToastUtils.showShortToast(this,"最多可以选择4个标签哦");
+                ToastUtils.showShortToast(this,"最多可以选择4个话题哦");
                 return;
             }
             v.setBackgroundResource(R.drawable.round_textview1);

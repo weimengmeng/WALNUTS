@@ -25,7 +25,7 @@ public class LogUtils {
     /**
      * Verbose日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      */
     public static void v(String tag, Object msg) {
@@ -35,7 +35,7 @@ public class LogUtils {
     /**
      * Verbose日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      * @param tr  异常
      */
@@ -55,7 +55,7 @@ public class LogUtils {
     /**
      * Debug日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      */
     public static void d(String tag, Object msg) {
@@ -65,7 +65,7 @@ public class LogUtils {
     /**
      * Debug日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      * @param tr  异常
      */
@@ -85,7 +85,7 @@ public class LogUtils {
     /**
      * Info日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      */
     public static void i(String tag, Object msg) {
@@ -95,7 +95,7 @@ public class LogUtils {
     /**
      * Info日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      * @param tr  异常
      */
@@ -115,7 +115,7 @@ public class LogUtils {
     /**
      * Warn日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      */
     public static void w(String tag, Object msg) {
@@ -125,7 +125,7 @@ public class LogUtils {
     /**
      * Warn日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      * @param tr  异常
      */
@@ -145,7 +145,7 @@ public class LogUtils {
     /**
      * Error日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      */
     public static void e(String tag, Object msg) {
@@ -155,7 +155,7 @@ public class LogUtils {
     /**
      * Error日志
      *
-     * @param tag 标签
+     * @param tag 话题
      * @param msg 消息
      * @param tr  异常
      */
@@ -166,7 +166,7 @@ public class LogUtils {
     /**
      * 根据tag, msg和等级，输出日志
      *
-     * @param tag  标签
+     * @param tag  话题
      * @param msg  消息
      * @param tr   异常
      * @param type 日志类型

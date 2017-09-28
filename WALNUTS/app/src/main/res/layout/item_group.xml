@@ -101,7 +101,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="@dimen/line_height"
-            android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             android:text="工业项目销售工业项目销售工项目销售工业工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售"
             android:textColor="@color/gray"

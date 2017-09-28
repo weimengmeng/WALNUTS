@@ -88,7 +88,7 @@ public class MyFocusActivity extends BaseActivity {
                 SwipeMenuItem focusItem = new SwipeMenuItem(
                         MyFocusActivity.this);
                 focusItem.setBackground(R.color.login);
-                focusItem.setWidth(200);
+                focusItem.setWidth(220);
                 focusItem.setTitle("取消关注");
                 focusItem.setTitleSize(14);
                 focusItem.setTitleColor(Color.WHITE);

@@ -85,7 +85,7 @@ public class CommonUtils {
         getSaleModel();
         //获取首页导航栏分类
         getNavInfo();
-//        //获取标签分类
+//        //获取话题分类
         getTagInfo();
         getBannerInfo();
     }

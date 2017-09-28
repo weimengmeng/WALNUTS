@@ -75,7 +75,7 @@ public interface HttpService {
      * 社区模块
      * 首页 获取分类、获取问题列表、获取banner
      * 详情 获取回答、获取评论、获取回复、回答、回复、评论、收藏回答、关注问题
-     * 提问 获取标签、提问
+     * 提问 获取话题、提问
      */
     @POST("index/getCateArticle")
     Observable<HttpResult<Object>> getNav(@QueryMap Map<String, String> params);

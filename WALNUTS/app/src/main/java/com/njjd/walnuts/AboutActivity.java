@@ -35,7 +35,7 @@ public class AboutActivity extends BaseActivity {
     public void initView(View view) {
         back.setText("设置");
         txtTitle.setText("关于核桃");
-        txtVersion.setText(getLocalVersionName(this)+"."+getLocalVersion(this)+"版");
+        txtVersion.setText(getLocalVersionName(this)+"版");
     }
     public static int getLocalVersion(Context ctx) {
         int localVersion = 0;

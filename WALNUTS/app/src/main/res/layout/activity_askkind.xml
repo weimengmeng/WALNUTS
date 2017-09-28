@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:gravity="center_vertical"
-            android:text="请为该问题添加标签"
+            android:text="请为该问题添加话题"
             android:textColor="@color/txt_color"
             android:textSize="@dimen/normal" />
 

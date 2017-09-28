@@ -105,4 +105,6 @@ dependencies {
     compile files('libs/umeng_social_shareview.jar')
     compile project(':xrecyclerview')
     compile 'com.github.anzewei:parallaxbacklayout:+'
+    compile files('libs/SocialSDK_alipay.jar')
+    compile files('libs/libapshare.jar')
 }

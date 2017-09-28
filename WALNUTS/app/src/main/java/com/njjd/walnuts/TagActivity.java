@@ -172,7 +172,7 @@ public class TagActivity extends BaseActivity  {
         @Override
         public void onNext(Object o) {
             if(txtFocus.getText().toString().equals("取消关注")){
-                txtFocus.setText("+关注标签");
+                txtFocus.setText("+关注话题");
             }else{
                 txtFocus.setText("取消关注");
             }

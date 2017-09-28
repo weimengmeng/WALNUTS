@@ -437,18 +437,16 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
     @OnClick({R.id.tv_cancle, R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
     public void onViewClicked(View view) {
-        UMWeb web;
-        UMImage image;
         switch (view.getId()) {
             case R.id.btn_add_help:
-                ToastUtils.showShortToast(this, "功能正在开发，敬请期待");
-//                mask.setVisibility(View.VISIBLE);
-//                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if(imm != null) {
-//                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
-//                            0);
-//                }
-//                lvShare.setVisibility(View.VISIBLE);
+//                ToastUtils.showShortToast(this, "功能正在开发，敬请期待");
+                mask.setVisibility(View.VISIBLE);
+                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm != null) {
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                            0);
+                }
+                lvShare.setVisibility(View.VISIBLE);
                 break;
             case R.id.back:
                 finish();
@@ -458,44 +456,22 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 lvShare.setVisibility(View.GONE);
                 break;
             case R.id.share_aili:
-                ToastUtils.showShortToast(this, "支付宝");
-                mask.setVisibility(View.GONE);
-                lvShare.setVisibility(View.GONE);
+                shareAction(SHARE_MEDIA.ALIPAY);
                 break;
             case R.id.share_qq:
-                ToastUtils.showShortToast(this, "QQ");
-                mask.setVisibility(View.GONE);
-                lvShare.setVisibility(View.GONE);
+                shareAction(SHARE_MEDIA.QQ);
                 break;
             case R.id.share_qzone:
-                ToastUtils.showShortToast(this, "QQ空间");
-                mask.setVisibility(View.GONE);
-                lvShare.setVisibility(View.GONE);
+                shareAction(SHARE_MEDIA.QZONE);
                 break;
             case R.id.share_sina:
-                ToastUtils.showShortToast(this, "新浪");
-                mask.setVisibility(View.GONE);
-                lvShare.setVisibility(View.GONE);
+                shareAction(SHARE_MEDIA.SINA);
                 break;
             case R.id.share_wechat:
-                web = new UMWeb("https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIyMzc0Mjc1Ng==&scene=124#wechat_redirect");
-                web.setTitle(questionEntity.getTitle());//标题
-                image = new UMImage(IndexDetailActivity.this, R.drawable.logo);//资源文件
-                web.setThumb(image);
-                web.setDescription("有营养的销售社区");//描述
-                new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN).withMedia(web).setCallback(mShareListener).share();
-                mask.setVisibility(View.GONE);
-                lvShare.setVisibility(View.GONE);
+                shareAction(SHARE_MEDIA.WEIXIN);
                 break;
             case R.id.share_wechat_circle1:
-                web = new UMWeb("https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIyMzc0Mjc1Ng==&scene=124#wechat_redirect");
-                web.setTitle(questionEntity.getTitle());//标题
-                image = new UMImage(IndexDetailActivity.this, R.drawable.logo);//资源文件
-                web.setThumb(image);
-                web.setDescription("有营养的销售社区");//描述
-                new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).withMedia(web).setCallback(mShareListener).share();
-                mask.setVisibility(View.GONE);
-                lvShare.setVisibility(View.GONE);
+                shareAction(SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
             case R.id.mask:
                 mask.setVisibility(View.GONE);
@@ -537,7 +513,25 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-
+    private void  shareAction(SHARE_MEDIA share_media){
+        UMWeb web;
+        UMImage image;
+        mask.setVisibility(View.GONE);
+        lvShare.setVisibility(View.GONE);
+        web = new UMWeb("http://192.168.0.111/hetao_api/public/share/demo.html?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web.setTitle(questionEntity.getTitle());//标题
+        if("".equals(questionEntity.getPhoto())){
+            image = new UMImage(IndexDetailActivity.this, R.drawable.logo);//资源文件
+        }else{
+            String[] strings =questionEntity.getPhoto().split(",");
+            image = new UMImage(IndexDetailActivity.this, strings[0].replace("\"", ""));//资源文件
+        }
+        web.setThumb(image);
+        web.setDescription(questionEntity.getContent());//描述
+        new ShareAction(this).setPlatform(share_media).withMedia(web).setCallback(mShareListener).share();
+        mask.setVisibility(View.GONE);
+        lvShare.setVisibility(View.GONE);
+    }
     private void addComment(String comment) {
         this.content = comment;
         Map<String, Object> map = new HashMap<>();
@@ -709,23 +703,17 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-
     private class CustomShareListener implements UMShareListener {
-
         private WeakReference<IndexDetailActivity> mActivity;
-
         private CustomShareListener(IndexDetailActivity activity) {
             mActivity = new WeakReference(activity);
         }
-
         @Override
         public void onStart(SHARE_MEDIA platform) {
 //            loadingDialog.show();
         }
-
         @Override
         public void onResult(SHARE_MEDIA platform) {
-
             if (platform.name().equals("WEIXIN_FAVORITE")) {
                 Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
             } else {
@@ -767,20 +755,17 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             }
 
         }
-
         @Override
         public void onCancel(SHARE_MEDIA platform) {
             ToastUtils.showShortToast(IndexDetailActivity.this,"分享取消");
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         /** attention to this below ,must add this**/
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
