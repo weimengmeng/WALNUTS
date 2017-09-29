@@ -89,7 +89,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
             case "4.0":
                 try {
                     if(tempEntity.getContent().getString("level").equals("1.0")){
-                        viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回复了你的回答");
+                        viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人评论了你的回答");
                     }else{
                         viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回复了你的评论");
                     }

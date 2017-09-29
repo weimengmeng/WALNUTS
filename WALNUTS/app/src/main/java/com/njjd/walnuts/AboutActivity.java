@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.njjd.utils.ImmersedStatusbarUtils;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -68,7 +66,6 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(this,topView);
     }
 
     @OnClick(R.id.back)

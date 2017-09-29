@@ -14,11 +14,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.utils.DepthPageTransformer;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.VpSwipeRefreshLayout;
 import com.njjd.walnuts.R;
 
@@ -55,30 +53,9 @@ public class FindFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            // 透明导航栏
-//            window.addFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            if (titleViewGroup == null)
-                return;
-            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
-            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
-        }
-    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initAfterSetContentView(getActivity(), top);
         viewList = new ArrayList<>();
         viewList.add(view.inflate(context, R.layout.find_jinxuan, null));
         viewList.add(view.inflate(context, R.layout.find_zhuanlan, null));

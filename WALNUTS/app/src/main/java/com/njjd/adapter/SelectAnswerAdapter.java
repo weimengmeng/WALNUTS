@@ -14,6 +14,7 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.R;
 
@@ -84,7 +85,7 @@ public class SelectAnswerAdapter extends BaseAdapter {
         } else {
             hodel.pic.setVisibility(View.VISIBLE);
             String[] strings = entity.getPhoto().split(",");
-            GlideImageLoder.getInstance().displayImage(context, strings[0].replace("\"", ""), hodel.pic);
+            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+strings[0].replace("\"", ""), hodel.pic);
         }
         hodel.reply.setText(entity.getReplyContent());
         final ContentViewHolder myhodel=hodel;

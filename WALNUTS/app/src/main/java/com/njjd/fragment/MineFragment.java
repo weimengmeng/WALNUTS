@@ -95,38 +95,9 @@ public class MineFragment extends BaseFragment {
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getActivity().getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            // 透明导航栏
-//            window.addFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-        initAfterSetContentView(getActivity(),txtChange);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),txtChange);
         getUserInfo();
         return view;
-    }
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            if (titleViewGroup == null)
-                return;
-            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
-            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
-        }
     }
     @Override
     public void lazyInitData() {

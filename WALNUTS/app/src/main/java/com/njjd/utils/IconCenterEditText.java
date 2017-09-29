@@ -103,7 +103,7 @@ public class IconCenterEditText extends EditText implements View.OnFocusChangeLi
     public void onFocusChange(View v, boolean hasFocus) {
         Log.d(TAG, "onFocusChange execute");
         // 恢复EditText默认的样式
-        if (!pressSearch && TextUtils.isEmpty(getText().toString())) {
+        if (pressSearch && TextUtils.isEmpty(getText().toString())) {
             isLeft = hasFocus;
         }
     }

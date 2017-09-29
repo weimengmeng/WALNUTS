@@ -37,7 +37,7 @@ public class ImmersedStatusbarUtils {
 //            // 透明导航栏
 //            window.addFlags(
 //                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.setStatusBarColor(activity.getResources().getColor(R.color.white));
+//            window.setStatusBarColor(activity.getResources().getColor(R.color.white));
             if (titleViewGroup == null)
                 return;
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
@@ -45,28 +45,6 @@ public class ImmersedStatusbarUtils {
             titleViewGroup.setPadding(0, statusBarHeight, 0,0);
         }
     }
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView2(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-//            window.addFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.setStatusBarColor(activity.getResources().getColor(R.color.white));
-            if (titleViewGroup == null)
-                return;
-            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
-            int statusBarHeight = getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
-        }
-    }
-
     /**
      * 获取状态栏高度
      *

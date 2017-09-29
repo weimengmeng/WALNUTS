@@ -37,11 +37,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
            return;
         }
         MobclickAgent.reportError(context,arg1);
-//        try {
-//            throw new Exception(arg1);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

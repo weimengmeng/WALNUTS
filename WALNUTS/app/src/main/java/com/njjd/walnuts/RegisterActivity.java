@@ -1,17 +1,14 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,15 +23,11 @@ import com.google.gson.JsonObject;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BasePopupWindow;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;
 import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;

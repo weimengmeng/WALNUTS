@@ -1,8 +1,10 @@
 package com.njjd.walnuts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -17,7 +20,6 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.njjd.adapter.AnswerCommentAdapter;
-import com.njjd.adapter.AnswerReplyAdapter;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.CommentEntity;
 import com.njjd.domain.QuestionEntity;
@@ -28,11 +30,19 @@ import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +92,8 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     LinearLayout lvAnswer;
     @BindView(R.id.et_content)
     EditText etContent;
+    @BindView(R.id.lv_share)
+    LinearLayout lvShare;
     @BindView(R.id.btn_cancle)
     Button btnCancle;
     @BindView(R.id.btn_reply)
@@ -94,6 +106,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     private int type=0,open=0,agree=0;
     private String content;
     private String questionId="",questiontitle="";
+    private UMShareListener mShareListener;
     @Override
     public int bindLayout() {
         return R.layout.activity_selected_detail;
@@ -101,8 +114,8 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
 
     @Override
     public void initView(View view) {
-        txtTitle.setText("精选回答");
-        btnAddHelp.setVisibility(View.VISIBLE);
+        txtTitle.setText("回答详情");
+//        btnAddHelp.setVisibility(View.VISIBLE);
         questionId = getIntent().getStringExtra("questionId");
         answer_id = getIntent().getStringExtra("answer_id");
         questiontitle=getIntent().getStringExtra("questionTitle");
@@ -118,6 +131,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 type = 0;
                 lvReply.setVisibility(View.VISIBLE);
+                lvShare.setVisibility(View.GONE);
                 mask.setVisibility(View.VISIBLE);
                 etContent.requestFocus();
                 btnCancle.setText("取消回复");
@@ -135,6 +149,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 startActivity(intent);
             }
         });
+        mShareListener = new CustomShareListener(this);
     }
     private void getDetail() {
         Map<String, Object> map = new HashMap<>();
@@ -260,9 +275,19 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.txt_save,R.id.txt_agree,R.id.txt_more,R.id.txt_quesTitle})
+    @OnClick({ R.id.mask,R.id.tv_cancle,R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1,R.id.btn_add_help,R.id.back, R.id.txt_save,R.id.txt_agree,R.id.txt_more,R.id.txt_quesTitle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.btn_add_help:
+//                ToastUtils.showShortToast(this, "功能正在开发，敬请期待");
+                mask.setVisibility(View.VISIBLE);
+                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm != null) {
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                            0);
+                }
+                lvShare.setVisibility(View.VISIBLE);
+                break;
             case R.id.back:
                 finish();
                 break;
@@ -274,7 +299,14 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 intent.putExtra("question", bundle);
                 intent.putExtra("type", "1");
                 startActivity(intent);
+                finish();
                 overridePendingTransition(R.anim.in, R.anim.out);
+                break;
+            case R.id.mask:
+                mask.setVisibility(View.GONE);
+                lvReply.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent, SelectAnswerDetailActivity.this);
                 break;
             case R.id.txt_save:
                 if(txtSave.getTag().toString().equals("1")) {
@@ -290,7 +322,48 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                     agreeOrSave("point_comment_id_not");
                 }
                 break;
+            case R.id.tv_cancle:
+                mask.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
+                break;
+            case R.id.share_aili:
+                shareAction(SHARE_MEDIA.ALIPAY);
+                break;
+            case R.id.share_qq:
+                shareAction(SHARE_MEDIA.QQ);
+                break;
+            case R.id.share_qzone:
+                shareAction(SHARE_MEDIA.QZONE);
+                break;
+            case R.id.share_sina:
+                shareAction(SHARE_MEDIA.SINA);
+                break;
+            case R.id.share_wechat:
+                shareAction(SHARE_MEDIA.WEIXIN);
+                break;
+            case R.id.share_wechat_circle1:
+                shareAction(SHARE_MEDIA.WEIXIN_CIRCLE);
+                break;
         }
+    }
+    private void  shareAction(SHARE_MEDIA share_media){
+        UMWeb web;
+        UMImage image;
+        mask.setVisibility(View.GONE);
+        lvShare.setVisibility(View.GONE);
+        web = new UMWeb(HttpManager.BASE_URL2+"share/demo.html?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web.setTitle(questionEntity.getTitle());//标题
+        if("".equals(questionEntity.getPhoto())){
+            image = new UMImage(SelectAnswerDetailActivity.this, R.drawable.logo);//资源文件
+        }else{
+            String[] strings =questionEntity.getPhoto().split(",");
+            image = new UMImage(SelectAnswerDetailActivity.this, strings[0].replace("\"", ""));//资源文件
+        }
+        web.setThumb(image);
+        web.setDescription(questionEntity.getContent());//描述
+        new ShareAction(this).setPlatform(share_media).withMedia(web).setCallback(mShareListener).share();
+        mask.setVisibility(View.GONE);
+        lvShare.setVisibility(View.GONE);
     }
     private void agreeOrSave(final String params){
         Map<String, Object> map = new HashMap<>();
@@ -457,4 +530,72 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             ToastUtils.showShortToast(SelectAnswerDetailActivity.this, "回复成功");
         }
     };
+    private class CustomShareListener implements UMShareListener {
+        private WeakReference<SelectAnswerDetailActivity> mActivity;
+        private CustomShareListener(SelectAnswerDetailActivity activity) {
+            mActivity = new WeakReference(activity);
+        }
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+//            loadingDialog.show();
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            if (platform.name().equals("WEIXIN_FAVORITE")) {
+                Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            } else {
+                if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                        && platform != SHARE_MEDIA.EMAIL
+                        && platform != SHARE_MEDIA.FLICKR
+                        && platform != SHARE_MEDIA.FOURSQUARE
+                        && platform != SHARE_MEDIA.TUMBLR
+                        && platform != SHARE_MEDIA.POCKET
+                        && platform != SHARE_MEDIA.PINTEREST
+
+                        && platform != SHARE_MEDIA.INSTAGRAM
+                        && platform != SHARE_MEDIA.GOOGLEPLUS
+                        && platform != SHARE_MEDIA.YNOTE
+                        && platform != SHARE_MEDIA.EVERNOTE) {
+                }
+
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                    && platform != SHARE_MEDIA.EMAIL
+                    && platform != SHARE_MEDIA.FLICKR
+                    && platform != SHARE_MEDIA.FOURSQUARE
+                    && platform != SHARE_MEDIA.TUMBLR
+                    && platform != SHARE_MEDIA.POCKET
+                    && platform != SHARE_MEDIA.PINTEREST
+
+                    && platform != SHARE_MEDIA.INSTAGRAM
+                    && platform != SHARE_MEDIA.GOOGLEPLUS
+                    && platform != SHARE_MEDIA.YNOTE
+                    && platform != SHARE_MEDIA.EVERNOTE) {
+                Toast.makeText(mActivity.get()," 分享失败", Toast.LENGTH_SHORT).show();
+                if (t != null) {
+                    Log.d("throw", "throw:" + t.getMessage());
+                }
+            }
+
+        }
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtils.showShortToast(SelectAnswerDetailActivity.this,"分享取消");
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /** attention to this below ,must add this**/
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(this).release();
+    }
 }

@@ -109,8 +109,6 @@ public interface HttpService {
     Observable<HttpResult<Object>> getFollowLabel(@QueryMap Map<String, String> params);
     @POST("index/getFollowArticle")
     Observable<HttpResult<Object>> getFollowArticle(@QueryMap Map<String, String> params);
-    @POST("index/pubReply")
-    Observable<HttpResult<Object>> pubReply(@QueryMap Map<String, String> params);
     /**
      * 通知消息模块
      */

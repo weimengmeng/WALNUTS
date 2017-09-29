@@ -1,12 +1,9 @@
 package com.njjd.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,8 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,7 +34,6 @@ import com.njjd.domain.InformEntity;
 import com.njjd.domain.MyConversation;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.DepthPageTransformer;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ItemRemoveRecyclerView;
 import com.njjd.utils.LogUtils;
@@ -96,6 +90,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
         return view;
     }
 
@@ -126,27 +121,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-//            window.addFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            if (titleViewGroup == null)
-                return;
-            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
-            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0, 0);
-        }
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -159,7 +133,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         IntentFilter filter1 = new IntentFilter();
         filter1.addAction(ConstantsVal.NEW_INFORM);
         context.registerReceiver(informReceive, filter1);
-        initAfterSetContentView(getActivity(), top);
         LinearLayout linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_chat, null);
         listMes = (ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
         listMes.setEmptyView(linearLayout.findViewById(R.id.empty));

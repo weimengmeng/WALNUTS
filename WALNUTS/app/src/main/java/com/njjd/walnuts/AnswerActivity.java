@@ -4,15 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -54,7 +51,6 @@ public class AnswerActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
     }
 
     @OnClick({R.id.back, R.id.btn_submit})

@@ -13,8 +13,6 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.domain.CommonEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -161,7 +159,6 @@ public class PersonalActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, top);
         btnAddHelp.setVisibility(View.VISIBLE);
     }
 

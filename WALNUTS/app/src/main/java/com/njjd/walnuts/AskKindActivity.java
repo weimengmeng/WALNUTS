@@ -17,7 +17,6 @@ import com.njjd.application.ConstantsVal;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
@@ -66,7 +65,6 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     @SuppressWarnings("ResourceType")
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, top);
         back.setText("提问");
         txtTitle.setText("问题话题");
         bundle = getIntent().getBundleExtra("question");

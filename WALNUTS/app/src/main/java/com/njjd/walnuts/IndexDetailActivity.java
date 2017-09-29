@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
-import com.example.retrofit.mywidget.LoadingDialog;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +34,6 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
@@ -141,7 +139,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         AndroidBug5497Workaround.assistActivity(this);
         btnAddHelp.setText("");
         btnAddHelp.setVisibility(View.VISIBLE);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
         back.setText("返回");
@@ -518,10 +515,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://192.168.0.111/hetao_api/public/share/demo.html?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb(HttpManager.BASE_URL2+"share/demo.html?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
         if("".equals(questionEntity.getPhoto())){
-            image = new UMImage(IndexDetailActivity.this, R.drawable.logo);//资源文件
+            image = new UMImage(IndexDetailActivity.this, R.drawable.share);//资源文件
         }else{
             String[] strings =questionEntity.getPhoto().split(",");
             image = new UMImage(IndexDetailActivity.this, strings[0].replace("\"", ""));//资源文件
@@ -748,7 +745,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     && platform != SHARE_MEDIA.GOOGLEPLUS
                     && platform != SHARE_MEDIA.YNOTE
                     && platform != SHARE_MEDIA.EVERNOTE) {
-                Toast.makeText(mActivity.get(), platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity.get(), "分享失败", Toast.LENGTH_SHORT).show();
                 if (t != null) {
                     Log.d("throw", "throw:" + t.getMessage());
                 }

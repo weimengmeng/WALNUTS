@@ -12,7 +12,6 @@ import com.hyphenate.chat.EMClient;
 import com.ios.dialog.AlertDialog;
 import com.njjd.application.ConstantsVal;
 import com.njjd.utils.CleanMessageUtil;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
@@ -81,7 +80,6 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
     }
 
     @OnClick({R.id.back, R.id.lv_clean, R.id.lv_about, R.id.lv_user_agreement, R.id.lv_feedback, R.id.btn_exit})

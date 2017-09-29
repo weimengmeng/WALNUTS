@@ -87,9 +87,6 @@ public class PeopleInfoActivity extends BaseActivity {
             // 透明状态栏
             window.addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             if (titleViewGroup == null)
                 return;
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
@@ -102,7 +99,6 @@ public class PeopleInfoActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("ouid", tempUser);
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUserInfo(postEntity);
     }

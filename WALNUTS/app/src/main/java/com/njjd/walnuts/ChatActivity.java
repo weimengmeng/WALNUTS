@@ -1,14 +1,10 @@
 package com.njjd.walnuts;
 
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -27,7 +23,6 @@ import com.hyphenate.chat.EMMessage;
 import com.njjd.adapter.MSGLAdapter;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.ToastUtils;
 import com.voice.AudioRecoderUtils;
@@ -90,7 +85,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     public void initView(View view) {
         txtTitle.setText(getIntent().getStringExtra("name"));
         etContent.setOnEditorActionListener(this);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, findViewById(R.id.top));
         conversation = EMClient.getInstance().chatManager().getConversation(getIntent().getStringExtra("openId"));
         if (conversation == null) {
             messagesList = new ArrayList<>();

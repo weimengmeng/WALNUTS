@@ -20,7 +20,6 @@ import com.njjd.domain.CommonEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.SPUtils;
@@ -87,7 +86,6 @@ public class SuccessActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView2(this, imgBack);
         if (getIntent().getIntExtra("bind", 0) == 1) {
             //绑定账号情况，预先设置第三方的头像性别等
             GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
@@ -247,7 +245,6 @@ public class SuccessActivity extends BaseActivity {
             String imgpath= PhotoUtil.saveMyBitmapWH(CommonUtils.getRealPathFromUri(this,mSelected.get(0)), 480,800);
             file = new File(imgpath);
             GlideImageLoder.getInstance().displayImage(this, file.getPath(), imgHead);
-            LogUtils.d("huan"+imgpath);
             path = imgpath;
         }
     }

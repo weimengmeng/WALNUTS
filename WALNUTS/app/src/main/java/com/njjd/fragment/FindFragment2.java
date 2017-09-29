@@ -1,20 +1,15 @@
 package com.njjd.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,27 +22,16 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.FindAnswerAdapter;
 import com.njjd.application.ConstantsVal;
-import com.njjd.db.DBHelper;
-import com.njjd.domain.BannerEntity;
 import com.njjd.domain.ColumnEntity;
-import com.njjd.domain.QuestionEntity;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.domain.SpecialEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.CommonUtils;
-import com.njjd.utils.GlideImageLoder2;
 import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SelectAnswerDetailActivity;
-import com.njjd.walnuts.WebViewActivity;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,37 +70,18 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_find2, container, false);
         ButterKnife.bind(this, view);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
         return view;
-    }
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-//            window.addFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            if (titleViewGroup == null)
-                return;
-            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
-        }
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initAfterSetContentView(getActivity(), top);
         receiver = new MyReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConstantsVal.REFRESH_FIND);
         context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
-        txtTitle.setText("精选");
+        txtTitle.setText("精选回答");
         adapter=new FindAnswerAdapter(context,specialEntities,columnEntities);
 //        specialEntities.add(new SpecialEntity(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"),null));
 //        specialEntities.add(new SpecialEntity(new ColumnEntity("1","http://img3.imgtn.bdimg.com/it/u=3553261757,602330486&fm=214&gp=0.jpg","核桃小编","超级大美女","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"),null));
@@ -188,7 +153,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
             }else{
                 listFind.loadMoreComplete();
             }
-            if(array.length()<10){
+            if(array.length()<20){
                 listFind.setNoMore(true);
             }
             for(int i=0;i<array.length();i++){

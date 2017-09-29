@@ -2,9 +2,7 @@ package com.njjd.walnuts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,7 +14,6 @@ import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonObject;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TimeCountDown;

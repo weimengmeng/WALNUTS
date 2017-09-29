@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -29,10 +28,8 @@ import com.njjd.adapter.FocusTagAdapter;
 import com.njjd.domain.FocusEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
-import com.umeng.socialize.utils.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +76,6 @@ public class MyFocusActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的关注");
         creator = new SwipeMenuCreator() {

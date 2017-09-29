@@ -16,13 +16,9 @@ import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.MyAnswerAdapter;
-import com.njjd.adapter.MySaveAdapter;
 import com.njjd.domain.MyAnswerEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.ItemRemoveRecyclerView;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -58,7 +54,6 @@ public class MyAnswerActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的回答");
         saveAdapter = new MyAnswerAdapter(list, this);

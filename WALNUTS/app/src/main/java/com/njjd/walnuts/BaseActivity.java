@@ -39,9 +39,6 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
         setContentView(mContextView);
         ButterKnife.bind(this);
         Window window = getWindow();
-        if (isSetStatusBar) {
-            steepStatusBar();
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(getResources().getColor(R.color.white));
         }
@@ -57,13 +54,6 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
         LogUtils.d("接口返回数据"+o.toString());
     }
 
-    /**
-     * [沉浸状态栏]
-     */
-    private void steepStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        }
-    }
     /**
      * [绑定布局]
      *

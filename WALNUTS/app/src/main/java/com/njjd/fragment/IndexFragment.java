@@ -1,13 +1,10 @@
 package com.njjd.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -17,14 +14,11 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -43,13 +37,12 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.IconCenterEditText;
 import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
+import com.njjd.walnuts.SearchActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,8 +72,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     ViewPager indexPage;
     @BindView(R.id.et_search)
     IconCenterEditText etSearch;
-    @BindView(R.id.txt_cancel)
-    TextView txtCancel;
     private List<View> viewList;
     private MyPagerAdapter adapter;
     private Context context;
@@ -109,6 +100,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         myinflater = LayoutInflater.from(context);
         navList = CommonUtils.getInstance().getNavsList();
         ButterKnife.bind(this, view);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
         return view;
     }
 
@@ -150,30 +142,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         popupWindow.update();
         initRefresh();
         initTop(view);
-        initAfterSetContentView(getActivity(), top);
     }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            // 透明导航栏
-//            window.addFlags(
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            if (titleViewGroup == null)
-                return;
-            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
-            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0, 0);
-        }
-    }
-
     private void initTop(View view) {
         viewList = new ArrayList<>();
         for (int i = 0; i < navList.size(); i++) {
@@ -267,25 +236,19 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //        questionAdapter.notifyDataSetChanged();
 //        LogUtils.d(tempList.size());
         setRefreshListener();
+        etSearch.setFocusable(false);
+        etSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, SearchActivity.class));
+            }
+        });
         etSearch.setOnSearchClickListener(new IconCenterEditText.OnSearchClickListener() {
             @Override
             public void onSearchClick(View view) {
-//                txtCancel.setVisibility(View.VISIBLE);
-                //做搜索操作
-                etSearch.onFocusChange(etSearch,false);
-                etSearch.clearFocus();
-                txtCancel.setVisibility(View.GONE);
-            }
-        });
-        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                etSearch.onFocusChange(etSearch,hasFocus);
-                if(hasFocus){
-                    txtCancel.setVisibility(View.VISIBLE);
-                }else{
-                    txtCancel.setVisibility(View.GONE);
-                }
+//                //做搜索操作
+//                etSearch.onFocusChange(etSearch,false);
+//                etSearch.clearFocus();
             }
         });
     }
@@ -389,17 +352,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private void initRefresh() {
     }
 
-    @OnClick({R.id.img_order, R.id.txt_cancel})
+    @OnClick({R.id.img_order})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_order:
                 popupWindow.showAsDropDown(imgOrder, 0, 0);
-                break;
-            case R.id.txt_cancel:
-                KeybordS.closeBoard(context);
-                etSearch.clearFocus();
-                txtCancel.setVisibility(View.GONE);
-                etSearch.onFocusChange(etSearch,false);
                 break;
         }
     }

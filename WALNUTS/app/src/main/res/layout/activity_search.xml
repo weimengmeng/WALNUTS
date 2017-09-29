@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:weightSum="1">
         <TextView
@@ -15,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/selector_btn_back"
-            android:text="返回"
+            android:text=""
             android:paddingLeft="@dimen/padding_left"
             android:drawablePadding="@dimen/margin"
             android:textColor="#000000"
@@ -23,10 +24,90 @@
             android:textSize="@dimen/normal"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
-
+        <com.njjd.utils.IconCenterEditText
+            android:id="@+id/et_search"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginTop="@dimen/padding"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/StyleEditText"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin"
+            android:textColor="@color/login"
+            android:textSize="@dimen/big"
+            android:text="取消"/>
     </LinearLayout>
-    <ListView
-        android:id="@+id/list"
+    <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:checkedButton="@+id/radio1"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:weightSum="1">
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.33"
+            android:button="@null"
+            android:drawablePadding="@dimen/padding"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:layout_marginRight="@dimen/margin"
+            android:paddingRight="@dimen/padding"
+            android:paddingTop="@dimen/margin"
+            android:text="综合"
+            android:typeface="sans"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/big" />
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.33"
+            android:button="@null"
+            android:drawablePadding="@dimen/padding"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:typeface="sans"
+            android:paddingTop="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:paddingRight="@dimen/padding"
+            android:text="话题"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/big" />
+        <RadioButton
+            android:id="@+id/radio3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.34"
+            android:button="@null"
+            android:drawablePadding="@dimen/padding"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:typeface="sans"
+            android:paddingTop="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:paddingRight="@dimen/padding"
+            android:text="专栏"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/big" />
+    </RadioGroup>
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 </LinearLayout>

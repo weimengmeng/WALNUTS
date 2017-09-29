@@ -193,10 +193,10 @@ public class LoginActivity extends BaseActivity {
             MobclickAgent.onEvent(LoginActivity.this,ConstantsVal.THIRD_MAINACITVITY);
             try {
                 json = new JSONObject(gson.toJson(o));
-                if (json.toString().contains("uuid")) {
+                SPUtils.put(LoginActivity.this, "uuid", json.isNull("uuid") ? "" : json.getString("uuid"));
+                SPUtils.put(LoginActivity.this, "logintype", json.isNull("logintype") ? "" : json.getString("logintype"));
+                if (json.toString().contains("code")) {
                     //用户未绑定
-                    SPUtils.put(LoginActivity.this, "uuid", json.isNull("uuid") ? "" : json.getString("uuid"));
-                    SPUtils.put(LoginActivity.this, "logintype", json.isNull("logintype") ? "" : json.getString("logintype"));
                     SPUtils.put(LoginActivity.this, "thirdName", thirdMap.get("name"));
                     SPUtils.put(LoginActivity.this, "thirdSex", thirdMap.get("gender"));
                     SPUtils.put(LoginActivity.this, "thirdHead", thirdMap.get("iconurl"));
@@ -210,8 +210,6 @@ public class LoginActivity extends BaseActivity {
                     CommonUtils.initData(new JSONObject(gson.toJson(o)));
                     SPUtils.put(LoginActivity.this,ConstantsVal.AUTOLOGIN,"true");
                     SPUtils.put(LoginActivity.this,ConstantsVal.LOGINTYPE,"1");
-                    SPUtils.put(LoginActivity.this, "uuid", json.isNull("uuid") ? "" : json.getString("uuid"));
-                    SPUtils.put(LoginActivity.this, "logintype", json.isNull("logintype") ? "" : json.getString("logintype"));
                     intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

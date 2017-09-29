@@ -17,11 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.ios.dialog.AlertDialog;
-import com.njjd.adapter.FocusPeopleAdapter;
 import com.njjd.adapter.MyQuestionAdapter;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 
@@ -61,7 +59,6 @@ public class MyQuestionActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的问题");
         questionAdapter = new MyQuestionAdapter(list, this);

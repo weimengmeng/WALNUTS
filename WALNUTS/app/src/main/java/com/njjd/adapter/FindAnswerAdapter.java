@@ -137,7 +137,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 holder.itemView.setTag(position);
                 selectedAnswerEntity = entity.getAnswerEntity();
                 if (position == (columnEntities.size()+1)) {
-                    ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.VISIBLE);
+                    ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.GONE);
                 } else {
                     ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.GONE);
                 }
@@ -150,7 +150,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 } else {
                     ((ContentViewHolder) holder).pic.setVisibility(View.VISIBLE);
                     String[] strings = selectedAnswerEntity.getPhoto().split(",");
-                    GlideImageLoder.getInstance().displayImage(context, strings[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
+                    GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+strings[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
                 }
                 ((ContentViewHolder) holder).reply.setText(selectedAnswerEntity.getReplyContent());
                 ((ContentViewHolder) holder).focus.setOnClickListener(new View.OnClickListener() {

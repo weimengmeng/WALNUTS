@@ -1,12 +1,9 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -19,10 +16,8 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter2;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +53,6 @@ public class TagActivity extends BaseActivity  {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this,back);
         back.setText("");
         txtTag.setText(getIntent().getStringExtra("name"));
         adapter=new IndexQuestionAdapter2(this,list);

@@ -39,8 +39,6 @@ public class AndroidBug54971Workaround {
         int usableHeightNow = computeUsableHeight();
         if (usableHeightNow != usableHeightPrevious) {
             //如果两次高度不一致
-
-
 //            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
 //            int heightDifference = usableHeightSansKeyboard - usableHeightNow;
 //            if (heightDifference > (usableHeightSansKeyboard / 4)) {

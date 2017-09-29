@@ -12,16 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.adapter.GridViewAddImgesAdpter;
-import com.njjd.application.ConstantsVal;
-import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.ToastUtils;
-import com.umeng.analytics.MobclickAgent;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +54,6 @@ public class AskActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, top);
         back.setText("返回");
         txtTitle.setText("提问");
         gw = (GridView) findViewById(R.id.gw);

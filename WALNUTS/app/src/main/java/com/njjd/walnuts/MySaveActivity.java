@@ -7,28 +7,18 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
-import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.njjd.adapter.FocusPeopleAdapter;
-import com.njjd.adapter.MyQuestionAdapter;
 import com.njjd.adapter.MySaveAdapter;
-import com.njjd.domain.QuestionEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
-import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,7 +57,6 @@ public class MySaveActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("我的收藏");
         listSave.setEmptyView(findViewById(R.id.empty));

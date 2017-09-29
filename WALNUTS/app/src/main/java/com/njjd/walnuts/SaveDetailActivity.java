@@ -21,8 +21,6 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.scrollablelayout.ScrollableLayout;
@@ -98,7 +96,6 @@ public class SaveDetailActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         back.setText("我的");
         txtTitle.setText("收藏详情");
         findViewById(R.id.txt_open).setVisibility(View.GONE);

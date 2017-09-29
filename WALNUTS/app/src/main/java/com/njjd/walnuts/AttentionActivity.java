@@ -2,14 +2,12 @@ package com.njjd.walnuts;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -22,17 +20,11 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.FocusPeopleAdapter;
-import com.njjd.adapter.FocusQuesAdapter;
-import com.njjd.adapter.FocusTagAdapter;
 import com.njjd.domain.FocusEntity;
 import com.njjd.http.HttpManager;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
-import com.njjd.utils.ToastUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +63,6 @@ public class AttentionActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        ImmersedStatusbarUtils.initAfterSetContentView(this,topView);
         back.setText("关注");
         txtTitle.setText("我的粉丝");
         creator = new SwipeMenuCreator() {

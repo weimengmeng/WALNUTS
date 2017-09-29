@@ -1,7 +1,6 @@
 package com.njjd.walnuts;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.mywidget.LoadingDialog;
-import com.njjd.utils.ImmersedStatusbarUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -95,7 +93,6 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, top);
     }
 
     @OnClick(R.id.back)

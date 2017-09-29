@@ -14,13 +14,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.example.retrofit.util.StringUtil;
+import com.google.gson.JsonObject;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BasePopupWindow;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.TimeCountDown;
 import com.njjd.utils.TimeCountDown2;
 import com.njjd.utils.ToastUtils;
 
@@ -68,7 +69,6 @@ public class ForgetPwdActivity extends BaseActivity implements TimeCountDown2.On
             @Override
             public void onClick(View v) {
                 web.loadUrl(HttpManager.BASE_URL + "user/getVerify?phone=" + etPhone.getText().toString().trim());
-                LogUtils.d("点击一次");
             }
         });
         etVerify.addTextChangedListener(new TextWatcher() {
@@ -86,14 +86,32 @@ public class ForgetPwdActivity extends BaseActivity implements TimeCountDown2.On
                 if (s.length() == 4) {
                     code = etVerify.getText().toString().trim();
                     popupWindow.dismiss();
-                    getPhoneCode();
+                    checkPhone();
                     etVerify.setText("");
                 }
             }
         });
         btnGetCode.setOnTimerCountDownListener(this);
     }
+    private void checkPhone() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", etPhone.getText().toString().trim());
+        LogUtils.d(map.toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(checkListener, this, false, false), map);
+        HttpManager.getInstance().checkPhone(postEntity);
+    }
 
+    HttpOnNextListener checkListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            JsonObject object = JSONUtils.getAsJsonObject(o);
+            if (object.get("code").getAsString().equals("1.0")) {
+                getPhoneCode();
+            } else {
+                ToastUtils.showShortToast(ForgetPwdActivity.this,"该手机号未注册");
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,12 +13,8 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RadioButton;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -37,15 +33,12 @@ import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug54971Workaround;
-import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
-import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -53,8 +46,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +70,6 @@ public class MainActivity extends FragmentActivity {
     private LoginPassReceiver passReceiver;
     private JSONObject object;
     private String message = "";
-    private long exitTime = 0;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -108,6 +98,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         activity = this;
         ButterKnife.bind(this);
+        AndroidBug54971Workaround.assistActivity(findViewById(R.id.main));
         initView();
         MyActivityManager.getInstance().pushOneActivity(this);
         loginHuanxin();

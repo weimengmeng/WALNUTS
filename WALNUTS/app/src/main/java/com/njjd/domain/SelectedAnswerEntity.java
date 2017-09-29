@@ -30,7 +30,7 @@ public class SelectedAnswerEntity implements Serializable {
             answer_id = object.isNull("comment_id") ? "" : object.getString("comment_id");
             isFocus = object.isNull("is_focus") ? "0" : object.getString("is_focus");
             title = object.isNull("article_title") ? "" : object.getString("article_title");
-            photo = object.isNull("imgs") ? "" : object.getString("imgs");
+            photo = object.isNull("imgs") ? "" : object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             replyContent = object.isNull("comment_content") ? "" : object.getString("comment_content");
 
         } catch (JSONException e) {
