@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             android:paddingTop="@dimen/padding"
             android:weightSum="1">
 
@@ -50,7 +51,7 @@
                 android:paddingLeft="@dimen/margin"
                 android:text="回答 26"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small">
+                android:textSize="@dimen/mini">
 
             </TextView>
 
@@ -62,13 +63,13 @@
                 android:paddingLeft="@dimen/padding"
                 android:text="关注 26"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small">
+                android:textSize="@dimen/mini">
 
             </TextView>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center_vertical|right"
                 android:paddingRight="@dimen/margin">
@@ -81,7 +82,7 @@
                     android:gravity="center_vertical"
                     android:text="+关注问题"
                     android:textColor="@color/login"
-                    android:textSize="@dimen/small"
+                    android:textSize="@dimen/mini"
                     android:typeface="sans"></TextView>
             </LinearLayout>
         </LinearLayout>
@@ -91,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_top"
+        android:paddingTop="@dimen/padding"
         android:layout_marginRight="@dimen/padding_top"
         android:orientation="horizontal">
 
@@ -118,7 +120,6 @@
         android:id="@+id/ex_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_margin"
         android:overScrollMode="never"
         android:divider="#00000000"
         android:dividerHeight="0dp"

@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/shadow"
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding"
         android:text="请选择话题"
         android:background="@color/grey"
         android:textColor="@color/txt_color"

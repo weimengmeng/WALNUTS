@@ -5,21 +5,25 @@
     android:orientation="vertical"
     android:background="#ffffff"
     android:gravity="bottom">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_weight="1.0">
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:orientation="vertical"
             android:scrollbars="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/img_back"
                     android:layout_width="wrap_content"
@@ -49,6 +53,7 @@
                         android:id="@+id/txt_tips"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_big"
                         android:gravity="center"
                         android:text="忘记密码"
                         android:textColor="@color/login"
@@ -59,19 +64,18 @@
                         android:id="@+id/et_phone"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height"
-                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:layout_marginTop="@dimen/padding_top"
                         android:background="@null"
                         android:gravity="center"
-                        android:textCursorDrawable="@drawable/color_cusor"
-
-                        android:typeface="sans"
                         android:hint="请输入手机号"
-                        android:layout_marginLeft="@dimen/margin"
                         android:inputType="phone"
                         android:maxLength="11"
-                        android:textColorHint="@color/txt_color"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/normal" />
+                        android:textColorHint="@color/txt_color"
+                        android:textCursorDrawable="@drawable/color_cusor"
+                        android:textSize="@dimen/normal"
+                        android:typeface="sans" />
 
                     <View
                         android:layout_width="match_parent"
@@ -85,10 +89,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin"
-                        android:layout_marginTop="@dimen/margin"
                         android:layout_marginRight="@dimen/margin"
-                        android:orientation="horizontal">
-                    </LinearLayout>
+                        android:layout_marginTop="@dimen/margin"
+                        android:orientation="horizontal"></LinearLayout>
 
                     <TextView
                         android:id="@+id/txt_tip"
@@ -103,6 +106,7 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

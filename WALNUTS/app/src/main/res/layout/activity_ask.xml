@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_left"
+                android:padding="@dimen/padding_left"
                 android:text="问题"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_left"
+                android:padding="@dimen/padding_left"
                 android:text="详情"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
@@ -93,8 +93,7 @@
                     android:background="@drawable/background_button_div"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
-                    android:paddingLeft="@dimen/padding_left"
-                    android:paddingRight="@dimen/padding_left"
+                    android:padding="@dimen/padding_left"
                     android:text="下一步"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/normal" />

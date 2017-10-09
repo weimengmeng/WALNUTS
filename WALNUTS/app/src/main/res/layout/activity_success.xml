@@ -24,7 +24,7 @@
         android:padding="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
         <TextView
@@ -88,6 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
                 android:hint="性别"
                 android:textColorHint="@color/txt_color"
                 android:drawableRight="@drawable/select"
@@ -106,6 +108,8 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:hint="地区"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
                 android:textColorHint="@color/txt_color"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
@@ -133,6 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
                 android:textColorHint="@color/txt_color"
                 android:hint="行业"
                 android:drawableRight="@drawable/select"
@@ -152,6 +158,8 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:hint="销售场景"
+                android:paddingTop="@dimen/padding"
+                android:paddingBottom="@dimen/padding"
                 android:textColorHint="@color/txt_color"
                 android:drawableRight="@drawable/select"
                 android:textColor="@color/gray"
@@ -169,6 +177,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="1"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="0dp"

@@ -43,6 +43,7 @@
                     android:padding="@dimen/margin"
                     android:layout_marginLeft="@dimen/margin_big"
                     android:layout_marginRight="@dimen/margin_big"
+                    android:layout_marginTop="@dimen/margin_big"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true">
 
@@ -61,6 +62,7 @@
                         android:id="@+id/et_phone"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height"
+                        android:layout_marginTop="@dimen/padding_top"
                         android:layout_marginLeft="@dimen/margin"
                         android:textCursorDrawable="@drawable/color_cusor"
 

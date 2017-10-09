@@ -19,7 +19,7 @@
             android:textSize="@dimen/normal"
             android:drawablePadding="@dimen/margin_big"
             android:gravity="center"
-            android:padding="@dimen/padding"
+            android:padding="@dimen/margin"
             android:textColor="@color/gray"
             android:layout_marginLeft="5dp"
             android:text="按时间排序" />
@@ -37,7 +37,7 @@
             android:textSize="@dimen/normal"
             android:drawablePadding="@dimen/margin_big"
             android:gravity="center"
-            android:padding="@dimen/padding"
+            android:padding="@dimen/margin"
             android:textColor="@color/gray"
             android:layout_marginLeft="5dp"
             android:text="按质量排序" />

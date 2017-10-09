@@ -53,13 +53,12 @@ import java.util.List;
 public class AppAplication extends Application {
     protected static Context context;
     protected static String appName = "核桃";
-    String fontPath = "fonts/NotoSansHans-Regular.ttf";
     private PushAgent pushAgent;
     @Override
     public void onCreate() {
         super.onCreate();
         context = this.getApplicationContext();
-        replaceSystemDefaultFont(this, fontPath);
+        replaceSystemDefaultFont(this);
         registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
         CrashHandler handler = CrashHandler.getInstance();
         handler.init(getApplicationContext());
@@ -233,14 +232,12 @@ public class AppAplication extends Application {
         pushAgent.setMessageHandler(messageHandler);
     }
 
-    public void replaceSystemDefaultFont(Context context, String fontPath) {
-        replaceTypefaceField("MONOSPACE", createTypeface(context, fontPath));
+    public void replaceSystemDefaultFont(Context context) {
+        replaceTypefaceField("MONOSPACE", createTypeface());
     }
 
-    private Typeface createTypeface(Context context, String fontPath) {
-//        return Typeface.SANS_SERIF;
-        return Typeface.createFromAsset(context.getAssets(), fontPath);
-
+    private Typeface createTypeface() {
+        return Typeface.SANS_SERIF;
     }
 
     private void replaceTypefaceField(String fieldName, Object value) {

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="mini">10sp</dimen>
-    <dimen name="small">12sp</dimen>
-    <dimen name="normal">14sp</dimen>
-    <dimen name="big">16sp</dimen>
-    <dimen name="large">18sp</dimen>
+    <dimen name="mini">12sp</dimen>
+    <dimen name="small">14sp</dimen>
+    <dimen name="normal">16sp</dimen>
+    <dimen name="big">18sp</dimen>
+    <dimen name="large">20sp</dimen>
     <dimen name="large_big">24sp</dimen>
     <dimen name="largest">40sp</dimen>
     <dimen name="padding">5dp</dimen>
     <dimen name="margin_small">7dp</dimen>
-    <dimen name="margin">12dp</dimen>
+    <dimen name="margin">10dp</dimen>
     <dimen name="banner">140dp</dimen>
     <dimen name="margin_big">30dp</dimen>
     <dimen name="margin_top">60dp</dimen>
@@ -18,7 +18,7 @@
     <dimen name="margin_right">55dp</dimen>
     <dimen name="line_height">8dp</dimen>
     <dimen name="height">40dp</dimen>
-    <dimen name="round">45dp</dimen>
+    <dimen name="round">47dp</dimen>
     <dimen name="head">25dp</dimen>
     <dimen name="head_big">50dp</dimen>
     <dimen name="head_large">80dp</dimen>

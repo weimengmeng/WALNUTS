@@ -137,7 +137,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 holder.itemView.setTag(position);
                 selectedAnswerEntity = entity.getAnswerEntity();
                 if (position == (columnEntities.size()+1)) {
-                    ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.GONE);
+                    ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.VISIBLE);
                 } else {
                     ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.GONE);
                 }

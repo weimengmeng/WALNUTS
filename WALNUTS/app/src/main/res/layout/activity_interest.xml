@@ -70,6 +70,7 @@
                     android:tag="0"
                     android:gravity="center"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/padding"
                     android:drawableTop="@drawable/selector_btn_xzkh"
                     android:background="@null"
                     android:text="销售线索"
@@ -86,6 +87,7 @@
                     android:drawableTop="@drawable/selector_btn_cwsk"
                     android:background="@null"
                     android:text="财务回款"
+                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_cwsk"
                     android:textSize="@dimen/normal"/>
             </LinearLayout>
@@ -105,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/selector_btn_gttp"
                     android:background="@null"
+                    android:drawablePadding="@dimen/padding"
                     android:text="沟通说服"
                     android:textColor="@drawable/selector_btn_gttp"
                     android:textSize="@dimen/normal"/>
@@ -117,6 +120,7 @@
                     android:background="@null"
                     android:text="报价投标"
                     android:button="@null"
+                    android:drawablePadding="@dimen/padding"
                     android:tag="0"
                     android:gravity="center"
                     android:textColor="@drawable/selector_btn_bjtb"
@@ -134,6 +138,7 @@
                     android:id="@+id/btn_five"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
+                    android:drawablePadding="@dimen/padding"
                     android:tag="0"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/selector_btn_khgl"
@@ -150,6 +155,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/selector_btn_fljf"
                     android:background="@null"
+                    android:drawablePadding="@dimen/padding"
                     android:tag="0"
                     android:text="法律纠纷"
                     android:textColor="@drawable/selector_btn_fljf"
@@ -171,6 +177,7 @@
                     android:drawableTop="@drawable/selector_btn_zcjh"
                     android:background="@null"
                     android:text="投诉处理"
+                    android:drawablePadding="@dimen/padding"
                     android:layout_marginBottom="@dimen/margin"
                     android:textColor="@drawable/selector_btn_zcjh"
                     android:textSize="@dimen/normal"/>
@@ -185,6 +192,7 @@
                     android:drawableTop="@drawable/selector_btn_shzt"
                     android:background="@null"
                     android:text="客情维护"
+                    android:drawablePadding="@dimen/padding"
                     android:textColor="@drawable/selector_btn_shzt"
                     android:textSize="@dimen/normal"/>
             </LinearLayout>

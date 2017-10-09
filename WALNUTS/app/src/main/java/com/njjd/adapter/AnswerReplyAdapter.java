@@ -2,6 +2,7 @@ package com.njjd.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -269,7 +270,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                 });
                 holder.childName.setText(commentEntity.getName());
                 holder.childMess.setText(commentEntity.getMessage());
-                holder.childContent.setText(commentEntity.getContent()+" //@"+commentEntity.getSec_uname()+":"+commentEntity.getSec_content());
+                holder.childContent.setText(Html.fromHtml(commentEntity.getContent()+" //<font color='#ffb129'>@"+commentEntity.getSec_uname()+"</font>:"+commentEntity.getSec_content()));
                 ParsePosition pos = new ParsePosition(0);
                 holder.childTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(commentEntity.getTime(), pos)));
                 holder.childReplyNum.setText("回复 " + Float.valueOf(commentEntity.getReplyNum()).intValue());

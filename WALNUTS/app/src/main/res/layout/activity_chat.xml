@@ -61,7 +61,7 @@
                 android:hint="输入文字"
                 android:imeOptions="actionSend"
                 android:singleLine="true"
-                android:paddingLeft="@dimen/padding"
+                android:padding="@dimen/padding"
                 android:textColor="@color/gray"
                 android:textColorHint="@color/txt_color"
                 android:textSize="@dimen/small" />

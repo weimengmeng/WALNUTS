@@ -43,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:lineSpacingMultiplier="1.2"
+                    android:paddingTop="@dimen/padding"
                     android:paddingLeft="@dimen/margin"
                     android:paddingRight="@dimen/margin"
                     android:textStyle="bold"
@@ -161,6 +162,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:background="@color/white"
+            android:paddingTop="@dimen/padding"
             android:text="分享到"
             android:textColor="@color/gray"
             android:textSize="@dimen/small"/>
@@ -176,7 +178,6 @@
                 android:layout_height="wrap_content"
                 android:weightSum="1"
                 android:orientation="horizontal">
-
                 <RelativeLayout
                     android:id="@+id/share_wechat"
                     android:layout_width="0dp"
@@ -200,14 +201,13 @@
                         android:layout_marginTop="@dimen/margin"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
-                        android:gravity="center|top"
-                        android:singleLine="true"
                         android:typeface="sans"
+                        android:gravity="center"
+                        android:singleLine="true"
                         android:text="微信"
                         android:textColor="#444"
                         android:textSize="12sp" />
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:id="@+id/share_wechat_circle1"
                     android:layout_width="0dp"

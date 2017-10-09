@@ -10,16 +10,20 @@
         android:paddingTop="@dimen/margin_small"
         android:paddingLeft="@dimen/margin"
         android:typeface="sans"
-        android:textSize="@dimen/normal"
+        android:textSize="@dimen/small"
         android:textColor="@color/login"
         android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginBottom="@dimen/padding"
+        android:layout_marginRight="@dimen/margin"
         android:paddingTop="@dimen/margin"
+        android:elevation="1dp"
         android:paddingBottom="@dimen/margin"
-        android:background="@drawable/background_layout_div"
+        android:background="@drawable/background_layout_div_radius"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,7 +95,7 @@
                     android:onClick="onClick"
                     android:text="＋关注TA"
                     android:textColor="@color/txt_color"
-                    android:textSize="@dimen/small"
+                    android:textSize="@dimen/mini"
                     android:typeface="sans"></TextView>
             </LinearLayout>
         </LinearLayout>

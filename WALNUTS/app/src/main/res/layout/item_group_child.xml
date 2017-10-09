@@ -9,14 +9,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="@dimen/padding_top"
-        android:paddingLeft="@dimen/round"
+        android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding_top"
         android:paddingTop="@dimen/margin"
         android:weightSum="1">
         <EditText
             android:id="@+id/et_comment"
             android:layout_width="0dp"
             android:layout_height="@dimen/margin_big"
-            android:layout_marginRight="@dimen/margin_big"
             android:layout_weight="1"
             android:onClick="onClick"
             android:textCursorDrawable="@drawable/color_cusor"
@@ -103,6 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/round"
             android:paddingLeft="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
             android:orientation="horizontal"
             android:weightSum="1">
             <LinearLayout

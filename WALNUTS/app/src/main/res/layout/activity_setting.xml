@@ -27,6 +27,9 @@
             android:id="@+id/lv_clean"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin"
+            android:paddingRight="@dimen/padding"
             android:paddingLeft="@dimen/padding"
             android:weightSum="1">
             <LinearLayout
@@ -69,6 +72,9 @@
         <LinearLayout
             android:id="@+id/lv_about"
             android:layout_width="match_parent"
+            android:paddingTop="@dimen/margin"
+            android:paddingRight="@dimen/padding"
+            android:paddingBottom="@dimen/margin"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding"
             android:weightSum="1">
@@ -110,6 +116,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="0dp"
@@ -148,6 +157,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="0dp"

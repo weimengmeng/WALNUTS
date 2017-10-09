@@ -55,16 +55,15 @@
             android:layout_height="match_parent"
             android:layout_weight="0.1"
             android:gravity="center|right">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/padding"
-                android:text=".\n.\n."
-                android:layout_marginTop="@dimen/_top"
-                android:lineSpacingExtra="-15dp"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/large_big"
-                android:textStyle="bold" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="@dimen/padding"-->
+                <!--android:text=".\n.\n."-->
+                <!--android:lineSpacingExtra="@dimen/_top"-->
+                <!--android:textColor="@color/txt_color"-->
+                <!--android:textSize="@dimen/large"-->
+                <!--android:textStyle="bold" />-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

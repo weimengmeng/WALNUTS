@@ -90,6 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
             android:orientation="horizontal"
             android:weightSum="1">
             <TextView
@@ -101,7 +103,7 @@
                 android:paddingLeft="@dimen/margin"
                 android:text=""
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/mini" />
 
             <TextView
                 android:id="@+id/txt_answerNum"
@@ -112,7 +114,7 @@
                 android:gravity="center|left"
                 android:text=""
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/mini" />
 
             <TextView
                 android:id="@+id/txt_time"
@@ -123,7 +125,7 @@
                 android:paddingRight="@dimen/margin"
                 android:text="15分钟前"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/mini" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

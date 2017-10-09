@@ -89,7 +89,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                 tv.setTag(entity.getId());
                 tv.setGravity(Gravity.CENTER_VERTICAL);
                 tv.setBackgroundResource(R.drawable.round_textview);
-                tv.setPadding(25, 0, 25, 0);
+                tv.setPadding(25, 10, 25, 10);
                 tv.setOnClickListener(this);
                 flowLayout.addView(tv, lp);
             }
@@ -187,7 +187,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
         if (list.contains(v.getTag())) {
             v.setBackgroundResource(R.drawable.round_textview);
             ((TextView)v).setTextColor(getResources().getColor(R.color.tag));
-            v.setPadding(25, 0, 25, 0);
+            v.setPadding(25, 10, 25, 10);
             list.remove(v.getTag());
         } else {
             if(list.size()>3){
@@ -197,7 +197,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             v.setBackgroundResource(R.drawable.round_textview1);
             ((TextView)v).setTextColor(getResources().getColor(R.color.white));
             list.add(v.getTag().toString());
-            v.setPadding(25, 0, 25, 0);
+            v.setPadding(25, 10, 25, 10);
         }
         if (current == 0) {
             for (int i = 0; i < layoutList.size(); i++) {
@@ -216,7 +216,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                         linearLayout.getChildAt(n).setEnabled(false);
                         ((TextView) linearLayout.getChildAt(n)).setTextColor(getResources().getColor(R.color.txt_color));
                         (linearLayout.getChildAt(n)).setBackgroundResource(R.drawable.round_textview2);
-                        (linearLayout.getChildAt(n)).setPadding(25, 0, 25, 0);
+                        (linearLayout.getChildAt(n)).setPadding(25, 10, 25, 10);
                     }
                 }
             }
@@ -229,7 +229,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                     linearLayout.getChildAt(n).setEnabled(false);
                     ((TextView) linearLayout.getChildAt(n)).setTextColor(getResources().getColor(R.color.tag));
                     (linearLayout.getChildAt(n)).setBackgroundResource(R.drawable.round_textview);
-                    (linearLayout.getChildAt(n)).setPadding(25, 0, 25, 0);
+                    (linearLayout.getChildAt(n)).setPadding(25, 10, 25, 10);
                     (linearLayout.getChildAt(n)).setEnabled(true);
                 }
             }
