@@ -180,7 +180,7 @@
                 <RelativeLayout
                     android:id="@+id/share_wechat"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.25"
                     >
 
@@ -197,11 +197,12 @@
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="@dimen/margin"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:gravity="center|top"
                         android:singleLine="true"
+                        android:typeface="sans"
                         android:text="微信"
                         android:textColor="#444"
                         android:textSize="12sp" />
@@ -210,7 +211,7 @@
                 <RelativeLayout
                     android:id="@+id/share_wechat_circle1"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.25"
                     >
 
@@ -227,9 +228,10 @@
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="@dimen/margin"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
+                        android:typeface="sans"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="朋友圈"
@@ -240,7 +242,7 @@
                 <RelativeLayout
                     android:id="@+id/share_qq"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.25"
                     >
 
@@ -257,11 +259,12 @@
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="@dimen/margin"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:gravity="center"
                         android:singleLine="true"
+                        android:typeface="sans"
                         android:text="好友/群"
                         android:textColor="#444"
                         android:textSize="12sp" />
@@ -269,7 +272,7 @@
                 <RelativeLayout
                     android:id="@+id/share_qzone"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.25"
                     >
 
@@ -286,11 +289,12 @@
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="@dimen/margin"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:gravity="center"
                         android:singleLine="true"
+                        android:typeface="sans"
                         android:text="QQ空间"
                         android:textColor="#444"
                         android:textSize="12sp" />
@@ -305,7 +309,7 @@
                 <RelativeLayout
                     android:id="@+id/share_sina"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.25"
                     >
                     <ImageView
@@ -321,7 +325,8 @@
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="@dimen/margin"
+                        android:typeface="sans"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:gravity="center"
@@ -333,7 +338,7 @@
                 <RelativeLayout
                     android:id="@+id/share_aili"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="75dp"
                     android:layout_weight="0.25"
                     >
                     <ImageView
@@ -349,7 +354,8 @@
                         android:layout_height="25dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="@dimen/margin"
+                        android:typeface="sans"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:gravity="center"

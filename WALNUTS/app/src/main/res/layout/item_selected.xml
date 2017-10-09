@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:text="精选回答"
         android:id="@+id/txt_select"
-        android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
         android:paddingLeft="@dimen/margin"
         android:typeface="sans"

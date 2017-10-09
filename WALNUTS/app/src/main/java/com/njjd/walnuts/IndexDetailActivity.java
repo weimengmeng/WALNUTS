@@ -574,7 +574,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             map.put("sec_comment_id", tempAnswerInfo.getAnwerId());
         }
         map.put("token", SPUtils.get(this, "token", "").toString());
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener, this, false, false), map);
         HttpManager.getInstance().pubComment(postEntity);
     }
@@ -587,7 +586,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
             commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());
             commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this, "message", "").toString());
-            commentEntity.setSec_uid("sec_uid");
+            commentEntity.setSec_uid(tempComment.getCommentUId());
+            commentEntity.setSec_content(tempComment.getContent());
+            commentEntity.setSec_headimgs(tempComment.getHead());
+            commentEntity.setSec_uname(tempComment.getName());
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             answerEntities.get(currentId).getCommentEntityList().add(1, commentEntity);

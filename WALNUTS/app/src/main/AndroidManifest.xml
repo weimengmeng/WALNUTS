@@ -255,6 +255,11 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="d531894c25e22e4c75f3642cdd124113" >
+        </meta-data>
     </application>
 
 </manifest>

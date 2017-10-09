@@ -21,12 +21,13 @@
             android:lineSpacingMultiplier="1.1"
             android:maxLines="2"
             android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:text=""
             android:typeface="sans"
             android:textStyle="bold"
             android:textColor="@color/gray"
             android:textScaleX="1"
-            android:textSize="@dimen/large" />
+            android:textSize="@dimen/big" />
 
         <View
             android:layout_width="match_parent"
@@ -124,6 +125,6 @@
             android:text=""
             android:textColor="#666666"
             android:textScaleX="1"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 </LinearLayout>

@@ -16,6 +16,7 @@ import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;

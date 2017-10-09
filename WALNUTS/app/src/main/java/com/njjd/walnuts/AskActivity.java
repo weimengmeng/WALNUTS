@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.adapter.GridViewAddImgesAdpter;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.ToastUtils;

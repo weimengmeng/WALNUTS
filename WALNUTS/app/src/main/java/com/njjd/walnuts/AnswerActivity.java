@@ -10,6 +10,8 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.AndroidBug54971Workaround;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -46,6 +48,7 @@ public class AnswerActivity extends BaseActivity {
         back.setText("详情");
         txtTitle.setText("回答");
         txtName.setText(getIntent().getStringExtra("quesTitle"));
+        AndroidBug5497Workaround.assistActivity(this);
     }
 
     @Override

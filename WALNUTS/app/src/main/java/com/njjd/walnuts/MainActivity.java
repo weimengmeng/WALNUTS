@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +27,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.ios.dialog.AlertDialog;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
@@ -39,6 +38,9 @@ import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -104,12 +106,49 @@ public class MainActivity extends FragmentActivity {
         loginHuanxin();
         CommonUtils.setMeizuStatusBarDarkIcon(this,true);
         CommonUtils.setMiuiStatusBarDarkMode(this,true);
+        PgyUpdateManager.register(MainActivity.this, "",
+                new UpdateManagerListener() {
+
+                    @Override
+                    public void onUpdateAvailable(final String result) {
+                        // 将新版本信息封装到AppBean中
+                        final AppBean appBean = getAppBeanFromString(result);
+                        AlertDialog dialog= new AlertDialog(activity).builder();
+                        dialog.setTitle("更新提示").setCancelable(false).setPositiveButton("立即更新", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startDownloadTask(
+                                        MainActivity.this,
+                                        appBean.getDownloadURL());
+                            }
+                        });
+                        if(appBean.getReleaseNote().contains("强制更新")){
+                            dialog.setMsg(appBean.getReleaseNote().replace("强制更新","")).setNegativeButton("退出", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    MyActivityManager.getInstance().finishAllActivity();
+                                }
+                            });
+                        }else{
+                            dialog.setMsg(appBean.getReleaseNote()).setNegativeButton("忽略", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                        }
+                        dialog.show();
+                    }
+
+                    @Override
+                    public void onNoUpdateAvailable() {
+                    }
+                });
     }
     private static void loginHuanxin() {
         EMClient.getInstance().login(SPUtils.get(activity, "userId", "").toString(), "Walnut2017", new EMCallBack() {
             @Override
             public void onSuccess() {
-                LogUtils.d("环信即时登陆成功");
                 /**
                  *  获取所有联系人
                  */
@@ -347,7 +386,6 @@ public class MainActivity extends FragmentActivity {
         MobclickAgent.onResume(this);
         CommonUtils.init(this);
     }
-
     @Override
     protected void onPause() {
         super.onPause();

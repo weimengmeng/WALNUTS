@@ -9,6 +9,7 @@
         android:text="查看往期"
         android:onClick="onClick"
         android:typeface="sans"
+        android:paddingTop="@dimen/margin"
         android:paddingBottom="@dimen/margin"
         android:textSize="@dimen/normal"
         android:textColor="@color/login"
