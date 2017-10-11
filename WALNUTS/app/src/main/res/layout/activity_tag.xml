@@ -14,6 +14,7 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
             android:drawableLeft="@drawable/btn_back_white"
             android:text=""
             android:textColor="#000000"
@@ -25,8 +26,8 @@
             android:id="@+id/txt_tag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_top"
             android:textColor="@color/white"
-            android:layout_marginTop="-20dp"
             android:textSize="@dimen/largest"
             android:textStyle="bold"
             android:text="商务谈判"/>
@@ -34,13 +35,13 @@
             android:id="@+id/txt_focus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding"
             android:text="+关注话题"
             android:typeface="sans"
             android:paddingTop="@dimen/padding"
             android:paddingBottom="@dimen/padding"
-            android:layout_marginTop="-20dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/small"
+            android:textSize="@dimen/mini"
             android:background="@drawable/txt_shape_white"/>
     </LinearLayout>
     <com.jcodecraeer.xrecyclerview.XRecyclerView

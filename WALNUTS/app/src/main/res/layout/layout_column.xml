@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/white"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="@dimen/padding"
+    android:layout_marginLeft="@dimen/margin"
+    android:background="@drawable/background_layout_div_radius"
+    android:elevation="1dp"
     android:paddingBottom="@dimen/margin_small"
     android:paddingTop="@dimen/margin_small"
     android:weightSum="1">
@@ -15,29 +19,7 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            android:gravity="center|left"
-            android:paddingLeft="@dimen/margin">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_head"
-                android:layout_width="@dimen/head"
-                android:layout_height="@dimen/head"
-                android:src="@drawable/head" />
-
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin"
-                android:text="核桃小编"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal"
-                android:typeface="sans" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.35"
+            android:visibility="invisible"
             android:gravity="center|left">
 
             <TextView
@@ -74,12 +57,36 @@
                 android:textSize="@dimen/normal"
                 android:typeface="sans" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:gravity="center|left"
+            android:paddingLeft="@dimen/margin">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_head"
+                android:layout_width="@dimen/head"
+                android:layout_height="@dimen/head"
+                android:src="@drawable/head" />
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin"
+                android:text="核桃小编"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal"
+                android:typeface="sans" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
+        android:paddingRight="@dimen/margin"
         android:orientation="vertical">
 
         <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"

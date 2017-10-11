@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.R;
 
 import java.io.File;
@@ -38,7 +39,9 @@ public class GridViewAddImgesAdpter extends BaseAdapter {
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
-
+    public int getDatasSize(){
+        return datas==null?0:datas.size();
+    }
     /**
      * 获取最大上传张数
      *
@@ -74,12 +77,12 @@ public class GridViewAddImgesAdpter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return datas.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     public void notifyDataSetChanged(List<Map<String, Object>> datas) {
@@ -90,8 +93,6 @@ public class GridViewAddImgesAdpter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_published_grida, parent, false);
@@ -118,7 +119,6 @@ public class GridViewAddImgesAdpter extends BaseAdapter {
                 }
             });
         } else {
-
             Glide.with(context)
                     .load(R.drawable.image_add)
                     .priority(Priority.HIGH)

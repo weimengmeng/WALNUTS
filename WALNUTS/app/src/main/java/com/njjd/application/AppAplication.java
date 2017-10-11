@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
@@ -63,6 +64,7 @@ public class AppAplication extends Application {
         CrashHandler handler = CrashHandler.getInstance();
         handler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(handler);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         /**
          * 友盟登录、分享
          */

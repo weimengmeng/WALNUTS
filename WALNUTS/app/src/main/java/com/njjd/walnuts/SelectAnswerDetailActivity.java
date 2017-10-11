@@ -202,14 +202,14 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                         txtMessage.setText(object.getString("introduction"));
                         txtContent.setText(object.getString("content"));
                         if (object.getString("p_stat").equals("1")) {
-                            txtAgree.setBackgroundResource(R.drawable.background_button_div);
-                            txtAgree.setSelected(true);
-                            txtAgree.setTag("0");
-                            txtAgree.setTextColor(SelectAnswerDetailActivity.this.getResources().getColor(R.color.white));
-                        } else {
                             txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
-                            txtAgree.setTextColor(SelectAnswerDetailActivity.this.getResources().getColor(R.color.txt_color));
                             txtAgree.setSelected(false);
+                            txtAgree.setTag("0");
+                            txtAgree.setTextColor(SelectAnswerDetailActivity.this.getResources().getColor(R.color.txt_color));
+                        } else {
+                            txtAgree.setBackgroundResource(R.drawable.background_button_div);
+                            txtAgree.setTextColor(SelectAnswerDetailActivity.this.getResources().getColor(R.color.white));
+                            txtAgree.setSelected(true);
                             txtAgree.setTag("1");
                         }
                         agree=Float.valueOf(object.getString("point_num")).intValue();
@@ -374,16 +374,16 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             public void onNext(Object o) {
                 switch (params){
                     case "point_comment_id":
-                        txtAgree.setBackgroundResource(R.drawable.background_button_div);
-                        txtAgree.setTextColor(getResources().getColor(R.color.white));
-                        txtAgree.setSelected(true);
+                        txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+                        txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
+                        txtAgree.setSelected(false);
                         txtAgree.setTag("0");
                         txtAgree.setText((Integer.valueOf(txtAgree.getText().toString())+1)+"");
                         break;
                     case "point_comment_id_not":
-                        txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
-                        txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
-                        txtAgree.setSelected(false);
+                        txtAgree.setBackgroundResource(R.drawable.background_button_div);
+                        txtAgree.setTextColor(getResources().getColor(R.color.white));
+                        txtAgree.setSelected(true);
                         txtAgree.setTag("1");
                         txtAgree.setText((Integer.valueOf(txtAgree.getText().toString())-1)+"");
                         break;

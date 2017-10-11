@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="南京交道科技有限公司"
-            android:layout_marginTop="@dimen/_margin"
             android:textSize="@dimen/big"
             android:textColor="@color/gray"/>
         <View
@@ -50,6 +49,9 @@
             android:alpha="0.5"
             android:background="@color/txt_color"></View>
         <LinearLayout
+            android:id="@+id/lv_update"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
             style="@style/view_me">
 
             <TextView
@@ -57,12 +59,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding"
                 android:layout_weight="0.3"
-                android:text="帮助说明"
+                android:text="检查更新"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
 
             <TextView
-                android:id="@+id/txt_area"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
@@ -94,12 +95,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nanjing Bizcrossroad technology Co.Ltd"
-            android:layout_marginBottom="@dimen/_margin"
             android:textSize="@dimen/normal"
             android:textColor="@color/txt_color"/>
         <TextView
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/_margin"
             android:layout_height="wrap_content"
             android:text="Copyright©2018 All Rights Reserved"
             android:textSize="@dimen/normal"

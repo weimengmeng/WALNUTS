@@ -36,7 +36,7 @@ public class AnswerEntity implements Serializable {
             this.content=object.isNull("content")?"":object.getString("content");
             this.agree=object.isNull("point_num")?"":object.getString("point_num");
             this.open=object.isNull("answer_num")?"":object.getString("answer_num");
-            this.time=object.isNull("change_time")?"":object.getString("change_time");
+            this.time=object.isNull("add_time")?"":object.getString("add_time");
             this.isPrise=object.isNull("p_stat")?"":object.getString("p_stat");
             this.isSave=object.isNull("c_stat")?"":object.getString("c_stat");
         } catch (JSONException e) {

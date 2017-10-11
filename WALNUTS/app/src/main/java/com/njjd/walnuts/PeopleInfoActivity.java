@@ -17,17 +17,21 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyphenate.chat.EMImageMessageBody;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.SpaceImageDetailActivity;
 import com.njjd.utils.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -75,6 +79,24 @@ public class PeopleInfoActivity extends BaseActivity {
     public void initView(View view) {
         initAfterSetContentView(this,top);
         tempUser = getIntent().getStringExtra("uid");
+        imgHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PeopleInfoActivity.this, SpaceImageDetailActivity.class);
+                ArrayList<String> datas=new ArrayList<>();
+                datas.add(imgHead.getTag().toString());
+                intent.putExtra("images", datas);
+                intent.putExtra("position", 0);
+                int[] location = new int[2];
+                imgHead.getLocationOnScreen(location);
+                intent.putExtra("locationX", location[0]);
+                intent.putExtra("locationY", location[1]);
+                intent.putExtra("width", imgHead.getWidth());
+                intent.putExtra("height", imgHead.getHeight());
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
         getUserInfo();
     }
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -115,6 +137,7 @@ public class PeopleInfoActivity extends BaseActivity {
             txtName.setText(object.isNull("uname")?"未填写":object.getString("uname"));
             tempHead=object.isNull("headimg")?"":object.getString("headimg");
             GlideImageLoder.getInstance().displayImage(this, object.isNull("headimg")?"":object.getString("headimg"), imgHead);
+            imgHead.setTag(tempHead);
             if (object.getString("sex").equals("0.0")) {
                 imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
             } else {

@@ -29,19 +29,22 @@
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
 
-        <View
+       <!-- <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="@dimen/margin"
+            android:layout_marginTop="@dimen/padding"
             android:layout_marginRight="@dimen/margin"
             android:alpha="0.15"
-            android:background="#000000"></View>
+            android:background="#000000"></View>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
             android:orientation="horizontal"
+            android:gravity="center"
             android:weightSum="1">
 
             <TextView
@@ -70,7 +73,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="center_vertical|right"
                 android:paddingRight="@dimen/margin">
@@ -84,7 +87,7 @@
                     android:paddingBottom="@dimen/padding"
                     android:paddingTop="@dimen/padding"
                     android:text="+关注问题"
-                    android:textColor="@color/login"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/small"
                     android:typeface="sans"></TextView>
             </LinearLayout>
@@ -95,16 +98,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/padding_top"
+        android:paddingTop="@dimen/padding"
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:text="回答"
         android:textColor="@color/txt_color"
-        android:textSize="@dimen/normal" />
+        android:textSize="@dimen/small" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_margin"
         android:background="@drawable/background_layout_div">
 
         <include layout="@layout/item_group"></include>

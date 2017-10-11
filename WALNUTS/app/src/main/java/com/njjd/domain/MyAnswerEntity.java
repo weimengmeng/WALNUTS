@@ -2,6 +2,9 @@ package com.njjd.domain;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -24,21 +27,25 @@ public class MyAnswerEntity implements Serializable {
     private String add_time;
     private String follow_article_stat;
     private String point_comment_stat;
-    public MyAnswerEntity(JsonObject object){
-        this.article_id=object.get("article_id").getAsString();
-        this.article_content=object.get("article_content").getAsString();
-        this.article_answer_num=object.get("article_answer_num").getAsString();
-        this.article_follow_num=object.get("article_follow_num").getAsString();
-        this.article_point_num=object.get("article_point_num").getAsString();
-        this.title=object.get("title").getAsString();
-        this.article_imgs=object.get("article_imgs").getAsString().replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
-        this.comment_content=object.get("comment_content").getAsString();
-        this.comment_collect_num=object.get("comment_collect_num").getAsString();
-        this.comment_point_num=object.get("comment_point_num").getAsString();
-        this.comment_answer_num=object.get("comment_answer_num").getAsString();
-        this.point_comment_stat=object.get("point_comment_stat").getAsString();
-        this.comment_id=object.get("comment_id").getAsString();
-        this.add_time=object.get("add_time").getAsString();
+    public MyAnswerEntity(JSONObject object){
+        try {
+            this.article_id=object.getString("article_id");
+            this.article_content=object.getString("article_content");
+            this.article_answer_num=object.getString("article_answer_num");
+            this.article_follow_num=object.getString("article_follow_num");
+            this.article_point_num=object.getString("article_point_num");
+            this.title=object.getString("title");
+            this.article_imgs=object.isNull("article_imgs")?"":object.getString("article_imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.comment_content=object.getString("comment_content");
+            this.comment_collect_num=object.getString("comment_collect_num");
+            this.comment_point_num=object.getString("comment_point_num");
+            this.comment_answer_num=object.getString("comment_answer_num");
+            this.point_comment_stat=object.getString("point_comment_stat");
+            this.comment_id=object.getString("comment_id");
+            this.add_time=object.getString("add_time");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public MyAnswerEntity() {

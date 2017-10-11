@@ -138,7 +138,6 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), files);
             HttpManager.getInstance().pubQuestion(postEntity, new MyUploadListener(), SPUtils.get(this, "userId", "").toString(), SPUtils.get(AppAplication.getContext(), "token", "").toString(), bundle.getString("title"),
                     bundle.getString("content"), temp);
-            LogUtils.d("huan"+temp);
         } else {
             Map<String, Object> map = new HashMap<>();
             map.put("uid", SPUtils.get(this, "userId", ""));
@@ -146,7 +145,6 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             map.put("title", bundle.getString("title"));
             map.put("content", bundle.getString("content"));
             map.put("label_id", temp);
-            LogUtils.d("huan"+map.toString());
             SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
             HttpManager.getInstance().pubQuestion2(postEntity);
         }

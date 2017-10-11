@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding"
+            android:paddingTop="@dimen/margin"
             android:weightSum="1">
 
             <TextView
@@ -119,12 +119,12 @@
                 android:layout_weight="0.4"
                 android:text="@string/forget_pwd"
                 android:textColor="@color/login"
-                android:textSize="@dimen/normal" />
+                android:textSize="@dimen/small" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="0.35"
                 android:gravity="center|right"
                 android:text="没有账号?"
                 android:textColor="@color/txt_color"
@@ -134,11 +134,11 @@
                 android:id="@+id/txt_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="0.25"
                 android:gravity="center|right"
                 android:text="@string/register"
                 android:textColor="@color/login"
-                android:textSize="@dimen/normal" />
+                android:textSize="@dimen/small" />
         </LinearLayout>
     </LinearLayout>
 

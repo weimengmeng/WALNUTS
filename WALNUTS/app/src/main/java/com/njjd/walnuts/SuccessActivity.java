@@ -86,16 +86,15 @@ public class SuccessActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-//        if (getIntent().getIntExtra("bind", 0) == 1) {
-//            //绑定账号情况，预先设置第三方的头像性别等
-//            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
-//            etName.setText(SPUtils.get(this, "thirdName", "").toString());
-//            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
-//            path = SPUtils.get(this, "thirdHead", "").toString();
-//        }
-//        setPickView();
+        if (getIntent().getIntExtra("bind", 0) == 1) {
+            //绑定账号情况，预先设置第三方的头像性别等
+            GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
+            etName.setText(SPUtils.get(this, "thirdName", "").toString());
+            txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
+            path = SPUtils.get(this, "thirdHead", "").toString();
+        }
+        setPickView();
     }
-
     private void setPickView() {
         provinces = CommonUtils.getInstance().getProvincesList();
         provinceEntities = CommonUtils.getInstance().getProvinceEntities();

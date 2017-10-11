@@ -254,7 +254,7 @@
                         android:layout_weight="0.2"
                         android:text="简介"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
 
                     <TextView
                         android:id="@+id/txt_message"
@@ -266,7 +266,7 @@
                         android:paddingRight="@dimen/margin"
                         android:text=""
                         android:textColorHint="@color/txt_color"
-                        android:textSize="@dimen/small"
+                        android:textSize="@dimen/normal"
                         android:typeface="sans" />
                 </LinearLayout>
 
@@ -301,7 +301,7 @@
                         android:layout_weight="0.2"
                         android:text="行业"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
 
                     <TextView
                         android:id="@+id/txt_vocation"
@@ -311,7 +311,7 @@
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
                         android:text=""
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
                 </LinearLayout>
 
                 <View
@@ -344,7 +344,7 @@
                         android:layout_weight="0.2"
                         android:text="区域"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
 
                     <TextView
                         android:id="@+id/txt_area"
@@ -354,7 +354,7 @@
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
                         android:text=""
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
                 </LinearLayout>
 
                 <View
@@ -387,7 +387,7 @@
                         android:layout_weight="0.2"
                         android:text="职位"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
 
                     <TextView
                         android:id="@+id/txt_position"
@@ -397,7 +397,7 @@
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
                         android:text=""
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
                 </LinearLayout>
 
                 <View
@@ -430,7 +430,7 @@
                         android:layout_weight="0.2"
                         android:text="公司"
                         android:textColor="@color/gray"
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
 
                     <TextView
                         android:id="@+id/txt_company"
@@ -440,7 +440,7 @@
                         android:gravity="center|right"
                         android:paddingRight="@dimen/margin"
                         android:text=""
-                        android:textSize="@dimen/small" />
+                        android:textSize="@dimen/normal" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

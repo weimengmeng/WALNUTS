@@ -107,15 +107,12 @@
             android:textColor="@color/gray"
             android:textScaleX="1"
             android:typeface="sans"
-            android:textSize="@dimen/normal"
-             />
+            android:textSize="@dimen/normal" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/padding"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
             android:alpha="0.15"
             android:background="#000000"></View>
 

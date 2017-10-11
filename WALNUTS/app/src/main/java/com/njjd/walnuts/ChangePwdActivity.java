@@ -40,8 +40,8 @@ public class ChangePwdActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        etRePwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//        etRePwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
     @Override
@@ -98,6 +98,7 @@ public class ChangePwdActivity extends BaseActivity {
     public void onNext(Object o) {
         super.onNext(o);
         ToastUtils.showShortToast(this, "重置成功");
+        SPUtils.put(this,"pwd","");
         finish();
     }
     @Override

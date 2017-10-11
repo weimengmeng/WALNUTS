@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:lineSpacingMultiplier="1.2"
+            android:lineSpacingMultiplier="1.1"
             android:maxLines="2"
             android:paddingLeft="@dimen/margin"
             android:paddingTop="@dimen/margin"
@@ -76,13 +76,11 @@
             android:paddingBottom="@dimen/padding"
             android:textColor="@color/gray"
             android:textSize="@dimen/normal"
-            android:typeface="sans" />
+            />
 
        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
             android:alpha="0.15"
             android:background="#000000"></View>
 
@@ -91,7 +89,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingTop="@dimen/padding"
-            android:paddingBottom="@dimen/padding"
+            android:paddingBottom="@dimen/margin"
             android:orientation="horizontal"
             android:weightSum="1">
             <TextView
@@ -103,7 +101,7 @@
                 android:paddingLeft="@dimen/margin"
                 android:text=""
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/mini" />
+                android:textSize="@dimen/small" />
 
             <TextView
                 android:id="@+id/txt_answerNum"
@@ -114,7 +112,7 @@
                 android:gravity="center|left"
                 android:text=""
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/mini" />
+                android:textSize="@dimen/small" />
 
             <TextView
                 android:id="@+id/txt_time"

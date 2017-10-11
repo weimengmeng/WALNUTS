@@ -296,7 +296,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             questionEntity.setTag_id(object.getString("label_id"));
             if (object.getInt("stat") == 1) {
                 txtFocus.setText("取消关注");
-                txtFocus.setTextColor(getResources().getColor(R.color.white));
+                txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape);
             }
             txtAnswerNum.setText("回答 " + Float.valueOf(object.getString("answer_num")).intValue());
@@ -396,7 +396,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         map.put("comment_id", answer_id);
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("page", "1");
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getCommentListener, this, false, false), map);
         HttpManager.getInstance().getCommentList(postEntity);
     }
@@ -617,11 +616,11 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消关注");
             if (questionEntity.getIsFocus() == 0) {
                 txtFocus.setText("取消关注");
-                txtFocus.setTextColor(getResources().getColor(R.color.white));
+                txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape);
             } else {
                 txtFocus.setText("+关注问题");
-                txtFocus.setTextColor(getResources().getColor(R.color.login));
+                txtFocus.setTextColor(getResources().getColor(R.color.white));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape_login);
             }
             txtFocusNum.setText("关注 " + (questionEntity.getIsFocus() == 0 ? ++tempFocus : --tempFocus));

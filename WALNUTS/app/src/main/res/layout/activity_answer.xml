@@ -37,44 +37,50 @@
                 android:textCursorDrawable="@drawable/color_cusor"
                 android:typeface="sans"
                 android:layout_weight="1"
-                android:background="@drawable/background_layout_div"
+                android:background="@color/white"
                 android:gravity="top|left"
                 android:hint="请输入回答"
                 android:textColorHint="@color/txt_color"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/big"
                 android:padding="@dimen/padding_left" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding"
-            android:weightSum="1">
-
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"></LinearLayout>
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding"
+                android:weightSum="1">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:paddingRight="@dimen/padding_left"
-                android:gravity="center|right">
-
-                <Button
-                    android:id="@+id/btn_submit"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_button_div"
-                    android:typeface="sans"
-                    android:text="提交"
-                    android:textColor="#ffffff"
-                    android:textSize="@dimen/normal" />
+                    android:layout_weight="0.7"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:paddingRight="@dimen/padding_left"
+                    android:gravity="center|right">
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_button_div"
+                        android:typeface="sans"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:paddingLeft="@dimen/padding_left"
+                        android:paddingRight="@dimen/padding_left"
+                        android:paddingBottom="@dimen/margin"
+                        android:paddingTop="@dimen/margin"
+                        android:text="提交"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/normal" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

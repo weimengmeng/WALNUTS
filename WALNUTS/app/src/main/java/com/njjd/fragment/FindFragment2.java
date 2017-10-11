@@ -24,12 +24,10 @@ import com.njjd.adapter.FindAnswerAdapter;
 import com.njjd.application.ConstantsVal;
 import com.njjd.domain.ColumnEntity;
 import com.njjd.domain.SelectedAnswerEntity;
-import com.njjd.domain.SpecialEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
-import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SelectAnswerDetailActivity;
 
@@ -59,11 +57,10 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     @BindView(R.id.top)
     LinearLayout top;
     private Context context;
-    private List<SpecialEntity> specialEntities=new ArrayList<>();
     private FindAnswerAdapter adapter;
     private List<ColumnEntity> columnEntities=new ArrayList<>();
     private List<SelectedAnswerEntity> selectedAnswerEntities=new ArrayList<>();
-    private SpecialEntity entity;
+    private SelectedAnswerEntity entity;
     private MyReceiver receiver;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,14 +78,10 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         filter.addAction(ConstantsVal.REFRESH_FIND);
         context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
-        txtTitle.setText("精选回答");
-        adapter=new FindAnswerAdapter(context,specialEntities,columnEntities);
-//        specialEntities.add(new SpecialEntity(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"),null));
-//        specialEntities.add(new SpecialEntity(new ColumnEntity("1","http://img3.imgtn.bdimg.com/it/u=3553261757,602330486&fm=214&gp=0.jpg","核桃小编","超级大美女","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"),null));
-//        specialEntities.add(new SpecialEntity(null,new SelectedAnswerEntity("1","1","1","http://up.qqjia.com/z/16/tu17317_45.png","丽丽","超级大美女","我被客户说服了怎么办？","0","http://up.qqjia.com/z/16/tu17317_45.png","想办法改变自己的说话方式，让客户相信你")));
-//        specialEntities.add(new SpecialEntity(null,new SelectedAnswerEntity("1","1","1","http://img2.touxiang.cn/file/20160310/0bf65797064bd8990e2438664347c3de.jpg","小美","超级大美女","我被客户说服了怎么办？","1","","想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你")));
-//        specialEntities.add(new SpecialEntity(null,new SelectedAnswerEntity("1","1","1","http://www.qqpk.cn/Article/UploadFiles/201011/20101128035132850.jpg","丽丽","超级大美女","我被客户说服了怎么办？","0","http://up.qqjia.com/z/16/tu17317_45.png","想办法改变自己的说话方式，让客户相信你")));
-//        specialEntities.add(new SpecialEntity(null,new SelectedAnswerEntity("1","1","1","http://www.qq745.com/uploads/allimg/141015/1-1410150T344.jpg","丽丽","超级大美女","我被客户说服了怎么办？","1","","想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你想办法改变自己的说话方式，让客户相信你")));
+        txtTitle.setText("精选");
+        columnEntities.add(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女1","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
+        columnEntities.add(new ColumnEntity("2","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女2","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
+        adapter=new FindAnswerAdapter(context,selectedAnswerEntities,columnEntities);
         listFind.setLayoutManager(new LinearLayoutManager(context));
         listFind.setAdapter(adapter);
         listFind.setEmptyView(view.findViewById(R.id.empty));
@@ -98,17 +91,12 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent;
-                if(specialEntities.get(position).getColumnEntity()!=null){
-                    intent=new Intent(context, ColumnDetailActivity.class);
-                    startActivity(intent);
-                }else{
-                    entity=specialEntities.get(position);
-                    intent=new Intent(context, SelectAnswerDetailActivity.class);
-                    intent.putExtra("questionId",entity.getAnswerEntity().getArticle_id());
-                    intent.putExtra("questionTitle",entity.getAnswerEntity().getTitle());
-                    intent.putExtra("answer_id",entity.getAnswerEntity().getAnswer_id());
-                    startActivity(intent);
-                }
+                entity=selectedAnswerEntities.get(position);
+                intent=new Intent(context, SelectAnswerDetailActivity.class);
+                intent.putExtra("questionId",entity.getArticle_id());
+                intent.putExtra("questionTitle",entity.getTitle());
+                intent.putExtra("answer_id",entity.getAnswer_id());
+                startActivity(intent);
             }
         });
         getSelectedAnswerList();
@@ -142,13 +130,15 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         Gson gson = gsonBuilder.create();
         JSONObject object = null;
         JSONArray array = null;
-        SpecialEntity entity;
         SelectedAnswerEntity answerEntity;
         try {
             object=new JSONObject(gson.toJson(o));
             array=object.getJSONArray("comment");
             if(adapter.getCurrentPage()==1){
-                specialEntities.clear();
+                columnEntities.clear();
+                columnEntities.add(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女1","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
+                columnEntities.add(new ColumnEntity("2","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女2","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
+                adapter.setColumnEntities(columnEntities);
                 listFind.refreshComplete();
             }else{
                 listFind.loadMoreComplete();
@@ -159,8 +149,9 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
             for(int i=0;i<array.length();i++){
                 object=array.getJSONObject(i);
                 answerEntity=new SelectedAnswerEntity(object);
-                entity=new SpecialEntity(null,answerEntity);
-                specialEntities.add(entity);
+//                entity=new SelectedAnswerEntity(answerEntity);
+//                specialEntities.add(entity);
+                selectedAnswerEntities.add(answerEntity);
             }
             adapter.notifyDataSetChanged();
         } catch (JSONException e) {

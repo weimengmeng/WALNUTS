@@ -13,6 +13,8 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.MyAnswerAdapter;
@@ -20,6 +22,9 @@ import com.njjd.domain.MyAnswerEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.SPUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,14 +150,23 @@ public class MyAnswerActivity extends BaseActivity {
         if (!o.toString().equals("")) {
             JsonObject object = JSONUtils.getAsJsonObject(o);
             JsonArray array = object.get("collect").getAsJsonArray();
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
             MyAnswerEntity entity;
+            JSONObject object1=null;
             if (MyAnswerAdapter.CURRENT_PAGE == 1) {
                 list.clear();
             }
             for (int i = 0; i < array.size(); i++) {
-                entity = new MyAnswerEntity(array.get(i).getAsJsonObject());
-                list.add(entity);
-                saveAdapter.notifyDataSetChanged();
+                try {
+                    object1=new JSONObject(gson.toJson(array.get(i)));
+                    entity = new MyAnswerEntity(object1);
+                    list.add(entity);
+                    saveAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
         android:color="@color/login" />
     <!-- 圆角 -->
     <corners android:radius="4dp" />
+    <solid android:color="@color/login"></solid>
     <!-- 边距 -->
     <padding
         android:left="10dp"

@@ -5,12 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioButton;
@@ -113,6 +116,16 @@ public class MainActivity extends FragmentActivity {
                     public void onUpdateAvailable(final String result) {
                         // 将新版本信息封装到AppBean中
                         final AppBean appBean = getAppBeanFromString(result);
+                        try {
+                            PackageInfo packageInfo = activity.getApplicationContext()
+                                    .getPackageManager()
+                                    .getPackageInfo(activity.getPackageName(), 0);
+                            if(appBean.getVersionName().equals(packageInfo.versionName)){
+                                return;
+                            }
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         AlertDialog dialog= new AlertDialog(activity).builder();
                         dialog.setTitle("更新提示").setCancelable(false).setPositiveButton("立即更新", new View.OnClickListener() {
                             @Override
@@ -311,12 +324,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PgyUpdateManager.unregister();
         unregisterReceiver(receiver);
         unregisterReceiver(passReceiver);
         MyActivityManager.getInstance().popOneActivity(this);
     }
 
-    @OnClick({R.id.radio1, R.id.radio2, R.id.radio3, R.id.radio4, R.id.radio5})
+    @OnClick({R.id.radio1, R.id.radio2, R.id.radio3, R.id.radio4, R.id.radio5,R.id.img_pub})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -344,6 +358,7 @@ public class MainActivity extends FragmentActivity {
                     temp = 1;
                 }
                 break;
+            case R.id.img_pub:
             case R.id.radio3:
                 intent = new Intent(this, AskActivity.class);
                 startActivity(intent);

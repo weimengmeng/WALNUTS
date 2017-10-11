@@ -19,31 +19,28 @@
             android:gravity="center"
             android:orientation="vertical"
             android:id="@+id/listview_header_text">
-
             <TextView
                 android:id="@+id/refresh_status_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:typeface="sans"
+                android:textSize="@dimen/big"
                 android:text="@string/listview_header_hint_normal" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                  >
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:typeface="sans"
                     android:text="@string/listview_header_last_time"
-                    android:textSize="12sp" />
-
+                    android:textSize="@dimen/small" />
                 <TextView
                     android:id="@+id/last_refresh_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/small" />
             </LinearLayout>
         </LinearLayout>
 

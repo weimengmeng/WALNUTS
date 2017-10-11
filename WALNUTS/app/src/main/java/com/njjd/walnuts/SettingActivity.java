@@ -115,7 +115,6 @@ public class SettingActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_exit:
-//                MobclickAgent.onProfileSignOff();
                 alert();
                 break;
         }

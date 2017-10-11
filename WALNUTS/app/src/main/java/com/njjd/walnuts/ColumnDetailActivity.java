@@ -1,16 +1,12 @@
 package com.njjd.walnuts;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.njjd.adapter.ColumnAdapter;
 import com.njjd.domain.ColumnEntity;
-import com.njjd.domain.SelectedAnswerEntity;
-import com.njjd.domain.SpecialEntity;
 import com.njjd.utils.ListViewForScrollView;
 
 import java.util.ArrayList;
@@ -22,7 +18,6 @@ import butterknife.OnClick;
 /**
  * Created by mrwim on 17/9/15.
  */
-
 public class ColumnDetailActivity extends BaseActivity {
     @BindView(R.id.txt_title)
     TextView txtTitle;

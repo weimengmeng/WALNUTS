@@ -38,7 +38,7 @@
                 android:layout_weight="0.2"
                 android:text="名称"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <EditText
                 android:id="@+id/txt_name"
@@ -53,7 +53,7 @@
                 android:background="@null"
                 android:text=""
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
 
         <View
@@ -79,7 +79,7 @@
 
                 android:text="性别"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <TextView
                 android:id="@+id/txt_sex"
@@ -90,7 +90,7 @@
                 android:paddingRight="@dimen/margin"
                 android:text=""
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                 android:layout_weight="0.2"
                 android:text="简介"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
             <EditText
                 android:id="@+id/txt_message"
                 android:layout_width="0dp"
@@ -131,7 +131,7 @@
                 android:typeface="sans"
                 android:maxLength="50"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
     </LinearLayout>
 
@@ -157,7 +157,7 @@
                 android:layout_weight="0.2"
                 android:text="行业"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <TextView
                 android:id="@+id/txt_vocation"
@@ -169,7 +169,7 @@
                 android:paddingRight="@dimen/margin"
                 android:text=""
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
 
         <View
@@ -193,7 +193,7 @@
                 android:layout_weight="0.2"
                 android:text="销售模式"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <TextView
                 android:id="@+id/txt_sale"
@@ -205,7 +205,7 @@
                 android:paddingRight="@dimen/margin"
                 android:text=""
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
 
         <View
@@ -229,7 +229,7 @@
                 android:layout_weight="0.2"
                 android:text="地区"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <TextView
                 android:id="@+id/txt_province"
@@ -241,7 +241,7 @@
                 android:paddingRight="@dimen/margin"
                 android:text=""
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
 
         <View
@@ -267,7 +267,7 @@
                 android:layout_weight="0.2"
                 android:text="职位"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <EditText
                 android:id="@+id/txt_position"
@@ -283,7 +283,7 @@
                 android:typeface="sans"
                 android:textColorHint="@color/txt_color"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
 
         <View
@@ -308,7 +308,7 @@
                 android:layout_weight="0.2"
                 android:text="公司"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
 
             <EditText
                 android:id="@+id/txt_company"
@@ -324,7 +324,7 @@
                 android:textColorHint="@color/txt_color"
                 android:text=""
                 android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

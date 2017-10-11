@@ -37,9 +37,11 @@
                     android:text="工业项目一定要能喝酒吗?"
                     android:paddingLeft="@dimen/margin"
                     android:paddingRight="@dimen/margin"
+                    android:paddingBottom="@dimen/margin"
+                    android:paddingTop="@dimen/margin"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="1.2"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/big" />
                 <View
                     android:layout_width="match_parent"

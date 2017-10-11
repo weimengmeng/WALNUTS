@@ -132,13 +132,13 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             holder.groupSave.setTextColor(mContext.getResources().getColor(R.color.login));
         }
         if (answerEntity.getIsPrise().equals("1")) {
-            holder.groupAgree.setBackgroundResource(R.drawable.background_button_div);
-            holder.groupAgree.setSelected(true);
-            holder.groupAgree.setTextColor(mContext.getResources().getColor(R.color.white));
-        } else {
             holder.groupAgree.setBackgroundResource(R.drawable.background_button_div_grey);
-            holder.groupAgree.setTextColor(mContext.getResources().getColor(R.color.txt_color));
             holder.groupAgree.setSelected(false);
+            holder.groupAgree.setTextColor(mContext.getResources().getColor(R.color.txt_color));
+        } else {
+            holder.groupAgree.setBackgroundResource(R.drawable.background_button_div);
+            holder.groupAgree.setTextColor(mContext.getResources().getColor(R.color.white));
+            holder.groupAgree.setSelected(true);
         }
         holder.groupAgree.setText("" + Float.valueOf(answerEntity.getAgree()).intValue());
         GlideImageLoder.getInstance().displayImage(mContext,answerEntity.getHead(),holder.head);
@@ -323,17 +323,17 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         switch (temp) {
             case 0:
                 ToastUtils.showShortToast(mContext, "认同＋1");
-                tempView.setBackgroundResource(R.drawable.background_button_div);
+                tempView.setBackgroundResource(R.drawable.background_button_div_grey);
                 tempView.setText((Integer.valueOf(tempView.getText().toString()) + 1) + "");
-                tempView.setTextColor(mContext.getResources().getColor(R.color.white));
-                tempView.setSelected(true);
+                tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
+                tempView.setSelected(false);
                 groupArray.get(currentid).setIsPrise("1");
                 break;
             case 1:
                 ToastUtils.showShortToast(mContext, "认同－1");
-                tempView.setBackgroundResource(R.drawable.background_button_div_grey);
-                tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
-                tempView.setSelected(false);
+                tempView.setBackgroundResource(R.drawable.background_button_div);
+                tempView.setTextColor(mContext.getResources().getColor(R.color.white));
+                tempView.setSelected(true);
                 tempView.setText((Integer.valueOf(tempView.getText().toString())-1)+"");
                 groupArray.get(currentid).setIsPrise("0");
                 break;
