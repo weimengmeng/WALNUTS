@@ -19,6 +19,8 @@ import android.view.View;
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.ios.dialog.AlertDialog;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.QuestionEntity;
@@ -29,6 +31,7 @@ import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.LoginActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
+import com.njjd.walnuts.R;
 import com.njjd.walnuts.WelcomeActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
@@ -64,7 +67,7 @@ public class AppAplication extends Application {
         CrashHandler handler = CrashHandler.getInstance();
         handler.init(getApplicationContext());
         Thread.setDefaultUncaughtExceptionHandler(handler);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         /**
          * 友盟登录、分享
          */
@@ -98,6 +101,7 @@ public class AppAplication extends Application {
 //        EMClient.getInstance().setDebugMode(true);
         MultiDex.install(this);
         CommonUtils.init(context);
+        SpeechUtility.createUtility(context, SpeechConstant.APPID +"=59df0a58");
     }
     public static Context getContext() {
         return context;

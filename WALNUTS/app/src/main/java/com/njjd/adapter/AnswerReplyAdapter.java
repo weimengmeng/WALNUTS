@@ -314,7 +314,6 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         map.put("uid", SPUtils.get(mContext, "userId", ""));
         map.put(params, id);
         map.put("token",SPUtils.get(mContext,"token","").toString());
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, mContext, true, false), map);
         HttpManager.getInstance().agreeOrPraise(postEntity);
     }
@@ -328,6 +327,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                 tempView.setTextColor(mContext.getResources().getColor(R.color.txt_color));
                 tempView.setSelected(false);
                 groupArray.get(currentid).setIsPrise("1");
+                groupArray.get(currentid).setAgree(""+(Float.valueOf(groupArray.get(currentid).getAgree()).intValue()+1));
                 break;
             case 1:
                 ToastUtils.showShortToast(mContext, "认同－1");
@@ -336,6 +336,7 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                 tempView.setSelected(true);
                 tempView.setText((Integer.valueOf(tempView.getText().toString())-1)+"");
                 groupArray.get(currentid).setIsPrise("0");
+                groupArray.get(currentid).setAgree(""+(Float.valueOf(groupArray.get(currentid).getAgree()).intValue()-1));
                 break;
             case 2:
                 ToastUtils.showShortToast(mContext, "收藏成功");

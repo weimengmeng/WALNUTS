@@ -50,19 +50,41 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/padding"
                 android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.7"></LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/padding"
+                    android:paddingBottom="@dimen/padding"
+                    android:layout_weight="0.7">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/normal"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:text="打字太累？试试"/>
+                    <TextView
+                        android:id="@+id/txt_voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/normal"
+                        android:gravity="center"
+                        android:textColor="@color/login"
+                        android:text="语音输入"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:paddingRight="@dimen/padding_left"
+                    android:paddingTop="@dimen/padding"
+                    android:paddingBottom="@dimen/padding"
                     android:gravity="center|right">
 
                     <Button

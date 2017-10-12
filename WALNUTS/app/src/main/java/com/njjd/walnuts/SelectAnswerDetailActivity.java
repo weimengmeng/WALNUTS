@@ -351,7 +351,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb(HttpManager.BASE_URL2+"share/demo.html?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
         if("".equals(questionEntity.getPhoto())){
             image = new UMImage(SelectAnswerDetailActivity.this, R.drawable.logo);//资源文件

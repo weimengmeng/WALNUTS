@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:typeface="sans"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/big" />
 
         <ImageView
@@ -35,8 +35,19 @@
             android:layout_marginTop="@dimen/padding"
             android:maxLines="2"
             android:text=""
-            android:textColor="@color/txt_color"
+            android:textColor="@color/gray"
             android:textSize="@dimen/normal"
+            android:typeface="sans" />
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center|right"
+            android:layout_marginTop="@dimen/padding"
+            android:text=""
+            android:textColor="@color/txt_color"
+            android:textSize="@dimen/small"
             android:typeface="sans" />
     </LinearLayout>
 </LinearLayout>

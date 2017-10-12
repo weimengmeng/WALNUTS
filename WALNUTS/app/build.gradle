@@ -107,4 +107,6 @@ dependencies {
     compile files('libs/SocialSDK_alipay.jar')
     compile files('libs/libapshare.jar')
     compile 'com.pgyersdk:sdk:2.7.6'
+    compile files('libs/Msc.jar')
+    compile files('libs/Sunflower.jar')
 }

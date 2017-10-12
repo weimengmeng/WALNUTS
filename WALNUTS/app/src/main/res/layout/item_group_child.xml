@@ -154,6 +154,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
                 android:text="5分钟前"
+                android:visibility="invisible"
                 android:paddingRight="@dimen/padding_top"
                 android:gravity="center|right"
                 android:textColor="@color/txt_color"

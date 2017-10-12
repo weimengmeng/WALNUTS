@@ -83,7 +83,7 @@ public class PersonalActivity extends BaseActivity{
         txtName.setSelection(txtName.length());
         txtMessage.setText(SPUtils.get(this,"message","").toString());
         txtPosition.setText(SPUtils.get(this,"position","").toString());
-        txtProvince.setText(SPUtils.get(this,"province","").toString()+SPUtils.get(this,"city","").toString());
+        txtProvince.setText(SPUtils.get(this,"province","").toString()+" "+SPUtils.get(this,"city","").toString());
         txtVocation.setText(SPUtils.get(this,"industry","").toString());
         if(SPUtils.get(this,"sex","0").toString().equals("0.0")){
             txtSex.setText("女");
@@ -185,6 +185,11 @@ public class PersonalActivity extends BaseActivity{
             case R.id.btn_add_help2:
                 if(TextUtils.isEmpty(txtName.getText().toString())){
                     ToastUtils.showShortToast(this,"昵称不能为空");
+                    return;
+                }
+                if(txtMessage.getText().length()>35){
+                    ToastUtils.showShortToast(this,"简介最多35个字哦");
+                    return;
                 }
                 completeInfo();
                 break;

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -29,6 +30,7 @@ import com.njjd.domain.FocusEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
 
 import org.json.JSONException;
@@ -93,6 +95,7 @@ public class MyFocusActivity extends BaseActivity {
         };
         peopleAdapter = new FocusPeopleAdapter(userList, this);
         listUser.setEmptyView(findViewById(R.id.empty));
+        ((TextView)findViewById(R.id.txt_content)).setText("暂时没有数据");
         listUser.setAdapter(peopleAdapter);
         listUser.setMenuCreator(creator);
         listUser.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);

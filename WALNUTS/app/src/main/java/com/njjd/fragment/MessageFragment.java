@@ -40,6 +40,7 @@ import com.njjd.utils.LogUtils;
 import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
+import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.ChatActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.MainActivity;
@@ -85,7 +86,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
     private int temp = 0;
-
+    private boolean loadmoe=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
@@ -149,9 +150,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         messPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
-
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
@@ -245,6 +244,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
             @Override
             public void onLoadMore() {
+                if(!loadmoe){
+                    ToastUtils.showShortToast(context,"已加载全部数据啦");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            listInform.loadMoreComplete();
+                        }
+                    },500);
+                    return;
+                }
                 InformAdapter.CURRENT_PAGE++;
                 getMyInform();
             }
@@ -355,7 +364,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             JSONObject object = new JSONObject(gson.toJson(o));
             JSONArray array = object.getJSONArray("notice");
             if (array.length() < 10) {
-                listInform.setNoMore(true);
+                loadmoe=false;
+            }else{
+                loadmoe=true;
             }
             for (int i = 0; i < array.length(); i++) {
                 entities.add(new InformEntity(array.getJSONObject(i)));

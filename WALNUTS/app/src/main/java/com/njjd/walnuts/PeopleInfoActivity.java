@@ -44,23 +44,25 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class PeopleInfoActivity extends BaseActivity {
-    @BindView(R.id.txt_add_focus)
+    @BindView(R.id.btn_add_help2)
     TextView txtAddFocus;
     @BindView(R.id.img_head)
     CircleImageView imgHead;
+    @BindView(R.id.txt_title)
+    TextView txtTitle;
     @BindView(R.id.img_sex)
     ImageView imgSex;
     @BindView(R.id.txt_name)
     TextView txtName;
-    @BindView(R.id.txt_focusNum)
+    @BindView(R.id.txt_focus)
     TextView txtFocusNum;
-    @BindView(R.id.txt_focusedNum)
+    @BindView(R.id.txt_focused)
     TextView txtFocusedNum;
     @BindView(R.id.txt_vocation)
     TextView txtVocation;
     @BindView(R.id.txt_area)
     TextView txtArea;
-    @BindView(R.id.topview)
+    @BindView(R.id.top)
     LinearLayout top;
     @BindView(R.id.txt_position)
     TextView txtPosition;
@@ -79,6 +81,8 @@ public class PeopleInfoActivity extends BaseActivity {
     public void initView(View view) {
         initAfterSetContentView(this,top);
         tempUser = getIntent().getStringExtra("uid");
+        txtAddFocus.setText("关注");
+        txtAddFocus.setVisibility(View.VISIBLE);
         imgHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +102,8 @@ public class PeopleInfoActivity extends BaseActivity {
             }
         });
         getUserInfo();
+        txtTitle.setText("个人详情");
+        txtAddFocus.setTextColor(getResources().getColor(R.color.login));
     }
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void initAfterSetContentView(Activity activity,
@@ -152,6 +158,8 @@ public class PeopleInfoActivity extends BaseActivity {
             txtCompany.setText(object.isNull("company")||object.getString("company").equals("")?"未填写":object.getString("company"));
             if(!object.getString("uid").equals(SPUtils.get(PeopleInfoActivity.this,"userId","").toString())){
                 txtAddFocus.setVisibility(View.VISIBLE);
+            }else{
+                txtAddFocus.setVisibility(View.GONE);
             }
             if(object.getString("follow_stat").equals("1.0")){
                 txtAddFocus.setText("私信");
@@ -168,13 +176,13 @@ public class PeopleInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.txt_back, R.id.txt_add_focus, R.id.ll_ques, R.id.ll_answer})
+    @OnClick({R.id.back, R.id.btn_add_help2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.txt_back:
+            case R.id.back:
                 finish();
                 break;
-            case R.id.txt_add_focus:
+            case R.id.btn_add_help2:
                 if(txtAddFocus.getText().toString().equals("关注")){
                     followUser();
                 }else {
@@ -185,12 +193,6 @@ public class PeopleInfoActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
                 }
-                break;
-            case R.id.ll_ques:
-                ToastUtils.showShortToast(this, "他的问题");
-                break;
-            case R.id.ll_answer:
-                ToastUtils.showShortToast(this, "他的回答");
                 break;
         }
     }

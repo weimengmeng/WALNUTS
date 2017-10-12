@@ -78,11 +78,11 @@
             android:textSize="@dimen/normal"
             />
 
-       <View
+       <!--<View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="0.15"
-            android:background="#000000"></View>
+            android:background="#000000"></View>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,6 +121,7 @@
                 android:layout_weight="0.6"
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
+                android:visibility="invisible"
                 android:text="15分钟前"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/mini" />

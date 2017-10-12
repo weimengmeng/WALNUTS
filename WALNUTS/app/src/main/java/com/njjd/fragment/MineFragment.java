@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -63,8 +64,10 @@ import io.valuesfeng.picker.utils.PicturePickerUtils;
  */
 
 public class MineFragment extends BaseFragment {
-    @BindView(R.id.txt_change)
+    @BindView(R.id.btn_add_help2)
     TextView txtChange;
+    @BindView(R.id.txt_title)
+    TextView txtTitle;
     @BindView(R.id.img_head)
     CircleImageView imgHead;
     @BindView(R.id.img_sex)
@@ -85,8 +88,8 @@ public class MineFragment extends BaseFragment {
     TextView txtPosition;
     @BindView(R.id.txt_company)
     TextView txtCompany;
-//    @BindView(R.id.ll_bg)
-//    LinearLayout llbg;
+    @BindView(R.id.top)
+    LinearLayout top;
     private Context context;
     private File file;
 
@@ -95,7 +98,7 @@ public class MineFragment extends BaseFragment {
         context = getContext();
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),txtChange);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
         getUserInfo();
         return view;
     }
@@ -171,6 +174,11 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        txtChange.setText("编辑");
+        txtChange.setVisibility(View.VISIBLE);
+        txtChange.setTextColor(getResources().getColor(R.color.login));
+        txtTitle.setText("我的");
+        view.findViewById(R.id.back).setVisibility(View.GONE);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -178,12 +186,7 @@ public class MineFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
-
-    @OnClick(R.id.txt_change)
-    public void onViewClicked() {
-    }
-
-    @OnClick({R.id.img_head, R.id.txt_change, R.id.txt_focus, R.id.txt_focused, R.id.lv_question, R.id.lv_answer, R.id.lv_focus, R.id.lv_save, R.id.lv_set})
+    @OnClick({R.id.img_head, R.id.btn_add_help2, R.id.txt_focus, R.id.txt_focused, R.id.lv_question, R.id.lv_answer, R.id.lv_focus, R.id.lv_save, R.id.lv_set})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -194,7 +197,7 @@ public class MineFragment extends BaseFragment {
                         .setEngine(new GlideEngine())
                         .forResult(0);
                 break;
-            case R.id.txt_change:
+            case R.id.btn_add_help2:
                 intent = new Intent(context, PersonalActivity.class);
                 startActivity(intent);
                 break;

@@ -29,12 +29,12 @@ public class MyAnswerEntity implements Serializable {
     private String point_comment_stat;
     public MyAnswerEntity(JSONObject object){
         try {
-            this.article_id=object.getString("article_id");
-            this.article_content=object.getString("article_content");
-            this.article_answer_num=object.getString("article_answer_num");
-            this.article_follow_num=object.getString("article_follow_num");
-            this.article_point_num=object.getString("article_point_num");
-            this.title=object.getString("title");
+            this.article_id=object.isNull("article_id")?"":object.getString("article_id");
+            this.article_content=object.isNull("article_content")?"":object.getString("article_content");
+            this.article_answer_num=object.isNull("article_answer_num")?"":object.getString("article_answer_num");
+            this.article_follow_num=object.isNull("article_follow_num")?"":object.getString("article_follow_num");
+            this.article_point_num=object.isNull("article_point_num")?"":object.getString("article_point_num");
+            this.title=object.isNull("title")?"":object.getString("title");
             this.article_imgs=object.isNull("article_imgs")?"":object.getString("article_imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.comment_content=object.getString("comment_content");
             this.comment_collect_num=object.getString("comment_collect_num");

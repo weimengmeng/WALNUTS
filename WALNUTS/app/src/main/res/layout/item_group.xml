@@ -63,6 +63,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:singleLine="true"
+                    android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:text="职业的小逗比"
                     android:textColor="@color/txt_color"
@@ -109,12 +110,6 @@
             android:typeface="sans"
             android:textSize="@dimen/normal" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/padding"
-            android:alpha="0.15"
-            android:background="#000000"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -176,6 +171,7 @@
                     android:paddingRight="@dimen/padding"
                     android:gravity="right|center"
                     android:text="14分钟前"
+                    android:visibility="invisible"
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small">
 

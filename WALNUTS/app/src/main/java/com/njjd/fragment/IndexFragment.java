@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SearchActivity;
@@ -92,7 +94,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private String tempKind = "1", ids = "";
     private String tempOrder = "time";
     private MyReceiver receiver;
-
+    private boolean loadmoe=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -263,6 +265,16 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
             @Override
             public void onLoadMore() {
+                if(!loadmoe){
+                    ToastUtils.showShortToast(context,"已加载全部数据啦");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.loadMoreComplete();
+                        }
+                    }, 500);
+                    return;
+                }
                 questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
                 getQuestion(tempKind, tempOrder);
                 list.loadMoreComplete();
@@ -306,10 +318,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         try {
             object = new JSONObject(gson.toJson(o));
             array = object.getJSONArray("article");
-            if(array.length()==0){
-                list.setNoMore(true);
-                return;
-            }
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
                 if (indexPage.getCurrentItem() == 0)
@@ -317,6 +325,12 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 tempList.clear();
             } else {
                 list.loadMoreComplete();
+            }
+            if(array.length()==0){
+                loadmoe=false;
+                return;
+            }else{
+                loadmoe=true;
             }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i), tempKind);

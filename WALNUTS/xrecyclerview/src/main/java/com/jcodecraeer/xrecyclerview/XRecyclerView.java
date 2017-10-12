@@ -184,7 +184,9 @@ public class XRecyclerView extends RecyclerView {
         this.mEmptyView = emptyView;
         mDataObserver.onChanged();
     }
-
+    public boolean getLoadMoreEnable(){
+        return loadingMoreEnabled;
+    }
     public View getEmptyView() {
         return mEmptyView;
     }

@@ -54,6 +54,7 @@ public class MyAnswerAdapter extends BaseAdapter{
             hodel.title=(TextView)convertView.findViewById(R.id.txt_title);
             hodel.image_photo=(ImageView) convertView.findViewById(R.id.img);
             hodel.reply_content=(TextView)convertView.findViewById(R.id.txt_reply);
+            hodel.time=(TextView)convertView.findViewById(R.id.txt_time);
             convertView.setTag(hodel);
         }else{
             hodel=(ViewHodel) convertView.getTag();
@@ -62,6 +63,7 @@ public class MyAnswerAdapter extends BaseAdapter{
         myAnswerEntity=list.get(position);
         hodel.title.setText(myAnswerEntity.getTitle());
         hodel.reply_content.setText(myAnswerEntity.getComment_content());
+        hodel.time.setText(myAnswerEntity.getAdd_time());
         if ("".equals(myAnswerEntity.getArticle_imgs())) {
             hodel.image_photo.setVisibility(View.GONE);
         } else {
@@ -75,5 +77,6 @@ public class MyAnswerAdapter extends BaseAdapter{
         TextView title;
         ImageView image_photo;
         TextView reply_content;
+        TextView time;
     }
 }

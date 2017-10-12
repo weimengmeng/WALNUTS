@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -26,10 +27,14 @@ import com.njjd.domain.ColumnEntity;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.LoginActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SelectAnswerDetailActivity;
+import com.njjd.walnuts.WelcomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +67,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     private List<SelectedAnswerEntity> selectedAnswerEntities=new ArrayList<>();
     private SelectedAnswerEntity entity;
     private MyReceiver receiver;
+    private boolean loadmoe=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -109,6 +115,16 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
 
             @Override
             public void onLoadMore() {
+                if(!loadmoe){
+                    ToastUtils.showShortToast(context,"已加载全部数据啦");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            listFind.loadMoreComplete();
+                        }
+                    }, 500);
+                    return;
+                }
                 adapter.setCurrentPage(adapter.getCurrentPage()+1);
                 getSelectedAnswerList();
             }
@@ -136,6 +152,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
             array=object.getJSONArray("comment");
             if(adapter.getCurrentPage()==1){
                 columnEntities.clear();
+                selectedAnswerEntities.clear();
                 columnEntities.add(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女1","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
                 columnEntities.add(new ColumnEntity("2","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女2","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
                 adapter.setColumnEntities(columnEntities);
@@ -144,13 +161,13 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
                 listFind.loadMoreComplete();
             }
             if(array.length()<20){
-                listFind.setNoMore(true);
+                loadmoe=false;
+            }else{
+                loadmoe=true;
             }
             for(int i=0;i<array.length();i++){
                 object=array.getJSONObject(i);
                 answerEntity=new SelectedAnswerEntity(object);
-//                entity=new SelectedAnswerEntity(answerEntity);
-//                specialEntities.add(entity);
                 selectedAnswerEntities.add(answerEntity);
             }
             adapter.notifyDataSetChanged();
@@ -163,9 +180,9 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         public void onReceive(Context context, Intent intent) {
                 listFind.smoothScrollToPosition(0);
                 listFind.setPullRefreshEnabled(true);
+            adapter.setCurrentPage(1);
                 listFind.refresh();
-                adapter.setCurrentPage(1);
-            getSelectedAnswerList();
+//            getSelectedAnswerList();
         }
     }
     @Override

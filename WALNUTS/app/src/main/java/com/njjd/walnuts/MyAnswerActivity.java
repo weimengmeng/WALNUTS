@@ -162,12 +162,13 @@ public class MyAnswerActivity extends BaseActivity {
                 try {
                     object1=new JSONObject(gson.toJson(array.get(i)));
                     entity = new MyAnswerEntity(object1);
+                    if(!entity.getArticle_id().equals(""))
                     list.add(entity);
-                    saveAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            saveAdapter.notifyDataSetChanged();
         }
     }
 

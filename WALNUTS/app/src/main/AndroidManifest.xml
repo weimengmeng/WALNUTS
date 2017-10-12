@@ -30,6 +30,13 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.njjd.application.MyGlide"
             android:value="WalnutsCache"></meta-data>
+        <!-- 移动统计分析 -->
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'59df0a58'" />
+        <meta-data
+            android:name="IFLYTEK_CHANNEL"
+            android:value="Android_Demo" />
         <activity
             android:name=".AppIntroActivity"
             android:screenOrientation="portrait"></activity>

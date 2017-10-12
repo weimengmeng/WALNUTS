@@ -25,6 +25,7 @@ import com.njjd.adapter.FocusPeopleAdapter;
 import com.njjd.domain.FocusEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.VpSwipeRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +55,7 @@ public class AttentionActivity extends BaseActivity {
     private List<FocusEntity> userList = new ArrayList<>();
     private FocusPeopleAdapter peopleAdapter;
     @BindView(R.id.refresh)
-    SwipeRefreshLayout refreshLayout;
+    VpSwipeRefreshLayout refreshLayout;
     private SwipeMenuCreator creator;
     @Override
     public int bindLayout() {
