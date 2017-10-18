@@ -48,7 +48,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:text="您的回答被评论"
-                android:gravity="center_vertical"
+                android:gravity="top"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
         </LinearLayout>

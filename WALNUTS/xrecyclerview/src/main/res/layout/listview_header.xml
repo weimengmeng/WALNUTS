@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:typeface="sans"
-                android:textSize="@dimen/big"
+                android:textSize="14sp"
                 android:text="@string/listview_header_hint_normal" />
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                     android:id="@+id/last_refresh_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/small" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 

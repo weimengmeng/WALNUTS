@@ -74,7 +74,13 @@ public class GridViewAddImgesAdpter extends BaseAdapter {
             return count;
         }
     }
-
+    public List<String> getImgs(){
+        List<String> imgs=new ArrayList<>();
+        for(int i=0;i<datas.size();i++){
+            imgs.add(datas.get(i).get("path").toString());
+        }
+        return imgs;
+    }
     @Override
     public Object getItem(int position) {
         return datas.get(position);

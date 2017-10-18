@@ -170,6 +170,22 @@ public class HttpManager {
         observable = httpService.getTag(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void upFeedBack(BaseEntity basePar, ProgressListener listener,String uid,String content,String contact){
+        baseBar = basePar;
+        Map<String, RequestBody> map = new HashMap<>();
+        List<File> files=basePar.getFiles();
+        for(int i=0;i<files.size();i++){
+            UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(files.get(i),listener );
+            map.put("img[]\"; filename=\""+files.get(i).getName()+"", fileRequestBody);
+        }
+        observable = httpService.upFeedBack(map,uid,content,contact).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void upFeedBack2(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.upFeedBack2(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void pubQuestion(BaseEntity basePar, ProgressListener listener,String uid,String token,String title,String content,String label_id){
         baseBar = basePar;
         Map<String, RequestBody> map = new HashMap<>();

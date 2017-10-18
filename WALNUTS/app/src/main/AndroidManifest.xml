@@ -58,6 +58,14 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".PubArticleActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ColumnActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".InterestActivity"
             android:screenOrientation="portrait">
         </activity>

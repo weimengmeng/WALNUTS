@@ -76,15 +76,15 @@
             <cn.bingoogolapple.badgeview.BGABadgeTextView
                 android:id="@+id/txt_badge"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text=""
                 android:layout_marginRight="@dimen/margin"
                 android:paddingRight="@dimen/padding_top"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/small"
+                android:textSize="@dimen/mini"
                 app:badge_gravity="rightTop"
                 app:badge_dragable="true"
-                app:badge_padding="5dp"/>
+                app:badge_padding="4dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

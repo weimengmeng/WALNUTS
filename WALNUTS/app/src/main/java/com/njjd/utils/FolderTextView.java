@@ -210,7 +210,8 @@ public class FolderTextView extends TextView {
 
         @Override
         public void updateDrawState(TextPaint ds) {
-            ds.setColor(ds.linkColor);
+//            ds.setColor(ds.linkColor);
+            ds.setColor(getResources().getColor(R.color.login));
         }
     };
 }

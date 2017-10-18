@@ -1,19 +1,13 @@
 package com.njjd.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,7 +40,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +98,14 @@ public class MineFragment extends BaseFragment {
     @Override
     public void lazyInitData() {
     }
-
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+        } else {
+            txtFocus.setText("关注的人\n" + SPUtils.get(context, "focus", 0));
+            txtFocused.setText("被关注\n" + SPUtils.get(context, "focused", 0));
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -114,9 +114,9 @@ public class MineFragment extends BaseFragment {
         txtPosition.setText(SPUtils.get(context, "position", "").toString());
         txtArea.setText(SPUtils.get(context, "province", "").toString() + SPUtils.get(context, "city", "").toString());
         txtVocation.setText(SPUtils.get(context, "industry", "").toString());
+        txtCompany.setText(SPUtils.get(context,"company","").toString());
         txtFocus.setText("关注的人\n" + SPUtils.get(context, "focus", 0));
         txtFocused.setText("被关注\n" + SPUtils.get(context, "focused", 0));
-        txtCompany.setText(SPUtils.get(context,"company","").toString());
         GlideImageLoder.getInstance().displayImage(context, SPUtils.get(context, "head", "").toString(), imgHead);
         if (SPUtils.get(context, "sex", "0").toString().equals("0.0")) {
             imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_girl));
@@ -142,7 +142,7 @@ public class MineFragment extends BaseFragment {
                     SPUtils.put(context, "city", object.getString("city_name"));
                     SPUtils.put(context, "company", object.isNull("company") ? "" : object.getString("company"));
                     SPUtils.put(context, "position", object.isNull("position") ? "" : object.getString("position"));
-                    SPUtils.put(context, "industry", object.getString("industry_name"));
+                    SPUtils.put(context, "industry", object.getString("f_industry_name")+"-"+object.getString("industry_name"));
                     SPUtils.put(context, "sales", object.getString("sales_name"));
                     SPUtils.put(context, "message", object.isNull("introduction") ? "" : object.getString("introduction"));
                     SPUtils.put(context, "focus", Float.valueOf(object.getString("follow_numm")).intValue());
@@ -151,7 +151,7 @@ public class MineFragment extends BaseFragment {
                     txtMessage.setText(SPUtils.get(context, "message", "").toString());
                     txtPosition.setText(SPUtils.get(context, "position", "").toString());
                     txtCompany.setText(SPUtils.get(context,"company","").toString());
-                    txtArea.setText(SPUtils.get(context, "province", "").toString() + SPUtils.get(context, "city", "").toString());
+                    txtArea.setText(SPUtils.get(context, "province", "").toString() +" "+ SPUtils.get(context, "city", "").toString());
                     txtVocation.setText(SPUtils.get(context, "industry", "").toString());
                     txtFocus.setText("关注的人\n" + SPUtils.get(context, "focus", 0));
                     txtFocused.setText("被关注\n" + SPUtils.get(context, "focused", 0));

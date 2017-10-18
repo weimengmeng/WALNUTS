@@ -95,14 +95,23 @@
             <TextView
                 android:id="@+id/txt_focusNum"
                 android:layout_width="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.15"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:paddingLeft="@dimen/margin"
                 android:text=""
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/small" />
-
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.05"
+                android:paddingLeft="@dimen/margin"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="·"
+                android:textStyle="bold"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small" />
             <TextView
                 android:id="@+id/txt_answerNum"
                 android:layout_width="0dp"

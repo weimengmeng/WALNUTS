@@ -284,6 +284,7 @@ public class SaveDetailActivity extends BaseActivity {
             case R.id.img_answer:
                 intent = new Intent(this, AnswerActivity.class);
                 intent.putExtra("quesId", saveEntity.getArticle_id());
+                intent.putExtra("content",saveEntity.getArticle_content());
                 startActivity(intent);
                 break;
         }

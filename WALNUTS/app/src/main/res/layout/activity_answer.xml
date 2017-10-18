@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
+    xmlns:voiceView="http://schemas.android.com/apk/res-auto"
     android:background="@color/grey">
 
     <RelativeLayout
@@ -26,9 +27,22 @@
                 android:paddingBottom="@dimen/padding"
                 android:background="@color/white"
                 android:text="工业项目需要喝酒吗？"
+                android:textColor="@color/black"
+                android:paddingLeft="@dimen/padding_left"
+                android:paddingRight="@dimen/margin"
+                android:textStyle="bold"
+                android:textSize="@dimen/big" />
+            <com.njjd.utils.FolderTextView
+                android:id="@+id/txt_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding"
+                android:background="@color/white"
+                android:text="工业项目需要喝酒吗？"
                 android:textColor="@color/gray"
                 android:paddingLeft="@dimen/padding_left"
-                android:textSize="@dimen/big" />
+                android:paddingRight="@dimen/margin"
+                android:textSize="@dimen/normal" />
             <EditText
                 android:id="@+id/et_answer"
                 android:layout_width="match_parent"
@@ -83,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:paddingRight="@dimen/padding_left"
+                    android:paddingLeft="@dimen/margin"
                     android:paddingTop="@dimen/padding"
                     android:paddingBottom="@dimen/padding"
                     android:gravity="center|right">
@@ -95,14 +110,75 @@
                         android:typeface="sans"
                         android:minHeight="0dp"
                         android:minWidth="0dp"
-                        android:paddingLeft="@dimen/padding_left"
-                        android:paddingRight="@dimen/padding_left"
+                        android:paddingLeft="@dimen/padding_top"
+                        android:paddingRight="@dimen/padding_top"
                         android:paddingBottom="@dimen/margin"
                         android:paddingTop="@dimen/margin"
                         android:text="提交"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lv_voice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+                <com.carlos.voiceline.mylibrary.VoiceLineView
+                    android:id="@+id/voicLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/grey"
+                    voiceView:maxVolume="200"
+                    voiceView:middleLine="@color/login"
+                    voiceView:middleLineHeight="1dp"
+                    voiceView:fineness="three"
+                    voiceView:rectSpace="2dp"
+                    voiceView:rectWidth="5dp"
+                    voiceView:sensibility="four"
+                    voiceView:viewMode="line"
+                    voiceView:voiceLine="@color/login" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/padding"
+                    android:layout_marginBottom="@dimen/padding"
+                    android:weightSum="1"
+                    >
+                    <Button
+                        android:id="@+id/btn_cancle"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_button_div"
+                        android:button="@null"
+                        android:layout_marginLeft="@dimen/margin_top"
+                        android:layout_marginRight="@dimen/padding"
+                        android:text="取消"
+                        android:minHeight="0dp"
+                        android:paddingTop="@dimen/margin"
+                        android:paddingBottom="@dimen/margin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/normal" />
+                <Button
+                    android:id="@+id/btn_voice"
+                    android:layout_width="0dp"
+                    android:layout_marginLeft="@dimen/padding"
+                    android:layout_marginRight="@dimen/margin_top"
+                    android:layout_weight="0.5"
+                    android:minHeight="0dp"
+                    android:paddingBottom="@dimen/margin"
+                    android:paddingTop="@dimen/margin"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_button_div"
+                    android:button="@null"
+                    android:text="开始"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/normal" />
+                    </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

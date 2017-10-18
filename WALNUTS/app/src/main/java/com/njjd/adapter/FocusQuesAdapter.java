@@ -71,7 +71,7 @@ public class FocusQuesAdapter extends BaseAdapter {
         }
         focusEntity=list.get(position);
         hodel.title.setText(focusEntity.getTitle());
-        hodel.tag.setText("关注量: "+Float.valueOf(focusEntity.getFocusNum()).intValue());
+        hodel.tag.setText("关注: "+Float.valueOf(focusEntity.getFocusNum()).intValue()+"        回答 "+Float.valueOf(focusEntity.getAnswerNum()).intValue());
         ParsePosition pos = new ParsePosition(0);
         try {
             hodel.date.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(focusEntity.getDateTime())));

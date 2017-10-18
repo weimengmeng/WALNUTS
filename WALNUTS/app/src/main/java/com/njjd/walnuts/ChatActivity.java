@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -76,8 +77,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             adapter.notifyDataSetChanged();
-            listChat.smoothScrollToPosition(
-                    messagesList.size() - 1);
+            listChat.setSelection(adapter.getCount());
         }
     };
 
@@ -89,12 +89,14 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         if (conversation == null) {
             messagesList = new ArrayList<>();
         } else {
+            conversation.loadMoreMsgFromDB(conversation.getLastMessage().getMsgId(),1000);
             messagesList = conversation.getAllMessages();
             conversation.markAllMessagesAsRead();
         }
         adapter = new MSGLAdapter(this, messagesList);
         adapter.setAvatar(getIntent().getStringExtra("avatar"));
         listChat.setAdapter(adapter);
+
         handler.sendEmptyMessage(0);
         initConversionLitener();
         AndroidBug5497Workaround.assistActivity(this);
@@ -240,11 +242,11 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         handler.sendEmptyMessage(0);
         message.setMessageStatusCallback(emCallBack);
     }
-
     private EMCallBack emCallBack = new EMCallBack() {
         @Override
         public void onSuccess() {
             handler.sendEmptyMessage(0);
+            EMClient.getInstance().chatManager().importMessages(messagesList);
         }
 
         @Override

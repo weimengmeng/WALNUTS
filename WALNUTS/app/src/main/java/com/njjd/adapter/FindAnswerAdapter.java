@@ -159,6 +159,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     ((ContentViewHolder) holder).focus.setText("取消关注");
                                     ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.txt_color));
                                     ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+                                    SPUtils.put(context,"focus",Integer.valueOf(SPUtils.get(context,"focus",0).toString())-1);
                                 } else {
                                     list.get(position).setIsFocus("1.0");
                                     for (int i = columnEntities.size(); i < list.size(); i++) {
@@ -169,6 +170,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     ((ContentViewHolder) holder).focus.setText("+关注TA");
                                     ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
                                     ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
+                                    SPUtils.put(context,"focus",Integer.valueOf(SPUtils.get(context,"focus",0).toString())+1);
                                 }
                                 notifyDataSetChanged();
                             }

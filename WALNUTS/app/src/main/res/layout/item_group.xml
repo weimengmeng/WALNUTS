@@ -117,7 +117,7 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/padding"
             android:paddingTop="@dimen/padding"
-            android:paddingBottom="@dimen/padding"
+            android:paddingBottom="@dimen/margin"
             android:weightSum="1">
 
             <TextView

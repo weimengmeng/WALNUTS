@@ -15,7 +15,8 @@ public class ColumnEntity implements Serializable{
     private String title;//文章标题
     private String content;//文章内容
     private String pic;//文章配图
-
+    private String commentNum;
+    private String pointNum;
     public ColumnEntity(String id, String head, String name, String title, String content, String pic) {
         this.id = id;
         this.head = head;
@@ -23,6 +24,38 @@ public class ColumnEntity implements Serializable{
         this.title = title;
         this.content = content;
         this.pic = pic;
+    }
+
+    public String getArticle_id() {
+        return article_id;
+    }
+
+    public void setArticle_id(String article_id) {
+        this.article_id = article_id;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
+    public String getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(String commentNum) {
+        this.commentNum = commentNum;
+    }
+
+    public String getPointNum() {
+        return pointNum;
+    }
+
+    public void setPointNum(String pointNum) {
+        this.pointNum = pointNum;
     }
 
     public String getId() {

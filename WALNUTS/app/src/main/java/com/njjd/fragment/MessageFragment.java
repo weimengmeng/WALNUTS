@@ -86,12 +86,13 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
     private int temp = 0;
-    private boolean loadmoe=true;
+    private boolean loadmoe = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
+        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
         return view;
     }
 
@@ -99,6 +100,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public void onResume() {
         super.onResume();
         conversations.clear();
+        EMClient.getInstance().chatManager().loadAllConversations();
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
         if (conversationsMap != null)
             for (EMConversation conversation1 : conversationsMap.values()) {
@@ -115,8 +117,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             getUserInfoByOpenId();
         }
         if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
-            if(MainActivity.temp!=2||messPage.getCurrentItem()!=0) {
-                radioMess.setTipOn(true,1);
+            if (MainActivity.temp != 2 || messPage.getCurrentItem() != 0) {
+                radioMess.setTipOn(true, 1);
                 radioMess.invalidate();
             }
         }
@@ -137,13 +139,18 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         LinearLayout linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_chat, null);
         listMes = (ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
         listMes.setEmptyView(linearLayout.findViewById(R.id.empty));
-        ((TextView)linearLayout.findViewById(R.id.txt_content)).setText("暂无新消息");
+        ((TextView) linearLayout.findViewById(R.id.txt_content)).setText("暂无新消息");
+        adapter = new ConversationAdapter(getContext(), conversations);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
+        listMes.setAdapter(adapter);
+        listMes.setRefreshProgressStyle(ProgressStyle.BallPulse);
         viewList = new ArrayList<>();
         viewList.add(linearLayout);
         linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_inform, null);
         listInform = (XRecyclerView) linearLayout.findViewById(R.id.list_inform);
         listInform.setEmptyView(linearLayout.findViewById(R.id.empty));
-        ((TextView)linearLayout.findViewById(R.id.txt_content)).setText("暂无新通知");
+        ((TextView) linearLayout.findViewById(R.id.txt_content)).setText("暂无新通知");
         viewList.add(linearLayout);
         pagerAdapter = new MyPagerAdapter(viewList);
         messPage.setAdapter(pagerAdapter);
@@ -151,15 +158,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
                     radioMess.setChecked(true);
-                    radioMess.setTipOn(false,1);
+                    radioMess.setTipOn(false, 1);
                     radioMess.invalidate();
                 } else {
                     radioInform.setChecked(true);
-                    radioInform.setTipOn(false,1);
+                    radioInform.setTipOn(false, 1);
                     radioInform.invalidate();
                 }
             }
@@ -169,16 +177,11 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
             }
         });
-        adapter = new ConversationAdapter(getContext(), conversations);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
-        listMes.setAdapter(adapter);
-        listMes.setRefreshProgressStyle(ProgressStyle.BallPulse);
         listMes.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 onResume();
-                radioMess.setTipOn(false,1);
+                radioMess.setTipOn(false, 1);
                 radioMess.invalidate();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
@@ -194,6 +197,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         adapter.setOnItemClickListener(new ConversationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                radioMess.setTipOn(false, 1);
+                radioMess.invalidate();
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("openId", conversations.get(position).getOpenId());
                 intent.putExtra("name", conversations.get(position).getName());
@@ -232,7 +237,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             @Override
             public void onRefresh() {
                 InformAdapter.CURRENT_PAGE = 1;
-                radioInform.setTipOn(false,1);
+                radioInform.setTipOn(false, 1);
                 radioInform.invalidate();
                 getMyInform();
                 new Handler().postDelayed(new Runnable() {
@@ -244,14 +249,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
             @Override
             public void onLoadMore() {
-                if(!loadmoe){
-                    ToastUtils.showShortToast(context,"已加载全部数据啦");
+                if (!loadmoe) {
+                    ToastUtils.showShortToast(context, "已加载全部数据啦");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             listInform.loadMoreComplete();
                         }
-                    },500);
+                    }, 500);
                     return;
                 }
                 InformAdapter.CURRENT_PAGE++;
@@ -262,6 +267,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         adapterInform.setOnItemClickListener(new InformAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                radioInform.setTipOn(false, 1);
+                radioInform.invalidate();
                 Intent intent;
                 QuestionEntity entity = null;
                 Bundle bundle = null;
@@ -270,9 +277,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                     case "0.0":
                         break;
                     case "1.0":
-                    case "2.0":
                     case "5.0":
-                    case "6.0":
+                    case "2.0":
                         intent = new Intent(context, PeopleInfoActivity.class);
                         intent.putExtra("uid", entities.get(position).getUid());
                         startActivity(intent);
@@ -289,6 +295,22 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         intent.putExtra("type", "3");
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        break;
+                    case "6.0":
+                        intent = new Intent(context, IndexDetailActivity.class);
+                        bundle = new Bundle();
+                        try {
+                            entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
+                            intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))));
+                            bundle.putSerializable("question", entity);
+                            intent.putExtra("current_commentId", entities.get(position).getComment_id());
+                            intent.putExtra("question", bundle);
+                            intent.putExtra("type", "3");
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "4.0":
                         intent = new Intent(context, IndexDetailActivity.class);
@@ -364,9 +386,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             JSONObject object = new JSONObject(gson.toJson(o));
             JSONArray array = object.getJSONArray("notice");
             if (array.length() < 10) {
-                loadmoe=false;
-            }else{
-                loadmoe=true;
+                loadmoe = false;
+            } else {
+                loadmoe = true;
             }
             for (int i = 0; i < array.length(); i++) {
                 entities.add(new InformEntity(array.getJSONObject(i)));
@@ -399,12 +421,12 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         switch (view.getId()) {
             case R.id.radio_mess:
                 messPage.setCurrentItem(0);
-                radioMess.setTipOn(false,1);
+                radioMess.setTipOn(false, 1);
                 radioMess.invalidate();
                 break;
             case R.id.radio_inform:
                 messPage.setCurrentItem(1);
-                radioInform.setTipOn(false,1);
+                radioInform.setTipOn(false, 1);
                 radioInform.invalidate();
                 break;
         }
@@ -419,7 +441,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     public class InformReceive extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             InformAdapter.CURRENT_PAGE = 1;
-            radioInform.setTipOn(true,1);
+            radioInform.setTipOn(true, 1);
             radioInform.invalidate();
             getMyInform();
         }

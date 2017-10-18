@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
@@ -51,8 +52,15 @@ public class ColumnDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick(R.id.back)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.back,R.id.txt_name})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.back:
+                finish();
+                break;
+            case R.id.txt_name:
+                startActivity(new Intent(this,ColumnActivity.class));
+                break;
+        }
     }
 }

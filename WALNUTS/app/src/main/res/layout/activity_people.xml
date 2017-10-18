@@ -31,14 +31,14 @@
                 android:layout_width="@dimen/margin_top"
                 android:layout_height="@dimen/margin_top"
                 android:src="@drawable/head"
-                app:civ_border_width="5dp"
-                app:civ_border_color="#ebebeb" />
+                app:civ_border_width="3dp"
+                app:civ_border_color="#66ebebeb" />
             <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:text="ddf"
+                android:text=""
                 android:layout_marginLeft="@dimen/padding"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
@@ -204,7 +204,6 @@
                     android:layout_marginLeft="@dimen/height"
                     android:alpha="0.15"
                     android:background="@color/txt_color"></View>
-
                 <LinearLayout style="@style/view_me"
                     android:paddingTop="@dimen/padding_top"
                     android:paddingBottom="@dimen/padding_top">

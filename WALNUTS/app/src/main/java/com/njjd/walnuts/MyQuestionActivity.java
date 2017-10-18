@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,8 @@ public class MyQuestionActivity extends BaseActivity {
     SwipeMenuListView listQues;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
+    @BindView(R.id.img_nodata)
+    ImageView imgNodata;
     private MyQuestionAdapter questionAdapter;
     private List<QuestionEntity> list = new ArrayList<>();
 
@@ -63,7 +66,15 @@ public class MyQuestionActivity extends BaseActivity {
         txtTitle.setText("我的问题");
         questionAdapter = new MyQuestionAdapter(list, this);
         listQues.setEmptyView(findViewById(R.id.empty));
-        ((TextView)findViewById(R.id.txt_content)).setText("快去发表话题吧");
+        imgNodata.setImageResource(R.drawable.btn_pub_article);
+        ((TextView) findViewById(R.id.txt_content)).setText("还没有问过问题");
+        findViewById(R.id.empty).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyQuestionActivity.this,AskActivity.class));
+                finish();
+            }
+        });
         listQues.setAdapter(questionAdapter);
         MyQuestionAdapter.CURRENT_PAGE = 1;
         getMyQuestion();
@@ -106,7 +117,7 @@ public class MyQuestionActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", list.get(position));
                 intent.putExtra("question", bundle);
-                intent.putExtra("type","1");
+                intent.putExtra("type", "1");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }

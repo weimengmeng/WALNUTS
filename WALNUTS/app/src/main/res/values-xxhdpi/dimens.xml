@@ -30,4 +30,5 @@
     <dimen name="_top">-9dp</dimen>
     <dimen name="_margin">-7dp</dimen>
     <dimen name="post_height">150dp</dimen>
+    <dimen name="column_height">245dp</dimen>
 </resources>

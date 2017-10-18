@@ -1,6 +1,7 @@
 package com.njjd.walnuts;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -53,6 +54,9 @@ public class TagActivity extends BaseActivity  {
 
     @Override
     public void initView(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.login));
+        }
         back.setText("");
         txtTag.setText(getIntent().getStringExtra("name"));
         adapter=new IndexQuestionAdapter2(this,list);

@@ -95,7 +95,7 @@ public class MyFocusActivity extends BaseActivity {
         };
         peopleAdapter = new FocusPeopleAdapter(userList, this);
         listUser.setEmptyView(findViewById(R.id.empty));
-        ((TextView)findViewById(R.id.txt_content)).setText("暂时没有数据");
+        ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的用户");
         listUser.setAdapter(peopleAdapter);
         listUser.setMenuCreator(creator);
         listUser.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
@@ -151,9 +151,6 @@ public class MyFocusActivity extends BaseActivity {
         FocusTagAdapter.CURRENT_PAGE=1;
         FocusPeopleAdapter.CURRENT_PAGE=1;
         FocusQuesAdapter.CURRENT_PAGE=1;
-        getFocusUser();
-        getFocusQuestion();
-        getFocusTag();
         listQues.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -271,6 +268,9 @@ public class MyFocusActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getFocusUser();
+        getFocusQuestion();
+        getFocusTag();
     }
 
     @OnClick({R.id.back, R.id.radio_one, R.id.radio_two, R.id.radio_three})
@@ -284,6 +284,7 @@ public class MyFocusActivity extends BaseActivity {
                 listQues.setVisibility(View.GONE);
                 listTag.setVisibility(View.GONE);
                 listUser.setEmptyView(findViewById(R.id.empty));
+                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的用户");
                 currentPage=1;
                 break;
             case R.id.radio_two:
@@ -291,6 +292,7 @@ public class MyFocusActivity extends BaseActivity {
                 listQues.setVisibility(View.VISIBLE);
                 listTag.setVisibility(View.GONE);
                 listQues.setEmptyView(findViewById(R.id.empty));
+                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的问题");
                 currentPage=2;
                 break;
             case R.id.radio_three:
@@ -298,6 +300,7 @@ public class MyFocusActivity extends BaseActivity {
                 listQues.setVisibility(View.GONE);
                 listTag.setVisibility(View.VISIBLE);
                 listTag.setEmptyView(findViewById(R.id.empty));
+                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的话题");
                 currentPage=3;
                 break;
         }
@@ -421,6 +424,7 @@ public class MyFocusActivity extends BaseActivity {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {
+                SPUtils.put(MyFocusActivity.this,"focus",Integer.valueOf(SPUtils.get(MyFocusActivity.this,"focus",0).toString())-1);
                 userList.remove(position);
                 peopleAdapter.notifyDataSetChanged();
             }

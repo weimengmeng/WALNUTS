@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.njjd.utils.VpSwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.njjd.utils.ObservableScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/lv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/column_height"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/demo" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bg" />
+
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_top"
+                        android:gravity="center_horizontal"
+                        android:padding="@dimen/padding"
+                        android:text="有话说阿柴有话说阿柴有话说阿柴"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/large" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_head"
+                        android:layout_width="@dimen/margin_top"
+                        android:layout_height="@dimen/margin_top"
+                        android:layout_below="@id/txt_name"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/head"
+                        app:civ_border_color="#66ebebeb"
+                        app:civ_border_width="3dp" />
+
+                    <TextView
+                        android:id="@+id/txt_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_head"
+                        android:layout_marginLeft="@dimen/margin_top"
+                        android:layout_marginRight="@dimen/margin_top"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingMultiplier="1.1"
+                        android:padding="@dimen/margin"
+                        android:text="本专栏教你如何成为一名合格的销售人员"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small" />
+
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/txt_intro"
+                        android:background="@color/txt_color"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/line"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/margin"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="100 人关注"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mini" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/txt_shape_login"
+                            android:text="+ 关注"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mini" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <com.njjd.utils.MyListView
+                    android:id="@+id/list_column"
+                    android:divider="#00000000"
+                    android:dividerHeight="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></com.njjd.utils.MyListView>
+            </LinearLayout>
+        </com.njjd.utils.ObservableScrollView>
+    </com.njjd.utils.VpSwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/re_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/round"
+            android:background="#00000000"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/btn_back_white"
+                android:drawablePadding="@dimen/margin"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_left"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/normal" />
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:paddingRight="@dimen/head_large"
+                android:text="阿柴有话说阿柴有话说阿柴有话说阿柴有"
+                android:textColor="@color/white"
+                android:textSize="@dimen/big" />
+
+            <TextView
+                android:id="@+id/btn_add_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:drawableRight="@drawable/btn_share_white"
+                android:gravity="center_horizontal"
+                android:paddingRight="@dimen/padding_left"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -370,6 +370,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_order:
+                if(indexPage.getCurrentItem()==0){
+                    return;
+                }
                 popupWindow.showAsDropDown(imgOrder, 0, 0);
                 break;
         }

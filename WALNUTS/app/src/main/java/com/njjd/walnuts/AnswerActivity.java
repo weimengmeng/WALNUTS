@@ -1,27 +1,29 @@
 package com.njjd.walnuts;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.carlos.voiceline.mylibrary.VoiceLineView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.iflytek.sunflower.FlowerCollector;
 import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug5497Workaround;
+import com.njjd.utils.FolderTextView;
 import com.njjd.utils.JsonParser;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -47,19 +49,26 @@ public class AnswerActivity extends BaseActivity {
     TextView txtTitle;
     @BindView(R.id.top)
     LinearLayout topView;
+    @BindView(R.id.btn_voice)
+    Button btnVoice;
+    @BindView(R.id.lv_voice)
+    LinearLayout lvVoice;
     @BindView(R.id.txt_name)
     TextView txtName;
     @BindView(R.id.et_answer)
     EditText etAnswer;
+    @BindView(R.id.voicLine)
+    VoiceLineView voiceLineView;
+    @BindView(R.id.txt_content)
+    FolderTextView txtContent;
     // 语音听写对象
     private SpeechRecognizer mIat;
-    // 语音听写UI
-    private RecognizerDialog mIatDialog;
     // 用HashMap存储听写结果
     private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
     // 引擎类型
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
-    private boolean mTranslateEnable = false;
+    private RecognizerListener recognizerListener;
+    private String temp = "";
 
     @Override
     public int bindLayout() {
@@ -71,13 +80,46 @@ public class AnswerActivity extends BaseActivity {
         back.setText("详情");
         txtTitle.setText("回答");
         txtName.setText(getIntent().getStringExtra("quesTitle"));
+        txtContent.setFoldLine(2);
+        txtContent.setText(getIntent().getStringExtra("content"));
         // 初始化识别无UI识别对象
         // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
         mIat = SpeechRecognizer.createRecognizer(this, mInitListener);
         // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
-        // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
-        mIatDialog = new RecognizerDialog(this, mInitListener);
         AndroidBug5497Workaround.assistActivity(this);
+        recognizerListener = new RecognizerListener() {
+            @Override
+            public void onVolumeChanged(int i, byte[] bytes) {
+                voiceLineView.setVolume(i * 5);
+            }
+
+            @Override
+            public void onBeginOfSpeech() {
+                btnVoice.setText("结束");
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                btnVoice.setText("开始");
+                lvVoice.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                LogUtils.d("huan" + JsonParser.parseIatResult(recognizerResult.getResultString()));
+                printResult(recognizerResult);
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+
+            }
+
+            @Override
+            public void onEvent(int i, int i1, int i2, Bundle bundle) {
+
+            }
+        };
     }
 
     /**
@@ -98,11 +140,27 @@ public class AnswerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.btn_submit, R.id.txt_voice})
+    @OnClick({R.id.back, R.id.btn_submit, R.id.txt_voice, R.id.btn_voice, R.id.btn_cancle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
+                break;
+            case R.id.btn_cancle:
+                lvVoice.setVisibility(View.GONE);
+                btnVoice.setText("开始");
+                mIat.stopListening();
+                break;
+            case R.id.btn_voice:
+                if (btnVoice.getText().toString().equals("开始")) {
+                    temp = etAnswer.getText().toString();
+                    mIat.startListening(recognizerListener);
+                    btnVoice.setText("结束");
+                } else {
+                    mIat.stopListening();
+                    btnVoice.setText("开始");
+                    lvVoice.setVisibility(View.GONE);
+                }
                 break;
             case R.id.txt_voice:
                 // 移动数据分析，收集开始听写事件
@@ -110,9 +168,7 @@ public class AnswerActivity extends BaseActivity {
                 mIatResults.clear();
                 //设置参数
                 setParam();
-                //显示听写对话框
-                mIatDialog.setListener(mRecognizerDialogListener);
-                mIatDialog.show();
+                lvVoice.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_submit:
                 if (etAnswer.getText().toString().trim().equals("")) {
@@ -131,7 +187,7 @@ public class AnswerActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token", SPUtils.get(this, "token", ""));
         map.put("content", etAnswer.getText().toString().trim());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().pubComment(postEntity);
     }
 
@@ -160,22 +216,6 @@ public class AnswerActivity extends BaseActivity {
         mIat.setParameter(SpeechConstant.ASR_PTT, "1");
     }
 
-    /**
-     * 听写UI监听器
-     */
-    private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
-        public void onResult(RecognizerResult results, boolean isLast) {
-            printResult(results);
-        }
-
-        /**
-         * 识别回调错误.
-         */
-        public void onError(SpeechError error) {
-        }
-
-    };
-
     private void printResult(RecognizerResult results) {
         String text = JsonParser.parseIatResult(results.getResultString());
 
@@ -194,7 +234,7 @@ public class AnswerActivity extends BaseActivity {
         for (String key : mIatResults.keySet()) {
             resultBuffer.append(mIatResults.get(key));
         }
-        etAnswer.setText(resultBuffer.toString());
+        etAnswer.setText(temp + resultBuffer.toString());
         etAnswer.setSelection(etAnswer.length());
     }
 

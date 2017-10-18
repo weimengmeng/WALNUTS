@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.njjd.application.AppAplication;
 import com.njjd.http.HttpManager;
 import com.njjd.walnuts.R;
@@ -22,6 +23,7 @@ public class GlideImageLoder2 extends ImageLoader {
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.error)
                 .error(R.drawable.error)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate().into(imageView);
     }
 

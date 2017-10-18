@@ -142,11 +142,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         Bundle bundle = getIntent().getBundleExtra("question");
         questionEntity = (QuestionEntity) bundle.get("question");
         back.setText("返回");
+        txtTitle.setText("问题详情");
         if (getIntent().getStringExtra("type").equals("1")) {
-            txtTitle.setText("问题详情");
             findViewById(R.id.txt_sort).setVisibility(View.VISIBLE);
         } else {
-            txtTitle.setText("通知详情");
             comment_id = getIntent().getStringExtra("comment_id");
             findViewById(R.id.txt_sort).setVisibility(View.GONE);
             findViewById(R.id.img_answer).setVisibility(View.GONE);
@@ -505,6 +504,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 Intent intent = new Intent(this, AnswerActivity.class);
                 intent.putExtra("quesId", questionEntity.getQuestionId());
                 intent.putExtra("quesTitle", questionEntity.getTitle());
+                intent.putExtra("content",questionEntity.getContent());
                 startActivity(intent);
                 break;
         }

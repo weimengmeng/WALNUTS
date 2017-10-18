@@ -124,7 +124,7 @@ public class PersonalActivity extends BaseActivity{
                 cityId = cityList.get(options1).get(options2).getId();
                 provinceName=provinceEntities.get(options1).getName();
                 cityName=cityEntities.get(options1).get(options2);
-                txtProvince.setText(provinceEntities.get(options1).getName() + cityEntities.get(options1).get(options2));
+                txtProvince.setText(provinceEntities.get(options1).getName() + "-"+cityEntities.get(options1).get(options2));
             }
         }).build();
         provincePickview.setPicker(provinces, cityEntities);
@@ -139,7 +139,7 @@ public class PersonalActivity extends BaseActivity{
         industryPickview = new OptionsPickerView.Builder(PersonalActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                txtVocation.setText(industrys1.get(options1) + industrys2.get(options1).get(options2));
+                txtVocation.setText(industrys1.get(options1) + "-"+ industrys2.get(options1).get(options2));
                 industryId = industryList2.get(options1).get(options2).getId();
             }
         }).build();

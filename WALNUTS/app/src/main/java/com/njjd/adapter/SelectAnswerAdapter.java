@@ -16,6 +16,7 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
+import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
 import java.util.HashMap;
@@ -112,8 +113,9 @@ public class SelectAnswerAdapter extends BaseAdapter {
                                 }
                             }
                             myhodel.focus.setText("取消关注");
-                            myhodel.focus.setTextColor(context.getResources().getColor(R.color.white));
-                            myhodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
+                            myhodel.focus.setTextColor(context.getResources().getColor(R.color.txt_color));
+                            myhodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+                            SPUtils.put(context,"focus",Integer.valueOf(SPUtils.get(context,"focus",0).toString())-1);
                         }else{
                             list.get(position).setIsFocus("1.0");
                             for(int i=0;i<list.size();i++){
@@ -122,8 +124,9 @@ public class SelectAnswerAdapter extends BaseAdapter {
                                 }
                             }
                             myhodel.focus.setText("+关注TA");
-                            myhodel.focus.setTextColor(context.getResources().getColor(R.color.txt_color));
-                            myhodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+                            myhodel.focus.setTextColor(context.getResources().getColor(R.color.white));
+                            myhodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
+                            SPUtils.put(context,"focus",Integer.valueOf(SPUtils.get(context,"focus",0).toString())+1);
                         }
                         notifyDataSetChanged();
                     }
@@ -133,12 +136,12 @@ public class SelectAnswerAdapter extends BaseAdapter {
         });
         if (entity.getIsFocus().equals("1.0")) {
             hodel.focus.setText("取消关注");
-            hodel.focus.setTextColor(context.getResources().getColor(R.color.white));
-            hodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
-        } else {
-            hodel.focus.setText("+关注TA");
             hodel.focus.setTextColor(context.getResources().getColor(R.color.txt_color));
             hodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+        } else {
+            hodel.focus.setText("+关注TA");
+            hodel.focus.setTextColor(context.getResources().getColor(R.color.white));
+            hodel.focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
         }
         return convertView;
     }

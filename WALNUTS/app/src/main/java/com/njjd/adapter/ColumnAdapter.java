@@ -48,7 +48,7 @@ public class ColumnAdapter extends BaseAdapter {
         ViewHodel hodel=null;
         if(convertView==null){
             hodel=new ViewHodel();
-            convertView=inflater.inflate(R.layout.layout_column,parent,false);
+            convertView=inflater.inflate(R.layout.layout_column_common,parent,false);
             hodel.head=(ImageView) convertView.findViewById(R.id.img_head);
             hodel.name=(TextView)convertView.findViewById(R.id.txt_name);
             hodel.title=(TextView)convertView.findViewById(R.id.txt_title);

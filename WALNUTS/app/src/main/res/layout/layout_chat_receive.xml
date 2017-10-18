@@ -41,6 +41,7 @@
                     android:id="@+id/chat_content"
                     android:layout_width="wrap_content"
                     android:text="你好你好你好你好你好你好你好你好"
+                    android:gravity="center|left"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_chat_right_blue"
                     android:visibility="gone"/>
@@ -49,6 +50,7 @@
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:maxHeight="200dp"
+                    android:gravity="center"
                     android:src="@drawable/head"
                     android:visibility="gone"/>
                 <TextView
@@ -57,6 +59,7 @@
                     android:src="@drawable/head"
                     android:drawableRight="@drawable/pic_voice_right"
                     android:visibility="gone"
+                    android:gravity="center"
                     android:background="@drawable/bg_chat_right_blue"
                     android:layout_height="wrap_content" />
             </LinearLayout>
