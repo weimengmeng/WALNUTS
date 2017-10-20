@@ -121,6 +121,7 @@ public class MyAnswerActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("save", saveEntity);
                 intent.putExtra("save", bundle);
+                intent.putExtra("type","0");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }

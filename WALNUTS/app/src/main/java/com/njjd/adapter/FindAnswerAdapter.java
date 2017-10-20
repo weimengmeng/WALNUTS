@@ -14,7 +14,8 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.domain.BannerEntity;
-import com.njjd.domain.ColumnEntity;
+import com.njjd.domain.ColumnArticleDetailEntity;
+import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.BetterRecyclerView;
@@ -45,25 +46,25 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static final int ONE_ITEM = 1;//精选回答
     public static final int TWO_ITEM = 2;//专栏类型
     private SelectedAnswerEntity selectedAnswerEntity;
-    private ColumnEntity columnEntity;
+    private ColumnArticleEntity columnEntity;
     private OnItemClickListener mOnItemClickListener = null;
     private int currentPage = 1;
     private int mHeaderCount = 1;//头部View个数
-    private List<ColumnEntity> columnEntities;
+    private List<ColumnArticleEntity> columnEntities;
     private LayoutInflater inflater;
     private List<BannerEntity> bannerList = CommonUtils.getInstance().getBannerList();
     private List<String> images = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
 
-    public FindAnswerAdapter(Context context, List<SelectedAnswerEntity> list, List<ColumnEntity> columnEntities) {
+    public FindAnswerAdapter(Context context, List<SelectedAnswerEntity> list, List<ColumnArticleEntity> columnEntities) {
         this.context = context;
         this.list = list;
         this.columnEntities = columnEntities;
         inflater = LayoutInflater.from(context);
     }
 
-    public void setColumnEntities(List<ColumnEntity> columnEntities) {
+    public void setColumnEntities(List<ColumnArticleEntity> columnEntities) {
         this.columnEntities = columnEntities;
     }
 
@@ -281,9 +282,9 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class GalleryAdapter extends
             RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         private LayoutInflater mInflater;
-        private List<ColumnEntity> mDatas;
+        private List<ColumnArticleEntity> mDatas;
 
-        public GalleryAdapter(Context context, List<ColumnEntity> datats) {
+        public GalleryAdapter(Context context, List<ColumnArticleEntity> datats) {
             mInflater = LayoutInflater.from(context);
             mDatas = datats;
         }
@@ -291,8 +292,8 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public class ViewHolder extends RecyclerView.ViewHolder {
             ImageView head;
             TextView title;
-            TextView name;
             TextView content;
+            TextView name;
             ImageView pic;
 
             public ViewHolder(View itemView) {
@@ -301,7 +302,8 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .findViewById(R.id.img_head);
                 name = (TextView) itemView
                         .findViewById(R.id.txt_name);
-                content = (TextView) itemView.findViewById(R.id.txt_content);
+                content = (TextView) itemView
+                        .findViewById(R.id.txt_content);
                 title = (TextView) itemView.findViewById(R.id.txt_title);
                 pic = (ImageView) itemView
                         .findViewById(R.id.img);
@@ -332,13 +334,14 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             columnEntity = mDatas.get(i);
             viewHolder.name.setText(columnEntity.getName());
             viewHolder.title.setText(columnEntity.getTitle());
-            viewHolder.content.setText(columnEntity.getContent());
+            viewHolder.content.setText(columnEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getPic(), viewHolder.pic);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    Intent intent=new Intent(context, ColumnDetailActivity.class);
+                    intent.putExtra("article_id",Float.valueOf(mDatas.get(i).getArticle_id()).intValue()+"");
                     context.startActivity(intent);
                 }
             });

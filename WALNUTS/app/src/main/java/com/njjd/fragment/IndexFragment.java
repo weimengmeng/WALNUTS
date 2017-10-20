@@ -236,7 +236,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 //        }
         getQuestion(tempKind, tempOrder);
 //        questionAdapter.notifyDataSetChanged();
-//        LogUtils.d(tempList.size());
         setRefreshListener();
         etSearch.setFocusable(false);
         etSearch.setOnClickListener(new View.OnClickListener() {
@@ -260,6 +259,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onRefresh() {
                 questionAdapter.setCurrentPage(1);
+                CommonUtils.init(context);
                 getQuestion(tempKind, tempOrder);
             }
 
@@ -302,7 +302,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         map.put("keywords", "");
         map.put("uid", SPUtils.get(context, "userId", "").toString());
         map.put("token", SPUtils.get(context, "token", "").toString());
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getQuestionList(postEntity);
     }

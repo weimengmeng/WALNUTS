@@ -11,10 +11,10 @@ android {
     }
     defaultConfig {
         applicationId "com.njjd.walnuts"
-        minSdkVersion 19
+        minSdkVersion 18
         targetSdkVersion 22
-        versionCode 16
-        versionName "1.1.5"
+        versionCode 18
+        versionName "1.1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         configurations.all {
             resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'

@@ -147,8 +147,18 @@ public interface HttpService {
     @POST("index/getFollowArticle")
     Observable<HttpResult<Object>> getFollowArticle(@QueryMap Map<String, String> params);
     /**
-     * 通知消息模块
+     * 专栏模块
      */
+    @POST("index/getColumn")
+    Observable<HttpResult<Object>> getIndexColumn(@QueryMap Map<String, String> params);
+    @POST("index/getColumnDetail")
+    Observable<HttpResult<Object>> getColumnDetail(@QueryMap Map<String, String> params);
+    @POST("index/getColumnArticle")
+    Observable<HttpResult<Object>> getColumnArticle(@QueryMap Map<String, String> params);
+    @POST("index/getColumnArticles")
+    Observable<HttpResult<Object>> getColumnArticles(@QueryMap Map<String, String> params);
+    @POST("index/getColumnArticleDetail")
+    Observable<HttpResult<Object>> getColumnArticleDetail(@QueryMap Map<String, String> params);
     /**
      *  个人中心模块
      */

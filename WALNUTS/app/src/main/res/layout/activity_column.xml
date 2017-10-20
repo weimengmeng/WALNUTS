@@ -31,6 +31,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
+                        android:id="@+id/img_bg"
                         android:src="@drawable/demo" />
 
                     <ImageView
@@ -90,6 +91,7 @@
                         android:weightSum="1">
 
                         <TextView
+                            android:id="@+id/txt_focusNum"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -98,6 +100,7 @@
                             android:textSize="@dimen/mini" />
 
                         <TextView
+                            android:id="@+id/txt_focus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/txt_shape_login"
@@ -149,10 +152,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:gravity="center|left"
+                android:gravity="center"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:paddingRight="@dimen/head_large"
                 android:text="阿柴有话说阿柴有话说阿柴有话说阿柴有"
                 android:textColor="@color/white"
                 android:textSize="@dimen/big" />

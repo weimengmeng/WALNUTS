@@ -66,6 +66,7 @@
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
         <TextView
+            android:id="@+id/txt_answerNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/margin_small"

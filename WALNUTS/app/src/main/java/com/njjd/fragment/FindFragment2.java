@@ -23,18 +23,16 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.FindAnswerAdapter;
 import com.njjd.application.ConstantsVal;
-import com.njjd.domain.ColumnEntity;
+import com.njjd.domain.ColumnArticleDetailEntity;
+import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
-import com.njjd.walnuts.LoginActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SelectAnswerDetailActivity;
-import com.njjd.walnuts.WelcomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,11 +61,12 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
     LinearLayout top;
     private Context context;
     private FindAnswerAdapter adapter;
-    private List<ColumnEntity> columnEntities=new ArrayList<>();
+    private List<ColumnArticleEntity> columnEntities=new ArrayList<>();
     private List<SelectedAnswerEntity> selectedAnswerEntities=new ArrayList<>();
     private SelectedAnswerEntity entity;
     private MyReceiver receiver;
     private boolean loadmoe=true;
+    ColumnArticleEntity columnArticleEntity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -85,8 +84,6 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
         txtTitle.setText("精选");
-        columnEntities.add(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女1","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
-        columnEntities.add(new ColumnEntity("2","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女2","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
         adapter=new FindAnswerAdapter(context,selectedAnswerEntities,columnEntities);
         listFind.setLayoutManager(new LinearLayoutManager(context));
         listFind.setAdapter(adapter);
@@ -106,10 +103,12 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
             }
         });
         getSelectedAnswerList();
+        getIndexColumn();
         listFind.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 adapter.setCurrentPage(1);
+                getIndexColumn();
                 getSelectedAnswerList();
             }
 
@@ -138,7 +137,34 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
         HttpManager.getInstance().getHotComment(postEntity);
     }
-
+    private void getIndexColumn(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(context, "userId", "").toString());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getColumnListener, context, false, false), map);
+        HttpManager.getInstance().getColumnArticle(postEntity);
+    }
+    HttpOnNextListener getColumnListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            columnEntities.clear();
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            try {
+                JSONObject object =new JSONObject(gson.toJson(o));
+                JSONArray array = object.getJSONArray("column");
+                for(int i=0;i<array.length();i++){
+                    object=array.getJSONObject(i);
+                    columnArticleEntity=new ColumnArticleEntity(object);
+                    columnEntities.add(columnArticleEntity);
+                }
+                adapter.setColumnEntities(columnEntities);
+                adapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     @Override
     public void onNext(Object o) {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -151,11 +177,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener{
             object=new JSONObject(gson.toJson(o));
             array=object.getJSONArray("comment");
             if(adapter.getCurrentPage()==1){
-                columnEntities.clear();
                 selectedAnswerEntities.clear();
-                columnEntities.add(new ColumnEntity("1","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女1","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
-                columnEntities.add(new ColumnEntity("2","http://p.3761.com/pic/231432169575.jpg","核桃小编","超级大美女2","我被客户说服了怎么办？","http://up.qqjia.com/z/16/tu17317_45.png"));
-                adapter.setColumnEntities(columnEntities);
                 listFind.refreshComplete();
             }else{
                 listFind.loadMoreComplete();

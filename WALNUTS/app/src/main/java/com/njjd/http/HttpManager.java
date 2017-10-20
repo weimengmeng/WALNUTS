@@ -30,10 +30,10 @@ import rx.schedulers.Schedulers;
  * BASE_URL必须以“/”符号结束
  */
 public class HttpManager {
-    public static final String BASE_URL = "http://116.62.243.41/api/";
-    public static final String BASE_URL2 = "http://116.62.243.41/";
-//  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
-//  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
+//    public static final String BASE_URL = "http://116.62.243.41/api/";
+//    public static final String BASE_URL2 = "http://116.62.243.41/";
+  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
+  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
     /**
      * 设置超时时间，默认6s
      */
@@ -265,6 +265,35 @@ public class HttpManager {
     public void getNotice(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getNotice(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    /**
+     *
+     *专栏模块
+     */
+    public void getIndexColumn(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getIndexColumn(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getColumnDetail(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getColumnDetail(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getColumnArticleDetail(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getColumnArticleDetail(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getColumnArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getColumnArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getColumnArticles(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getColumnArticles(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

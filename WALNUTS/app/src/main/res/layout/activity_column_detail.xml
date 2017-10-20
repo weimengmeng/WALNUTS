@@ -31,6 +31,7 @@
             android:background="@color/white"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/txt_article_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/margin"
@@ -39,8 +40,7 @@
                 android:text="工业项目一定要喝酒吗？"
                 android:textColor="@color/black"
                 android:textSize="@dimen/big"
-                android:textStyle="bold"
-                android:typeface="sans" />
+                android:textStyle="bold" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
             <TextView
-                android:id="@+id/txt_name"
+                android:id="@+id/txt_column_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="@dimen/margin"
@@ -78,6 +78,7 @@
                     android:src="@drawable/head" />
 
                 <TextView
+                    android:id="@+id/txt_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -94,6 +95,7 @@
                     android:background="@color/txt_color"></View>
 
                 <TextView
+                    android:id="@+id/txt_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -104,6 +106,7 @@
                     android:typeface="sans" />
             </LinearLayout>
             <TextView
+                android:id="@+id/txt_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin"
@@ -121,23 +124,16 @@
                 android:layout_height="@dimen/post_height"
                 android:layout_marginBottom="@dimen/padding"
                 android:layout_marginLeft="@dimen/margin"
+                android:visibility="gone"
                 android:layout_marginRight="@dimen/margin"
                 android:layout_marginTop="@dimen/padding"
                 android:scaleType="centerCrop"
                 android:src="@drawable/demo" />
-
-            <TextView
+            <WebView
+                android:id="@+id/editor2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding"
-                android:lineSpacingMultiplier="1.2"
-                android:paddingLeft="@dimen/margin"
-                android:paddingRight="@dimen/margin"
-                android:paddingTop="@dimen/padding"
-                android:text="你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。你的客户决定了你是否需要会喝酒，爱喝酒。"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal"
-                android:typeface="sans" />
+                android:gravity="center" />
 
             <View
                 android:layout_width="match_parent"

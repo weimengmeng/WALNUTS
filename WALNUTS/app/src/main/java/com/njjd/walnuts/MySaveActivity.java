@@ -102,6 +102,7 @@ public class MySaveActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("save", list.get(position));
                 intent.putExtra("save", bundle);
+                intent.putExtra("type","1");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
@@ -112,7 +113,6 @@ public class MySaveActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         MySaveAdapter.CURRENT_PAGE = 1;
-        list.clear();
         getMySave();
     }
 

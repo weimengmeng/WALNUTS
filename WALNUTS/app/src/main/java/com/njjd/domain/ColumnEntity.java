@@ -1,77 +1,53 @@
 package com.njjd.domain;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
- * Created by mrwim on 17/9/14.
+ * Created by mrwim on 17/10/20.
  */
 
-public class ColumnEntity implements Serializable{
-    private String id;//栏目ID
-    private String article_id;//文章ID
-    private String columnName;//栏目名称
-    private String head;//作者头像
-    private String name;//作者名称
-    private String title;//文章标题
-    private String content;//文章内容
-    private String pic;//文章配图
-    private String commentNum;
-    private String pointNum;
-    public ColumnEntity(String id, String head, String name, String title, String content, String pic) {
-        this.id = id;
-        this.head = head;
-        this.name = name;
-        this.title = title;
-        this.content = content;
-        this.pic = pic;
+public class ColumnEntity implements Serializable {
+    private String id;
+    private String name;
+    private String uid;// 作者
+    private String uname;//用户名
+    private String follow_num;//关注人数
+    private String is_follow;//用户是否关注
+    private String uhead;
+    private String desc;//专栏描述
+    private String pic;//专栏大图
+    public ColumnEntity(JSONObject object){
+        try {
+            this.id=object.getString("id");
+            this.uid=object.isNull("uid")?"":object.getString("uid");
+            this.name=object.getString("column_name");
+            this.uname=object.getString("uname");
+            this.uhead=object.isNull("headimg")?"":object.getString("headimg").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.pic=object.isNull("img")?"":object.getString("img").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.desc=object.getString("desc");
+            this.follow_num=object.getString("follow_num");
+            this.is_follow=object.getString("is_follow");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-
-    public String getArticle_id() {
-        return article_id;
-    }
-
-    public void setArticle_id(String article_id) {
-        this.article_id = article_id;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public String getCommentNum() {
-        return commentNum;
-    }
-
-    public void setCommentNum(String commentNum) {
-        this.commentNum = commentNum;
-    }
-
-    public String getPointNum() {
-        return pointNum;
-    }
-
-    public void setPointNum(String pointNum) {
-        this.pointNum = pointNum;
-    }
-
     public String getId() {
         return id;
     }
 
+    public String getUhead() {
+        return uhead;
+    }
+
+    public void setUhead(String uhead) {
+        this.uhead = uhead;
+    }
+
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getHead() {
-        return head;
-    }
-
-    public void setHead(String head) {
-        this.head = head;
     }
 
     public String getName() {
@@ -82,20 +58,44 @@ public class ColumnEntity implements Serializable{
         this.name = name;
     }
 
-    public String getTitle() {
-        return title;
+    public String getUid() {
+        return uid;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getContent() {
-        return content;
+    public String getUname() {
+        return uname;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public String getFollow_num() {
+        return follow_num;
+    }
+
+    public void setFollow_num(String follow_num) {
+        this.follow_num = follow_num;
+    }
+
+    public String getIs_follow() {
+        return is_follow;
+    }
+
+    public void setIs_follow(String is_follow) {
+        this.is_follow = is_follow;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getPic() {

@@ -399,7 +399,6 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        CommonUtils.init(this);
     }
     @Override
     protected void onPause() {

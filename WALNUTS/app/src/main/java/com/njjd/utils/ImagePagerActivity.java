@@ -29,12 +29,10 @@ public class ImagePagerActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.image_detail_pager);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+			getWindow().setStatusBarColor(getResources().getColor(R.color.black));
 		}
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		List<String> urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
-
-
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
 				getSupportFragmentManager(), urls);

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.njjd.domain.ColumnEntity;
+import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.walnuts.R;
 
@@ -18,12 +18,22 @@ import java.util.List;
  * Created by mrwim on 17/9/15.
  */
 
-public class ColumnAdapter extends BaseAdapter {
+public class ColumnArticleAdapter extends BaseAdapter {
     private Context context;
-    private List<ColumnEntity> list;
+    private List<ColumnArticleEntity> list;
     private LayoutInflater inflater;
-    private ColumnEntity entity;
-    public ColumnAdapter(Context context,List<ColumnEntity> list){
+    private ColumnArticleEntity entity;
+    private int CurrentPage=1;
+
+    public int getCurrentPage() {
+        return CurrentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        CurrentPage = currentPage;
+    }
+
+    public ColumnArticleAdapter(Context context, List<ColumnArticleEntity> list){
         this.context=context;
         this.list=list;
         inflater=LayoutInflater.from(context);
@@ -32,7 +42,6 @@ public class ColumnAdapter extends BaseAdapter {
     public int getCount() {
         return list.size();
     }
-
     @Override
     public Object getItem(int position) {
         return list.get(position);
@@ -48,11 +57,12 @@ public class ColumnAdapter extends BaseAdapter {
         ViewHodel hodel=null;
         if(convertView==null){
             hodel=new ViewHodel();
-            convertView=inflater.inflate(R.layout.layout_column_common,parent,false);
+            convertView=inflater.inflate(R.layout.layout_column_article,parent,false);
             hodel.head=(ImageView) convertView.findViewById(R.id.img_head);
             hodel.name=(TextView)convertView.findViewById(R.id.txt_name);
             hodel.title=(TextView)convertView.findViewById(R.id.txt_title);
             hodel.content=(TextView)convertView.findViewById(R.id.txt_content);
+            hodel.num=(TextView)convertView.findViewById(R.id.txt_answerNum);
             hodel.pic=(ImageView) convertView.findViewById(R.id.img);
             convertView.setTag(hodel);
         }else{
@@ -63,6 +73,7 @@ public class ColumnAdapter extends BaseAdapter {
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
         hodel.content.setText(entity.getContent());
+        hodel.num.setText(Float.valueOf(entity.getCommentNum()).intValue()+"评论  ·  "+Float.valueOf(entity.getPointNum()).intValue()+"赞同");
         GlideImageLoder.getInstance().displayImage(context, entity.getPic(), hodel.pic);
         return convertView;
     }
@@ -72,5 +83,6 @@ public class ColumnAdapter extends BaseAdapter {
         TextView name;
         TextView content;
         ImageView pic;
+        TextView num;
     }
 }

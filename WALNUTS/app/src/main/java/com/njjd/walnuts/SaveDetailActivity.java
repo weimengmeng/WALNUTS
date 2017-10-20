@@ -149,6 +149,9 @@ public class SaveDetailActivity extends BaseActivity {
         txtcontent.setText(saveEntity.getComment_content());
         txtOpen.setText("评论 " + Float.valueOf(saveEntity.getComment_collect_num()).intValue());
         txtOpen.setVisibility(View.INVISIBLE);
+        if(getIntent().getStringExtra("type").equals("0")){
+            txtSave.setVisibility(View.INVISIBLE);
+        }
         txtSave.setText("取消收藏");
         txtSave.setTextColor(getResources().getColor(R.color.txt_color));
         txtSave.setTag("0");

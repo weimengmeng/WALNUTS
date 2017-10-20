@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="280dp"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginBottom="2dp"
@@ -8,54 +8,43 @@
     android:layout_marginLeft="@dimen/margin"
     android:background="@drawable/background_layout_div_radius"
     android:elevation="1dp"
-    android:paddingBottom="@dimen/margin_small"
-    android:paddingTop="@dimen/margin_small"
+    android:paddingBottom="@dimen/margin"
+    android:paddingTop="@dimen/margin"
     android:weightSum="1">
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.7"
         android:orientation="vertical"
         android:weightSum="1">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.35"
-            android:gravity="center|left">
             <TextView
                 android:id="@+id/txt_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.45"
                 android:paddingLeft="@dimen/margin"
-                android:paddingTop="@dimen/padding"
+                android:textStyle="bold"
                 android:text="核桃小编"
-                android:textColor="@color/gray"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/black"
                 android:textSize="@dimen/big"
                 android:typeface="sans" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.35"
-            android:visibility="invisible"
-            android:gravity="center|left">
-
-            <TextView
-                android:id="@+id/txt_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin"
-                android:paddingTop="@dimen/padding"
-                android:text="核桃小编"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal"
-                android:typeface="sans" />
-        </LinearLayout>
-        <LinearLayout
+        <TextView
+            android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.3"
+            android:paddingLeft="@dimen/margin"
+            android:text="核桃小编"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"
             android:gravity="center|left"
             android:paddingLeft="@dimen/margin">
 
@@ -72,23 +61,24 @@
                 android:paddingLeft="@dimen/margin"
                 android:text="核桃小编"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal"
+                android:textSize="@dimen/small"
                 android:typeface="sans" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:paddingRight="@dimen/margin"
+        android:padding="@dimen/padding"
         android:orientation="vertical">
 
         <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/img"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/head_large"
             android:layout_height="@dimen/head_large"
             app:riv_corner_radius="4dp"
+            android:scaleType="centerCrop"
             app:riv_mutate_background="true"
             app:riv_oval="false"
             app:riv_tile_mode="repeat" />

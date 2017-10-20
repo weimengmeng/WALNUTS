@@ -89,7 +89,7 @@
                         android:background="@null"
                         android:gravity="center"
                         android:hint="请输入邀请码"
-                        android:inputType="number"
+                        android:digits="0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"
                         android:maxLength="6"
                         android:textColor="@color/gray"
                         android:textColorHint="@color/txt_color"
