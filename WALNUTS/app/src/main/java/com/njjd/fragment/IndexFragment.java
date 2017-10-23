@@ -40,6 +40,7 @@ import com.njjd.utils.IconCenterEditText;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
+import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.IndexDetailActivity;
@@ -157,7 +158,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 button.setChecked(true);
             }
             buttonGroup.addView(button);
-            final List<QuestionEntity> list1 = new ArrayList<>();
+            final List<QuestionEntity> list1 = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{navList.get(i).getId()});
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
             list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
@@ -258,13 +259,39 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         list.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
+                    ToastUtils.showShortToast(context,"网络不给力");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.refreshComplete();
+                        }
+                    },500);
+                    return;
+                }
                 questionAdapter.setCurrentPage(1);
                 CommonUtils.init(context);
                 getQuestion(tempKind, tempOrder);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.refreshComplete();
+                    }
+                },6000);
             }
 
             @Override
             public void onLoadMore() {
+                if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
+                    ToastUtils.showShortToast(context,"网络不给力");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.loadMoreComplete();
+                        }
+                    },500);
+                    return;
+                }
                 if(!loadmoe){
                     ToastUtils.showShortToast(context,"已加载全部数据啦");
                     new Handler().postDelayed(new Runnable() {

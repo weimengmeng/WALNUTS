@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.njjd.application.AppAplication;
+import com.njjd.dao.BannerEntityDao;
 import com.njjd.dao.DaoMaster;
 import com.njjd.dao.DaoSession;
 import com.njjd.dao.IndexNavEntityDao;
@@ -73,6 +74,6 @@ public class DBHelper extends DaoMaster.OpenHelper{
             public void onDropAllTables(Database db, boolean ifExists) {
                 DaoMaster.dropAllTables(db, ifExists);
             }
-        },QuestionEntityDao.class, IndexNavEntityDao.class, TagEntityDao.class);
+        },QuestionEntityDao.class, IndexNavEntityDao.class, TagEntityDao.class, BannerEntityDao.class);
     }
 }

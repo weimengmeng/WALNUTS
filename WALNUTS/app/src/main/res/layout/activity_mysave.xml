@@ -1,38 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/grey"
-    style="@style/Width_m_Height_m">
+    style="@style/Width_m_Height_m"
+    android:background="@color/grey">
 
     <LinearLayout
-        android:background="@color/white"
         android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
         <include layout="@layout/top"></include>
     </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:checkedButton="@+id/radio_one"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RadioButton
+            android:id="@+id/radio_one"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:button="@null"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:drawablePadding="@dimen/padding"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingRight="@dimen/padding_top"
+            android:paddingTop="@dimen/padding"
+            android:text="回答"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+
+        <RadioButton
+            android:id="@+id/radio_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:button="@null"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:drawablePadding="@dimen/padding"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingRight="@dimen/padding_top"
+            android:paddingTop="@dimen/padding"
+            android:text="文章"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+    </RadioGroup>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/list_save"
-            android:listSelector="#00000000"
-            android:background="@color/grey"
-            android:divider="#00000000"
-            android:dividerHeight="0dp"
-            style="@style/Width_m_Height_m"></com.baoyz.swipemenulistview.SwipeMenuListView>
-        <include
-            android:id="@+id/empty"
-            layout="@layout/layout_nodata"></include>
-        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.baoyz.swipemenulistview.SwipeMenuListView
+                    android:id="@+id/list_save"
+                    style="@style/Width_m_Height_m"
+                    android:background="@color/grey"
+                    android:divider="#00000000"
+                    android:dividerHeight="0dp"
+                    android:listSelector="#00000000"></com.baoyz.swipemenulistview.SwipeMenuListView>
+
+                <com.baoyz.swipemenulistview.SwipeMenuListView
+                    android:id="@+id/list_article"
+                    style="@style/Width_m_Height_m"
+                    android:background="@color/grey"
+                    android:visibility="gone"
+                    android:divider="#00000000"
+                    android:dividerHeight="0dp"
+                    android:listSelector="#00000000"></com.baoyz.swipemenulistview.SwipeMenuListView>
+                <include
+                    android:id="@+id/empty"
+                    layout="@layout/layout_nodata"></include>
+            </LinearLayout>
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 

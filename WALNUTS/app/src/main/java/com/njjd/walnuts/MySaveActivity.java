@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,6 +46,8 @@ public class MySaveActivity extends BaseActivity {
     LinearLayout topView;
     @BindView(R.id.list_save)
     SwipeMenuListView listSave;
+    @BindView(R.id.list_article)
+    SwipeMenuListView listArticle;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
     private List<SaveEntity> list = new ArrayList<>();
@@ -108,12 +111,29 @@ public class MySaveActivity extends BaseActivity {
             }
         });
     }
+    @OnClick({R.id.back, R.id.radio_one, R.id.radio_two})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.radio_one:
+                listSave.setVisibility(View.VISIBLE);
+                listArticle.setVisibility(View.GONE);
+                break;
+            case R.id.radio_two:
+                listSave.setVisibility(View.GONE);
+                listArticle.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         MySaveAdapter.CURRENT_PAGE = 1;
         getMySave();
+        getMySaveArticle();
     }
 
     private void getMySave() {
@@ -121,7 +141,6 @@ public class MySaveActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", MySaveAdapter.CURRENT_PAGE);
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidSave(postEntity);
     }
@@ -151,16 +170,25 @@ public class MySaveActivity extends BaseActivity {
             }
         }
     }
+    private void getMySaveArticle(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", "").toString());
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("page", MySaveAdapter.CURRENT_PAGE);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getUidSaveArticleListener, this, false, false), map);
+        HttpManager.getInstance().getUidCollectColumnArticle(postEntity);
+    }
+    HttpOnNextListener getUidSaveArticleListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
 
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick(R.id.back)
-    public void onViewClicked() {
-        finish();
-    }
 
     @Override
     protected void onDestroy() {

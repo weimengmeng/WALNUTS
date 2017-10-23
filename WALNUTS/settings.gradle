@@ -1,1 +1,1 @@
-include ':app', ':PushSDK', 'pullRefresh', ':BGABadgeView-master', ':xrecyclerview'
+include ':app', ':PushSDK', 'pullRefresh', ':BGABadgeView-master', ':xrecyclerview', ':gallery'

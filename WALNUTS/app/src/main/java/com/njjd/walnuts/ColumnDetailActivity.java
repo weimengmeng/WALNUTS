@@ -3,32 +3,47 @@ package com.njjd.walnuts;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.njjd.adapter.ColumnArticleAdapter;
+import com.njjd.adapter.AnswerCommentAdapter;
+import com.njjd.adapter.ArticleCommentAdapter;
+import com.njjd.adapter.RecommendArticleAdapter;
 import com.njjd.domain.ColumnArticleDetailEntity;
 import com.njjd.domain.ColumnArticleEntity;
+import com.njjd.domain.ColumnEntity;
+import com.njjd.domain.CommentEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.ListViewForScrollView;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
+import com.njjd.utils.ToastUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,15 +55,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by mrwim on 17/9/15.
  */
-public class ColumnDetailActivity extends BaseActivity {
+public class ColumnDetailActivity extends BaseActivity implements View.OnClickListener{
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.btn_add_help)
     TextView btnAddHelp;
     @BindView(R.id.lv_root)
     ScrollView root;
-    @BindView(R.id.list_select)
+    @BindView(R.id.list_article)
     ListViewForScrollView listSelect;
+    @BindView(R.id.list_comment)
+    ListViewForScrollView listComment;
     @BindView(R.id.editor2)
     WebView webView;
     @BindView(R.id.txt_article_title)
@@ -63,10 +80,31 @@ public class ColumnDetailActivity extends BaseActivity {
     TextView txtTime;
     @BindView(R.id.txt_intro)
     TextView txtIntro;
-    private ColumnArticleAdapter adapter;
+    @BindView(R.id.txt_answerNum)
+    TextView txtAnswerNum;
+    @BindView(R.id.txt_save)
+    TextView txtSave;
+    @BindView(R.id.txt_agree)
+    TextView txtAgree;
+    private RecommendArticleAdapter adapter;
     private List<ColumnArticleEntity> entities = new ArrayList<>();
     private ColumnArticleDetailEntity detailActivity;
-
+    private List<CommentEntity> list=new ArrayList<>();
+    private ArticleCommentAdapter madapter;
+    @BindView(R.id.mask)
+    RelativeLayout mask;
+    @BindView(R.id.lv_reply)
+    LinearLayout lvReply;
+    @BindView(R.id.et_content)
+    EditText etContent;
+    @BindView(R.id.btn_cancle)
+    Button btnCancle;
+    @BindView(R.id.btn_reply)
+    Button btnReply;
+    private int open=0;
+    private CommentEntity commentEntity;
+    private String content="";
+    private View footView;
     @Override
     public int bindLayout() {
         return R.layout.activity_column_detail;
@@ -74,11 +112,48 @@ public class ColumnDetailActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+        footView=LayoutInflater.from(this).inflate(R.layout.footer,null);
         txtTitle.setText("文章详情");
         btnAddHelp.setVisibility(View.VISIBLE);
-        adapter = new ColumnArticleAdapter(this, entities);
+        adapter = new RecommendArticleAdapter(this, entities);
         listSelect.setAdapter(adapter);
         root.smoothScrollTo(0, 0);
+        madapter=new ArticleCommentAdapter(this,list);
+        list.add(new CommentEntity());
+        ((TextView)footView.findViewById(R.id.txt_review)).setText("暂无评论");
+        footView.findViewById(R.id.txt_review).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!((TextView)footView.findViewById(R.id.txt_review)).getText().toString().equals("查看更多")){
+                    return;
+                }
+                madapter.setPage(madapter.getPage()+1);
+                getComment();
+            }
+        });
+        ((TextView)footView.findViewById(R.id.txt_review)).setTextColor(getResources().getColor(R.color.txt_color));
+        listComment.addFooterView(footView);
+        listComment.setAdapter(madapter);
+        listComment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(ColumnDetailActivity.this,ArticleComReplyActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("comment",list.get(position));
+                intent.putExtra("comment",bundle);
+                intent.putExtra("article_id",getIntent().getStringExtra("article_id"));
+                startActivity(intent);
+            }
+        });
+        listSelect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(ColumnDetailActivity.this, ColumnDetailActivity.class);
+                intent.putExtra("article_id",Float.valueOf(entities.get(position).getArticle_id()).intValue()+"");
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void initMyView() {
@@ -101,18 +176,73 @@ public class ColumnDetailActivity extends BaseActivity {
         webView.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
         txtArticleTitle.setText(detailActivity.getTitle());
         txtColumnName.setText(detailActivity.getColumnName());
-        GlideImageLoder.getInstance().displayImage(this,detailActivity.getHead(),imgHead);
+        GlideImageLoder.getInstance().displayImage(this, detailActivity.getHead(), imgHead);
         txtName.setText(detailActivity.getName());
         txtTime.setText(detailActivity.getTime());
         txtIntro.setText(detailActivity.getDesci());
+        if("1.0".equals(detailActivity.getIsSave())){
+            txtSave.setText("取消收藏");
+            txtSave.setTextColor(getResources().getColor(R.color.txt_color));
+        }else{
+            txtSave.setText("收藏");
+            txtSave.setTextColor(getResources().getColor(R.color.login));
+        }
+        if("1.0".equals(detailActivity.getIsPoint())){
+            txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+            txtAgree.setSelected(false);
+            txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
+        }else{
+            txtAgree.setBackgroundResource(R.drawable.background_button_div);
+            txtAgree.setSelected(true);
+            txtAgree.setTextColor(getResources().getColor(R.color.white));
+        }
+        txtAgree.setText(Float.valueOf(detailActivity.getPointNum()).intValue()+"");
+        txtAnswerNum.setText("展开评论"+Float.valueOf(detailActivity.getCommentNum()).intValue());
+        open=Float.valueOf(detailActivity.getCommentNum()).intValue();
+        if(Float.valueOf(detailActivity.getCommentNum()).intValue()==0) {
+            txtAnswerNum.setText("评论");
+        }
+        getComment();
+    }
+    private void getComment() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id",getIntent().getStringExtra("article_id"));
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("page",madapter.getPage());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getCommentListener, this, false, false), map);
+        HttpManager.getInstance().getAnswerList(postEntity);
     }
 
+    HttpOnNextListener getCommentListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONObject object = null;
+            try {
+                JSONArray array = new JSONArray(gson.toJson(o));
+                for (int i = 0; i < array.length(); i++) {
+                    object = array.getJSONObject(i);
+                    commentEntity = new CommentEntity(object);
+                    list.add(commentEntity);
+                }
+                madapter.notifyDataSetChanged();
+                if(array.length()<10){
+                    ((TextView)footView.findViewById(R.id.txt_review)).setText("已加载全部");
+                }else{
+                    ((TextView)footView.findViewById(R.id.txt_review)).setText("查看更多");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     private void getArticleDetail() {
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", getIntent().getStringExtra("article_id"));
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token", SPUtils.get(this, "token", ""));
-        LogUtils.d("huan"+map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().getColumnArticleDetail(postEntity);
     }
@@ -136,8 +266,126 @@ public class ColumnDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getArticleDetail();
+        getRecommendArticle();
     }
 
+    private void getRecommendArticle() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", getIntent().getStringExtra("article_id"));
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getRecommendListener, this, true, false), map);
+        HttpManager.getInstance().getRecommendArticle(postEntity);
+    }
+
+    HttpOnNextListener getRecommendListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            try {
+                JSONObject object = new JSONObject(gson.toJson(o));
+                JSONArray array = object.getJSONArray("column");
+                ColumnArticleEntity entity;
+                for (int i = 0; i < array.length(); i++) {
+                    entity = new ColumnArticleEntity(array.getJSONObject(i));
+                    entities.add(entity);
+                }
+                adapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.txt_save:
+                saveArticle();
+                 break;
+            case R.id.txt_agree:
+                pointArticle();
+                break;
+            case R.id.mask:
+                mask.setVisibility(View.GONE);
+                lvReply.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent, ColumnDetailActivity.this);
+                break;
+            case R.id.et_comment:
+                lvReply.setVisibility(View.VISIBLE);
+                mask.setVisibility(View.VISIBLE);
+                etContent.requestFocus();
+                etContent.setHint("回复" + txtName.getText().toString());
+                KeybordS.openKeybord(etContent, ColumnDetailActivity.this);
+                btnCancle.setText("取消评论");
+                btnReply.setText("立即评论");
+                listComment.setVisibility(View.VISIBLE);
+                break;
+            case R.id.txt_answerNum:
+                if(((TextView)v).getText().toString().equals("评论")){
+                    lvReply.setVisibility(View.VISIBLE);
+                    mask.setVisibility(View.VISIBLE);
+                    etContent.requestFocus();
+                    etContent.setHint("回复" + txtName.getText().toString());
+                    KeybordS.openKeybord(etContent, ColumnDetailActivity.this);
+                    btnCancle.setText("取消评论");
+                    btnReply.setText("立即评论");
+                    listComment.setVisibility(View.VISIBLE);
+                    return;
+                }
+                listComment.setVisibility(listComment.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                if(listComment.getVisibility()==View.VISIBLE){
+                    txtAnswerNum.setText("收起评论"+open);
+                }else{
+                    txtAnswerNum.setText("展开评论"+open);
+                }
+                break;
+            case R.id.btn_cancle:
+                mask.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent, ColumnDetailActivity.this);
+                lvReply.setVisibility(View.GONE);
+                break;
+            case R.id.btn_reply:
+                if (etContent.getText().toString().trim().equals("")) {
+                    ToastUtils.showShortToast(ColumnDetailActivity.this, "请输入回复内容");
+                    return;
+                }
+                    addComment(etContent.getText().toString().trim());
+                lvReply.setVisibility(View.GONE);
+                mask.setVisibility(View.GONE);
+                KeybordS.closeKeybord(etContent, ColumnDetailActivity.this);
+                etContent.setText("");
+                break;
+        }
+    }
+    private void addComment(String comment) {
+        this.content = comment;
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", getIntent().getStringExtra("article_id"));
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("content", comment);
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("sec_comment_id",  getIntent().getStringExtra("article_id"));
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(commentListener1, this, false, false), map);
+        HttpManager.getInstance().pubComment(postEntity);
+    }
+
+    HttpOnNextListener commentListener1 = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            commentEntity = new CommentEntity();
+            commentEntity.setContent(content);
+            commentEntity.setHead(SPUtils.get(ColumnDetailActivity.this, "head", "").toString());
+            commentEntity.setName(SPUtils.get(ColumnDetailActivity.this, "name", "").toString());
+            commentEntity.setSec_uid("sec_uid");
+            commentEntity.setMessage(SPUtils.get(ColumnDetailActivity.this, "message", "").toString());
+            commentEntity.setReplyNum("0");
+            commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            list.add(1, commentEntity);
+            txtAnswerNum.setText("收起评论"+(++open) + "");
+            madapter.notifyDataSetChanged();
+            ToastUtils.showShortToast(ColumnDetailActivity.this, "评论成功");
+        }
+    };
     private class JavascriptInterface {
 
         private Context context;
@@ -166,10 +414,66 @@ public class ColumnDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.txt_column_name:
-                Intent intent=new Intent(this, ColumnActivity.class);
-                intent.putExtra("column_id",Float.valueOf(detailActivity.getArticle_id()).intValue()+"");
+                Intent intent = new Intent(this, ColumnActivity.class);
+                intent.putExtra("column_id", Float.valueOf(detailActivity.getArticle_id()).intValue() + "");
                 startActivity(intent);
                 break;
         }
+    }
+    private void saveArticle(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", getIntent().getStringExtra("article_id"));
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        if(detailActivity.getIsSave().equals("1.0")){
+            map.put("select", 0);
+        }else{
+            map.put("select", 1);
+        }
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                if("0.0".equals(detailActivity.getIsSave())){
+                    txtSave.setText("取消收藏");
+                    txtSave.setTextColor(getResources().getColor(R.color.txt_color));
+                    detailActivity.setIsSave("1.0");
+                }else{
+                    txtSave.setText("收藏");
+                    txtSave.setTextColor(getResources().getColor(R.color.login));
+                    detailActivity.setIsSave("0.0");
+                }
+            }
+        }, this, false, false), map);
+        HttpManager.getInstance().saveArticle(postEntity);
+    }
+    private void pointArticle(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("article_id", getIntent().getStringExtra("article_id"));
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("token", SPUtils.get(this, "token", "").toString());
+        if(detailActivity.getIsPoint().equals("1.0")){
+            map.put("select", 0);
+        }else{
+            map.put("select", 1);
+        }
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                if("0.0".equals(detailActivity.getIsPoint())){
+                    txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
+                    txtAgree.setSelected(false);
+                    txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
+                    detailActivity.setIsPoint("1.0");
+                    txtAgree.setText(""+(Float.valueOf(detailActivity.getPointNum()).intValue()+1));
+                }else{
+                    txtAgree.setBackgroundResource(R.drawable.background_button_div);
+                    txtAgree.setSelected(true);
+                    txtAgree.setTextColor(getResources().getColor(R.color.white));
+                    detailActivity.setIsPoint("0.0");
+                    txtAgree.setText(""+(Float.valueOf(detailActivity.getPointNum()).intValue()-1));
+                }
+            }
+        }, this, false, false), map);
+        HttpManager.getInstance().pointArticle(postEntity);
     }
 }

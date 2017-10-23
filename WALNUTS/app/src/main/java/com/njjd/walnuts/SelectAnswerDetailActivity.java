@@ -279,7 +279,6 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_add_help:
-//                ToastUtils.showShortToast(this, "功能正在开发，敬请期待");
                 mask.setVisibility(View.VISIBLE);
                 InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 if(imm != null) {

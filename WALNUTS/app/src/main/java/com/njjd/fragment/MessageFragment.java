@@ -37,6 +37,7 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ItemRemoveRecyclerView;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
@@ -236,6 +237,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
+                    ToastUtils.showShortToast(context,"网络不给力");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            listInform.refreshComplete();
+                        }
+                    },500);
+                    return;
+                }
                 InformAdapter.CURRENT_PAGE = 1;
                 radioInform.setTipOn(false, 1);
                 radioInform.invalidate();
@@ -244,11 +255,21 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                     public void run() {
                         listInform.refreshComplete();
                     }
-                }, 3000);
+                }, 6000);
             }
 
             @Override
             public void onLoadMore() {
+                if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
+                    ToastUtils.showShortToast(context,"网络不给力");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            listInform.loadMoreComplete();
+                        }
+                    },500);
+                    return;
+                }
                 if (!loadmoe) {
                     ToastUtils.showShortToast(context, "已加载全部数据啦");
                     new Handler().postDelayed(new Runnable() {

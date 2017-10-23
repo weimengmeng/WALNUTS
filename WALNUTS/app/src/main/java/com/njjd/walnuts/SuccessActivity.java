@@ -160,8 +160,6 @@ public class SuccessActivity extends BaseActivity {
                         .enableCamera(true)
                         .setEngine(new GlideEngine())
                         .forResult(REQUEST_CODE);
-                //1多选 2 单选 单选才有裁剪功能
-//                ImageSelectorActivity.start(this, 1, 2, true, true, true);
                 break;
             case R.id.txt_province:
                 if (provincePickview != null) {

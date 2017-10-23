@@ -159,6 +159,14 @@ public interface HttpService {
     Observable<HttpResult<Object>> getColumnArticles(@QueryMap Map<String, String> params);
     @POST("index/getColumnArticleDetail")
     Observable<HttpResult<Object>> getColumnArticleDetail(@QueryMap Map<String, String> params);
+    @POST("index/getRecommendArticle")
+    Observable<HttpResult<Object>> getRecommendArticle(@QueryMap Map<String, String> params);
+    @POST("index/getUidCollectColumnArticle")
+    Observable<HttpResult<Object>> getUidCollectColumnArticle(@QueryMap Map<String, String> params);
+    @POST("index/setCollectColumn")
+    Observable<HttpResult<Object>> saveArticle(@QueryMap Map<String, String> params);
+    @POST("index/setPointColumn")
+    Observable<HttpResult<Object>> pointArticle(@QueryMap Map<String, String> params);
     /**
      *  个人中心模块
      */

@@ -47,7 +47,7 @@ android {
         }
     }
     greendao {
-        schemaVersion 1
+        schemaVersion 2
         daoPackage 'com.njjd.dao'
         targetGenDir 'src/main/java'
     }
@@ -73,7 +73,6 @@ dependencies {
     compile 'com.google.code.gson:gson:+'
     compile 'com.jakewharton:butterknife:8.1.0'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
-    compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.isseiaoki:simplecropview:1.0.13'
     compile 'com.contrarywind:Android-PickerView:3.2.4'
@@ -98,7 +97,6 @@ dependencies {
     compile 'com.hyphenate:hyphenate-sdk-lite:3.3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile project(':BGABadgeView-master')
-    compile 'com.github.valuesfeng:androidpicturepicker:1.0.0'
     compile files('libs/umeng_social_shareboard.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareview.jar')
@@ -111,4 +109,6 @@ dependencies {
     compile files('libs/Sunflower.jar')
     compile 'com.carlos.voiceline:mylibrary:1.0.6'
     compile 'jp.wasabeef:richeditor-android:1.2.0'
+    compile project(':gallery')
+    compile 'com.github.bumptech.glide:glide:3.6.1'
 }

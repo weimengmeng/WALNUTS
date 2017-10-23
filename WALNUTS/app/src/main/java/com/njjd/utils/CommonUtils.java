@@ -21,6 +21,7 @@ import com.njjd.db.DBHelper;
 import com.njjd.domain.BannerEntity;
 import com.njjd.domain.CommonEntity;
 import com.njjd.domain.IndexNavEntity;
+import com.njjd.domain.QuestionEntity;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.umeng.analytics.MobclickAgent;
@@ -218,10 +219,12 @@ public class CommonUtils {
         HttpManager.getInstance().getNav(postEntity);
     }
     private static void getBannerInfo(){
+        bannerList=DBHelper.getInstance().getmDaoSession().getBannerEntityDao().loadAll();
         Map<String,Object> map=new HashMap<>();
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener<Object>() {
             @Override
             public void onNext(Object o) {
+                bannerList.clear();
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.serializeNulls(); //重点
                 Gson gson = gsonBuilder.create();
@@ -234,6 +237,17 @@ public class CommonUtils {
                         object=array.getJSONObject(i);
                         entity=new BannerEntity(object.getString("title"),object.isNull("url")?"":object.getString("url"),object.getString("id"),object.getString("img"),object.getString("cate_article_id"));
                         bannerList.add(entity);
+                        if (DBHelper.getInstance().getmDaoSession().getBannerEntityDao().load(entity.getId()) != null) {
+                            BannerEntity temp = DBHelper.getInstance().getmDaoSession().getBannerEntityDao().load(entity.getId());
+                            temp.setTitle(entity.getTitle());
+                            temp.setId(entity.getId());
+                            temp.setImg(entity.getImg());
+                            temp.setUrl(entity.getUrl());
+                            temp.setType(entity.getType());
+                            DBHelper.getInstance().getmDaoSession().getBannerEntityDao().insertOrReplace(temp);
+                        } else {
+                            DBHelper.getInstance().getmDaoSession().getBannerEntityDao().insertOrReplace(entity);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -23,7 +23,6 @@ public class GlideImageLoder2 extends ImageLoader {
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.error)
                 .error(R.drawable.error)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate().into(imageView);
     }
 

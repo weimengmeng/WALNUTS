@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.R;
 
 import java.io.File;

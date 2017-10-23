@@ -1,10 +1,12 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -95,6 +97,14 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
             public void onRefresh() {
                 adapter.setCurrentPage(1);
                 getColumnArticles();
+            }
+        });
+        listColumn.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(ColumnActivity.this, ColumnDetailActivity.class);
+                intent.putExtra("article_id",Float.valueOf(list.get(position).getArticle_id()).intValue()+"");
+                startActivity(intent);
             }
         });
     }

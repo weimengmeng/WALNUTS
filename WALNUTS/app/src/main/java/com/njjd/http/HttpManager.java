@@ -291,9 +291,29 @@ public class HttpManager {
         observable = httpService.getColumnArticle(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void getRecommendArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getRecommendArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void getColumnArticles(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getColumnArticles(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getUidCollectColumnArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getUidCollectColumnArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void saveArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.saveArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void pointArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.pointArticle(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**

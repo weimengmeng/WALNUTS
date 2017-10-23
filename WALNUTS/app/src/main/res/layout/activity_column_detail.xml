@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,19 +8,18 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@color/white">
-
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.15"
+            android:background="@color/txt_color"></View>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha="0.15"
-        android:background="@color/txt_color"></View>
-
     <ScrollView
         android:id="@+id/lv_root"
+        android:layout_below="@id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/margin">
@@ -30,6 +29,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/txt_article_title"
                 android:layout_width="match_parent"
@@ -41,28 +41,32 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/big"
                 android:textStyle="bold" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/margin"
-            android:paddingTop="@dimen/padding"
-            android:paddingRight="@dimen/margin">
-            <TextView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/padding"
-                android:text="来自专栏"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
-            <TextView
-                android:id="@+id/txt_column_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
-                android:text="阿柴有话说"
-                android:textColor="@color/login"
-                android:textSize="@dimen/normal" />
+                android:paddingTop="@dimen/padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding"
+                    android:text="来自专栏"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/normal" />
+
+                <TextView
+                    android:id="@+id/txt_column_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/margin"
+                    android:text="阿柴有话说"
+                    android:textColor="@color/login"
+                    android:textSize="@dimen/normal" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,6 +109,7 @@
                     android:textSize="@dimen/small"
                     android:typeface="sans" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/txt_intro"
                 android:layout_width="match_parent"
@@ -124,11 +129,12 @@
                 android:layout_height="@dimen/post_height"
                 android:layout_marginBottom="@dimen/padding"
                 android:layout_marginLeft="@dimen/margin"
-                android:visibility="gone"
                 android:layout_marginRight="@dimen/margin"
                 android:layout_marginTop="@dimen/padding"
                 android:scaleType="centerCrop"
-                android:src="@drawable/demo" />
+                android:src="@drawable/demo"
+                android:visibility="gone" />
+
             <WebView
                 android:id="@+id/editor2"
                 android:layout_width="match_parent"
@@ -140,32 +146,39 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/padding"
                 android:layout_marginRight="@dimen/margin"
+                android:layout_marginTop="@dimen/padding"
                 android:alpha="0.15"
                 android:background="@color/txt_color"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding"
                 android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
+                android:paddingTop="@dimen/padding"
                 android:weightSum="1">
 
                 <TextView
+                    android:id="@+id/txt_answerNum"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center_vertical"
                     android:text="评论30"
+                    android:onClick="onClick"
                     android:textColor="@color/login"
                     android:textSize="@dimen/small"
                     android:typeface="sans" />
 
                 <TextView
+                    android:id="@+id/txt_save"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center_vertical"
                     android:text="收藏"
+                    android:onClick="onClick"
                     android:textColor="@color/login"
                     android:textSize="@dimen/small"
                     android:typeface="sans" />
@@ -188,6 +201,7 @@
                         android:paddingLeft="@dimen/padding"
                         android:paddingRight="@dimen/padding"
                         android:text="25 "
+                        android:onClick="onClick"
                         android:textColor="@color/txt_color"
                         android:textSize="@dimen/small"
                         android:typeface="sans"></TextView>
@@ -196,15 +210,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding"
+                android:orientation="vertical"
                 android:background="@color/grey">
-
-                <TextView
+                <com.njjd.utils.ListViewForScrollView
+                    android:id="@+id/list_comment"
+                    android:dividerHeight="0dp"
+                    android:divider="#00000000"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="评论区域" />
+                    android:layout_height="wrap_content"></com.njjd.utils.ListViewForScrollView>
             </LinearLayout>
 
             <TextView
@@ -212,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/padding"
-                android:text="TA的更多文章"
+                android:text="相关推荐"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal"
                 android:typeface="sans" />
@@ -226,9 +241,80 @@
                 android:background="@color/txt_color"></View>
 
             <com.njjd.utils.ListViewForScrollView
-                android:id="@+id/list_select"
+                android:id="@+id/list_article"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></com.njjd.utils.ListViewForScrollView>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:onClick="onClick">
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/lv_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:padding="@dimen/padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btn_cancle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@null"
+                android:layout_marginLeft="2dp"
+                android:typeface="sans"
+                android:gravity="left|center"
+                android:paddingBottom="@dimen/padding"
+                android:text="取消回复"
+                android:onClick="onClick"
+                android:textColor="@color/login"
+                android:textSize="@dimen/normal" />
+
+            <Button
+                android:id="@+id/btn_reply"
+                android:layout_width="0dp"
+                android:typeface="sans"
+                android:layout_marginRight="2dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@null"
+                android:gravity="right|center"
+                android:paddingBottom="@dimen/padding"
+                android:text="立即回复"
+                android:onClick="onClick"
+                android:textColor="@color/login"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/background_layout_et"
+            android:hint="输入文字"
+            android:lines="4"
+            android:gravity="top"
+            android:padding="@dimen/padding"
+            android:textColor="@color/gray"
+            android:textColorHint="@color/txt_color"
+            android:textCursorDrawable="@drawable/color_cusor"
+            android:textSize="@dimen/small" />
+    </LinearLayout>
+</RelativeLayout>
