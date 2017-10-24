@@ -316,6 +316,16 @@ public class HttpManager {
         observable = httpService.pointArticle(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void followColumn(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.followColumn(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getFollowColumn(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getFollowColumn(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      *  公共模块
      * @param basePar

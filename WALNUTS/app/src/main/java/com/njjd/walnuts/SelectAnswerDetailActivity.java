@@ -115,7 +115,6 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     @Override
     public void initView(View view) {
         txtTitle.setText("回答详情");
-//        btnAddHelp.setVisibility(View.VISIBLE);
         questionId = getIntent().getStringExtra("questionId");
         answer_id = getIntent().getStringExtra("answer_id");
         questiontitle=getIntent().getStringExtra("questionTitle");

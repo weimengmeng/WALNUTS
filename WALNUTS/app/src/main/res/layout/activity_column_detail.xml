@@ -21,8 +21,7 @@
         android:id="@+id/lv_root"
         android:layout_below="@id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +54,7 @@
                     android:paddingRight="@dimen/padding"
                     android:text="来自专栏"
                     android:textColor="@color/gray"
-                    android:textSize="@dimen/normal" />
+                    android:textSize="@dimen/small" />
 
                 <TextView
                     android:id="@+id/txt_column_name"
@@ -71,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/padding"
+                android:gravity="center_vertical"
                 android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
                 android:paddingTop="@dimen/padding">
@@ -89,8 +89,7 @@
                     android:padding="@dimen/padding"
                     android:text="刘建设的建设"
                     android:textColor="@color/login"
-                    android:textSize="@dimen/small"
-                    android:typeface="sans" />
+                    android:textSize="@dimen/normal" />
 
                 <View
                     android:layout_width="1dp"
@@ -106,8 +105,7 @@
                     android:padding="@dimen/padding"
                     android:text="2017-09-15"
                     android:textColor="@color/txt_color"
-                    android:textSize="@dimen/small"
-                    android:typeface="sans" />
+                    android:textSize="@dimen/small" />
             </LinearLayout>
 
             <TextView
@@ -221,6 +219,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"></com.njjd.utils.ListViewForScrollView>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_marginRight="@dimen/padding"
+                android:alpha="0.15"
+                android:background="@color/txt_color"></View>
 
             <TextView
                 android:layout_width="match_parent"
@@ -256,65 +261,11 @@
         android:onClick="onClick">
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/lv_reply"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/grey"
-        android:visibility="gone"
         android:orientation="vertical"
-        android:padding="@dimen/padding">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <Button
-                android:id="@+id/btn_cancle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:background="@null"
-                android:layout_marginLeft="2dp"
-                android:typeface="sans"
-                android:gravity="left|center"
-                android:paddingBottom="@dimen/padding"
-                android:text="取消回复"
-                android:onClick="onClick"
-                android:textColor="@color/login"
-                android:textSize="@dimen/normal" />
-
-            <Button
-                android:id="@+id/btn_reply"
-                android:layout_width="0dp"
-                android:typeface="sans"
-                android:layout_marginRight="2dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:background="@null"
-                android:gravity="right|center"
-                android:paddingBottom="@dimen/padding"
-                android:text="立即回复"
-                android:onClick="onClick"
-                android:textColor="@color/login"
-                android:textSize="@dimen/normal" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/et_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:background="@drawable/background_layout_et"
-            android:hint="输入文字"
-            android:lines="4"
-            android:gravity="top"
-            android:padding="@dimen/padding"
-            android:textColor="@color/gray"
-            android:textColorHint="@color/txt_color"
-            android:textCursorDrawable="@drawable/color_cusor"
-            android:textSize="@dimen/small" />
+        android:layout_height="wrap_content">
+        <include layout="@layout/layout_up_comment"></include>
+        <include layout="@layout/layout_share"></include>
     </LinearLayout>
 </RelativeLayout>

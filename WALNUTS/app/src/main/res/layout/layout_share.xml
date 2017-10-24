@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--底部大布局-->
+    <LinearLayout
+        android:id="@+id/lv_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="1">
+        <!--取消按钮布局-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/white"
+            android:paddingTop="@dimen/padding"
+            android:text="分享到"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/small"/>
+        <!--分享内容布局-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <!--第一排-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/share_wechat"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="0.25"
+                    >
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/padding"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/umeng_socialize_wechat"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:typeface="sans"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="微信"
+                        android:textColor="#444"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/share_wechat_circle1"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="0.25"
+                    >
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/padding"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/umeng_socialize_wxcircle"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:typeface="sans"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="朋友圈"
+                        android:textColor="#444"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/share_qq"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="0.25"
+                    >
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/padding"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/umeng_socialize_qq"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:typeface="sans"
+                        android:text="好友/群"
+                        android:textColor="#444"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/share_qzone"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="0.25"
+                    >
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/padding"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/umeng_socialize_qzone"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:typeface="sans"
+                        android:text="QQ空间"
+                        android:textColor="#444"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/share_sina"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="0.25"
+                    >
+                    <ImageView
+                        android:layout_marginTop="@dimen/padding"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/umeng_socialize_sina"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin"
+                        android:typeface="sans"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="微博"
+                        android:textColor="#444"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/share_aili"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="0.25"
+                    >
+                    <ImageView
+                        android:layout_marginTop="@dimen/padding"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/umeng_socialize_alipay"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/margin"
+                        android:typeface="sans"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="支付宝"
+                        android:textColor="#444"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <!--取消按钮布局-->
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
+            android:background="@color/white"
+            android:text="取消分享"
+            android:textSize="@dimen/normal"
+            android:textColor="@color/login" />
+    </LinearLayout>
+</LinearLayout>

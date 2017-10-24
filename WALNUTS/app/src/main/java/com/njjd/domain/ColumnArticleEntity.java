@@ -28,15 +28,15 @@ public class ColumnArticleEntity implements Serializable {
         try {
             this.article_id=object.getString("id");
             this.head=object.isNull("headimg")?"":object.getString("headimg");
-            this.name=object.getString("uname");
-            this.title=object.getString("title");
+            this.name=object.isNull("uname")?"":object.getString("uname");
+            this.title=object.isNull("title")?"":object.getString("title");
             this.desci=object.isNull("desci")?"":object.getString("desci");
             this.content=object.isNull("contents")?"":object.getString("contents");
             this.pic=object.isNull("imgs")?"":object.getString("imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
-            this.commentNum=object.getString("answer_num");
-            this.pointNum=object.getString("point_num");
-            this.uid=object.getString("uid");
-            this.time=object.getString("add_time");
+            this.commentNum=object.isNull("answer_num")?"":object.getString("answer_num");
+            this.pointNum=object.isNull("point_num")?"":object.getString("point_num");
+            this.uid=object.isNull("uid")?"":object.getString("uid");
+            this.time=object.isNull("add_time")?"":object.getString("add_time");
         } catch (JSONException e) {
             e.printStackTrace();
         }

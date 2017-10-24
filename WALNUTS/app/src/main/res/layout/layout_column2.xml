@@ -3,17 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginBottom="2dp"
-    android:layout_marginTop="@dimen/padding"
-    android:layout_marginLeft="@dimen/margin"
-    android:elevation="1dp"
-    android:paddingBottom="@dimen/margin"
-    android:paddingTop="@dimen/margin"
+    android:paddingTop="@dimen/margin_small"
     android:weightSum="1">
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.7"
+        android:paddingTop="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
+        android:background="@color/white"
         android:orientation="vertical"
         android:weightSum="1">
             <TextView
@@ -69,7 +67,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:padding="@dimen/padding"
+        android:padding="@dimen/margin"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"

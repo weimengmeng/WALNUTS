@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -36,11 +38,19 @@ import com.njjd.utils.ListViewForScrollView;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.utils.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,6 +115,9 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
     private CommentEntity commentEntity;
     private String content="";
     private View footView;
+    @BindView(R.id.lv_share)
+    LinearLayout lvShare;
+    private UMShareListener mShareListener;
     @Override
     public int bindLayout() {
         return R.layout.activity_column_detail;
@@ -154,11 +167,13 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
                 finish();
             }
         });
+        mShareListener = new CustomShareListener(this);
     }
 
     private void initMyView() {
         webView.loadDataWithBaseURL(null, detailActivity.getContent(), "text/html", "utf-8", null);
         webView.getSettings().setJavaScriptEnabled(true);
+//        webView.getSettings().setAppCacheEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -176,6 +191,14 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         webView.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
         txtArticleTitle.setText(detailActivity.getTitle());
         txtColumnName.setText(detailActivity.getColumnName());
+        imgHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ColumnDetailActivity.this, PeopleInfoActivity.class);
+                intent.putExtra("uid", detailActivity.getUid());
+                startActivity(intent);
+            }
+        });
         GlideImageLoder.getInstance().displayImage(this, detailActivity.getHead(), imgHead);
         txtName.setText(detailActivity.getName());
         txtTime.setText(detailActivity.getTime());
@@ -202,6 +225,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         if(Float.valueOf(detailActivity.getCommentNum()).intValue()==0) {
             txtAnswerNum.setText("评论");
         }
+        listComment.setVisibility(View.GONE);
         getComment();
     }
     private void getComment() {
@@ -308,11 +332,13 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
             case R.id.mask:
                 mask.setVisibility(View.GONE);
                 lvReply.setVisibility(View.GONE);
+                lvShare.setVisibility(View.GONE);
                 KeybordS.closeKeybord(etContent, ColumnDetailActivity.this);
                 break;
             case R.id.et_comment:
                 lvReply.setVisibility(View.VISIBLE);
                 mask.setVisibility(View.VISIBLE);
+                lvShare.setVisibility(View.GONE);
                 etContent.requestFocus();
                 etContent.setHint("回复" + txtName.getText().toString());
                 KeybordS.openKeybord(etContent, ColumnDetailActivity.this);
@@ -407,11 +433,39 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    @OnClick({R.id.back, R.id.txt_column_name})
+    @OnClick({R.id.back, R.id.txt_column_name, R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
+                break;
+            case R.id.btn_add_help:
+                mask.setVisibility(View.VISIBLE);
+                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm != null) {
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                            0);
+                }
+                lvReply.setVisibility(View.GONE);
+                lvShare.setVisibility(View.VISIBLE);
+                break;
+            case R.id.share_aili:
+                shareAction(SHARE_MEDIA.ALIPAY);
+                break;
+            case R.id.share_qq:
+                shareAction(SHARE_MEDIA.QQ);
+                break;
+            case R.id.share_qzone:
+                shareAction(SHARE_MEDIA.QZONE);
+                break;
+            case R.id.share_sina:
+                shareAction(SHARE_MEDIA.SINA);
+                break;
+            case R.id.share_wechat:
+                shareAction(SHARE_MEDIA.WEIXIN);
+                break;
+            case R.id.share_wechat_circle1:
+                shareAction(SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
             case R.id.txt_column_name:
                 Intent intent = new Intent(this, ColumnActivity.class);
@@ -475,5 +529,86 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
             }
         }, this, false, false), map);
         HttpManager.getInstance().pointArticle(postEntity);
+    }
+    private void  shareAction(SHARE_MEDIA share_media){
+        UMWeb web;
+        UMImage image;
+        mask.setVisibility(View.GONE);
+        lvShare.setVisibility(View.GONE);
+        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
+        web.setTitle(detailActivity.getTitle());//标题
+        if(!detailActivity.getContent().contains("<img")){
+            image = new UMImage(ColumnDetailActivity.this, R.drawable.share);//资源文件
+        }else{
+            image = new UMImage(ColumnDetailActivity.this,detailActivity.getContent().substring(detailActivity.getContent().indexOf("src=\"")+5,detailActivity.getContent().indexOf('>')-1));//资源文件
+        }
+        web.setThumb(image);
+        web.setDescription(detailActivity.getDesci());//描述
+        new ShareAction(this).setPlatform(share_media).withMedia(web).setCallback(mShareListener).share();
+        mask.setVisibility(View.GONE);
+        lvShare.setVisibility(View.GONE);
+    }
+    private class CustomShareListener implements UMShareListener {
+        private WeakReference<ColumnDetailActivity> mActivity;
+        private CustomShareListener(ColumnDetailActivity activity) {
+            mActivity = new WeakReference(activity);
+        }
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+//            loadingDialog.show();
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            if (platform.name().equals("WEIXIN_FAVORITE")) {
+                Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            } else {
+                if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                        && platform != SHARE_MEDIA.EMAIL
+                        && platform != SHARE_MEDIA.FLICKR
+                        && platform != SHARE_MEDIA.FOURSQUARE
+                        && platform != SHARE_MEDIA.TUMBLR
+                        && platform != SHARE_MEDIA.POCKET
+                        && platform != SHARE_MEDIA.PINTEREST
+
+                        && platform != SHARE_MEDIA.INSTAGRAM
+                        && platform != SHARE_MEDIA.GOOGLEPLUS
+                        && platform != SHARE_MEDIA.YNOTE
+                        && platform != SHARE_MEDIA.EVERNOTE) {
+                }
+
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (platform != SHARE_MEDIA.MORE && platform != SHARE_MEDIA.SMS
+                    && platform != SHARE_MEDIA.EMAIL
+                    && platform != SHARE_MEDIA.FLICKR
+                    && platform != SHARE_MEDIA.FOURSQUARE
+                    && platform != SHARE_MEDIA.TUMBLR
+                    && platform != SHARE_MEDIA.POCKET
+                    && platform != SHARE_MEDIA.PINTEREST
+
+                    && platform != SHARE_MEDIA.INSTAGRAM
+                    && platform != SHARE_MEDIA.GOOGLEPLUS
+                    && platform != SHARE_MEDIA.YNOTE
+                    && platform != SHARE_MEDIA.EVERNOTE) {
+                Toast.makeText(mActivity.get(), "分享失败", Toast.LENGTH_SHORT).show();
+                if (t != null) {
+                    Log.d("throw", "throw:" + t.getMessage());
+                }
+            }
+
+        }
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtils.showShortToast(ColumnDetailActivity.this,"分享取消");
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /** attention to this below ,must add this**/
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

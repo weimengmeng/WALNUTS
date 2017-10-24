@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.R;
 
 import java.util.List;
@@ -72,9 +74,10 @@ public class ColumnArticleAdapter extends BaseAdapter {
         GlideImageLoder.getInstance().displayImage(context, entity.getHead(), hodel.head);
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
-        hodel.content.setText(entity.getContent());
+        hodel.content.setText(entity.getDesci());
         hodel.num.setText(Float.valueOf(entity.getCommentNum()).intValue()+"评论  ·  "+Float.valueOf(entity.getPointNum()).intValue()+"赞同");
-        GlideImageLoder.getInstance().displayImage(context, entity.getPic(), hodel.pic);
+        if(entity.getContent().contains("<img"))
+            GlideImageLoder.getInstance().displayImage(context, entity.getContent().substring(entity.getContent().indexOf("src=\"")+5,entity.getContent().indexOf('>')-1), hodel.pic);
         return convertView;
     }
     private class ViewHodel{

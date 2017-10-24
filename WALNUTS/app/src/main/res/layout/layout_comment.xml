@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin"
+        android:elevation="1dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.12"
+                android:gravity="center|left"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_head"
+                    android:layout_width="@dimen/margin_big"
+                    android:layout_height="@dimen/margin_big"
+                    android:src="@drawable/head" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.58"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:text="刘建设的建设"
+                    android:typeface="sans"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/normal" />
+
+                <TextView
+                    android:id="@+id/txt_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:typeface="sans"
+                    android:gravity="center_vertical"
+                    android:text="职业的小逗比"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center|right"
+               >
+
+                <TextView
+                    android:id="@+id/txt_reply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding"
+                    android:onClick="onClick"
+                    android:text="回复"
+                    android:textColor="@color/login"
+                    android:textSize="@dimen/normal"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:layout_marginTop="@dimen/margin"
+            android:lineSpacingMultiplier="1.1"
+            android:maxLines="2"
+            android:paddingRight="@dimen/margin"
+            android:text="个个人个人个人"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textScaleX="1"
+            android:textSize="@dimen/big" />
+    </LinearLayout>
+</LinearLayout>

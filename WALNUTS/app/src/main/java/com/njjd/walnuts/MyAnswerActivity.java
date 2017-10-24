@@ -62,6 +62,7 @@ public class MyAnswerActivity extends BaseActivity {
         back.setText("我的");
         txtTitle.setText("我的回答");
         saveAdapter = new MyAnswerAdapter(list, this);
+        findViewById(R.id.radiogroup).setVisibility(View.GONE);
         listSave.setEmptyView(findViewById(R.id.empty));
         ((TextView)findViewById(R.id.txt_content)).setText("快去回答问题吧");
         listSave.setAdapter(saveAdapter);
@@ -100,30 +101,36 @@ public class MyAnswerActivity extends BaseActivity {
         listSave.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyAnswerEntity answerEntity=list.get(position);
-                SaveEntity saveEntity=new SaveEntity();
-                saveEntity.setArticle_id(answerEntity.getArticle_id());
-                saveEntity.setTitle(answerEntity.getTitle());
-                saveEntity.setArticle_answer_num(answerEntity.getArticle_answer_num());
-                saveEntity.setArticle_follow_num(answerEntity.getArticle_follow_num());
-                saveEntity.setArticle_content(answerEntity.getArticle_content());
-                saveEntity.setArticle_imgs(answerEntity.getArticle_imgs());
-                saveEntity.setComment_id(answerEntity.getComment_id());
-                saveEntity.setComment_uid_headimg(SPUtils.get(MyAnswerActivity.this,"head","").toString());
-                saveEntity.setComment_uid_name(SPUtils.get(MyAnswerActivity.this,"name","").toString());
-                saveEntity.setComment_uid_introduction(SPUtils.get(MyAnswerActivity.this,"message","").toString());
-                saveEntity.setComment_content(answerEntity.getComment_content());
-                saveEntity.setComment_point_num(answerEntity.getComment_point_num());
-                saveEntity.setComment_collect_num(answerEntity.getComment_collect_num());
-                saveEntity.setPoint_comment_stat(answerEntity.getPoint_comment_stat());
-                saveEntity.setCollect_time(answerEntity.getAdd_time());
-                Intent intent = new Intent(MyAnswerActivity.this, SaveDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("save", saveEntity);
-                intent.putExtra("save", bundle);
-                intent.putExtra("type","0");
-                startActivity(intent);
-                overridePendingTransition(R.anim.in, R.anim.out);
+                if(list.get(position).getType().equals("2.0")){
+                    Intent intent=new Intent(MyAnswerActivity.this, ColumnDetailActivity.class);
+                    intent.putExtra("article_id",Float.valueOf(list.get(position).getArticle_id()).intValue()+"");
+                    startActivity(intent);
+                }else {
+                    MyAnswerEntity answerEntity = list.get(position);
+                    SaveEntity saveEntity = new SaveEntity();
+                    saveEntity.setArticle_id(answerEntity.getArticle_id());
+                    saveEntity.setTitle(answerEntity.getTitle());
+                    saveEntity.setArticle_answer_num(answerEntity.getArticle_answer_num());
+                    saveEntity.setArticle_follow_num(answerEntity.getArticle_follow_num());
+                    saveEntity.setArticle_content(answerEntity.getArticle_content());
+                    saveEntity.setArticle_imgs(answerEntity.getArticle_imgs());
+                    saveEntity.setComment_id(answerEntity.getComment_id());
+                    saveEntity.setComment_uid_headimg(SPUtils.get(MyAnswerActivity.this, "head", "").toString());
+                    saveEntity.setComment_uid_name(SPUtils.get(MyAnswerActivity.this, "name", "").toString());
+                    saveEntity.setComment_uid_introduction(SPUtils.get(MyAnswerActivity.this, "message", "").toString());
+                    saveEntity.setComment_content(answerEntity.getComment_content());
+                    saveEntity.setComment_point_num(answerEntity.getComment_point_num());
+                    saveEntity.setComment_collect_num(answerEntity.getComment_collect_num());
+                    saveEntity.setPoint_comment_stat(answerEntity.getPoint_comment_stat());
+                    saveEntity.setCollect_time(answerEntity.getAdd_time());
+                    Intent intent = new Intent(MyAnswerActivity.this, SaveDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("save", saveEntity);
+                    intent.putExtra("save", bundle);
+                    intent.putExtra("type", "0");
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.in, R.anim.out);
+                }
             }
         });
     }

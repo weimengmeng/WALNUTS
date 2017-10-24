@@ -22,6 +22,7 @@ import com.njjd.utils.BetterRecyclerView;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.GlideImageLoder2;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.R;
@@ -336,7 +337,8 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.title.setText(columnEntity.getTitle());
             viewHolder.content.setText(columnEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
-            GlideImageLoder.getInstance().displayImage(context, columnEntity.getPic(), viewHolder.pic);
+            if(columnEntity.getContent().contains("<img"))
+            GlideImageLoder.getInstance().displayImage(context, columnEntity.getContent().substring(columnEntity.getContent().indexOf("src=\"")+5,columnEntity.getContent().indexOf('>')-1), viewHolder.pic);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

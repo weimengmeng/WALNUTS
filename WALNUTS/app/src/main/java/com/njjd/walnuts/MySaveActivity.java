@@ -15,7 +15,10 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.njjd.adapter.ColumnArticleAdapter;
 import com.njjd.adapter.MySaveAdapter;
+import com.njjd.adapter.RecommendArticleAdapter;
+import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.LogUtils;
@@ -42,8 +45,6 @@ public class MySaveActivity extends BaseActivity {
     TextView back;
     @BindView(R.id.txt_title)
     TextView txtTitle;
-    @BindView(R.id.top)
-    LinearLayout topView;
     @BindView(R.id.list_save)
     SwipeMenuListView listSave;
     @BindView(R.id.list_article)
@@ -52,7 +53,8 @@ public class MySaveActivity extends BaseActivity {
     SwipeRefreshLayout refresh;
     private List<SaveEntity> list = new ArrayList<>();
     private MySaveAdapter saveAdapter;
-
+    private List<ColumnArticleEntity> articleEntities=new ArrayList<>();
+    private RecommendArticleAdapter articleAdapter;
     @Override
     public int bindLayout() {
         return R.layout.activity_mysave;
@@ -69,8 +71,13 @@ public class MySaveActivity extends BaseActivity {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MySaveAdapter.CURRENT_PAGE = 1;
-                getMySave();
+                if(listSave.getVisibility()==View.VISIBLE) {
+                    MySaveAdapter.CURRENT_PAGE = 1;
+                    getMySave();
+                }else{
+                    articleAdapter.setCurrentPage(1);
+                    getMySaveArticle();
+                }
             }
         });
         listSave.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -110,6 +117,43 @@ public class MySaveActivity extends BaseActivity {
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
         });
+        listArticle.setEmptyView(findViewById(R.id.empty));
+        articleAdapter = new RecommendArticleAdapter(this, articleEntities);
+        listArticle.setAdapter(articleAdapter);
+        listArticle.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // 当不滚动时
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1) {
+                        articleAdapter.setCurrentPage(articleAdapter.getCurrentPage()+1);
+                        getMySaveArticle();
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if (listArticle != null && listArticle.getChildCount() > 0) {
+                    boolean firstItemVisible = listArticle.getFirstVisiblePosition() == 0;
+                    boolean topOfFirstItemVisible = listArticle.getChildAt(0).getTop() == 0;
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                refresh.setEnabled(enable);
+            }
+        });
+        listArticle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(MySaveActivity.this, ColumnDetailActivity.class);
+                intent.putExtra("article_id",Float.valueOf(articleEntities.get(position).getArticle_id()).intValue()+"");
+                startActivity(intent);
+                overridePendingTransition(R.anim.in, R.anim.out);
+            }
+        });
     }
     @OnClick({R.id.back, R.id.radio_one, R.id.radio_two})
     public void onViewClicked(View view) {
@@ -131,9 +175,6 @@ public class MySaveActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MySaveAdapter.CURRENT_PAGE = 1;
-        getMySave();
-        getMySaveArticle();
     }
 
     private void getMySave() {
@@ -174,19 +215,40 @@ public class MySaveActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
-        map.put("page", MySaveAdapter.CURRENT_PAGE);
+        map.put("page", articleAdapter.getCurrentPage());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getUidSaveArticleListener, this, false, false), map);
         HttpManager.getInstance().getUidCollectColumnArticle(postEntity);
     }
     HttpOnNextListener getUidSaveArticleListener=new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-
+            refresh.setRefreshing(false);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            try {
+                JSONObject object = new JSONObject(gson.toJson(o));
+                JSONArray array = object.getJSONArray("collect_article");
+                ColumnArticleEntity entity;
+                if(articleAdapter.getCurrentPage()==1){
+                    articleEntities.clear();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    entity = new ColumnArticleEntity(array.getJSONObject(i));
+                    articleEntities.add(entity);
+                }
+                articleAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MySaveAdapter.CURRENT_PAGE = 1;
+        getMySave();
+        getMySaveArticle();
     }
 
 

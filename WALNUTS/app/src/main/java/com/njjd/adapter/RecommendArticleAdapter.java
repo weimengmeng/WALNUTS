@@ -76,7 +76,8 @@ public class RecommendArticleAdapter extends BaseAdapter {
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
         hodel.content.setText(entity.getContent());
-        GlideImageLoder.getInstance().displayImage(context, entity.getPic(), hodel.pic);
+        if(entity.getContent().contains("<img"))
+            GlideImageLoder.getInstance().displayImage(context, entity.getContent().substring(entity.getContent().indexOf("src=\"")+5,entity.getContent().indexOf('>')-1), hodel.pic);
         return convertView;
     }
     private class ViewHodel{

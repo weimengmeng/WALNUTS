@@ -11,7 +11,7 @@
         android:typeface="sans"
         android:paddingTop="@dimen/margin"
         android:paddingBottom="@dimen/margin"
-        android:textSize="@dimen/normal"
+        android:textSize="@dimen/small"
         android:textColor="@color/login"
         android:gravity="center"/>
 </LinearLayout>

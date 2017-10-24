@@ -30,67 +30,67 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.34"
+            android:layout_weight="0.25"
             android:button="@null"
             android:drawableBottom="@drawable/selector_btn_line"
             android:gravity="center"
             android:onClick="onClick"
-            android:paddingRight="@dimen/padding_top"
             android:text="用户"
             android:drawablePadding="@dimen/padding"
             android:paddingTop="@dimen/padding"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/margin"
-            android:layout_marginTop="@dimen/margin"
-            android:alpha="0.15"
-            android:background="#000000"></View>
 
         <RadioButton
             android:id="@+id/radio_two"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.33"
+            android:layout_weight="0.25"
             android:button="@null"
             android:drawableBottom="@drawable/selector_btn_line"
             android:gravity="center"
             android:onClick="onClick"
-            android:paddingRight="@dimen/padding_top"
             android:drawablePadding="@dimen/padding"
             android:paddingTop="@dimen/padding"
             android:text="问题"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/margin"
-            android:layout_marginTop="@dimen/margin"
-            android:alpha="0.15"
-            android:background="#000000"></View>
 
         <RadioButton
             android:id="@+id/radio_three"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.33"
+            android:layout_weight="0.25"
             android:button="@null"
             android:drawableBottom="@drawable/selector_btn_line"
             android:gravity="center"
             android:onClick="onClick"
-            android:paddingRight="@dimen/padding_top"
             android:drawablePadding="@dimen/padding"
             android:paddingTop="@dimen/padding"
             android:text="话题"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
+
+        <RadioButton
+            android:id="@+id/radio_four"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:button="@null"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:drawablePadding="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:text="专栏"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+
     </RadioGroup>
 
     <com.njjd.utils.VpSwipeRefreshLayout
@@ -119,6 +119,12 @@
                 android:visibility="gone"></com.baoyz.swipemenulistview.SwipeMenuListView>
             <com.baoyz.swipemenulistview.SwipeMenuListView
                 android:id="@+id/list_tag"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="#00000000"
+                android:visibility="gone"></com.baoyz.swipemenulistview.SwipeMenuListView>
+            <com.baoyz.swipemenulistview.SwipeMenuListView
+                android:id="@+id/list_column"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:listSelector="#00000000"

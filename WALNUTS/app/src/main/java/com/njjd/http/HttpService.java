@@ -167,6 +167,10 @@ public interface HttpService {
     Observable<HttpResult<Object>> saveArticle(@QueryMap Map<String, String> params);
     @POST("index/setPointColumn")
     Observable<HttpResult<Object>> pointArticle(@QueryMap Map<String, String> params);
+    @POST("index/followColumn")
+    Observable<HttpResult<Object>> followColumn(@QueryMap Map<String, String> params);
+    @POST("index/getFollowColumn")
+    Observable<HttpResult<Object>> getFollowColumn(@QueryMap Map<String, String> params);
     /**
      *  个人中心模块
      */

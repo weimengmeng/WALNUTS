@@ -7,12 +7,19 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@color/white">
 
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txt_color"
+            android:alpha="0.15"></View>
     </LinearLayout>
 
     <RadioGroup
+        android:id="@+id/radiogroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"

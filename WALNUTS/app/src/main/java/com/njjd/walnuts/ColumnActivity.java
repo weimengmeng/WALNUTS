@@ -18,11 +18,14 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.njjd.adapter.ColumnArticleAdapter;
+import com.njjd.adapter.FindAnswerAdapter;
+import com.njjd.db.DBHelper;
 import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.ColumnEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyListView;
 import com.njjd.utils.ObservableScrollView;
 import com.njjd.utils.SPUtils;
@@ -134,7 +137,13 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
                 GlideImageLoder.getInstance().displayImage(ColumnActivity.this,entity.getPic(),imgBg);
                 GlideImageLoder.getInstance().displayImage(ColumnActivity.this,entity.getUhead(),imgHead);
                 if (entity.getIs_follow().equals("1.0")) {
-
+                   txtFocus.setText("取消关注");
+                    txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
+                    txtFocus.setBackground(getResources().getDrawable(R.drawable.background_button_div_grey));
+                } else {
+                    txtFocus.setText("+ 关注");
+                    txtFocus.setTextColor(getResources().getColor(R.color.white));
+                    txtFocus.setBackground(getResources().getDrawable(R.drawable.background_button_div));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -192,17 +201,54 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.btn_add_help})
+    @OnClick({R.id.back, R.id.btn_add_help,R.id.txt_focus})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
+                break;
+            case R.id.txt_focus:
+                addFocus();
                 break;
             case R.id.btn_add_help:
                 ToastUtils.showShortToast(this, "分享");
                 break;
         }
     }
+    private void addFocus() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("token", SPUtils.get(this, "token", ""));
+        map.put("column_id", Float.valueOf(entity.getId()).intValue());
+        //0 取消关注 1 关注
+        map.put("select", entity.getIs_follow().equals("1.0")? 0 : 1);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
+        HttpManager.getInstance().followColumn(postEntity);
+    }
+
+    HttpOnNextListener focusListener = new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            if(entity.getIs_follow().equals("0.0")){
+                ToastUtils.showShortToast(ColumnActivity.this,"关注成功");
+            }
+            if (entity.getIs_follow().equals("0.0")) {
+                txtFocus.setText("取消关注");
+                txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape);
+                entity.setIs_follow("1.0");
+                entity.setFollow_num((Float.valueOf(entity.getFollow_num()).intValue()+1)+"");
+            } else {
+                txtFocus.setText("+ 关注");
+                txtFocus.setTextColor(getResources().getColor(R.color.white));
+                txtFocus.setBackgroundResource(R.drawable.txt_shape_login);
+                entity.setIs_follow("0.0");
+                entity.setFollow_num((Float.valueOf(entity.getFollow_num()).intValue()-1)+"");
+            }
+            txtFocusNum.setText(Float.valueOf(entity.getFollow_num()).intValue()+" 人关注");
+        }
+    };
+
 
     @Override
     public void onScrollChanged(final ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
