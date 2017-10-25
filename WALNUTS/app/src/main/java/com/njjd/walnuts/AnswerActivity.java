@@ -23,6 +23,7 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.FolderTextView;
 import com.njjd.utils.JsonParser;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
@@ -106,7 +107,6 @@ public class AnswerActivity extends BaseActivity {
 
             @Override
             public void onResult(RecognizerResult recognizerResult, boolean b) {
-                LogUtils.d("huan" + JsonParser.parseIatResult(recognizerResult.getResultString()));
                 printResult(recognizerResult);
             }
 
@@ -120,6 +120,14 @@ public class AnswerActivity extends BaseActivity {
 
             }
         };
+        etAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvVoice.setVisibility(View.GONE);
+                btnVoice.setText("开始");
+                mIat.stopListening();
+            }
+        });
     }
 
     /**
@@ -163,6 +171,7 @@ public class AnswerActivity extends BaseActivity {
                 }
                 break;
             case R.id.txt_voice:
+                KeybordS.closeBoard(this);
                 // 移动数据分析，收集开始听写事件
                 FlowerCollector.onEvent(this, "iat_recognize");
                 mIatResults.clear();

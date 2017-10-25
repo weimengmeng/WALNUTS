@@ -4,17 +4,13 @@ import com.example.retrofit.entity.BaseEntity;
 import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.util.MyGsonConverter;
 import com.example.retrofit.util.UploadFileRequestBody;
-import com.google.gson.Gson;
 import com.njjd.application.AppAplication;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Retrofit;
@@ -23,17 +19,16 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
 /**
  * http交互处理类
  * Created by WMM on 2017/7/24.
  * BASE_URL必须以“/”符号结束
  */
 public class HttpManager {
-//    public static final String BASE_URL = "http://116.62.243.41/api/";
-//    public static final String BASE_URL2 = "http://116.62.243.41/";
-  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
-  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
+    public static final String BASE_URL = "http://116.62.243.41/api/";
+    public static final String BASE_URL2 = "http://116.62.243.41/";
+//  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
+//  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
     /**
      * 设置超时时间，默认6s
      */

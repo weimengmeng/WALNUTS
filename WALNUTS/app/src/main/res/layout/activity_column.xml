@@ -32,7 +32,7 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:id="@+id/img_bg"
-                        android:src="@drawable/demo" />
+                        />
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                         android:layout_marginTop="@dimen/margin_top"
                         android:gravity="center_horizontal"
                         android:padding="@dimen/padding"
-                        android:text="有话说阿柴有话说阿柴有话说阿柴"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/large" />
 
@@ -57,7 +57,6 @@
                         android:layout_height="@dimen/margin_top"
                         android:layout_below="@id/txt_name"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/head"
                         app:civ_border_color="#66ebebeb"
                         app:civ_border_width="3dp" />
 
@@ -71,7 +70,7 @@
                         android:gravity="center_horizontal"
                         android:lineSpacingMultiplier="1.1"
                         android:padding="@dimen/margin"
-                        android:text="本专栏教你如何成为一名合格的销售人员"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/small" />
 
@@ -95,7 +94,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="100 人关注"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="@dimen/mini" />
 
@@ -155,7 +154,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:text="阿柴有话说阿柴有话说阿柴有话说阿柴有"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/big" />
 
@@ -170,6 +169,7 @@
                 android:gravity="center_horizontal"
                 android:paddingRight="@dimen/padding_left"
                 android:text=""
+                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal" />
         </LinearLayout>

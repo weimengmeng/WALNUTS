@@ -26,14 +26,14 @@
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/head"
                 android:layout_height="@dimen/head"
-                android:src="@drawable/head" />
+                 />
 
             <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/margin"
-                android:text="核桃小编"
+                android:text=""
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
         </LinearLayout>
@@ -43,14 +43,14 @@
             android:layout_height="150dp"
             android:layout_marginTop="@dimen/margin"
             android:scaleType="centerCrop"
-            android:src="@drawable/demo" />
+             />
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin"
             android:paddingTop="@dimen/padding"
-            android:text="核桃小编"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/big"
             android:textStyle="bold" />
@@ -62,7 +62,7 @@
             android:maxLines="2"
             android:paddingLeft="@dimen/margin"
             android:paddingTop="@dimen/margin_small"
-            android:text="作为一名销售人员，已经从事6年了，但还是不能喝酒，其他同事都说我不能干这一行"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
         <TextView
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/margin_small"
             android:paddingLeft="@dimen/margin"
-            android:text="15评论  ·  24赞同"
+            android:text=""
             android:textColor="@color/txt_color"
             android:textSize="@dimen/small"
             android:paddingBottom="@dimen/margin"/>

@@ -260,7 +260,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             public void onGroupExpand(int groupPosition) {
                 for (int i = 0, count = exListVIew
                         .getExpandableListAdapter().getGroupCount(); i < count; i++) {
-                    if (groupPosition != i) {// 关闭其他分组
+                    if (groupPosition != i) {
                         exListVIew.collapseGroup(i);
                     }
                 }
