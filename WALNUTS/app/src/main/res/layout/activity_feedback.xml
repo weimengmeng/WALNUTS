@@ -2,12 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
-    android:background="@color/grey"
-    >
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
+        android:background="@color/grey"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
         <LinearLayout
@@ -69,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin"
+            android:background="@color/grey"
             android:textColor="@color/txt_color"
             android:text="联系方式(选填，QQ/微信/电话)"
             android:textSize="@dimen/small" />

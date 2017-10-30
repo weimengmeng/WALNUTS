@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -36,7 +37,7 @@
                 android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
                 android:paddingTop="@dimen/margin"
-                android:text="工业项目一定要喝酒吗？"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/big"
                 android:textStyle="bold" />
@@ -61,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="@dimen/margin"
-                    android:text="阿柴有话说"
+                    android:text=""
                     android:textColor="@color/login"
                     android:textSize="@dimen/normal" />
             </LinearLayout>
@@ -78,8 +79,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_head"
                     android:layout_width="@dimen/head"
-                    android:layout_height="@dimen/head"
-                    android:src="@drawable/head" />
+                    android:layout_height="@dimen/head" />
 
                 <TextView
                     android:id="@+id/txt_name"
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/padding"
-                    android:text="刘建设的建设"
+                    android:text=""
                     android:textColor="@color/login"
                     android:textSize="@dimen/normal" />
 
@@ -103,7 +103,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="@dimen/padding"
-                    android:text="2017-09-15"
+                    android:text=""
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small" />
             </LinearLayout>
@@ -117,7 +117,7 @@
                 android:background="#e5e5e5"
                 android:lineSpacingMultiplier="1.2"
                 android:padding="@dimen/padding"
-                android:text="hello,我是董大哥，唔咻咻咻！hello,我是董大哥，唔咻咻咻！"
+                android:text=""
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal"
                 android:typeface="sans" />
@@ -163,7 +163,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center_vertical"
-                    android:text="评论30"
+                    android:text="评论"
                     android:onClick="onClick"
                     android:textColor="@color/login"
                     android:textSize="@dimen/small"
@@ -198,7 +198,7 @@
                         android:gravity="center"
                         android:paddingLeft="@dimen/padding"
                         android:paddingRight="@dimen/padding"
-                        android:text="25 "
+                        android:text=" "
                         android:onClick="onClick"
                         android:textColor="@color/txt_color"
                         android:textSize="@dimen/small"

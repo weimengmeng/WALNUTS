@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
-    android:background="@color/grey">
+    android:background="@color/white">
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:lineSpacingMultiplier="1.2"
             android:padding="@dimen/margin"
             android:textStyle="bold"
-            android:text="工业项目一定要能喝酒吗?"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="@dimen/big" />
         <View
@@ -42,11 +42,13 @@
     <ScrollView
         android:layout_below="@id/ll"
         android:id="@+id/lv_root"
+        android:background="@color/grey"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/grey"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"

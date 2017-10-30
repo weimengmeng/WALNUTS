@@ -241,7 +241,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             @Override
             public void onRefresh() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络不给力");
+                    ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -264,7 +264,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             @Override
             public void onLoadMore() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络不给力");
+                    ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

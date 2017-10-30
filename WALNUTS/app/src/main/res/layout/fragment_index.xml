@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:focusable="true"
+    android:id="@+id/lv_root"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
     <LinearLayout

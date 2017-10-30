@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/grey"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Width_m_Height_m">
     <LinearLayout
@@ -30,7 +30,6 @@
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_width="@dimen/margin_top"
                 android:layout_height="@dimen/margin_top"
-                android:src="@drawable/head"
                 app:civ_border_width="3dp"
                 app:civ_border_color="#66ebebeb" />
             <TextView
@@ -90,6 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="2dp"
+        android:background="@color/grey"
         android:layout_weight="1">
 
         <LinearLayout

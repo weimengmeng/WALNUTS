@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.DisplayMetrics;
@@ -20,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -43,9 +47,12 @@ import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.BaseActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SearchActivity;
+import com.trycatch.mysnackbar.Prompt;
+import com.trycatch.mysnackbar.TSnackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +74,8 @@ import butterknife.OnClick;
 public class IndexFragment extends BaseFragment implements View.OnClickListener, HttpOnNextListener {
     @BindView(R.id.img_order)
     LinearLayout imgOrder;
+    @BindView(R.id.lv_root)
+    View root;
     @BindView(R.id.button_group)
     RadioGroup buttonGroup;
     @BindView(R.id.scrollView)
@@ -260,7 +269,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onRefresh() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络不给力");
+                   BaseActivity.showToast2(root,"网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -283,7 +292,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onLoadMore() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络不给力");
+                    BaseActivity.showToast2(root,"网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -293,7 +302,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     return;
                 }
                 if(!loadmoe){
-                    ToastUtils.showShortToast(context,"已加载全部数据啦");
+                    BaseActivity.showToast2(root,"已加载全部数据");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

@@ -64,9 +64,9 @@ public class AppAplication extends Application {
         context = this.getApplicationContext();
         replaceSystemDefaultFont(this);
         registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
-//        CrashHandler handler = CrashHandler.getInstance();
-//        handler.init(getApplicationContext());
-//        Thread.setDefaultUncaughtExceptionHandler(handler);
+        CrashHandler handler = CrashHandler.getInstance();
+        handler.init(getApplicationContext());
+        Thread.setDefaultUncaughtExceptionHandler(handler);
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         /**
          * 友盟登录、分享

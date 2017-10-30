@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,7 +26,7 @@
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             android:lineSpacingMultiplier="1.2"
-            android:text="工业项目销售工业项目销售工项目销售工业工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="@dimen/normal" />
 

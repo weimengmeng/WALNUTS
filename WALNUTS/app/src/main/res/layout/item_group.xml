@@ -33,8 +33,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_head"
                     android:layout_width="@dimen/height"
-                    android:layout_height="@dimen/height"
-                    android:src="@drawable/head" />
+                    android:layout_height="@dimen/height" />
             </LinearLayout>
 
             <LinearLayout
@@ -51,7 +50,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:gravity="center_vertical"
-                    android:text="刘建设的建设"
+                    android:text=""
                     android:typeface="sans"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/normal" />
@@ -65,7 +64,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="职业的小逗比"
+                    android:text=""
                     android:textColor="@color/txt_color"
                     android:textSize="@dimen/small" />
             </LinearLayout>
@@ -104,7 +103,7 @@
             android:lineSpacingExtra="@dimen/line_height"
             android:paddingLeft="@dimen/padding"
             android:paddingRight="@dimen/padding"
-            android:text="工业项目销售工业项目销售工项目销售工业工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售工业项目销售"
+            android:text=""
             android:textColor="@color/gray"
             android:textScaleX="1"
             android:textSize="@dimen/normal" />

@@ -27,7 +27,6 @@ import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.SPUtils;
@@ -51,7 +50,7 @@ import butterknife.ButterKnife;
  * Created by mrwim on 17/9/14.
  */
 
-public class FindFragment2 extends BaseFragment implements HttpOnNextListener {
+public class SelectFragment extends BaseFragment implements HttpOnNextListener {
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.list_find)
@@ -72,7 +71,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
-        View view = inflater.inflate(R.layout.fragment_find2, container, false);
+        View view = inflater.inflate(R.layout.fragment_select, container, false);
         ButterKnife.bind(this, view);
         ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), top);
         return view;
@@ -111,7 +110,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener {
             @Override
             public void onRefresh() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络不给力");
+                    ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -133,7 +132,7 @@ public class FindFragment2 extends BaseFragment implements HttpOnNextListener {
             @Override
             public void onLoadMore() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络不给力");
+                    ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态s");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
