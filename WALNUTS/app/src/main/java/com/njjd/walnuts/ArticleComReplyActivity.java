@@ -59,6 +59,8 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
     TextView txtAnswerName;
     TextView txtAnswerMessage;
     TextView txtAnswerContent;
+    @BindView(R.id.btn_add_help2)
+    TextView btnAddHelp2;
     private String content = "";
     @BindView(R.id.mask)
     RelativeLayout mask;
@@ -74,7 +76,8 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
     private ArticleConversionAdapter adapter;
     private List<CommentEntity> list = new ArrayList<>();
     private View headerView;
-    private int type=0;
+    private int type = 0;
+
     @Override
     public int bindLayout() {
         return R.layout.activity_comment_reply;
@@ -89,42 +92,69 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
         getComments(Float.valueOf(entity.getCommentId()).intValue() + "");
         entity.setSec_uid("sec_uid");
         adapter = new ArticleConversionAdapter(this, list);
-        headerView= LayoutInflater.from(this).inflate(R.layout.layout_comment,null);
-        imgAnswerHead=(CircleImageView)headerView.findViewById(R.id.img_head);
-        GlideImageLoder.getInstance().displayImage(this, entity.getHead(),imgAnswerHead);
-        imgAnswerHead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ArticleComReplyActivity.this, PeopleInfoActivity.class);
-                intent.putExtra("uid", entity.getCommentUId());
-                startActivity(intent);
-            }
-        });
-        txtAnswerName=(TextView) headerView.findViewById(R.id.txt_name);
-        txtAnswerMessage=(TextView) headerView.findViewById(R.id.txt_message);
-        txtAnswerContent=(TextView) headerView.findViewById(R.id.txt_content);
-        ((TextView)headerView.findViewById(R.id.txt_reply)).setText("立即评论");
-        headerView.findViewById(R.id.txt_reply).setOnClickListener(this);
-        txtAnswerName.setText(entity.getName());
-        txtAnswerMessage.setText(entity.getMessage());
-        txtAnswerContent.setText(entity.getContent());
-        listReply.addHeaderView(headerView);
+        headerView = LayoutInflater.from(this).inflate(R.layout.layout_comment, null);
         listReply.setAdapter(adapter);
+        if (getIntent().getStringExtra("type").equals("0")) {
+            headerView.setVisibility(View.VISIBLE);
+            listReply.addHeaderView(headerView);
+            imgAnswerHead = (CircleImageView) headerView.findViewById(R.id.img_head);
+            GlideImageLoder.getInstance().displayImage(this, entity.getHead(), imgAnswerHead);
+            imgAnswerHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ArticleComReplyActivity.this, PeopleInfoActivity.class);
+                    intent.putExtra("uid", entity.getCommentUId());
+                    startActivity(intent);
+                }
+            });
+            txtAnswerName = (TextView) headerView.findViewById(R.id.txt_name);
+            txtAnswerMessage = (TextView) headerView.findViewById(R.id.txt_message);
+            txtAnswerContent = (TextView) headerView.findViewById(R.id.txt_content);
+            ((TextView) headerView.findViewById(R.id.txt_reply)).setText("立即评论");
+            headerView.findViewById(R.id.txt_reply).setOnClickListener(this);
+            txtAnswerName.setText(entity.getName());
+            txtAnswerMessage.setText(entity.getMessage());
+            txtAnswerContent.setText(entity.getContent());
+        } else {
+            headerView.setVisibility(View.GONE);
+            btnAddHelp2.setText("查看原文");
+            btnAddHelp2.setVisibility(View.VISIBLE);
+            btnAddHelp2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(ArticleComReplyActivity.this, ColumnDetailActivity.class);
+                    intent.putExtra("article_id", getIntent().getStringExtra("article_id"));
+                    startActivity(intent);
+                }
+            });
+        }
         listReply.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
-                    type=0;
-                    headerView.findViewById(R.id.txt_reply).performClick();
-                }else{
-                    type=1;
-                    tempComment = list.get(position-1);
+                if (headerView.getVisibility() == View.VISIBLE) {
+                    if (position == 0) {
+                        type = 0;
+                        headerView.findViewById(R.id.txt_reply).performClick();
+                    } else {
+                        type = 1;
+                        tempComment = list.get(position - 1);
+                        lvReply.setVisibility(View.VISIBLE);
+                        mask.setVisibility(View.VISIBLE);
+                        etContent.requestFocus();
+                        btnCancle.setText("取消回复");
+                        btnReply.setText("立即回复");
+                        etContent.setHint("回复" + list.get(position - 1).getName());
+                        KeybordS.openKeybord(etContent, ArticleComReplyActivity.this);
+                    }
+                } else {
+                    type = 1;
+                    tempComment = list.get(position);
                     lvReply.setVisibility(View.VISIBLE);
                     mask.setVisibility(View.VISIBLE);
                     etContent.requestFocus();
                     btnCancle.setText("取消回复");
                     btnReply.setText("立即回复");
-                    etContent.setHint("回复" + list.get(position-1).getName());
+                    etContent.setHint("回复" + list.get(position).getName());
                     KeybordS.openKeybord(etContent, ArticleComReplyActivity.this);
                 }
             }
@@ -197,9 +227,9 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
             temp.setName(SPUtils.get(ArticleComReplyActivity.this, "name", "").toString());
             temp.setMessage(SPUtils.get(ArticleComReplyActivity.this, "message", "").toString());
             temp.setReplyNum("0");
-            if(type==0){
+            if (type == 0) {
                 temp.setSec_uid("sec_uid");
-            }else{
+            } else {
                 temp.setSec_uid(tempComment.getCommentUId());
             }
             temp.setSec_content(tempComment.getContent());
@@ -216,7 +246,7 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_reply:
-                type=0;
+                type = 0;
                 tempComment = entity;
                 lvReply.setVisibility(View.VISIBLE);
                 mask.setVisibility(View.VISIBLE);
@@ -252,7 +282,7 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
 
     @OnClick({R.id.back})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;

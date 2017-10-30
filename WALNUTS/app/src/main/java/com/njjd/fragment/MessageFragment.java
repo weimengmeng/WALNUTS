@@ -30,6 +30,7 @@ import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.adapter.OnItemClickListener;
 import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
+import com.njjd.domain.CommentEntity;
 import com.njjd.domain.InformEntity;
 import com.njjd.domain.MyConversation;
 import com.njjd.domain.QuestionEntity;
@@ -42,7 +43,9 @@ import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
 import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.ArticleComReplyActivity;
 import com.njjd.walnuts.ChatActivity;
+import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.MainActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
@@ -334,17 +337,33 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         }
                         break;
                     case "4.0":
-                        intent = new Intent(context, IndexDetailActivity.class);
-                        bundle = new Bundle();
                         try {
-                            entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
-                            intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
-                            bundle.putSerializable("question", entity);
-                            intent.putExtra("current_commentId", entities.get(position).getComment_id());
-                            intent.putExtra("question", bundle);
-                            intent.putExtra("type", "3");
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            if(entities.get(position).getContent().isNull("type")||entities.get(position).getContent().getString("type").equals("1.0")) {
+                                intent = new Intent(context, IndexDetailActivity.class);
+                                bundle = new Bundle();
+                                try {
+                                    entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
+                                    intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
+                                    bundle.putSerializable("question", entity);
+                                    intent.putExtra("current_commentId", entities.get(position).getComment_id());
+                                    intent.putExtra("question", bundle);
+                                    intent.putExtra("type", "3");
+                                    startActivity(intent);
+                                    getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                intent=new Intent(context,ArticleComReplyActivity.class);
+                                intent.putExtra("type","1");
+                                CommentEntity commentEntity=new CommentEntity();
+                                commentEntity.setCommentId(entities.get(position).getContent().getString("answer_id"));
+                                bundle=new Bundle();
+                                bundle.putSerializable("comment",commentEntity);
+                                intent.putExtra("comment",bundle);
+                                intent.putExtra("article_id",String.valueOf(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()));
+                                startActivity(intent);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

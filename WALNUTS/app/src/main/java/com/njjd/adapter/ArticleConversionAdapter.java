@@ -53,7 +53,7 @@ public class ArticleConversionAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int childPosition, View view, ViewGroup parent) {
+    public View getView(final int childPosition, View view, ViewGroup parent) {
         ChildHolder holder = null;
         if (view == null) {
             holder = new ChildHolder();
@@ -77,7 +77,7 @@ public class ArticleConversionAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, PeopleInfoActivity.class);
-                    intent.putExtra("uid", commentEntity.getCommentUId());
+                    intent.putExtra("uid", list.get(childPosition).getCommentUId());
                     context.startActivity(intent);
                 }
             });

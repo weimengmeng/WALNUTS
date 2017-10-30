@@ -3,7 +3,6 @@ package com.njjd.walnuts;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
@@ -18,17 +17,13 @@ import com.njjd.application.ConstantsVal;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
-import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -122,9 +117,6 @@ public class LoginActivity extends BaseActivity {
                 }
                 MobclickAgent.onEvent(this,ConstantsVal.LOGIN);
                 doLogin();
-//                intent = new Intent(this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
                 break;
             case R.id.btn_sina:
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, authListener);

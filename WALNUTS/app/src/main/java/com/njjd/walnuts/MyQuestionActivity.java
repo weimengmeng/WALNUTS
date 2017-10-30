@@ -67,7 +67,7 @@ public class MyQuestionActivity extends BaseActivity {
         questionAdapter = new MyQuestionAdapter(list, this);
         listQues.setEmptyView(findViewById(R.id.empty));
         imgNodata.setImageResource(R.drawable.btn_pub_article);
-        ((TextView) findViewById(R.id.txt_content)).setText("还没有问过问题");
+        ((TextView) findViewById(R.id.txt_content)).setText("点击提问");
         findViewById(R.id.empty).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

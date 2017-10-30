@@ -152,6 +152,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(ColumnDetailActivity.this,ArticleComReplyActivity.class);
                 Bundle bundle=new Bundle();
+                intent.putExtra("type","0");
                 bundle.putSerializable("comment",list.get(position));
                 intent.putExtra("comment",bundle);
                 intent.putExtra("article_id",getIntent().getStringExtra("article_id"));
