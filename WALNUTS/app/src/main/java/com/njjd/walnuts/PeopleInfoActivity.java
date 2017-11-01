@@ -79,7 +79,6 @@ public class PeopleInfoActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        initAfterSetContentView(this,top);
         tempUser = getIntent().getStringExtra("uid");
         txtAddFocus.setText("关注");
         txtAddFocus.setVisibility(View.VISIBLE);
@@ -104,23 +103,6 @@ public class PeopleInfoActivity extends BaseActivity {
         getUserInfo();
         txtTitle.setText("个人详情");
         txtAddFocus.setTextColor(getResources().getColor(R.color.login));
-    }
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void initAfterSetContentView(Activity activity,
-                                               View titleViewGroup) {
-        if (activity == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (titleViewGroup == null)
-                return;
-            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
-            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(activity);
-            titleViewGroup.setPadding(0, statusBarHeight, 0,0);
-        }
     }
     private void getUserInfo() {
         Map<String, Object> map = new HashMap<>();
@@ -176,8 +158,9 @@ public class PeopleInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.btn_add_help2})
+    @OnClick({R.id.back, R.id.btn_add_help2,R.id.lv_answer,R.id.lv_question})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.back:
                 finish();
@@ -186,13 +169,23 @@ public class PeopleInfoActivity extends BaseActivity {
                 if(txtAddFocus.getText().toString().equals("关注")){
                     followUser();
                 }else {
-                    Intent intent=new Intent(this, ChatActivity.class);
+                   intent=new Intent(this, ChatActivity.class);
                     intent.putExtra("openId",tempUser);
                     intent.putExtra("name",txtName.getText().toString().trim());
                     intent.putExtra("avatar",tempHead);
                     startActivity(intent);
                     finish();
                 }
+                break;
+            case R.id.lv_answer:
+                intent = new Intent(this, MyAnswerActivity.class);
+                intent.putExtra("uid",tempUser);
+                startActivity(intent);
+                break;
+            case R.id.lv_question:
+                intent = new Intent(this, MyQuestionActivity.class);
+                intent.putExtra("uid",tempUser);
+                startActivity(intent);
                 break;
         }
     }

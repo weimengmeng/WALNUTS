@@ -8,8 +8,14 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:id="@+id/top">
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txt_color"
+            android:alpha="0.15"></View>
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

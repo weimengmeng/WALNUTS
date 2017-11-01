@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,12 @@ public class MyQuestionAdapter extends BaseAdapter{
             hodel=(ViewHodel) convertView.getTag();
         }
         focusEntity=list.get(position);
-        hodel.title.setText(focusEntity.getTitle());
+        if(focusEntity.getIsVisiable().equals("1.0")){
+            hodel.title.setText("问题包含违规内容,审核未通过");
+            hodel.title.setTextColor(Color.RED);
+        }else{
+            hodel.title.setText(focusEntity.getTitle());
+        }
         ParsePosition pos = new ParsePosition(0);
         hodel.date.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(focusEntity.getDateTime(), pos)));
         if ("".equals(focusEntity.getPhoto())) {

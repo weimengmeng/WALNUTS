@@ -101,6 +101,7 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
                 intent.putExtra("questionId", entity.getArticle_id());
                 intent.putExtra("questionTitle", entity.getTitle());
                 intent.putExtra("answer_id", entity.getAnswer_id());
+                intent.putExtra("contents",entity.getContents());
                 startActivity(intent);
             }
         });

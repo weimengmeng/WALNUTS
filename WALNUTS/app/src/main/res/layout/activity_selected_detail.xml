@@ -30,8 +30,17 @@
             android:padding="@dimen/margin"
             android:textStyle="bold"
             android:text=""
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="@dimen/big" />
+        <com.njjd.utils.FolderTextView
+            android:id="@+id/txt_folder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.2"
+            android:padding="@dimen/margin"
+            android:text=""
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

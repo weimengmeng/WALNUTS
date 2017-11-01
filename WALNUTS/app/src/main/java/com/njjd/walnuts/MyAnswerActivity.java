@@ -59,12 +59,21 @@ public class MyAnswerActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        back.setText("我的");
-        txtTitle.setText("我的回答");
+        back.setText("返回");
+        if(getIntent().getStringExtra("uid").equals(SPUtils.get(this,"userId","").toString())) {
+            txtTitle.setText("我的回答");
+        }else{
+            txtTitle.setText("TA的回答");
+        }
         saveAdapter = new MyAnswerAdapter(list, this);
         findViewById(R.id.radiogroup).setVisibility(View.GONE);
         listSave.setEmptyView(findViewById(R.id.empty));
-        ((TextView)findViewById(R.id.txt_content)).setText("快去回答问题吧");
+        if(SPUtils.get(this,"userId","").equals(getIntent().getStringExtra("uid"))) {
+            ((TextView)findViewById(R.id.txt_content)).setText("快去回答问题吧");
+        }else{
+            ((TextView) findViewById(R.id.txt_content)).setText("TA还没有回答");
+        }
+
         listSave.setAdapter(saveAdapter);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -106,6 +115,10 @@ public class MyAnswerActivity extends BaseActivity {
                     intent.putExtra("article_id",Float.valueOf(list.get(position).getArticle_id()).intValue()+"");
                     startActivity(intent);
                 }else {
+                    if(list.get(position).getStat().equals("0.0")){
+                        showToast("该评论已被删除");
+                        return;
+                    }
                     MyAnswerEntity answerEntity = list.get(position);
                     SaveEntity saveEntity = new SaveEntity();
                     saveEntity.setArticle_id(answerEntity.getArticle_id());
@@ -144,9 +157,10 @@ public class MyAnswerActivity extends BaseActivity {
 
     private void getMySave() {
         Map<String, Object> map = new HashMap<>();
-        map.put("uid", SPUtils.get(this, "userId", "").toString());
-        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("uid", getIntent().getStringExtra("uid"));
+//        map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", MyAnswerAdapter.CURRENT_PAGE);
+//        map.put("ouid", getIntent().getStringExtra("uid"));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidComment(postEntity);
     }
@@ -170,8 +184,13 @@ public class MyAnswerActivity extends BaseActivity {
                 try {
                     object1=new JSONObject(gson.toJson(array.get(i)));
                     entity = new MyAnswerEntity(object1);
-                    if(!entity.getArticle_id().equals(""))
-                    list.add(entity);
+                    if(!entity.getArticle_id().equals("")){
+                        if(entity.getStat().equals("1.0")&&!SPUtils.get(MyAnswerActivity.this,"userId","").equals(getIntent().getStringExtra("uid"))){
+
+                        }else{
+                            list.add(entity);
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

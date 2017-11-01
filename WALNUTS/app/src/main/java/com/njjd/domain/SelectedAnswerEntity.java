@@ -15,6 +15,7 @@ public class SelectedAnswerEntity implements Serializable {
     private String answer_id;//回答ID
     private String head;//回答人头像
     private String name;//回答人name
+    private String contents;//回答人name
     private String message;//回答人indrotuction
     private String title;//原问题标题
     private String isFocus="0";//是否关注了用户
@@ -26,6 +27,7 @@ public class SelectedAnswerEntity implements Serializable {
             uid = object.isNull("uid") ? "" : object.getString("uid");
             head = object.isNull("headimg") ? "" : object.getString("headimg");
             article_id = object.isNull("article_id") ? "" : object.getString("article_id");
+            contents = object.isNull("contents") ? "" : object.getString("contents");
             message = object.isNull("introduction") ? "" : object.getString("introduction");
             answer_id = object.isNull("comment_id") ? "" : object.getString("comment_id");
             isFocus = object.isNull("is_focus") ? "0" : object.getString("is_focus");
@@ -37,19 +39,14 @@ public class SelectedAnswerEntity implements Serializable {
             e.printStackTrace();
         }
     }
-    public SelectedAnswerEntity(String uid, String article_id, String answer_id, String head, String name, String message, String title, String isFocus, String photo, String replyContent) {
-        this.uid = uid;
-        this.article_id = article_id;
-        this.answer_id = answer_id;
-        this.head = head;
-        this.name = name;
-        this.message = message;
-        this.title = title;
-        this.isFocus = isFocus;
-        this.photo = photo;
-        this.replyContent = replyContent;
+
+    public String getContents() {
+        return contents;
     }
 
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
     public SelectedAnswerEntity(){
 
     }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.njjd.domain.InformEntity;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
@@ -64,8 +65,17 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         switch (tempEntity.getType()){
 //            0 系统通知 1 关注用户 2 关注问题 3回答问题 4 评论回答 5 收藏回答 6 点赞",
             case "0.0":
-                viewHolder.title.setText("系统通知");
-                viewHolder.content.setText(tempEntity.getContents());
+                viewHolder.image_head.setImageResource(R.drawable.logo);
+                try {
+                    viewHolder.title.setText(tempEntity.getContent().getString("msg_tip"));
+//                    if(tempEntity.getContent().getString("type").equals("0.0")){
+//                    }else if(tempEntity.getContent().getString("type").equals("1.0")){
+//                    }else if(tempEntity.getContent().getString("type").equals("2.0")){
+//                    }
+                        viewHolder.content.setText(tempEntity.getContent().isNull("content")?tempEntity.getContent().getString("contents"):tempEntity.getContent().getString("content"));
+                } catch (JSONException e) {
+                    viewHolder.content.setText("未知通知内容");
+                }
                 break;
             case "1.0":
                 viewHolder.title.setText(tempEntity.getUname()+" 关注了你");

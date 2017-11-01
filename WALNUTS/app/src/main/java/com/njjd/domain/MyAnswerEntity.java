@@ -28,6 +28,7 @@ public class MyAnswerEntity implements Serializable {
     private String follow_article_stat;
     private String point_comment_stat;
     private String type;
+    private String stat="";
     public MyAnswerEntity(JSONObject object){
         try {
             this.article_id=object.isNull("article_id")?"":object.getString("article_id");
@@ -45,9 +46,18 @@ public class MyAnswerEntity implements Serializable {
             this.comment_id=object.getString("comment_id");
             this.add_time=object.getString("add_time");
             this.type=object.getString("type");
+            this.stat=object.isNull("stat")?"":object.getString("stat");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getStat() {
+        return stat;
+    }
+
+    public void setStat(String stat) {
+        this.stat = stat;
     }
 
     public String getType() {

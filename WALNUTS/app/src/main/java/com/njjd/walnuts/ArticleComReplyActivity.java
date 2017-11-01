@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.njjd.adapter.ArticleConversionAdapter;
 import com.njjd.domain.CommentEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
@@ -85,6 +86,7 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void initView(View view) {
+        AndroidBug5497Workaround.assistActivity(this);
         back.setText("会话列表");
         txtTitle.setVisibility(View.INVISIBLE);
         Bundle bundle = getIntent().getBundleExtra("comment");

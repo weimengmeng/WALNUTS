@@ -79,7 +79,7 @@ public class FolderTextView extends TextView {
         super(context, attrs, defStyleAttr);
 
         TypedArray a = context.obtainStyledAttributes(R.styleable.FolderTextView);
-        foldLine = a.getInt(R.styleable.FolderTextView_foldLine, 5);
+        foldLine = a.getInt(R.styleable.FolderTextView_foldLine, 2);
 
         a.recycle();
     }

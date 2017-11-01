@@ -211,10 +211,12 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.lv_question:
                 intent = new Intent(context, MyQuestionActivity.class);
+                intent.putExtra("uid",SPUtils.get(context,"userId","").toString());
                 startActivity(intent);
                 break;
             case R.id.lv_answer:
                 intent = new Intent(context, MyAnswerActivity.class);
+                intent.putExtra("uid",SPUtils.get(context,"userId","").toString());
                 startActivity(intent);
                 break;
             case R.id.lv_focus:

@@ -62,19 +62,27 @@ public class MyQuestionActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
-        back.setText("我的");
-        txtTitle.setText("我的问题");
+        back.setText("返回");
+        if(getIntent().getStringExtra("uid").equals(SPUtils.get(this,"userId","").toString())) {
+            txtTitle.setText("我的问题");
+        }else{
+            txtTitle.setText("TA的问题");
+        }
         questionAdapter = new MyQuestionAdapter(list, this);
         listQues.setEmptyView(findViewById(R.id.empty));
         imgNodata.setImageResource(R.drawable.btn_pub_article);
-        ((TextView) findViewById(R.id.txt_content)).setText("点击提问");
-        findViewById(R.id.empty).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MyQuestionActivity.this,AskActivity.class));
-                finish();
-            }
-        });
+        if(SPUtils.get(this,"userId","").equals(getIntent().getStringExtra("uid"))) {
+            ((TextView) findViewById(R.id.txt_content)).setText("点击提问");
+            findViewById(R.id.empty).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MyQuestionActivity.this,AskActivity.class));
+                    finish();
+                }
+            });
+        }else{
+            ((TextView) findViewById(R.id.txt_content)).setText("TA还没有提问");
+        }
         listQues.setAdapter(questionAdapter);
         MyQuestionAdapter.CURRENT_PAGE = 1;
         getMyQuestion();
@@ -113,6 +121,10 @@ public class MyQuestionActivity extends BaseActivity {
         listQues.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(list.get(position).getIsVisiable().equals("1.0")){
+                    showToast("该问题已被删除");
+                    return;
+                }
                 Intent intent = new Intent(MyQuestionActivity.this, IndexDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", list.get(position));
@@ -155,9 +167,10 @@ public class MyQuestionActivity extends BaseActivity {
 
     private void getMyQuestion() {
         Map<String, Object> map = new HashMap<>();
-        map.put("uid", SPUtils.get(this, "userId", "").toString());
-        map.put("token", SPUtils.get(this, "token", "").toString());
+        map.put("uid", getIntent().getStringExtra("uid"));
+//        map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", MyQuestionAdapter.CURRENT_PAGE);
+//        map.put("ouid", getIntent().getStringExtra("uid"));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidArticle(postEntity);
     }
@@ -180,7 +193,12 @@ public class MyQuestionActivity extends BaseActivity {
                 }
                 for (int i = 0; i < array.length(); i++) {
                     entity = new QuestionEntity(array.getJSONObject(i), "");
-                    list.add(entity);
+                    if(array.getJSONObject(i).getString("invisible").equals("1.0")&&!SPUtils.get(MyQuestionActivity.this,"userId","").equals(getIntent().getStringExtra("uid"))){
+
+                    }else{
+                        entity.setIsVisiable(array.getJSONObject(i).getString("invisible"));
+                        list.add(entity);
+                    }
                 }
                 questionAdapter.notifyDataSetChanged();
             } catch (JSONException e) {

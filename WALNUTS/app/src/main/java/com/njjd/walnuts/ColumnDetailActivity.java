@@ -23,19 +23,17 @@ import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.njjd.adapter.AnswerCommentAdapter;
 import com.njjd.adapter.ArticleCommentAdapter;
 import com.njjd.adapter.RecommendArticleAdapter;
 import com.njjd.domain.ColumnArticleDetailEntity;
 import com.njjd.domain.ColumnArticleEntity;
-import com.njjd.domain.ColumnEntity;
 import com.njjd.domain.CommentEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.ListViewForScrollView;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
@@ -125,6 +123,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void initView(View view) {
+        AndroidBug5497Workaround.assistActivity(this);
         footView=LayoutInflater.from(this).inflate(R.layout.footer,null);
         txtTitle.setText("文章详情");
         btnAddHelp.setVisibility(View.VISIBLE);

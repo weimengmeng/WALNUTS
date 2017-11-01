@@ -48,6 +48,8 @@ import com.njjd.walnuts.ChatActivity;
 import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.MainActivity;
+import com.njjd.walnuts.MyAnswerActivity;
+import com.njjd.walnuts.MyQuestionActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
@@ -299,6 +301,20 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 switch (entities.get(position).getType()) {
 //            0 系统通知 1 关注用户 2 关注问题 3回答问题 4 评论回答 5 收藏回答 6 点赞",
                     case "0.0":
+                        try {
+                            if(entities.get(position).getContent().getString("type").equals("0.0")){
+                            }else if(entities.get(position).getContent().getString("type").equals("1.0")){
+                                intent = new Intent(context, MyQuestionActivity.class);
+                                intent.putExtra("uid",entities.get(position).getContent().getString("uid"));
+                                startActivity(intent);
+                            }else if(entities.get(position).getContent().getString("type").equals("2.0")){
+                                intent = new Intent(context, MyAnswerActivity.class);
+                                intent.putExtra("uid",entities.get(position).getContent().getString("uid"));
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "1.0":
                     case "5.0":

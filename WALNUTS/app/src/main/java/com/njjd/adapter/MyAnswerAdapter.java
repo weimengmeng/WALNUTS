@@ -1,6 +1,7 @@
 package com.njjd.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,12 @@ public class MyAnswerAdapter extends BaseAdapter{
         }
 
         myAnswerEntity=list.get(position);
-        hodel.title.setText(myAnswerEntity.getTitle());
+        if(myAnswerEntity.getStat().equals("0.0")){
+            hodel.title.setText("评论包含违规内容,已被删除");
+            hodel.title.setTextColor(Color.RED);
+        }else{
+            hodel.title.setText(myAnswerEntity.getTitle());
+        }
         hodel.reply_content.setText(myAnswerEntity.getComment_content());
         hodel.time.setText(myAnswerEntity.getAdd_time());
         if ("".equals(myAnswerEntity.getArticle_imgs())) {

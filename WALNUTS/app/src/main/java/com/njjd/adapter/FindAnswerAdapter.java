@@ -42,8 +42,6 @@ import java.util.Map;
 public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     private Context context;
     private List<SelectedAnswerEntity> list;
-    private SelectedAnswerEntity entity;
-    public static final int ITEM_TYPE_HEADER = 0;
     public static final int ONE_ITEM = 1;//精选回答
     public static final int TWO_ITEM = 2;//专栏类型
     private SelectedAnswerEntity selectedAnswerEntity;
@@ -113,119 +111,114 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof HeaderViewHolder) {
-        } else {
-            entity = list.get(position);
-            if (holder instanceof ContentViewHolder) {
-                holder.itemView.setTag(position);
-                selectedAnswerEntity = list.get(position);
-                if (position == mHeaderCount) {
-                    ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.VISIBLE);
-                } else {
-                    ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.GONE);
-                }
-                ((ContentViewHolder) holder).name.setText(selectedAnswerEntity.getName());
-                ((ContentViewHolder) holder).message.setText(selectedAnswerEntity.getMessage());
-                ((ContentViewHolder) holder).title.setText(selectedAnswerEntity.getTitle());
-                GlideImageLoder.getInstance().displayImage(context, selectedAnswerEntity.getHead(), ((ContentViewHolder) holder).head);
-                if ("".equals(selectedAnswerEntity.getPhoto())) {
-                    ((ContentViewHolder) holder).pic.setVisibility(View.GONE);
-                } else {
-                    ((ContentViewHolder) holder).pic.setVisibility(View.VISIBLE);
-                    String[] strings = selectedAnswerEntity.getPhoto().split(",");
-                    GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2 + strings[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
-                }
-                ((ContentViewHolder) holder).reply.setText(selectedAnswerEntity.getReplyContent());
-                ((ContentViewHolder) holder).focus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final Map<String, Object> map = new HashMap<>();
-                        map.put("uid", SPUtils.get(context, "userId", "").toString());
-                        map.put("token", SPUtils.get(context, "token", "").toString());
-                        map.put("be_uid", list.get(position).getUid());
-                        if (list.get(position).getIsFocus().equals("1.0")) {
-                            map.put("select", 0);
-                        } else {
-                            map.put("select", 1);
-                        }
-                        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
-                            @Override
-                            public void onNext(Object o) {
-                                if (map.get("select").toString().equals("0")) {
-                                    list.get(position).setIsFocus("0.0");
-                                    for (int i = columnEntities.size(); i < list.size(); i++) {
-                                        if (list.get(i).getUid().equals(list.get(position).getUid())) {
-                                            list.get(i).setIsFocus("0.0");
-                                        }
-                                    }
-                                    ((ContentViewHolder) holder).focus.setText("取消关注");
-                                    ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.txt_color));
-                                    ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
-                                    SPUtils.put(context,"focus",Integer.valueOf(SPUtils.get(context,"focus",0).toString())-1);
-                                } else {
-                                    list.get(position).setIsFocus("1.0");
-                                    for (int i = columnEntities.size(); i < list.size(); i++) {
-                                        if (list.get(i).getUid().equals(list.get(position).getUid())) {
-                                            list.get(i).setIsFocus("1.0");
-                                        }
-                                    }
-                                    ((ContentViewHolder) holder).focus.setText("+关注TA");
-                                    ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
-                                    ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
-                                    SPUtils.put(context,"focus",Integer.valueOf(SPUtils.get(context,"focus",0).toString())+1);
-                                }
-                                notifyDataSetChanged();
-                            }
-                        }, context, true, false), map);
-                        HttpManager.getInstance().followUser(postEntity);
-                    }
-                });
-                if (selectedAnswerEntity.getIsFocus().equals("1.0")) {
-                    ((ContentViewHolder) holder).focus.setText("取消关注");
-                    ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.txt_color));
-                    ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
-                } else {
-                    ((ContentViewHolder) holder).focus.setText("+关注TA");
-                    ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
-                    ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
-                }
+        if (holder instanceof ContentViewHolder) {
+            holder.itemView.setTag(position-1);
+            selectedAnswerEntity = list.get(position-1);
+            if (position == mHeaderCount) {
+                ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.VISIBLE);
             } else {
-//                holder.itemView.setTag(position);
-                for (int i = 0; i < bannerList.size() && urls.size() < 1; i++) {
-                    if (bannerList.get(i).getType().equals("4.0")) {
-                        images.add(bannerList.get(i).getImg());
-                        titles.add(bannerList.get(i).getTitle());
-                        urls.add(bannerList.get(i).getUrl());
+                ((ContentViewHolder) holder).itemView.findViewById(R.id.txt_select).setVisibility(View.GONE);
+            }
+            ((ContentViewHolder) holder).name.setText(selectedAnswerEntity.getName());
+            ((ContentViewHolder) holder).message.setText(selectedAnswerEntity.getMessage());
+            ((ContentViewHolder) holder).title.setText(selectedAnswerEntity.getTitle());
+            GlideImageLoder.getInstance().displayImage(context, selectedAnswerEntity.getHead(), ((ContentViewHolder) holder).head);
+            if ("".equals(selectedAnswerEntity.getPhoto())) {
+                ((ContentViewHolder) holder).pic.setVisibility(View.GONE);
+            } else {
+                ((ContentViewHolder) holder).pic.setVisibility(View.VISIBLE);
+                String[] strings = selectedAnswerEntity.getPhoto().split(",");
+                GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2 + strings[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
+            }
+            ((ContentViewHolder) holder).reply.setText(selectedAnswerEntity.getReplyContent());
+            ((ContentViewHolder) holder).focus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Map<String, Object> map = new HashMap<>();
+                    map.put("uid", SPUtils.get(context, "userId", "").toString());
+                    map.put("token", SPUtils.get(context, "token", "").toString());
+                    map.put("be_uid", list.get(position-1).getUid());
+                    if (list.get(position-1).getIsFocus().equals("1.0")) {
+                        map.put("select", 0);
+                    } else {
+                        map.put("select", 1);
                     }
+                    SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+                        @Override
+                        public void onNext(Object o) {
+                            if (map.get("select").toString().equals("0")) {
+                                list.get(position-1).setIsFocus("0.0");
+                                for (int i = columnEntities.size(); i < list.size(); i++) {
+                                    if (list.get(i).getUid().equals(list.get(position-1).getUid())) {
+                                        list.get(i).setIsFocus("0.0");
+                                    }
+                                }
+                                ((ContentViewHolder) holder).focus.setText("取消关注");
+                                ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.txt_color));
+                                ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+                                SPUtils.put(context, "focus", Integer.valueOf(SPUtils.get(context, "focus", 0).toString()) - 1);
+                            } else {
+                                list.get(position-1).setIsFocus("1.0");
+                                for (int i = columnEntities.size(); i < list.size(); i++) {
+                                    if (list.get(i).getUid().equals(list.get(position-1).getUid())) {
+                                        list.get(i).setIsFocus("1.0");
+                                    }
+                                }
+                                ((ContentViewHolder) holder).focus.setText("+关注TA");
+                                ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
+                                ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
+                                SPUtils.put(context, "focus", Integer.valueOf(SPUtils.get(context, "focus", 0).toString()) + 1);
+                            }
+                            notifyDataSetChanged();
+                        }
+                    }, context, true, false), map);
+                    HttpManager.getInstance().followUser(postEntity);
                 }
-                ((ColumnHolder) holder).banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-                ((ColumnHolder) holder).banner.setIndicatorGravity(BannerConfig.RIGHT);
-                ((ColumnHolder) holder).banner.isAutoPlay(true);
-                ((ColumnHolder) holder).banner.setDelayTime(3000);
-                ((ColumnHolder) holder).banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
-                ((ColumnHolder) holder).banner.setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
+            });
+            if (selectedAnswerEntity.getIsFocus().equals("1.0")) {
+                ((ContentViewHolder) holder).focus.setText("取消关注");
+                ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.txt_color));
+                ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div_grey));
+            } else {
+                ((ContentViewHolder) holder).focus.setText("+关注TA");
+                ((ContentViewHolder) holder).focus.setTextColor(context.getResources().getColor(R.color.white));
+                ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
+            }
+        } else {
+            for (int i = 0; i < bannerList.size() && urls.size() < 1; i++) {
+                if (bannerList.get(i).getType().equals("4.0")) {
+                    images.add(bannerList.get(i).getImg());
+                    titles.add(bannerList.get(i).getTitle());
+                    urls.add(bannerList.get(i).getUrl());
+                }
+            }
+            ((ColumnHolder) holder).banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+            ((ColumnHolder) holder).banner.setIndicatorGravity(BannerConfig.RIGHT);
+            ((ColumnHolder) holder).banner.isAutoPlay(true);
+            ((ColumnHolder) holder).banner.setDelayTime(3000);
+            ((ColumnHolder) holder).banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
+            ((ColumnHolder) holder).banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
 //                        Intent intent = new Intent(context, WebViewActivity.class);
 //                        intent.putExtra("title", titles.get(position));
 //                        intent.putExtra("url", urls.get(position));
 //                        context.startActivity(intent);
-                    }
-                });
-                //设置布局管理器
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                ((ColumnHolder) holder).recyclerView.setLayoutManager(linearLayoutManager);
-                //设置适配器
-                GalleryAdapter mAdapter = new GalleryAdapter(context, columnEntities);
-                ((ColumnHolder) holder).recyclerView.setAdapter(mAdapter);
-            }
+                }
+            });
+            //设置布局管理器
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            ((ColumnHolder) holder).recyclerView.setLayoutManager(linearLayoutManager);
+            //设置适配器
+            GalleryAdapter mAdapter = new GalleryAdapter(context, columnEntities);
+            ((ColumnHolder) holder).recyclerView.setAdapter(mAdapter);
         }
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list.size()+mHeaderCount;
     }
 
     class ColumnHolder extends RecyclerView.ViewHolder {
@@ -337,13 +330,13 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.title.setText(columnEntity.getTitle());
             viewHolder.content.setText(columnEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
-            if(columnEntity.getContent().contains("<img"))
-            GlideImageLoder.getInstance().displayImage(context, columnEntity.getContent().substring(columnEntity.getContent().indexOf("src=\"")+5,columnEntity.getContent().indexOf('>')-1), viewHolder.pic);
+            if (columnEntity.getContent().contains("<img"))
+                GlideImageLoder.getInstance().displayImage(context, columnEntity.getContent().substring(columnEntity.getContent().indexOf("src=\"") + 5, columnEntity.getContent().indexOf('>') - 1), viewHolder.pic);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   Intent intent=new Intent(context, ColumnDetailActivity.class);
-                    intent.putExtra("article_id",Float.valueOf(mDatas.get(i).getArticle_id()).intValue()+"");
+                    Intent intent = new Intent(context, ColumnDetailActivity.class);
+                    intent.putExtra("article_id", Float.valueOf(mDatas.get(i).getArticle_id()).intValue() + "");
                     context.startActivity(intent);
                 }
             });

@@ -88,7 +88,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="2dp"
         android:background="@color/grey"
         android:layout_weight="1">
 
@@ -368,6 +367,85 @@
                         android:paddingRight="@dimen/margin"
                         android:text=""
                         android:textSize="@dimen/normal" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:background="@drawable/background_layout_div"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/lv_question"
+                    style="@style/view_me"
+                    android:paddingBottom="@dimen/padding_top"
+                    android:paddingTop="@dimen/padding_top">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_question" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding"
+                        android:layout_weight="0.3"
+                        android:text="TA的问题"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/normal" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:drawableRight="@drawable/icon_npg"
+                        android:paddingRight="@dimen/margin" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/height"
+                    android:alpha="0.15"
+                    android:background="@color/txt_color"></View>
+                <LinearLayout
+                    android:id="@+id/lv_answer"
+                    style="@style/view_me"
+                    android:paddingBottom="@dimen/padding_top"
+                    android:paddingTop="@dimen/padding_top">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_answer" />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding"
+                        android:layout_weight="0.3"
+                        android:text="TA的回答"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/normal" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:drawableRight="@drawable/icon_npg"
+                        android:paddingRight="@dimen/margin" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

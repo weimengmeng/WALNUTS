@@ -62,7 +62,7 @@
             <ScrollView
                 android:id="@+id/lv_root"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <include layout="@layout/layout_detail"></include>
             </ScrollView>
         </com.scrollablelayout.ScrollableLayout>

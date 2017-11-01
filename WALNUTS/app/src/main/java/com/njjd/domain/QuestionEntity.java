@@ -33,6 +33,7 @@ public class QuestionEntity implements Serializable{
     private String kind="";
     private String tag_id;
     private String part_num="";
+    private String isVisiable="";
     public QuestionEntity(JSONObject object,String kind){
         try {
             this.questionId=object.isNull("id")?"0":object.getString("id");
@@ -54,6 +55,19 @@ public class QuestionEntity implements Serializable{
 
         }
     }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getIsVisiable() {
+        return isVisiable;
+    }
+
+    public void setIsVisiable(String isVisiable) {
+        this.isVisiable = isVisiable;
+    }
+
     public QuestionEntity(JsonObject object){
             this.questionId=object.get("id").getAsString();
             this.title=object.get("title").getAsString();
@@ -69,9 +83,9 @@ public class QuestionEntity implements Serializable{
             this.tag_id="";
             this.part_num="0";
     }
-    @Generated(hash = 1179706357)
-    public QuestionEntity(String questionId, String title, String content, String photo, String pic, String uids, String focusNum,
-            String answerNum, int isFocus, String dateTime, String tag, String kind, String tag_id, String part_num) {
+    @Generated(hash = 1695856217)
+    public QuestionEntity(String questionId, String title, String content, String photo, String pic, String uids, String focusNum, String answerNum,
+            int isFocus, String dateTime, String tag, String kind, String tag_id, String part_num, String isVisiable) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
@@ -86,7 +100,9 @@ public class QuestionEntity implements Serializable{
         this.kind = kind;
         this.tag_id = tag_id;
         this.part_num = part_num;
+        this.isVisiable = isVisiable;
     }
+
     @Generated(hash = 98121125)
     public QuestionEntity() {
     }

@@ -25,6 +25,7 @@ import com.njjd.domain.CommentEntity;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.DateUtils;
+import com.njjd.utils.FolderTextView;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
@@ -98,15 +99,18 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     Button btnCancle;
     @BindView(R.id.btn_reply)
     Button btnReply;
+    @BindView(R.id.txt_folder)
+    FolderTextView txtFolder;
     private QuestionEntity questionEntity;
     private String answer_id = "";
-    private CommentEntity commentEntity,tempComment;
+    private CommentEntity commentEntity, tempComment;
     private List<CommentEntity> commentEntityList = new ArrayList<>();
     private AnswerCommentAdapter adapter;
-    private int type=0,open=0,agree=0;
+    private int type = 0, open = 0, agree = 0;
     private String content;
-    private String questionId="",questiontitle="";
+    private String questionId = "", questiontitle = "";
     private UMShareListener mShareListener;
+
     @Override
     public int bindLayout() {
         return R.layout.activity_selected_detail;
@@ -117,8 +121,9 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         txtTitle.setText("回答详情");
         questionId = getIntent().getStringExtra("questionId");
         answer_id = getIntent().getStringExtra("answer_id");
-        questiontitle=getIntent().getStringExtra("questionTitle");
+        questiontitle = getIntent().getStringExtra("questionTitle");
         txtQuesTitle.setText(questiontitle);
+        txtFolder.setText(getIntent().getStringExtra("contents"));
         adapter = new AnswerCommentAdapter(this, commentEntityList);
         listComment.setAdapter(adapter);
         commentEntityList.add(new CommentEntity());
@@ -135,7 +140,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 etContent.requestFocus();
                 btnCancle.setText("取消回复");
                 btnReply.setText("立即回复");
-                tempComment=commentEntityList.get(position);
+                tempComment = commentEntityList.get(position);
                 etContent.setHint("回复" + commentEntityList.get(position).getName());
                 KeybordS.openKeybord(etContent, SelectAnswerDetailActivity.this);
             }
@@ -150,6 +155,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         });
         mShareListener = new CustomShareListener(this);
     }
+
     private void getDetail() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", Float.valueOf(questionId).intValue());
@@ -167,18 +173,19 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         JSONObject object;
         try {
             object = new JSONObject(gson.toJson(o));
-            questionEntity=new QuestionEntity(object,"");
+            questionEntity = new QuestionEntity(object, "");
             questionEntity.setQuestionId(questionId);
             DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().insertOrReplace(questionEntity);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     private void getAnswerList() {
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", Float.valueOf(questionId).intValue());
         map.put("uid", SPUtils.get(this, "userId", ""));
-        map.put("page","1");
+        map.put("page", "1");
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getAnswerListener, this, true, false), map);
         HttpManager.getInstance().getAnswerList(postEntity);
     }
@@ -211,14 +218,14 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                             txtAgree.setSelected(true);
                             txtAgree.setTag("1");
                         }
-                        agree=Float.valueOf(object.getString("point_num")).intValue();
+                        agree = Float.valueOf(object.getString("point_num")).intValue();
                         txtAgree.setText(String.valueOf(Float.valueOf(object.getString("point_num")).intValue()));
                         if (Float.valueOf(object.getString("answer_num")).intValue() == 0) {
                             txtOpen.setText("评论");
                         } else {
                             txtOpen.setText("展开评论" + String.valueOf(Float.valueOf(object.getString("answer_num")).intValue()));
                         }
-                        open=Float.valueOf(object.getString("answer_num")).intValue();
+                        open = Float.valueOf(object.getString("answer_num")).intValue();
                         if (object.getString("c_stat").equals("1")) {
                             txtSave.setText("取消收藏");
                             txtSave.setTextColor(getResources().getColor(R.color.txt_color));
@@ -229,7 +236,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                             txtSave.setTag("1");
                         }
                         ParsePosition pos = new ParsePosition(0);
-                        txtTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(object.getString("change_time"),pos)));
+                        txtTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(object.getString("change_time"), pos)));
                         lvAnswer.setVisibility(View.VISIBLE);
                         break;
                     }
@@ -274,13 +281,13 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({ R.id.mask,R.id.tv_cancle,R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1,R.id.btn_add_help,R.id.back, R.id.txt_save,R.id.txt_agree,R.id.txt_more,R.id.txt_quesTitle})
+    @OnClick({R.id.mask, R.id.tv_cancle, R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help, R.id.back, R.id.txt_save, R.id.txt_agree, R.id.txt_more, R.id.txt_quesTitle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_add_help:
                 mask.setVisibility(View.VISIBLE);
-                InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(imm != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
                     imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
                             0);
                 }
@@ -293,7 +300,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             case R.id.txt_more:
                 Intent intent = new Intent(this, IndexDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("question",questionEntity);
+                bundle.putSerializable("question", questionEntity);
                 intent.putExtra("question", bundle);
                 intent.putExtra("type", "1");
                 startActivity(intent);
@@ -307,16 +314,16 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 KeybordS.closeKeybord(etContent, SelectAnswerDetailActivity.this);
                 break;
             case R.id.txt_save:
-                if(txtSave.getTag().toString().equals("1")) {
+                if (txtSave.getTag().toString().equals("1")) {
                     agreeOrSave("collect_comment_id");
-                }else{
+                } else {
                     agreeOrSave("collect_comment_id_not");
                 }
                 break;
             case R.id.txt_agree:
-                if(txtAgree.getTag().toString().equals("1")) {
+                if (txtAgree.getTag().toString().equals("1")) {
                     agreeOrSave("point_comment_id");
-                }else{
+                } else {
                     agreeOrSave("point_comment_id_not");
                 }
                 break;
@@ -344,17 +351,18 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 break;
         }
     }
-    private void  shareAction(SHARE_MEDIA share_media){
+
+    private void shareAction(SHARE_MEDIA share_media) {
         UMWeb web;
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id=" + Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
-        if("".equals(questionEntity.getPhoto())){
+        if ("".equals(questionEntity.getPhoto())) {
             image = new UMImage(SelectAnswerDetailActivity.this, R.drawable.logo);//资源文件
-        }else{
-            String[] strings =questionEntity.getPhoto().split(",");
+        } else {
+            String[] strings = questionEntity.getPhoto().split(",");
             image = new UMImage(SelectAnswerDetailActivity.this, strings[0].replace("\"", ""));//资源文件
         }
         web.setThumb(image);
@@ -363,27 +371,28 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
     }
-    private void agreeOrSave(final String params){
+
+    private void agreeOrSave(final String params) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put(params, Float.valueOf(answer_id).intValue());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {
-                switch (params){
+                switch (params) {
                     case "point_comment_id":
                         txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
                         txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
                         txtAgree.setSelected(false);
                         txtAgree.setTag("0");
-                        txtAgree.setText((Integer.valueOf(txtAgree.getText().toString())+1)+"");
+                        txtAgree.setText((Integer.valueOf(txtAgree.getText().toString()) + 1) + "");
                         break;
                     case "point_comment_id_not":
                         txtAgree.setBackgroundResource(R.drawable.background_button_div);
                         txtAgree.setTextColor(getResources().getColor(R.color.white));
                         txtAgree.setSelected(true);
                         txtAgree.setTag("1");
-                        txtAgree.setText((Integer.valueOf(txtAgree.getText().toString())-1)+"");
+                        txtAgree.setText((Integer.valueOf(txtAgree.getText().toString()) - 1) + "");
                         break;
                     case "collect_comment_id":
                         txtSave.setText("取消收藏");
@@ -400,6 +409,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         }, this, true, false), map);
         HttpManager.getInstance().agreeOrPraise(postEntity);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -420,7 +430,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 listComment.setVisibility(View.VISIBLE);
                 break;
             case R.id.txt_open:
-                if(((TextView)v).getText().toString().equals("评论")){
+                if (((TextView) v).getText().toString().equals("评论")) {
                     type = 1;
                     lvReply.setVisibility(View.VISIBLE);
                     mask.setVisibility(View.VISIBLE);
@@ -433,10 +443,10 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                     return;
                 }
                 listComment.setVisibility(listComment.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                if(listComment.getVisibility()==View.VISIBLE){
-                    txtOpen.setText("收起评论"+open);
-                }else{
-                    txtOpen.setText("展开评论"+open);
+                if (listComment.getVisibility() == View.VISIBLE) {
+                    txtOpen.setText("收起评论" + open);
+                } else {
+                    txtOpen.setText("展开评论" + open);
                 }
                 break;
             case R.id.btn_cancle:
@@ -461,10 +471,11 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                 break;
         }
     }
+
     private void addComment(String comment) {
         this.content = comment;
         Map<String, Object> map = new HashMap<>();
-        map.put("article_id",Float.valueOf(questionId).intValue());
+        map.put("article_id", Float.valueOf(questionId).intValue());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("content", comment);
         map.put("comment_id", String.valueOf(Float.valueOf(answer_id).intValue()));
@@ -486,7 +497,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             commentEntityList.add(1, commentEntity);
-            txtOpen.setText("收起评论"+(++open) + "");
+            txtOpen.setText("收起评论" + (++open) + "");
             adapter.notifyDataSetChanged();
             ToastUtils.showShortToast(SelectAnswerDetailActivity.this, "评论成功");
         }
@@ -523,20 +534,24 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             commentEntityList.add(1, commentEntity);
-            txtOpen.setText("收起评论"+(++open) + "");
+            txtOpen.setText("收起评论" + (++open) + "");
             adapter.notifyDataSetChanged();
             ToastUtils.showShortToast(SelectAnswerDetailActivity.this, "回复成功");
         }
     };
+
     private class CustomShareListener implements UMShareListener {
         private WeakReference<SelectAnswerDetailActivity> mActivity;
+
         private CustomShareListener(SelectAnswerDetailActivity activity) {
             mActivity = new WeakReference(activity);
         }
+
         @Override
         public void onStart(SHARE_MEDIA platform) {
 //            loadingDialog.show();
         }
+
         @Override
         public void onResult(SHARE_MEDIA platform) {
             if (platform.name().equals("WEIXIN_FAVORITE")) {
@@ -573,24 +588,27 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
                     && platform != SHARE_MEDIA.GOOGLEPLUS
                     && platform != SHARE_MEDIA.YNOTE
                     && platform != SHARE_MEDIA.EVERNOTE) {
-                Toast.makeText(mActivity.get()," 分享失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity.get(), " 分享失败", Toast.LENGTH_SHORT).show();
                 if (t != null) {
                     Log.d("throw", "throw:" + t.getMessage());
                 }
             }
 
         }
+
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            ToastUtils.showShortToast(SelectAnswerDetailActivity.this,"分享取消");
+            ToastUtils.showShortToast(SelectAnswerDetailActivity.this, "分享取消");
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         /** attention to this below ,must add this**/
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
