@@ -27,6 +27,7 @@ import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.SPUtils;

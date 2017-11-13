@@ -97,6 +97,6 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textScaleX="1"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 </LinearLayout>

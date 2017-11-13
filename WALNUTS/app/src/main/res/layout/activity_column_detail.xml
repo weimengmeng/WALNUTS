@@ -135,10 +135,11 @@
 
             <WebView
                 android:id="@+id/editor2"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginRight="@dimen/margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -151,10 +152,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/padding"
+                android:paddingBottom="@dimen/margin_small"
                 android:paddingLeft="@dimen/margin"
                 android:paddingRight="@dimen/margin"
-                android:paddingTop="@dimen/padding"
+                android:gravity="center_vertical"
+                android:paddingTop="@dimen/margin_small"
                 android:weightSum="1">
 
                 <TextView
@@ -166,8 +168,7 @@
                     android:text="评论"
                     android:onClick="onClick"
                     android:textColor="@color/login"
-                    android:textSize="@dimen/small"
-                    android:typeface="sans" />
+                    android:textSize="@dimen/small" />
 
                 <TextView
                     android:id="@+id/txt_save"
@@ -178,15 +179,13 @@
                     android:text="收藏"
                     android:onClick="onClick"
                     android:textColor="@color/login"
-                    android:textSize="@dimen/small"
-                    android:typeface="sans" />
+                    android:textSize="@dimen/small" />
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:gravity="center|right"
-                    android:paddingTop="@dimen/padding">
+                    android:gravity="center|right">
 
                     <TextView
                         android:id="@+id/txt_agree"
@@ -198,11 +197,12 @@
                         android:gravity="center"
                         android:paddingLeft="@dimen/padding"
                         android:paddingRight="@dimen/padding"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
                         android:text=" "
                         android:onClick="onClick"
                         android:textColor="@color/txt_color"
-                        android:textSize="@dimen/small"
-                        android:typeface="sans"></TextView>
+                        android:textSize="@dimen/small"></TextView>
                 </LinearLayout>
             </LinearLayout>
 
@@ -225,17 +225,17 @@
                 android:layout_marginLeft="@dimen/padding"
                 android:layout_marginRight="@dimen/padding"
                 android:alpha="0.15"
-                android:background="@color/txt_color"></View>
+                android:background="@color/grey"></View>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/padding"
+                android:background="@color/grey"
                 android:text="相关推荐"
                 android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal"
-                android:typeface="sans" />
+                android:textSize="@dimen/normal" />
 
             <View
                 android:layout_width="match_parent"
@@ -249,6 +249,15 @@
                 android:id="@+id/list_article"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></com.njjd.utils.ListViewForScrollView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/grey"
+                android:padding="@dimen/padding"
+                android:text="已经到底了"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small" />
         </LinearLayout>
     </ScrollView>
     <RelativeLayout

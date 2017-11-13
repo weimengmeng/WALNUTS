@@ -12,10 +12,12 @@ import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.github.anzewei.parallaxbacklayout.ParallaxBack;
+import com.njjd.application.AppAplication;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
+import com.njjd.utils.ToastUtils;
 import com.trycatch.mysnackbar.Prompt;
 import com.trycatch.mysnackbar.TSnackbar;
 import com.umeng.analytics.MobclickAgent;
@@ -47,10 +49,10 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(getResources().getColor(R.color.white));
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(this);
-        mContextView.setPadding(0, statusBarHeight, 0,0);
+//        int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(this);
+//        mContextView.setPadding(0, statusBarHeight, 0,0);
         MyActivityManager.getInstance().pushOneActivity(this);
         initView(mContextView);
         PushAgent.getInstance(this).onAppStart();
@@ -125,26 +127,28 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
      * @param msg
      */
     public static void showToast(String msg){
-        if(tSnackbar!=null&&tSnackbar.isShown()){
-            tSnackbar.dismiss();
-            tSnackbar=null;
-        }
-        tSnackbar=TSnackbar.make(mContextView, msg, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN).setPromptThemBackground(Prompt.WARNING);
-        tSnackbar.setBackgroundColor(Color.argb(255,255,177,41));
-        tSnackbar.show();
+//        if(tSnackbar!=null&&tSnackbar.isShown()){
+//            tSnackbar.dismiss();
+//            tSnackbar=null;
+//        }
+//        tSnackbar=TSnackbar.make(mContextView, msg, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN).setPromptThemBackground(Prompt.WARNING);
+//        tSnackbar.setBackgroundColor(Color.argb(255,255,177,41));
+//        tSnackbar.show();
+        Toast.makeText(AppAplication.getContext(),msg,Toast.LENGTH_SHORT).show();
     }
     /**
      * [简化Toast]
      * @param msg
      */
     public static void showToast2(View view,String msg){
-        if(tSnackbar!=null&&tSnackbar.isShown()){
-            tSnackbar.dismiss();
-            tSnackbar=null;
-        }
-        tSnackbar=TSnackbar.make(view, msg, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN).setPromptThemBackground(Prompt.WARNING);
-        tSnackbar.setBackgroundColor(Color.argb(255,255,177,41));
-        tSnackbar.show();
+//        if(tSnackbar!=null&&tSnackbar.isShown()){
+//            tSnackbar.dismiss();
+//            tSnackbar=null;
+//        }
+//        tSnackbar=TSnackbar.make(view, msg, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN).setPromptThemBackground(Prompt.WARNING);
+//        tSnackbar.setBackgroundColor(Color.argb(255,255,177,41));
+//        tSnackbar.show();
+        Toast.makeText(AppAplication.getContext(),msg,Toast.LENGTH_SHORT).show();
     }
     /**
      * [是否设置沉浸状态栏]

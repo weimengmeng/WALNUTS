@@ -120,8 +120,17 @@
         android:dividerHeight="0dp"
         android:focusable="false"
         android:groupIndicator="@null"
-        android:layout_marginBottom="@dimen/margin_big"
         android:listSelector="@color/grey"></com.njjd.utils.CustomExpandableListView>
+    <TextView
+        android:id="@+id/nomore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:padding="@dimen/padding"
+        android:text="已经到底了"
+        android:textColor="@color/txt_color"
+        android:textSize="@dimen/small" />
     <include
         android:id="@+id/empty"
         layout="@layout/empty_view"></include>

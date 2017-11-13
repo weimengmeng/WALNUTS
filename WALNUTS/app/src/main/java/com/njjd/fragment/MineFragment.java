@@ -71,6 +71,8 @@ public class MineFragment extends BaseFragment {
     TextView txtFocus;
     @BindView(R.id.txt_focused)
     TextView txtFocused;
+    @BindView(R.id.txt_products)
+    TextView txtProducts;
     @BindView(R.id.txt_message)
     TextView txtMessage;
     @BindView(R.id.txt_vocation)
@@ -112,6 +114,7 @@ public class MineFragment extends BaseFragment {
         txtName.setText(SPUtils.get(context, "name", "").toString());
         txtMessage.setText(SPUtils.get(context, "message", "").toString());
         txtPosition.setText(SPUtils.get(context, "position", "").toString());
+        txtProducts.setText(SPUtils.get(context, "product", "").toString());
         txtArea.setText(SPUtils.get(context, "province", "").toString() + SPUtils.get(context, "city", "").toString());
         txtVocation.setText(SPUtils.get(context, "industry", "").toString());
         txtCompany.setText(SPUtils.get(context,"company","").toString());
@@ -138,6 +141,7 @@ public class MineFragment extends BaseFragment {
                 JSONObject object = null;
                 try {
                     object = new JSONObject(gson.toJson(o));
+                    SPUtils.put(context, "product", object.isNull("product") ? "" : object.getString("product"));
                     SPUtils.put(context, "province", object.getString("province_name"));
                     SPUtils.put(context, "city", object.getString("city_name"));
                     SPUtils.put(context, "company", object.isNull("company") ? "" : object.getString("company"));
@@ -148,6 +152,7 @@ public class MineFragment extends BaseFragment {
                     SPUtils.put(context, "focus", Float.valueOf(object.getString("follow_numm")).intValue());
                     SPUtils.put(context, "focused", Float.valueOf(object.getString("be_follow_numm")).intValue());
                     txtName.setText(SPUtils.get(context, "name", "").toString());
+                    txtProducts.setText(SPUtils.get(context, "product", "").toString());
                     txtMessage.setText(SPUtils.get(context, "message", "").toString());
                     txtPosition.setText(SPUtils.get(context, "position", "").toString());
                     txtCompany.setText(SPUtils.get(context,"company","").toString());

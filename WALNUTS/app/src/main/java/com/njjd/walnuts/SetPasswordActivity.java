@@ -55,6 +55,28 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
         txtTip.setText(temp);
         txtTip.setVisibility(View.VISIBLE);
         btnResend.initTimer();
+        etCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etCode.setTag(etCode.getHint().toString());
+                    etCode.setHint("");
+                }else{
+                    etCode.setHint(etCode.getTag().toString());
+                }
+            }
+        });
+        etPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etPwd.setTag(etPwd.getHint().toString());
+                    etPwd.setHint("");
+                }else{
+                    etPwd.setHint(etPwd.getTag().toString());
+                }
+            }
+        });
     }
 
     private void userRegister() {

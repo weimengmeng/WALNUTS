@@ -112,7 +112,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         myinflater = LayoutInflater.from(context);
         navList = CommonUtils.getInstance().getNavsList();
         ButterKnife.bind(this, view);
-        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
+//        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
         return view;
     }
 
@@ -135,6 +135,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         context.registerReceiver(receiver, filter);
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
         layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
+        layoutTop.setText("按热度排序");
         layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
         layoutTop.setOnClickListener(this);
         layoutTime.setOnClickListener(this);

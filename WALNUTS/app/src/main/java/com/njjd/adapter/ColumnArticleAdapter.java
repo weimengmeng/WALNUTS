@@ -76,8 +76,8 @@ public class ColumnArticleAdapter extends BaseAdapter {
         hodel.title.setText(entity.getTitle());
         hodel.content.setText(entity.getDesci());
         hodel.num.setText(Float.valueOf(entity.getCommentNum()).intValue()+"评论  ·  "+Float.valueOf(entity.getPointNum()).intValue()+"赞同");
-        if(entity.getContent().contains("<img"))
-            GlideImageLoder.getInstance().displayImage(context, entity.getContent().substring(entity.getContent().indexOf("src=\"")+5,entity.getContent().indexOf('>')-1), hodel.pic);
+//        GlideImageLoder.getInstance().displayImage(context, entity.getPic(), hodel.pic);
+        hodel.pic.setVisibility(View.GONE);
         return convertView;
     }
     private class ViewHodel{

@@ -17,8 +17,10 @@ import android.widget.Toast;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.njjd.adapter.AnswerCommentAdapter;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.CommentEntity;
@@ -357,7 +359,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id=" + Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id=" + Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
         if ("".equals(questionEntity.getPhoto())) {
             image = new UMImage(SelectAnswerDetailActivity.this, R.drawable.logo);//资源文件
@@ -488,7 +490,9 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     HttpOnNextListener commentListener1 = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            JsonObject object= JSONUtils.getAsJsonObject(o);
             commentEntity = new CommentEntity();
+            commentEntity.setCommentId(object.get("id").getAsString());
             commentEntity.setContent(content);
             commentEntity.setHead(SPUtils.get(SelectAnswerDetailActivity.this, "head", "").toString());
             commentEntity.setName(SPUtils.get(SelectAnswerDetailActivity.this, "name", "").toString());
@@ -525,7 +529,9 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
     HttpOnNextListener commentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            JsonObject object=JSONUtils.getAsJsonObject(o);
             commentEntity = new CommentEntity();
+            commentEntity.setCommentId(object.get("id").getAsString());
             commentEntity.setContent(content);
             commentEntity.setHead(SPUtils.get(SelectAnswerDetailActivity.this, "head", "").toString());
             commentEntity.setName(SPUtils.get(SelectAnswerDetailActivity.this, "name", "").toString());

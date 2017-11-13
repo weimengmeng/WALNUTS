@@ -2,10 +2,12 @@ package com.njjd.walnuts;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -91,8 +93,14 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
         adapter = new ColumnArticleAdapter(this, list);
         getColumnDetail();
         getColumnArticles();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
+            int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(this);
+            findViewById(R.id.demo).setPadding(0, statusBarHeight+20, 0,0);
+        }
         txtTitle.setTextColor(Color.argb(0, 255, 255, 255));
-        ImmersedStatusbarUtils.initAfterSetContentView(this, reTop);
         listColumn.setAdapter(adapter);
         scrollView.smoothScrollTo(0, 0);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -153,7 +161,7 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
 
     private void getColumnArticles() {
         Map<String, Object> map = new HashMap<>();
-        map.put("column_id", "1");
+        map.put("column_id",getIntent().getStringExtra("column_id"));
         map.put("page", adapter.getCurrentPage());
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token", SPUtils.get(this, "token", ""));
@@ -179,6 +187,12 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
                 list.add(entity);
             }
             adapter.notifyDataSetChanged();
+            if(array.length()==0||array.length()<10){
+                findViewById(R.id.nomore).setVisibility(View.VISIBLE);
+                return;
+            }else{
+                findViewById(R.id.nomore).setVisibility(View.INVISIBLE);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -220,7 +234,6 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token", SPUtils.get(this, "token", ""));
         map.put("column_id", Float.valueOf(entity.getId()).intValue());
-        //0 取消关注 1 关注
         map.put("select", entity.getIs_follow().equals("1.0")? 0 : 1);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
         HttpManager.getInstance().followColumn(postEntity);

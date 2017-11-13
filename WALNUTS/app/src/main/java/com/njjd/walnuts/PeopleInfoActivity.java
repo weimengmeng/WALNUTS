@@ -62,6 +62,8 @@ public class PeopleInfoActivity extends BaseActivity {
     TextView txtVocation;
     @BindView(R.id.txt_area)
     TextView txtArea;
+    @BindView(R.id.txt_products)
+    TextView txtProducts;
     @BindView(R.id.top)
     LinearLayout top;
     @BindView(R.id.txt_position)
@@ -131,6 +133,7 @@ public class PeopleInfoActivity extends BaseActivity {
             } else {
                 imgSex.setImageDrawable(getResources().getDrawable(R.drawable.icon_boy));
             }
+            txtProducts.setText(object.isNull("product")||object.getString("product").equals("")?"未填写":object.getString("product"));
             txtFocusNum.setText("关注的人\n" + Float.valueOf(object.getString("follow_numm")).intValue());
             txtFocusedNum.setText("被关注\n" + Float.valueOf(object.getString("be_follow_numm")).intValue());
             txtVocation.setText(object.getString("f_industry_name")+"-"+object.getString("industry_name"));

@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.njjd.adapter.ArticleConversionAdapter;
 import com.njjd.domain.CommentEntity;
 import com.njjd.http.HttpManager;
@@ -223,7 +225,9 @@ public class ArticleComReplyActivity extends BaseActivity implements View.OnClic
     HttpOnNextListener commentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            JsonObject object= JSONUtils.getAsJsonObject(o);
             CommentEntity temp = new CommentEntity();
+            temp.setCommentId(object.get("id").getAsString());
             temp.setContent(content);
             temp.setHead(SPUtils.get(ArticleComReplyActivity.this, "head", "").toString());
             temp.setName(SPUtils.get(ArticleComReplyActivity.this, "name", "").toString());

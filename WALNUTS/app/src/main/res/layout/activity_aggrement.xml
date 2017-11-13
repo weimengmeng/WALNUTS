@@ -7,9 +7,14 @@
         android:id="@+id/top"
         android:background="@color/white"
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
-
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.15"
+            android:background="@color/txt_color"></View>
     </LinearLayout>
     <com.joanzapata.pdfview.PDFView
         android:id="@+id/pdf_view"

@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.njjd.domain.ColumnArticleEntity;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.R;
 
 import java.util.List;
@@ -75,9 +77,9 @@ public class RecommendArticleAdapter extends BaseAdapter {
         GlideImageLoder.getInstance().displayImage(context, entity.getHead(), hodel.head);
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
-        hodel.content.setText(entity.getContent());
-        if(entity.getContent().contains("<img"))
-            GlideImageLoder.getInstance().displayImage(context, entity.getContent().substring(entity.getContent().indexOf("src=\"")+5,entity.getContent().indexOf('>')-1), hodel.pic);
+//        hodel.content.setText(entity.getContent());
+        hodel.content.setVisibility(View.INVISIBLE);
+        GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+entity.getPic().replace("\"",""), hodel.pic);
         return convertView;
     }
     private class ViewHodel{

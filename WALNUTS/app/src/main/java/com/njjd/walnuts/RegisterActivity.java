@@ -101,6 +101,28 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
             }
         });
         btnGetCode.setOnTimerCountDownListener(this);
+        etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etPhone.setTag(etPhone.getHint().toString());
+                    etPhone.setHint("");
+                }else{
+                    etPhone.setHint(etPhone.getTag().toString());
+                }
+            }
+        });
+        etInviteCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etInviteCode.setTag(etInviteCode.getHint().toString());
+                    etInviteCode.setHint("");
+                }else{
+                    etInviteCode.setHint(etInviteCode.getTag().toString());
+                }
+            }
+        });
     }
     private void checkInvitation(){
         Map<String, Object> map = new HashMap<>();

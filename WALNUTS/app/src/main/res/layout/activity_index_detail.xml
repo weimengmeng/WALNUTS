@@ -10,12 +10,16 @@
         android:background="@color/white"
         android:orientation="vertical">
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.15"
+            android:background="@color/txt_color"></View>
     </LinearLayout>
 
     <LinearLayout
         style="@style/Width_m_Height_m"
-        android:layout_below="@id/top"
-        android:layout_marginTop="1dp">
+        android:layout_below="@id/top">
 
         <com.scrollablelayout.ScrollableLayout
             android:id="@+id/scrollLayout"

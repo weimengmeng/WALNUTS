@@ -1,5 +1,7 @@
 package com.njjd.domain;
 
+import com.njjd.utils.LogUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

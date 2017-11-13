@@ -23,8 +23,10 @@ import android.widget.Toast;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.njjd.adapter.AnswerReplyAdapter;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.AnswerEntity;
@@ -380,6 +382,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
                 answerReplyAdapter.notifyDataSetChanged();
+                if(answerEntities.size()>=Integer.valueOf(txtAnswerNum.getText().toString().replace("回答 ",""))&&getIntent().getStringExtra("type").equals("1")){
+                    findViewById(R.id.nomore).setVisibility(View.VISIBLE);
+                }
                 if (getIntent().getStringExtra("type").equals("2") || getIntent().getStringExtra("type").equals("3")) {
                     getComments(comment_id);
                     exListVIew.expandGroup(0);
@@ -514,7 +519,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id="+Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
         if("".equals(questionEntity.getPhoto())){
             image = new UMImage(IndexDetailActivity.this, R.drawable.share);//资源文件
@@ -544,8 +549,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     HttpOnNextListener commentListener1 = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            JsonObject object= JSONUtils.getAsJsonObject(o);
             commentEntity = new CommentEntity();
             commentEntity.setContent(content);
+            commentEntity.setCommentId(object.get("id").getAsString());
             commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
             commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());
             commentEntity.setSec_uid("sec_uid");
@@ -580,7 +587,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     HttpOnNextListener commentListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            JsonObject object=JSONUtils.getAsJsonObject(o);
             commentEntity = new CommentEntity();
+            commentEntity.setCommentId(object.get("id").getAsString());
             commentEntity.setContent(content);
             commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
             commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());

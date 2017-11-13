@@ -30,6 +30,7 @@ import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.LoginActivity;
+import com.njjd.walnuts.MainActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.WelcomeActivity;
@@ -64,14 +65,14 @@ public class AppAplication extends Application {
         context = this.getApplicationContext();
         replaceSystemDefaultFont(this);
         registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
-        CrashHandler handler = CrashHandler.getInstance();
-        handler.init(getApplicationContext());
-        Thread.setDefaultUncaughtExceptionHandler(handler);
+//        CrashHandler handler = CrashHandler.getInstance();
+//        handler.init(getApplicationContext());
+//        Thread.setDefaultUncaughtExceptionHandler(handler);
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         /**
          * 友盟登录、分享
          */
-//        Config.DEBUG = true;
+        Config.DEBUG = true;
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxaaa88f9a47ec1f98", "35a9eef61c384087a3028686789f2900");
         PlatformConfig.setQQZone("1106091328", "7XJSCwws0c8wFtFx");
@@ -179,6 +180,7 @@ public class AppAplication extends Application {
 
             @Override
             public void launchApp(Context context, UMessage msg) {
+                LogUtils.d("huan"+msg.getRaw().toString());
                 if (!isRunning()) {
                     Intent intent = new Intent(context, WelcomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -201,21 +203,28 @@ public class AppAplication extends Application {
                             Intent intent = new Intent(context, PeopleInfoActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("uid",object2.getString("uid"));
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
                         if (object2.getString("action").equals("answer")) {
                             if(object2.toString().contains("device_token")){
-                                //此处是评论推送
-                                Intent intent=new Intent(context, IndexDetailActivity.class);
-                                QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id"));
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("question", entity);
-                                intent.putExtra("question", bundle);
-                                intent.putExtra("type","2");
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("comment_id",String.valueOf(Float.valueOf(object2.getJSONObject("comment").getString("answer_id"))));
-                                startActivity(intent);
+//                                if(object2.getString("type").equals("1.0")||object2.getString("type").equals("1")){
+                                    //此处是评论推送
+                                    Intent intent=new Intent(context, IndexDetailActivity.class);
+                                    QuestionEntity entity= DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(object2.getString("article_id").contains(".0")?object2.getString("article_id"):object2.getString("article_id")+".0");
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("question", entity);
+                                    intent.putExtra("question", bundle);
+                                    intent.putExtra("type","2");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("comment_id",String.valueOf(Float.valueOf(object2.getJSONObject("comment").getString("answer_id"))));
+                                    startActivity(intent);
+//                                }else{
+//                                    Intent intent = new Intent(context, MainActivity.class);
+//                                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                                    intent.setAction(Intent.ACTION_MAIN);
+//                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//                                    startActivity(intent);
+//                                }
                             }else{
                                 //此处是回答推送
                                 Intent intent=new Intent(context, IndexDetailActivity.class);

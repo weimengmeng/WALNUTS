@@ -92,6 +92,17 @@ public class ForgetPwdActivity extends BaseActivity implements TimeCountDown2.On
             }
         });
         btnGetCode.setOnTimerCountDownListener(this);
+        etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etPhone.setTag(etPhone.getHint().toString());
+                    etPhone.setHint("");
+                }else{
+                    etPhone.setHint(etPhone.getTag().toString());
+                }
+            }
+        });
     }
     private void checkPhone() {
         Map<String, Object> map = new HashMap<>();

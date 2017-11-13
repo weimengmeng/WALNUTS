@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         activity = this;
         ButterKnife.bind(this);
-        AndroidBug54971Workaround.assistActivity(findViewById(R.id.main));
+//        AndroidBug54971Workaround.assistActivity(findViewById(R.id.main));
         initView();
         MyActivityManager.getInstance().pushOneActivity(this);
         loginHuanxin();

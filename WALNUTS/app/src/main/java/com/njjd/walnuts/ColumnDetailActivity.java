@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -21,8 +22,10 @@ import android.widget.Toast;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.njjd.adapter.ArticleCommentAdapter;
 import com.njjd.adapter.RecommendArticleAdapter;
 import com.njjd.domain.ColumnArticleDetailEntity;
@@ -34,6 +37,7 @@ import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.ImagePagerActivity;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.ListViewForScrollView;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
@@ -173,12 +177,20 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
     private void initMyView() {
         webView.loadDataWithBaseURL(null, detailActivity.getContent(), "text/html", "utf-8", null);
         webView.getSettings().setJavaScriptEnabled(true);
-//        webView.getSettings().setAppCacheEnabled(true);
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);//适应内容大小
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+               webView.loadUrl("javascript:(function(){" +
+                        "var objs = document.getElementsByTagName('img'); " +
+                        "for(var i=0;i<objs.length;i++)  " +
+                        "{"
+                        + "var img = objs[i];   " +
+                        "    img.style.maxWidth = '100%'; img.style.height = 'auto';  " +
+                        "}" +
+                        "})()");
                 //这段js函数的功能就是注册监听，遍历所有的img标签，并添加onClick函数，函数的功能是在图片点击的时候调用本地java接口并传递url过去
                 webView.loadUrl("javascript:(function(){"
                         + "var objs = document.getElementsByTagName(\"img\"); "
@@ -398,8 +410,10 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
     HttpOnNextListener commentListener1 = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
+            JsonObject object= JSONUtils.getAsJsonObject(o);
             commentEntity = new CommentEntity();
             commentEntity.setContent(content);
+            commentEntity.setCommentId(object.get("id").getAsString());
             commentEntity.setHead(SPUtils.get(ColumnDetailActivity.this, "head", "").toString());
             commentEntity.setName(SPUtils.get(ColumnDetailActivity.this, "name", "").toString());
             commentEntity.setSec_uid("sec_uid");
@@ -519,12 +533,14 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
                     txtAgree.setTextColor(getResources().getColor(R.color.txt_color));
                     detailActivity.setIsPoint("1.0");
                     txtAgree.setText(""+(Float.valueOf(detailActivity.getPointNum()).intValue()+1));
+                    detailActivity.setPointNum(""+(Float.valueOf(detailActivity.getPointNum()).intValue()+1));
                 }else{
                     txtAgree.setBackgroundResource(R.drawable.background_button_div);
                     txtAgree.setSelected(true);
                     txtAgree.setTextColor(getResources().getColor(R.color.white));
                     detailActivity.setIsPoint("0.0");
                     txtAgree.setText(""+(Float.valueOf(detailActivity.getPointNum()).intValue()-1));
+                    detailActivity.setPointNum(""+(Float.valueOf(detailActivity.getPointNum()).intValue()-1));
                 }
             }
         }, this, false, false), map);
@@ -535,7 +551,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://116.62.243.41/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
+        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
         web.setTitle(detailActivity.getTitle());//标题
         if(!detailActivity.getContent().contains("<img")){
             image = new UMImage(ColumnDetailActivity.this, R.drawable.share);//资源文件

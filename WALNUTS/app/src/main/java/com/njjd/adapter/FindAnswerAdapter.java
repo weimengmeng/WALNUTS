@@ -329,9 +329,10 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.name.setText(columnEntity.getName());
             viewHolder.title.setText(columnEntity.getTitle());
             viewHolder.content.setText(columnEntity.getDesci());
+            viewHolder.content.setVisibility(View.INVISIBLE);
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
-            if (columnEntity.getContent().contains("<img"))
-                GlideImageLoder.getInstance().displayImage(context, columnEntity.getContent().substring(columnEntity.getContent().indexOf("src=\"") + 5, columnEntity.getContent().indexOf('>') - 1), viewHolder.pic);
+            viewHolder.pic.setScaleType(ImageView.ScaleType.FIT_XY);
+            GlideImageLoder.getInstance().displayImage(context,HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""), viewHolder.pic);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

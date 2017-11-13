@@ -15,6 +15,7 @@
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/grey"
             android:scrollbars="none">
 
             <LinearLayout
@@ -115,6 +116,16 @@
                     android:dividerHeight="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"></com.njjd.utils.MyListView>
+                <TextView
+                    android:id="@+id/nomore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:padding="@dimen/padding"
+                    android:text="已经到底了"
+                    android:textColor="@color/txt_color"
+                    android:textSize="@dimen/small" />
             </LinearLayout>
         </com.njjd.utils.ObservableScrollView>
     </com.njjd.utils.VpSwipeRefreshLayout>
@@ -128,6 +139,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/round"
+            android:id="@+id/demo"
             android:background="#00000000"
             android:orientation="horizontal"
             android:gravity="center_vertical">

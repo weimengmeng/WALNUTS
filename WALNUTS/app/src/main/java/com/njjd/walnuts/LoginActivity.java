@@ -90,6 +90,28 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showShortToast(LoginActivity.this, "授权取消");
             }
         };
+        etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etPhone.setTag(etPhone.getHint().toString());
+                    etPhone.setHint("");
+                }else{
+                    etPhone.setHint(etPhone.getTag().toString());
+                }
+            }
+        });
+        etPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etPwd.setTag(etPwd.getHint().toString());
+                    etPwd.setHint("");
+                }else{
+                    etPwd.setHint(etPwd.getTag().toString());
+                }
+            }
+        });
     }
     @Override
     protected void onDestroy() {

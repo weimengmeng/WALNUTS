@@ -80,13 +80,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_big"
+            android:visibility="gone"
             android:layout_marginRight="@dimen/margin_big"
             android:weightSum="1">
             <TextView
                 android:id="@+id/txt_sex"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:paddingTop="@dimen/padding"
                 android:paddingBottom="@dimen/padding"
@@ -96,16 +97,43 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:alpha="0.1"
-                android:background="@color/gray"></View>
+            <!--<View-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:alpha="0.1"-->
+                <!--android:background="@color/gray"></View>-->
+            <!--<TextView-->
+                <!--android:id="@+id/txt_province"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:gravity="center"-->
+                <!--android:hint="地区"-->
+                <!--android:paddingTop="@dimen/padding"-->
+                <!--android:paddingBottom="@dimen/padding"-->
+                <!--android:textColorHint="@color/txt_color"-->
+                <!--android:drawableRight="@drawable/select"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:textSize="@dimen/normal" />-->
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
+            android:alpha="0.1"
+            android:background="@color/gray" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
+            android:weightSum="1">
             <TextView
                 android:id="@+id/txt_province"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:hint="地区"
                 android:paddingTop="@dimen/padding"
@@ -115,7 +143,6 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
         </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -135,7 +162,7 @@
                 android:id="@+id/txt_vocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:paddingTop="@dimen/padding"
                 android:paddingBottom="@dimen/padding"
@@ -145,19 +172,39 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:alpha="0.1"
-                android:background="@color/gray"></View>
-
+            <!--<View-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:alpha="0.1"-->
+                <!--android:background="@color/gray"></View>-->
+            <!--<TextView-->
+                <!--android:id="@+id/txt_sale"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:gravity="center"-->
+                <!--android:hint="销售场景"-->
+                <!--android:paddingTop="@dimen/padding"-->
+                <!--android:paddingBottom="@dimen/padding"-->
+                <!--android:textColorHint="@color/txt_color"-->
+                <!--android:drawableRight="@drawable/select"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:textSize="@dimen/normal" />-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
+            android:weightSum="1">
             <TextView
                 android:id="@+id/txt_sale"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:hint="销售场景"
+                android:visibility="gone"
                 android:paddingTop="@dimen/padding"
                 android:paddingBottom="@dimen/padding"
                 android:textColorHint="@color/txt_color"

@@ -87,13 +87,23 @@ public class SuccessActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         if (getIntent().getIntExtra("bind", 0) == 1) {
-            //绑定账号情况，预先设置第三方的头像性别等
             GlideImageLoder.getInstance().displayImage(this, SPUtils.get(this, "thirdHead", "").toString(), imgHead);
             etName.setText(SPUtils.get(this, "thirdName", "").toString());
             txtSex.setText(SPUtils.get(this, "thirdSex", "").toString());
             path = SPUtils.get(this, "thirdHead", "").toString();
         }
         setPickView();
+        etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etName.setTag(etName.getHint().toString());
+                    etName.setHint("");
+                }else{
+                    etName.setHint(etName.getTag().toString());
+                }
+            }
+        });
     }
     private void setPickView() {
         provinces = CommonUtils.getInstance().getProvincesList();
@@ -141,6 +151,11 @@ public class SuccessActivity extends BaseActivity {
             }
         }).build();
         sexPickview.setPicker(sex);
+        txtSex.setText(sex.get(0));
+        modelId = saleList.get(0).getId();
+        txtSale.setText(sales.get(0));
+        etName.setText("用户"+SPUtils.get(this, "userId", "").toString());
+        etName.setSelection(etName.getText().toString().length());//将光标移至文字末
     }
 
     @Override
@@ -180,10 +195,10 @@ public class SuccessActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_submit:
-                if (path.equals("")) {
-                    ToastUtils.showShortToast(this, "请先选择头像");
-                    return;
-                }
+//                if (path.equals("")) {
+//                    ToastUtils.showShortToast(this, "请先选择头像");
+//                    return;
+//                }
                 if (etName.getText().toString().trim().equals("")) {
                     ToastUtils.showShortToast(this, "请输入姓名");
                     return;
@@ -218,7 +233,9 @@ public class SuccessActivity extends BaseActivity {
         map.put("sex",txtSex.getText().toString().equals("男") ? "1" : "0");
         map.put("message", "");
         map.put("position", "");
-        map.put("headimg", path);
+        if(!path.equals("")) {
+            map.put("headimg", path);
+        }
         if(getIntent().getIntExtra("bind", 0) == 1&&file==null)
             map.put("upload_stat", 1);
         else

@@ -42,6 +42,39 @@ public class ChangePwdActivity extends BaseActivity {
     public void initView(View view) {
 //        etPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 //        etRePwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        etCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etCode.setTag(etCode.getHint().toString());
+                    etCode.setHint("");
+                }else{
+                    etCode.setHint(etCode.getTag().toString());
+                }
+            }
+        });
+        etPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etPwd.setTag(etPwd.getHint().toString());
+                    etPwd.setHint("");
+                }else{
+                    etPwd.setHint(etPwd.getTag().toString());
+                }
+            }
+        });
+        etRePwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    etRePwd.setTag(etRePwd.getHint().toString());
+                    etRePwd.setHint("");
+                }else{
+                    etRePwd.setHint(etRePwd.getTag().toString());
+                }
+            }
+        });
     }
 
     @Override

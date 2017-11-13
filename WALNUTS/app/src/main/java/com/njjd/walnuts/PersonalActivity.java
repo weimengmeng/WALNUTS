@@ -13,6 +13,7 @@ import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.domain.CommonEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
@@ -47,6 +48,8 @@ public class PersonalActivity extends BaseActivity{
     TextView txtProvince;
     @BindView(R.id.txt_position)
     EditText txtPosition;
+    @BindView(R.id.txt_products)
+    EditText txtProducts;
     @BindView(R.id.txt_company)
     EditText txtCompany;
     @BindView(R.id.btn_add_help2)
@@ -68,13 +71,13 @@ public class PersonalActivity extends BaseActivity{
     //销售模式一级菜单
     private List<String> sales;
     private List<CommonEntity> saleList;
+    private OptionsPickerView<String> provincePickview, salePickview, industryPickview, sexPickview;
+    private String provinceId = "", cityId = "", industryId = "", modelId = "";
+    private String provinceName="",cityName="";
     @Override
     public int bindLayout() {
         return R.layout.activity_personal;
     }
-    private OptionsPickerView<String> provincePickview, salePickview, industryPickview, sexPickview;
-    private String provinceId = "", cityId = "", industryId = "", modelId = "";
-    private String provinceName="",cityName="";
     @Override
     public void initView(View view) {
         back.setText("我的");
@@ -82,6 +85,7 @@ public class PersonalActivity extends BaseActivity{
         txtName.setText(SPUtils.get(this,"name","").toString());
         txtName.setSelection(txtName.length());
         txtMessage.setText(SPUtils.get(this,"message","").toString());
+        txtProducts.setText(SPUtils.get(this,"product","").toString());
         txtPosition.setText(SPUtils.get(this,"position","").toString());
         txtProvince.setText(SPUtils.get(this,"province","").toString()+" "+SPUtils.get(this,"city","").toString());
         txtVocation.setText(SPUtils.get(this,"industry","").toString());
@@ -169,17 +173,25 @@ public class PersonalActivity extends BaseActivity{
                 finish();
                 break;
             case R.id.txt_province:
+                KeybordS.closeBoard(this);
                 if (provincePickview != null) {
                     provincePickview.show();
                 }
                 break;
             case R.id.txt_sale:
-                salePickview.show();
+                KeybordS.closeBoard(this);
+                if (salePickview != null) {
+                    salePickview.show();
+                }
                 break;
             case R.id.txt_vocation:
-                industryPickview.show();
+                KeybordS.closeBoard(this);
+                if(industryPickview!=null) {
+                    industryPickview.show();
+                }
                 break;
             case R.id.txt_sex:
+                KeybordS.closeBoard(this);
                 sexPickview.show();
                 break;
             case R.id.btn_add_help2:
@@ -210,6 +222,7 @@ public class PersonalActivity extends BaseActivity{
             map.put("sales_id", modelId);
         map.put("sex", txtSex.getText().toString().equals("男") ? "1" : "0");
         map.put("message", txtMessage.getText().toString().trim());
+        map.put("product", txtProducts.getText().toString().trim());
         map.put("position", txtPosition.getText().toString().trim());
         map.put("company", txtCompany.getText().toString().trim());
         map.put("upload_stat",1);
@@ -222,7 +235,7 @@ public class PersonalActivity extends BaseActivity{
         super.onNext(o);
         ToastUtils.showShortToast(PersonalActivity.this, "完善成功");
         SPUtils.put(this, "name", txtName.getText().toString().trim());
-        SPUtils.put(this, "sex",txtSex.getText().toString().equals("女")?"1.0":"0");
+        SPUtils.put(this, "sex",txtSex.getText().toString().equals("女")?"0.0":"1.0");
         SPUtils.put(this, "province", provinceName);
         SPUtils.put(this, "city", cityName);
         SPUtils.put(this, "company", txtCompany.getText().toString().trim());
@@ -230,6 +243,7 @@ public class PersonalActivity extends BaseActivity{
         SPUtils.put(this, "industry", txtVocation.getText().toString().trim());
         SPUtils.put(this, "sales", txtSale.getText().toString().trim());
         SPUtils.put(this, "message",txtMessage.getText().toString().trim());
+        SPUtils.put(this, "product",txtProducts.getText().toString().trim());
         finish();
     }
     @Override

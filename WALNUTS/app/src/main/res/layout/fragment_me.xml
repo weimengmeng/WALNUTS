@@ -191,7 +191,52 @@
                         android:text=""
                         android:textSize="@dimen/normal" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/height"
+                    android:alpha="0.15"
+                    android:background="@color/txt_color"></View>
+                <LinearLayout style="@style/view_me"
+                    android:paddingTop="@dimen/padding_top"
+                    android:paddingBottom="@dimen/padding_top"
+                    android:gravity="center_vertical">
 
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_product" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding"
+                        android:layout_weight="0.2"
+                        android:text="产品服务"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/normal" />
+
+                    <TextView
+                        android:id="@+id/txt_products"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.7"
+                        android:gravity="center|right"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:paddingRight="@dimen/margin"
+                        android:text=""
+                        android:textColorHint="@color/txt_color"
+                        android:textSize="@dimen/normal"/>
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
