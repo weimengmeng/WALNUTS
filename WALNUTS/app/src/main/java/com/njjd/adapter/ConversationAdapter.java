@@ -68,6 +68,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             } else if (lastMessage.getType() == EMMessage.Type.VOICE) {
                 viewHolder.content
                         .setText("[语音]");
+            }else{
+                viewHolder.content
+                        .setText("未知类型消息");
             }
 //            if (lastMessage.direct == EMMessage.Direct.SEND
 //                    && lastMessage.status == EMMessage.Status.FAIL) {

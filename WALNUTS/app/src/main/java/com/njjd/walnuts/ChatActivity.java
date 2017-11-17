@@ -25,6 +25,7 @@ import com.njjd.adapter.MSGLAdapter;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.voice.AudioRecoderUtils;
 import com.voice.PopupWindowFactory;
@@ -217,8 +218,9 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     private void sendTextMessage() {
         //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
         EMMessage message = EMMessage.createTxtSendMessage(etContent.getText().toString().trim(), getIntent().getStringExtra("openId"));
+        message.setAttribute("avatar", SPUtils.get(this,"head","").toString());
+        message.setAttribute("username", SPUtils.get(this,"name","").toString());
         EMClient.getInstance().chatManager().sendMessage(message);
-        LogUtils.d(getIntent().getStringExtra("openId"));
         messagesList.add(message);
         handler.sendEmptyMessage(0);
         message.setMessageStatusCallback(emCallBack);
@@ -228,6 +230,8 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     private void sendImageMessage() {
         //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
         EMMessage message = EMMessage.createImageSendMessage(imagePath, false, getIntent().getStringExtra("openId"));
+        message.setAttribute("avatar", SPUtils.get(this,"head","").toString());
+        message.setAttribute("username", SPUtils.get(this,"name","").toString());
         EMClient.getInstance().chatManager().sendMessage(message);
         messagesList.add(message);
         handler.sendEmptyMessage(0);
@@ -237,6 +241,8 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     private void sendVoice() {
         //filePath为语音文件路径，length为录音时间(秒)
         EMMessage message = EMMessage.createVoiceSendMessage(tempFilePath, length, getIntent().getStringExtra("openId"));
+        message.setAttribute("avatar", SPUtils.get(this,"head","").toString());
+        message.setAttribute("username", SPUtils.get(this,"name","").toString());
         EMClient.getInstance().chatManager().sendMessage(message);
         messagesList.add(message);
         handler.sendEmptyMessage(0);

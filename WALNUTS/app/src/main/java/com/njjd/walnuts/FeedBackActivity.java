@@ -115,7 +115,6 @@ public class FeedBackActivity extends BaseActivity {
             List<File> files = new ArrayList<>();
             File file;
             for (int i = 0; i < imgs.size(); i++) {
-                LogUtils.d("huan有图片的"+imgs.get(i));
                 file = new File(imgs.get(i));
                 files.add(file);
             }

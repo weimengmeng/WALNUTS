@@ -25,8 +25,8 @@ import rx.schedulers.Schedulers;
  * BASE_URL必须以“/”符号结束
  */
 public class HttpManager {
-    public static final String BASE_URL = "http://116.62.243.41/api/";
-    public static final String BASE_URL2 = "http://116.62.243.41/";
+    public static final String BASE_URL = "http://47.96.24.179/api/";
+    public static final String BASE_URL2 = "http://47.96.24.179/";
 //  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
 //  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
     /**

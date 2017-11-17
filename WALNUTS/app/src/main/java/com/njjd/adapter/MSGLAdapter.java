@@ -153,6 +153,8 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 			voice_msg.setVisibility(View.VISIBLE);
 			voice_msg.setText(((EMVoiceMessageBody) vo.getBody()).getLength()
 					+ "''");
+		}else{
+			voice_msg.setText("未知类型消息");
 		}
 		convertView.findViewById(R.id.msgView).setTag(list.get(position));
 		convertView.findViewById(R.id.msgView).setOnClickListener(this);

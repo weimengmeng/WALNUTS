@@ -614,7 +614,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
         //0 取消关注 1 关注
         map.put("select", questionEntity.getIsFocus() == 0 ? 1 : 0);
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
         HttpManager.getInstance().focusQuestion(postEntity);
     }
