@@ -43,7 +43,7 @@ import io.valuesfeng.picker.utils.PicturePickerUtils;
  * Created by mrwim on 17/7/12.
  */
 
-public class SuccessActivity extends BaseActivity {
+public class  SuccessActivity extends BaseActivity {
     @BindView(R.id.img_head)
     CircleImageView imgHead;
     @BindView(R.id.et_name)
@@ -236,10 +236,10 @@ public class SuccessActivity extends BaseActivity {
         if(!path.equals("")) {
             map.put("headimg", path);
         }
-        if(getIntent().getIntExtra("bind", 0) == 1&&file==null)
-            map.put("upload_stat", 0);
-        else
+        if(getIntent().getIntExtra("bind", 0) == 1)
             map.put("upload_stat", 1);
+        else
+            map.put("upload_stat", 0);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().completeInfo(postEntity);
     }

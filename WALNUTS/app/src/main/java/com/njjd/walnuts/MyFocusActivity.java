@@ -69,13 +69,14 @@ public class MyFocusActivity extends BaseActivity {
     private List<FocusEntity> userList = new ArrayList<>();
     private List<QuestionEntity> quesList = new ArrayList<>();
     private List<FocusEntity> tagList = new ArrayList<>();
-    private List<FocusEntity> columnList=new ArrayList<>();
+    private List<FocusEntity> columnList = new ArrayList<>();
     private FocusPeopleAdapter peopleAdapter;
     private FocusTagAdapter focusTagAdapter;
     private FocusQuesAdapter quesAdapter;
     private FocusColumnAdapter columnAdapter;
     private SwipeMenuCreator creator;
-    private int currentPage=1;
+    private int currentPage = 1;
+
     @Override
     public int bindLayout() {
         return R.layout.activity_myfocus;
@@ -100,7 +101,7 @@ public class MyFocusActivity extends BaseActivity {
         };
         peopleAdapter = new FocusPeopleAdapter(userList, this);
         listUser.setEmptyView(findViewById(R.id.empty));
-        ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的用户");
+        ((TextView) findViewById(R.id.txt_content)).setText("暂时没有关注的用户");
         listUser.setAdapter(peopleAdapter);
         listUser.setMenuCreator(creator);
         listUser.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
@@ -118,8 +119,8 @@ public class MyFocusActivity extends BaseActivity {
         listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(MyFocusActivity.this,PeopleInfoActivity.class);
-                intent.putExtra("uid",userList.get(position).getId());
+                Intent intent = new Intent(MyFocusActivity.this, PeopleInfoActivity.class);
+                intent.putExtra("uid", userList.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -153,7 +154,7 @@ public class MyFocusActivity extends BaseActivity {
                 return false;
             }
         });
-        columnAdapter=new FocusColumnAdapter(columnList,this);
+        columnAdapter = new FocusColumnAdapter(columnList, this);
         listColumn.setAdapter(columnAdapter);
         listColumn.setMenuCreator(creator);
         listColumn.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
@@ -168,10 +169,10 @@ public class MyFocusActivity extends BaseActivity {
                 return false;
             }
         });
-        FocusTagAdapter.CURRENT_PAGE=1;
-        FocusPeopleAdapter.CURRENT_PAGE=1;
-        FocusQuesAdapter.CURRENT_PAGE=1;
-        FocusColumnAdapter.CURRENT_PAGE=1;
+        FocusTagAdapter.CURRENT_PAGE = 1;
+        FocusPeopleAdapter.CURRENT_PAGE = 1;
+        FocusQuesAdapter.CURRENT_PAGE = 1;
+        FocusColumnAdapter.CURRENT_PAGE = 1;
         listQues.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -179,7 +180,7 @@ public class MyFocusActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", quesList.get(position));
                 intent.putExtra("question", bundle);
-                intent.putExtra("type","1");
+                intent.putExtra("type", "1");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
@@ -187,24 +188,28 @@ public class MyFocusActivity extends BaseActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                switch (currentPage){
-                        case 1:
-                            FocusPeopleAdapter.CURRENT_PAGE=1;
-                            getFocusUser();
-                            break;
-                        case 2:
-                            FocusQuesAdapter.CURRENT_PAGE=1;
-                            getFocusQuestion();
-                            break;
-                        case 3:
-                            FocusTagAdapter.CURRENT_PAGE=1;
-                            getFocusTag();
-                            break;
+                switch (currentPage) {
+                    case 1:
+                        FocusPeopleAdapter.CURRENT_PAGE = 1;
+                        userList.clear();
+                        getFocusUser();
+                        break;
+                    case 2:
+                        FocusQuesAdapter.CURRENT_PAGE = 1;
+                        quesList.clear();
+                        getFocusQuestion();
+                        break;
+                    case 3:
+                        FocusTagAdapter.CURRENT_PAGE = 1;
+                        tagList.clear();
+                        getFocusTag();
+                        break;
                     case 4:
-                        FocusColumnAdapter.CURRENT_PAGE=1;
+                        columnList.clear();
+                        FocusColumnAdapter.CURRENT_PAGE = 1;
                         getFocusColumn();
                         break;
-                    }
+                }
             }
         });
         listQues.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -215,7 +220,7 @@ public class MyFocusActivity extends BaseActivity {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1) {
                         FocusQuesAdapter.CURRENT_PAGE++;
-                            getFocusQuestion();
+                        getFocusQuestion();
                     }
                 }
             }
@@ -224,13 +229,14 @@ public class MyFocusActivity extends BaseActivity {
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 boolean enable = false;
-                if(listQues != null && listQues.getChildCount() > 0){
+                if (listQues != null && listQues.getChildCount() > 0) {
                     boolean firstItemVisible = listQues.getFirstVisiblePosition() == 0;
                     boolean topOfFirstItemVisible = listQues.getChildAt(0).getTop() == 0;
                     enable = firstItemVisible && topOfFirstItemVisible;
                 }
                 refreshLayout.setEnabled(enable);
-            }});
+            }
+        });
         listUser.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -239,7 +245,7 @@ public class MyFocusActivity extends BaseActivity {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1) {
                         FocusPeopleAdapter.CURRENT_PAGE++;
-                            getFocusUser();
+                        getFocusUser();
                     }
                 }
             }
@@ -248,13 +254,14 @@ public class MyFocusActivity extends BaseActivity {
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 boolean enable = false;
-                if(listUser != null && listUser.getChildCount() > 0){
+                if (listUser != null && listUser.getChildCount() > 0) {
                     boolean firstItemVisible = listUser.getFirstVisiblePosition() == 0;
                     boolean topOfFirstItemVisible = listUser.getChildAt(0).getTop() == 0;
                     enable = firstItemVisible && topOfFirstItemVisible;
                 }
                 refreshLayout.setEnabled(enable);
-            }});
+            }
+        });
         listTag.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -263,7 +270,7 @@ public class MyFocusActivity extends BaseActivity {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1) {
                         FocusTagAdapter.CURRENT_PAGE++;
-                            getFocusTag();
+                        getFocusTag();
                     }
                 }
             }
@@ -272,13 +279,14 @@ public class MyFocusActivity extends BaseActivity {
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 boolean enable = false;
-                if(listTag != null && listTag.getChildCount() > 0){
+                if (listTag != null && listTag.getChildCount() > 0) {
                     boolean firstItemVisible = listTag.getFirstVisiblePosition() == 0;
                     boolean topOfFirstItemVisible = listTag.getChildAt(0).getTop() == 0;
                     enable = firstItemVisible && topOfFirstItemVisible;
                 }
                 refreshLayout.setEnabled(enable);
-            }});
+            }
+        });
         listColumn.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -296,13 +304,14 @@ public class MyFocusActivity extends BaseActivity {
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 boolean enable = false;
-                if(listColumn != null && listColumn.getChildCount() > 0){
+                if (listColumn != null && listColumn.getChildCount() > 0) {
                     boolean firstItemVisible = listColumn.getFirstVisiblePosition() == 0;
                     boolean topOfFirstItemVisible = listColumn.getChildAt(0).getTop() == 0;
                     enable = firstItemVisible && topOfFirstItemVisible;
                 }
                 refreshLayout.setEnabled(enable);
-            }});
+            }
+        });
         listTag.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -331,7 +340,7 @@ public class MyFocusActivity extends BaseActivity {
         getFocusColumn();
     }
 
-    @OnClick({R.id.back, R.id.radio_one, R.id.radio_two, R.id.radio_three,R.id.radio_four})
+    @OnClick({R.id.back, R.id.radio_one, R.id.radio_two, R.id.radio_three, R.id.radio_four})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -343,8 +352,8 @@ public class MyFocusActivity extends BaseActivity {
                 listQues.setVisibility(View.GONE);
                 listTag.setVisibility(View.GONE);
                 listColumn.setVisibility(View.GONE);
-                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的用户");
-                currentPage=1;
+                ((TextView) findViewById(R.id.txt_content)).setText("暂时没有关注的用户");
+                currentPage = 1;
                 break;
             case R.id.radio_two:
                 listUser.setVisibility(View.GONE);
@@ -352,8 +361,8 @@ public class MyFocusActivity extends BaseActivity {
                 listTag.setVisibility(View.GONE);
                 listColumn.setVisibility(View.GONE);
                 listQues.setEmptyView(findViewById(R.id.empty));
-                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的问题");
-                currentPage=2;
+                ((TextView) findViewById(R.id.txt_content)).setText("暂时没有关注的问题");
+                currentPage = 2;
                 break;
             case R.id.radio_three:
                 listUser.setVisibility(View.GONE);
@@ -361,8 +370,8 @@ public class MyFocusActivity extends BaseActivity {
                 listTag.setVisibility(View.VISIBLE);
                 listColumn.setVisibility(View.GONE);
                 listTag.setEmptyView(findViewById(R.id.empty));
-                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的话题");
-                currentPage=3;
+                ((TextView) findViewById(R.id.txt_content)).setText("暂时没有关注的话题");
+                currentPage = 3;
                 break;
             case R.id.radio_four:
                 listUser.setVisibility(View.GONE);
@@ -370,8 +379,8 @@ public class MyFocusActivity extends BaseActivity {
                 listTag.setVisibility(View.GONE);
                 listColumn.setVisibility(View.VISIBLE);
                 listColumn.setEmptyView(findViewById(R.id.empty));
-                ((TextView)findViewById(R.id.txt_content)).setText("暂时没有关注的专栏");
-                currentPage=4;
+                ((TextView) findViewById(R.id.txt_content)).setText("暂时没有关注的专栏");
+                currentPage = 4;
                 break;
         }
     }
@@ -381,7 +390,7 @@ public class MyFocusActivity extends BaseActivity {
         map.put("uid", SPUtils.get(this, "userId", "").toString());
         map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", FocusPeopleAdapter.CURRENT_PAGE);
-        map.put("select","1");
+        map.put("select", "1");
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getFocusUserListener, this, false, false), map);
         HttpManager.getInstance().getFollowUser(postEntity);
     }
@@ -398,20 +407,22 @@ public class MyFocusActivity extends BaseActivity {
                 gsonBuilder.serializeNulls(); //重点
                 Gson gson = gsonBuilder.create();
                 if (array != null) {
-                    if(FocusPeopleAdapter.CURRENT_PAGE==1){
+                    if (FocusPeopleAdapter.CURRENT_PAGE == 1) {
                         userList.clear();
                     }
                     for (int i = 0; i < array.size(); i++) {
                         try {
                             object = new JSONObject(gson.toJson(array.get(i)));
                             userList.add(new FocusEntity(object.getString("uid"), object.getString("uname"), object.getString("headimgs"),
-                                    object.getString("add_time"), object.isNull("introduction")?"":object.getString("introduction")));
+                                    object.getString("add_time"), object.isNull("introduction") ? "" : object.getString("introduction")));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                     peopleAdapter.notifyDataSetChanged();
                 }
+            }else{
+                peopleAdapter.notifyDataSetChanged();
             }
         }
     };
@@ -437,19 +448,21 @@ public class MyFocusActivity extends BaseActivity {
                 Gson gson = gsonBuilder.create();
                 JSONObject object;
                 if (array != null) {
-                    if(FocusQuesAdapter.CURRENT_PAGE==1) {
+                    if (FocusQuesAdapter.CURRENT_PAGE == 1) {
                         quesList.clear();
                     }
                     for (int i = 0; i < array.size(); i++) {
                         try {
-                            object=new JSONObject(gson.toJson(array.get(i)));
-                            quesList.add(new QuestionEntity(object,""));
+                            object = new JSONObject(gson.toJson(array.get(i)));
+                            quesList.add(new QuestionEntity(object, ""));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                     quesAdapter.notifyDataSetChanged();
                 }
+            }else{
+                quesAdapter.notifyDataSetChanged();
             }
         }
     };
@@ -471,7 +484,7 @@ public class MyFocusActivity extends BaseActivity {
                 JsonObject jsonObject = JSONUtils.getAsJsonObject(o);
                 JsonArray array = JSONUtils.getAsJsonArray(jsonObject.get("label"));
                 if (array != null) {
-                    if(FocusTagAdapter.CURRENT_PAGE==1) {
+                    if (FocusTagAdapter.CURRENT_PAGE == 1) {
                         tagList.clear();
                     }
                     JsonObject object;
@@ -481,9 +494,12 @@ public class MyFocusActivity extends BaseActivity {
                     }
                     focusTagAdapter.notifyDataSetChanged();
                 }
+            }else{
+                focusTagAdapter.notifyDataSetChanged();
             }
         }
     };
+
     private void getFocusColumn() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
@@ -500,7 +516,7 @@ public class MyFocusActivity extends BaseActivity {
             if (!o.toString().equals("")) {
                 JsonArray array = JSONUtils.getAsJsonArray(o);
                 if (array != null) {
-                    if(FocusColumnAdapter.CURRENT_PAGE==1) {
+                    if (FocusColumnAdapter.CURRENT_PAGE == 1) {
                         columnList.clear();
                     }
                     JsonObject object;
@@ -510,9 +526,12 @@ public class MyFocusActivity extends BaseActivity {
                     }
                     columnAdapter.notifyDataSetChanged();
                 }
+            }else{
+                columnAdapter.notifyDataSetChanged();
             }
         }
     };
+
     private void cancleFocusUser(final int position) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
@@ -522,7 +541,7 @@ public class MyFocusActivity extends BaseActivity {
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
             @Override
             public void onNext(Object o) {
-                SPUtils.put(MyFocusActivity.this,"focus",Integer.valueOf(SPUtils.get(MyFocusActivity.this,"focus",0).toString())-1);
+                SPUtils.put(MyFocusActivity.this, "focus", Integer.valueOf(SPUtils.get(MyFocusActivity.this, "focus", 0).toString()) - 1);
                 userList.remove(position);
                 peopleAdapter.notifyDataSetChanged();
             }
@@ -530,6 +549,7 @@ public class MyFocusActivity extends BaseActivity {
         HttpManager.getInstance().followUser(postEntity);
 
     }
+
     private void cancleFocusQuestion(final int position) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
@@ -546,6 +566,7 @@ public class MyFocusActivity extends BaseActivity {
         }, this, false, false), map);
         HttpManager.getInstance().focusQuestion(postEntity);
     }
+
     private void cancleFocusTag(final int position) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", "").toString());
@@ -561,6 +582,7 @@ public class MyFocusActivity extends BaseActivity {
         }, this, false, false), map);
         HttpManager.getInstance().focusLabel(postEntity);
     }
+
     private void cancleFocusColumn(final int position) {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
@@ -576,6 +598,7 @@ public class MyFocusActivity extends BaseActivity {
         }, this, true, false), map);
         HttpManager.getInstance().followColumn(postEntity);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

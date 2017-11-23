@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -98,7 +99,8 @@ public class ColumnActivity extends BaseActivity implements ObservableScrollView
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             // 设置头部控件ViewGroup的PaddingTop,防止界面与状态栏重叠
             int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(this);
-            findViewById(R.id.demo).setPadding(0, statusBarHeight+20, 0,0);
+            LogUtils.d("huan"+statusBarHeight);
+            findViewById(R.id.re_top).setPadding(0, statusBarHeight, 0,0);
         }
         txtTitle.setTextColor(Color.argb(0, 255, 255, 255));
         listColumn.setAdapter(adapter);

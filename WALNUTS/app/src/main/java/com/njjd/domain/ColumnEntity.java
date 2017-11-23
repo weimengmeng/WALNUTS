@@ -25,7 +25,7 @@ public class ColumnEntity implements Serializable {
             this.uid=object.isNull("uid")?"":object.getString("uid");
             this.name=object.getString("column_name");
             this.uname=object.getString("uname");
-            this.uhead=object.isNull("headimg")?"":object.getString("headimg").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
+            this.uhead=object.isNull("img")?"":object.getString("img").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.pic=object.isNull("bg_img")?"":object.getString("bg_img").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.desc=object.getString("desc");
             this.follow_num=object.getString("follow_num");

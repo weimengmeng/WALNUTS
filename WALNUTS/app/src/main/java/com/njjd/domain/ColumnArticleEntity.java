@@ -23,6 +23,7 @@ public class ColumnArticleEntity implements Serializable {
     public String commentNum;
     public String pointNum;
     public String time;
+    public String columnName;
     public ColumnArticleEntity(){
 
     }
@@ -39,10 +40,20 @@ public class ColumnArticleEntity implements Serializable {
             this.pointNum=object.isNull("point_num")?"":object.getString("point_num");
             this.uid=object.isNull("uid")?"":object.getString("uid");
             this.time=object.isNull("add_time")?"":object.getString("add_time");
+            this.columnName=object.isNull("column_name")?"":object.getString("column_name");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
+
     public String getArticle_id() {
         return article_id;
     }

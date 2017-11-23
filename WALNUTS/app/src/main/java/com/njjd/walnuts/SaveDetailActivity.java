@@ -89,6 +89,7 @@ public class SaveDetailActivity extends BaseActivity {
     private LayoutInflater inflater;
     private RelativeLayout relativeLayout;
     private ImageView imageView;
+    private String questionStat="0";
     @Override
     public int bindLayout() {
         return R.layout.activity_save_detail;
@@ -190,6 +191,7 @@ public class SaveDetailActivity extends BaseActivity {
                 txtFocus.setTextColor(getResources().getColor(R.color.white));
                 txtFocus.setBackgroundResource(R.drawable.txt_shape_login);
             }
+            questionStat=object.isNull("invisible")?"0.0":object.getString("invisible");
             txtAnswerNum.setText("回答 " + Float.valueOf(object.getString("answer_num")).intValue());
             txtFocusNum.setText("关注 " + Float.valueOf(object.getString("follow_num")).intValue());
             String[] strings = object.getString("label_name").split(",");
@@ -217,6 +219,10 @@ public class SaveDetailActivity extends BaseActivity {
         }
     }
     private void addFocus(){
+        if(questionStat.equals("1.0")){
+            ToastUtils.showShortToast(this,"该问题涉及违规内容,禁止操作");
+            return;
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token",SPUtils.get(this,"token",""));
@@ -250,6 +256,10 @@ public class SaveDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.txt_more:
+                if(questionStat.equals("1.0")){
+                    ToastUtils.showShortToast(this,"该问题涉及违规内容,禁止操作");
+                    return;
+                }
                 QuestionEntity entity=new QuestionEntity();
                 entity.setIsFocus(Integer.valueOf(txtFocus.getTag().toString()));
                 entity.setTitle(saveEntity.getTitle());
@@ -293,6 +303,10 @@ public class SaveDetailActivity extends BaseActivity {
         }
     }
     private void agreeOrSave(final String params){
+        if(questionStat.equals("1.0")){
+            ToastUtils.showShortToast(this,"该问题涉及违规内容,禁止操作");
+            return;
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put(params, saveEntity.getComment_id());

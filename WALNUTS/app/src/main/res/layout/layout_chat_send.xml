@@ -28,16 +28,17 @@
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/chat_content"
                 android:layout_width="wrap_content"
-                android:text="你好你好你好你好你好你好你好你好"
+                android:text="你你好好你好好你好你好你好"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
-                android:background="@drawable/bg_chat_right_white"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:textSize="@dimen/normal"
+                android:background="@drawable/off"
+                />
             <ImageView
                 android:id="@+id/chat_img_pic"
                 android:layout_width="200dp"
@@ -50,16 +51,18 @@
                 android:id="@+id/chat_voice"
                 android:layout_width="wrap_content"
                 android:src="@drawable/head"
-                android:background="@drawable/bg_chat_right_white"
-                android:drawableLeft="@drawable/pic_voice_left"
+                android:background="@drawable/off"
+                android:drawableLeft="@drawable/pic_voice_left_01"
                 android:visibility="gone"
                 android:gravity="center"
+                android:textSize="@dimen/normal"
                 android:layout_height="wrap_content" />
                 </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
             android:layout_weight="0.2"
-            android:gravity="center"
+            android:gravity="center|top"
+            android:paddingTop="@dimen/margin"
             android:layout_height="match_parent">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"

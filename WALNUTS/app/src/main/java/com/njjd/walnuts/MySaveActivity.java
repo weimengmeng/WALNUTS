@@ -55,6 +55,7 @@ public class MySaveActivity extends BaseActivity {
     private MySaveAdapter saveAdapter;
     private List<ColumnArticleEntity> articleEntities=new ArrayList<>();
     private RecommendArticleAdapter articleAdapter;
+    private View emptyView;
     @Override
     public int bindLayout() {
         return R.layout.activity_mysave;
@@ -64,8 +65,7 @@ public class MySaveActivity extends BaseActivity {
     public void initView(View view) {
         back.setText("我的");
         txtTitle.setText("我的收藏");
-        listSave.setEmptyView(findViewById(R.id.empty));
-        ((TextView)findViewById(R.id.txt_content)).setText("暂无收藏");
+        emptyView=findViewById(R.id.empty);
         saveAdapter = new MySaveAdapter(list, this);
         listSave.setAdapter(saveAdapter);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -145,15 +145,7 @@ public class MySaveActivity extends BaseActivity {
                 refresh.setEnabled(enable);
             }
         });
-        listArticle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(MySaveActivity.this, ColumnDetailActivity.class);
-                intent.putExtra("article_id",Float.valueOf(articleEntities.get(position).getArticle_id()).intValue()+"");
-                startActivity(intent);
-                overridePendingTransition(R.anim.in, R.anim.out);
-            }
-        });
+        listArticle.setVisibility(View.GONE);
     }
     @OnClick({R.id.back, R.id.radio_one, R.id.radio_two})
     public void onViewClicked(View view) {
@@ -162,12 +154,16 @@ public class MySaveActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.radio_one:
+                listSave.setEmptyView(emptyView);
                 listSave.setVisibility(View.VISIBLE);
                 listArticle.setVisibility(View.GONE);
+                ((TextView)emptyView.findViewById(R.id.txt_content)).setText("暂无收藏的回答");
                 break;
             case R.id.radio_two:
+                listArticle.setEmptyView(emptyView);
                 listSave.setVisibility(View.GONE);
                 listArticle.setVisibility(View.VISIBLE);
+                ((TextView)emptyView.findViewById(R.id.txt_content)).setText("暂无收藏的文章");
                 break;
         }
     }

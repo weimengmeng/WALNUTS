@@ -155,7 +155,7 @@ public class TagActivity extends BaseActivity  {
     }
     private void addFocus(){
         Map<String,Object> map=new HashMap<>();
-        map.put("label_id",getIntent().getStringExtra("tag_id"));
+        map.put("label_id",Float.valueOf(getIntent().getStringExtra("tag_id")).intValue());
         map.put("token", SPUtils.get(this,"token","").toString());
         map.put("uid",SPUtils.get(this,"userId","").toString());
         if(txtFocus.getText().toString().equals("取消关注")){
@@ -163,6 +163,7 @@ public class TagActivity extends BaseActivity  {
         }else{
             map.put("select","1");
         }
+        LogUtils.d("haha"+map.toString());
         SubjectPost postEntity=new SubjectPost(new ProgressSubscriber(focusListener,this,false,false),map);
         HttpManager.getInstance().focusLabel(postEntity);
     }

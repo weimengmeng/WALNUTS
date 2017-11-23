@@ -137,41 +137,6 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/height"
-            android:alpha="0.15"
-            android:background="@color/txt_color"></View>
-        <LinearLayout style="@style/view_me"
-            android:paddingTop="@dimen/padding_top"
-            android:paddingBottom="@dimen/padding_top"
-            android:gravity="center_vertical">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding"
-                android:layout_weight="0.2"
-                android:text="产品服务"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal" />
-
-            <EditText
-                android:id="@+id/txt_products"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.8"
-                android:gravity="center|right"
-                android:paddingRight="@dimen/margin"
-                android:background="@null"
-                android:text=""
-                android:textCursorDrawable="@drawable/color_cusor"
-                android:textColorHint="@color/txt_color"
-                android:typeface="sans"
-                android:maxLength="30"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -210,7 +175,76 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/normal" />
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.15"
+            android:background="@color/txt_color"></View>
+        <LinearLayout
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding"
+            android:weightSum="1">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="区域"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <TextView
+                android:id="@+id/txt_province"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:drawableRight="@drawable/select"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:text=""
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/height"
+            android:alpha="0.15"
+            android:background="@color/txt_color"></View>
+        <LinearLayout style="@style/view_me"
+            android:paddingTop="@dimen/padding_top"
+            android:paddingBottom="@dimen/padding_top"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding"
+                android:layout_weight="0.2"
+                android:text="产品服务"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/normal" />
+
+            <EditText
+                android:id="@+id/txt_products"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/margin"
+                android:background="@null"
+                android:text=""
+                android:textCursorDrawable="@drawable/color_cusor"
+                android:textColorHint="@color/txt_color"
+                android:typeface="sans"
+                android:maxLength="30"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/normal" />
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -247,41 +281,7 @@
                 android:textSize="@dimen/normal" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/height"
-            android:alpha="0.15"
-            android:background="@color/txt_color"></View>
-        <LinearLayout
-            android:paddingTop="@dimen/margin"
-            android:paddingBottom="@dimen/margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding"
-            android:weightSum="1">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding"
-                android:layout_weight="0.2"
-                android:text="地区"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal" />
-
-            <TextView
-                android:id="@+id/txt_province"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:drawableRight="@drawable/select"
-                android:gravity="center|right"
-                android:paddingRight="@dimen/margin"
-                android:text=""
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

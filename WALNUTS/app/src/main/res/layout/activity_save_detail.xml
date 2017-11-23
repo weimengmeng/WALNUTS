@@ -15,6 +15,7 @@
         android:layout_below="@id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/grey"
         android:orientation="vertical">
         <com.scrollablelayout.ScrollableLayout
             android:id="@+id/scrollLayout"
@@ -53,7 +54,7 @@
             <ScrollView
                 android:id="@+id/lv_root"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <include layout="@layout/layout_save_detail"></include>
             </ScrollView>
         </com.scrollablelayout.ScrollableLayout>

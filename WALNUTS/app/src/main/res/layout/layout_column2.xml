@@ -71,14 +71,10 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <WebView
             android:id="@+id/img"
             android:layout_width="@dimen/head_large"
-            android:layout_height="@dimen/head_large"
-            app:riv_corner_radius="4dp"
-            android:scaleType="centerCrop"
-            app:riv_mutate_background="true"
-            app:riv_oval="false"
-            app:riv_tile_mode="repeat" />
+            android:scrollbars="none"
+            android:layout_height="@dimen/head_large" />
     </LinearLayout>
 </LinearLayout>

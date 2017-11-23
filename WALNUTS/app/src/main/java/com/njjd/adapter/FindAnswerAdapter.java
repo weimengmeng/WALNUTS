@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -185,7 +186,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
             }
         } else {
-            for (int i = 0; i < bannerList.size() && urls.size() < 1; i++) {
+            for (int i = 0; i < bannerList.size(); i++) {
                 if (bannerList.get(i).getType().equals("4.0")) {
                     images.add(bannerList.get(i).getImg());
                     titles.add(bannerList.get(i).getTitle());
@@ -288,7 +289,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             TextView title;
             TextView content;
             TextView name;
-            ImageView pic;
+            WebView pic;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -299,7 +300,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 content = (TextView) itemView
                         .findViewById(R.id.txt_content);
                 title = (TextView) itemView.findViewById(R.id.txt_title);
-                pic = (ImageView) itemView
+                pic = (WebView) itemView
                         .findViewById(R.id.img);
             }
         }
@@ -328,11 +329,10 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             columnEntity = mDatas.get(i);
             viewHolder.name.setText(columnEntity.getName());
             viewHolder.title.setText(columnEntity.getTitle());
-            viewHolder.content.setText(columnEntity.getDesci());
-            viewHolder.content.setVisibility(View.INVISIBLE);
+            viewHolder.content.setText(columnEntity.getColumnName());
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
-            viewHolder.pic.setScaleType(ImageView.ScaleType.FIT_XY);
-            GlideImageLoder.getInstance().displayImage(context,HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""), viewHolder.pic);
+            viewHolder.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            viewHolder.pic.loadUrl(HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""));
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

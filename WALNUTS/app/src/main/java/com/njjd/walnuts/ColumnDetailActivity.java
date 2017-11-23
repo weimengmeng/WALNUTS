@@ -130,9 +130,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         AndroidBug5497Workaround.assistActivity(this);
         footView=LayoutInflater.from(this).inflate(R.layout.footer,null);
         txtTitle.setText("文章详情");
-        btnAddHelp.setVisibility(View.VISIBLE);
-        adapter = new RecommendArticleAdapter(this, entities);
-        listSelect.setAdapter(adapter);
+//        btnAddHelp.setVisibility(View.VISIBLE);
         root.smoothScrollTo(0, 0);
         madapter=new ArticleCommentAdapter(this,list);
         list.add(new CommentEntity());
@@ -162,6 +160,8 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
                 startActivity(intent);
             }
         });
+        adapter = new RecommendArticleAdapter(this, entities);
+        listSelect.setAdapter(adapter);
         listSelect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -553,11 +553,11 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         lvShare.setVisibility(View.GONE);
         web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
         web.setTitle(detailActivity.getTitle());//标题
-        if(!detailActivity.getContent().contains("<img")){
-            image = new UMImage(ColumnDetailActivity.this, R.drawable.share);//资源文件
-        }else{
-            image = new UMImage(ColumnDetailActivity.this,detailActivity.getContent().substring(detailActivity.getContent().indexOf("src=\"")+5,detailActivity.getContent().indexOf('>')-1));//资源文件
-        }
+//        if(!detailActivity.getContent().contains("<img")){
+//            image = new UMImage(ColumnDetailActivity.this, R.drawable.share);//资源文件
+//        }else{
+            image = new UMImage(this,HttpManager.BASE_URL2+detailActivity.getPic().split(",")[0].replace("\"",""));//资源文件
+//        }
         web.setThumb(image);
         web.setDescription(detailActivity.getDesci());//描述
         new ShareAction(this).setPlatform(share_media).withMedia(web).setCallback(mShareListener).share();

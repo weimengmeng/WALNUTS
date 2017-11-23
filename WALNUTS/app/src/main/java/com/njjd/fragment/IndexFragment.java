@@ -219,6 +219,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
             @Override
             public void onPageSelected(int position) {
+                if(position==0){
+                    imgOrder.setVisibility(View.INVISIBLE);
+                }else{
+                    imgOrder.setVisibility(View.VISIBLE);
+                }
                 buttonGroup.check(position);
                 tempList = lists.get(position);
                 list = listViews.get(position);
@@ -236,6 +241,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }
         });
         indexPage.setCurrentItem(0);
+        imgOrder.setVisibility(View.INVISIBLE);
         tempList = lists.get(0);
         list = listViews.get(0);
         questionAdapter = adapterList.get(0);

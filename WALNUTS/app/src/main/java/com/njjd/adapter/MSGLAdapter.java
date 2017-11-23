@@ -3,8 +3,11 @@ package com.njjd.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author wmm
@@ -42,6 +47,13 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 	MediaPlayer mediaPlayer;
 	String avatar;
 	ArrayList<String> datas;
+	//语音动画控制器
+	Timer mTimer=null;
+	//语音动画控制任务
+	TimerTask mTimerTask=null;
+	//记录语音动画图片
+	int index=1;
+	AudioAnimationHandler audioAnimationHandler=null;
 	public MSGLAdapter(Context context, List<EMMessage> list) {
 		this.context = context;
 		this.list = list;
@@ -179,9 +191,9 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 		EMMessage message = (EMMessage) v.getTag();
 		if (message.getType() == EMMessage.Type.VOICE) {
 			if (message.direct() == EMMessage.Direct.RECEIVE)
-				play(((EMVoiceMessageBody) message.getBody()).getRemoteUrl());
+				play(((EMVoiceMessageBody) message.getBody()).getRemoteUrl(),(TextView) v.findViewById(R.id.chat_voice),true);
 			else
-				play(((EMVoiceMessageBody) message.getBody()).getLocalUrl());
+				play(((EMVoiceMessageBody) message.getBody()).getLocalUrl(),(TextView)v.findViewById(R.id.chat_voice),false);
 		} else if (message.getType() == EMMessage.Type.IMAGE) {
 //			File file = new File(
 //					((EMImageMessageBody) message.getBody()).getLocalUrl());
@@ -211,12 +223,18 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 		}
 	}
 
-	private void play(String url) {
+	private void play(String url, final TextView textView, final boolean isLeft) {
 		try {
 			mediaPlayer.reset();
 			mediaPlayer.setDataSource(url);
 			mediaPlayer.prepare();
-			mediaPlayer.start();
+			mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+				@Override
+				public void onPrepared(MediaPlayer mp) {
+					mediaPlayer.start();
+					playAudioAnimation(textView,isLeft);
+				}
+			});
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -227,5 +245,102 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 播放语音图标动画
+	 */
+	private void playAudioAnimation(final TextView textView,boolean isleft) {
+		//定时器检查播放状态
+		stopTimer();
+		mTimer=new Timer();
+		//将要关闭的语音图片归位
+		if(audioAnimationHandler!=null)
+		{
+			Message msg=new Message();
+			msg.what=3;
+			audioAnimationHandler.sendMessage(msg);
+		}
 
+		audioAnimationHandler=new AudioAnimationHandler(textView,isleft);
+		mTimerTask = new TimerTask() {
+			public boolean hasPlayed=false;
+			@Override
+			public void run() {
+				if(mediaPlayer.isPlaying()) {
+					hasPlayed=true;
+					index=(index+1)%3;
+					Message msg=new Message();
+					msg.what=index;
+					audioAnimationHandler.sendMessage(msg);
+				}else
+				{
+					//当播放完时
+					Message msg=new Message();
+					msg.what=3;
+					audioAnimationHandler.sendMessage(msg);
+					//播放完毕时需要关闭Timer等
+					if(hasPlayed)
+					{
+						stopTimer();
+					}
+				}
+			}
+		};
+		//调用频率为500毫秒一次
+		mTimer.schedule(mTimerTask, 0, 500);
+	}
+	class AudioAnimationHandler extends Handler
+	{
+		TextView textView;
+		//判断是左对话框还是右对话框
+		boolean isleft;
+		public AudioAnimationHandler(TextView textView,boolean isleft)
+		{
+			this.textView=textView;
+			//判断是左对话框还是右对话框 我这里是在前面设置ScaleType来表示的
+			this.isleft=isleft;
+		}
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			Drawable drawable=null;
+			//根据msg.what来替换图片，达到动画效果
+			switch (msg.what) {
+				case 0 :
+					drawable= isleft?context.getResources().getDrawable(R.drawable.pic_voice_right_01):context.getResources().getDrawable(R.drawable.pic_voice_left_03);
+					break;
+				case 1 :
+					drawable= isleft?context.getResources().getDrawable(R.drawable.pic_voice_right_02):context.getResources().getDrawable(R.drawable.pic_voice_left_02);
+					break;
+				case 2 :
+					drawable= isleft?context.getResources().getDrawable(R.drawable.pic_voice_right_03):context.getResources().getDrawable(R.drawable.pic_voice_left_01);
+					break;
+				default :
+					drawable= isleft?context.getResources().getDrawable(R.drawable.pic_voice_right_03):context.getResources().getDrawable(R.drawable.pic_voice_left_01);
+					break;
+			}
+			if(isleft){
+				drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+				textView.setCompoundDrawables(null,null,drawable,null);
+			}else{
+				drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+				textView.setCompoundDrawables(drawable,null,null,null);
+			}
+		}
+
+	}
+	/**
+	 * 停止
+	 */
+	private void stopTimer(){
+		if (mTimer != null) {
+			mTimer.cancel();
+			mTimer = null;
+		}
+
+		if (mTimerTask != null) {
+			mTimerTask.cancel();
+			mTimerTask = null;
+		}
+
+	}
 }

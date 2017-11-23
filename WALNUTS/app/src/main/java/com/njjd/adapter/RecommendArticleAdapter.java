@@ -1,9 +1,12 @@
 package com.njjd.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +15,9 @@ import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.ColumnDetailActivity;
+import com.njjd.walnuts.MySaveActivity;
 import com.njjd.walnuts.R;
 
 import java.util.List;
@@ -55,7 +61,7 @@ public class RecommendArticleAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHodel hodel=null;
         if(convertView==null){
             hodel=new ViewHodel();
@@ -67,7 +73,7 @@ public class RecommendArticleAdapter extends BaseAdapter {
             hodel.content = (TextView) convertView
                     .findViewById(R.id.txt_content);
             hodel.title = (TextView) convertView.findViewById(R.id.txt_title);
-            hodel.pic = (ImageView) convertView
+            hodel.pic = (WebView) convertView
                     .findViewById(R.id.img);
             convertView.setTag(hodel);
         }else{
@@ -77,9 +83,18 @@ public class RecommendArticleAdapter extends BaseAdapter {
         GlideImageLoder.getInstance().displayImage(context, entity.getHead(), hodel.head);
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
-//        hodel.content.setText(entity.getContent());
-        hodel.content.setVisibility(View.INVISIBLE);
-        GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+entity.getPic().replace("\"",""), hodel.pic);
+        hodel.content.setText(entity.getColumnName());
+        hodel.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        hodel.pic.loadUrl(HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""));
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, ColumnDetailActivity.class);
+                intent.putExtra("article_id",Float.valueOf(list.get(position).getArticle_id()).intValue()+"");
+                context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.in, R.anim.out);
+            }
+        });
         return convertView;
     }
     private class ViewHodel{
@@ -87,6 +102,6 @@ public class RecommendArticleAdapter extends BaseAdapter {
         TextView title;
         TextView content;
         TextView name;
-        ImageView pic;
+        WebView pic;
     }
 }
