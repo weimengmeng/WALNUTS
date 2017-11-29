@@ -95,7 +95,6 @@ public class AppAplication extends Application {
             }
         });
         EMOptions options = new EMOptions();
-        options.setAcceptInvitationAlways(false);
         options.setAutoLogin(false);
         EMClient.getInstance().init(this, options);
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源

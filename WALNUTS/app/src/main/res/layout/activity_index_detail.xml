@@ -23,6 +23,7 @@
 
         <com.scrollablelayout.ScrollableLayout
             android:id="@+id/scrollLayout"
+            android:background="@color/grey"
             style="@style/Width_m_Height_m">
             <HorizontalScrollView
                 android:id="@+id/scrollView"

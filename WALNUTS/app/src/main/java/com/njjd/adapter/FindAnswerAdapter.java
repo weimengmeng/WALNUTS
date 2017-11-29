@@ -187,7 +187,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         } else {
             for (int i = 0; i < bannerList.size(); i++) {
-                if (bannerList.get(i).getType().equals("4.0")) {
+                if (bannerList.get(i).getType().equals("4.0")&&images.size()<=1) {
                     images.add(bannerList.get(i).getImg());
                     titles.add(bannerList.get(i).getTitle());
                     urls.add(bannerList.get(i).getUrl());
@@ -289,7 +289,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             TextView title;
             TextView content;
             TextView name;
-            WebView pic;
+            ImageView pic;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -300,7 +300,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 content = (TextView) itemView
                         .findViewById(R.id.txt_content);
                 title = (TextView) itemView.findViewById(R.id.txt_title);
-                pic = (WebView) itemView
+                pic = (ImageView) itemView
                         .findViewById(R.id.img);
             }
         }
@@ -331,9 +331,10 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.title.setText(columnEntity.getTitle());
             viewHolder.content.setText(columnEntity.getColumnName());
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
-            viewHolder.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            viewHolder.pic.loadUrl(HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""));
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""), viewHolder.pic);
+//            viewHolder.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//            viewHolder.pic.loadUrl(HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""));
+            viewHolder.pic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ColumnDetailActivity.class);

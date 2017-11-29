@@ -73,7 +73,7 @@ public class RecommendArticleAdapter extends BaseAdapter {
             hodel.content = (TextView) convertView
                     .findViewById(R.id.txt_content);
             hodel.title = (TextView) convertView.findViewById(R.id.txt_title);
-            hodel.pic = (WebView) convertView
+            hodel.pic = (ImageView) convertView
                     .findViewById(R.id.img);
             convertView.setTag(hodel);
         }else{
@@ -84,8 +84,9 @@ public class RecommendArticleAdapter extends BaseAdapter {
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
         hodel.content.setText(entity.getColumnName());
-        hodel.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        hodel.pic.loadUrl(HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""));
+        GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""), hodel.pic);
+//        hodel.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        hodel.pic.loadUrl(HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +103,6 @@ public class RecommendArticleAdapter extends BaseAdapter {
         TextView title;
         TextView content;
         TextView name;
-        WebView pic;
+        ImageView pic;
     }
 }

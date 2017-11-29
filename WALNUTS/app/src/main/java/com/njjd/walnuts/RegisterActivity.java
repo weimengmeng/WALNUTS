@@ -42,8 +42,8 @@ import butterknife.OnClick;
 public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTimerCountDownListener {
     @BindView(R.id.et_phone)
     EditText etPhone;
-    @BindView(R.id.et_invite_code)
-    EditText etInviteCode;
+//    @BindView(R.id.et_invite_code)
+//    EditText etInviteCode;
     @BindView(R.id.img_back)
     LinearLayout imgBack;
     @BindView(R.id.txt_tips)
@@ -95,8 +95,9 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     code = etVerify.getText().toString().trim();
                     popupWindow.dismiss();
                     etVerify.setText("");
-                    //判断是否邀请
-                    checkInvitation();
+                    getPhoneCode();
+//                    //判断是否邀请
+//                    checkInvitation();
                 }
             }
         });
@@ -112,36 +113,36 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                 }
             }
         });
-        etInviteCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    etInviteCode.setTag(etInviteCode.getHint().toString());
-                    etInviteCode.setHint("");
-                }else{
-                    etInviteCode.setHint(etInviteCode.getTag().toString());
-                }
-            }
-        });
+//        etInviteCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(hasFocus){
+//                    etInviteCode.setTag(etInviteCode.getHint().toString());
+//                    etInviteCode.setHint("");
+//                }else{
+//                    etInviteCode.setHint(etInviteCode.getTag().toString());
+//                }
+//            }
+//        });
     }
-    private void checkInvitation(){
-        Map<String, Object> map = new HashMap<>();
-        map.put("invitation_code", etInviteCode.getText().toString().trim());
-        LogUtils.d(map.toString());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(checkInvitation, this, true, false), map);
-        HttpManager.getInstance().checkInvitation(postEntity);
-    }
-    HttpOnNextListener checkInvitation = new HttpOnNextListener() {
-        @Override
-        public void onNext(Object o) {
-            JsonObject object=JSONUtils.getAsJsonObject(o);
-            if(object.get("code").getAsString().equals("1.0")){
-                ToastUtils.showShortToast(RegisterActivity.this,"邀请码错误");
-            }else{
-                getPhoneCode();
-            }
-        }
-    };
+//    private void checkInvitation(){
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("invitation_code", etInviteCode.getText().toString().trim());
+//        LogUtils.d(map.toString());
+//        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(checkInvitation, this, true, false), map);
+//        HttpManager.getInstance().checkInvitation(postEntity);
+//    }
+//    HttpOnNextListener checkInvitation = new HttpOnNextListener() {
+//        @Override
+//        public void onNext(Object o) {
+//            JsonObject object=JSONUtils.getAsJsonObject(o);
+//            if(object.get("code").getAsString().equals("1.0")){
+//                ToastUtils.showShortToast(RegisterActivity.this,"邀请码错误");
+//            }else{
+//                getPhoneCode();
+//            }
+//        }
+//    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,10 +156,10 @@ public class RegisterActivity extends BaseActivity implements TimeCountDown.OnTi
                     ToastUtils.showShortToast(this, "请输入正确的手机号");
                     return;
                 }
-                if (etInviteCode.getText().toString().trim().equals("")) {
-                    ToastUtils.showShortToast(RegisterActivity.this, "请输入邀请码");
-                    return;
-                }
+//                if (etInviteCode.getText().toString().trim().equals("")) {
+//                    ToastUtils.showShortToast(RegisterActivity.this, "请输入邀请码");
+//                    return;
+//                }
                 KeybordS.closeBoard(this);
                 MobclickAgent.onEvent(this, ConstantsVal.GETPHONECODE);
                 isUserExist();

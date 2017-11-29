@@ -38,11 +38,11 @@ public class MyAnswerEntity implements Serializable {
             this.article_point_num=object.isNull("article_point_num")?"":object.getString("article_point_num");
             this.title=object.isNull("title")?"":object.getString("title");
             this.article_imgs=object.isNull("article_imgs")?"":object.getString("article_imgs").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
-            this.comment_content=object.getString("comment_content");
-            this.comment_collect_num=object.getString("comment_collect_num");
-            this.comment_point_num=object.getString("comment_point_num");
-            this.comment_answer_num=object.getString("comment_answer_num");
-            this.point_comment_stat=object.getString("point_comment_stat");
+            this.comment_content=object.isNull("comment_content")?"":object.getString("comment_content");
+            this.comment_collect_num=object.isNull("comment_collect_num")?"":object.getString("comment_collect_num");
+            this.comment_point_num=object.isNull("comment_point_num")?"":object.getString("comment_point_num");
+            this.comment_answer_num=object.isNull("comment_answer_num")?"":object.getString("comment_answer_num");
+            this.point_comment_stat=object.isNull("point_comment_stat")?"":object.getString("point_comment_stat");
             this.comment_id=object.getString("comment_id");
             this.add_time=object.getString("add_time");
             this.type=object.getString("type");

@@ -3,38 +3,41 @@
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginBottom="2dp"
     android:layout_marginTop="@dimen/padding"
     android:layout_marginLeft="@dimen/margin"
     android:background="@drawable/background_layout_div_radius"
-    android:elevation="1dp"
-    android:paddingBottom="@dimen/margin"
-    android:paddingTop="@dimen/margin"
-    android:paddingRight="@dimen/padding"
     android:weightSum="1">
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.7"
-        android:orientation="vertical"
-        android:weightSum="1">
-            <TextView
-                android:id="@+id/txt_title"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.6"
-                android:paddingLeft="@dimen/margin"
-                android:textStyle="bold"
-                android:text="核桃小编"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/big" />
-
-        <LinearLayout
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="150dp">
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="320dp"
+            android:scaleType="centerCrop"
+            android:layout_height="150dp"
+            android:src="@drawable/demo"/>
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/shadow"/>
+        <TextView
+            android:id="@+id/txt_title"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/head_large"
+            android:text=""
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal" />
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/padding_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center|left"
             android:paddingLeft="@dimen/margin">
             <de.hdodenhof.circleimageview.CircleImageView
@@ -48,14 +51,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="核桃小编"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/mini" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="•"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/normal" />
+                android:text=" • "
+                android:textColor="@color/white"
+                android:textSize="@dimen/mini" />
             <TextView
                 android:id="@+id/txt_content"
                 android:layout_width="wrap_content"
@@ -64,34 +67,8 @@
                 android:text="核桃小编"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/normal" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/mini" />
         </LinearLayout>
-        <!--<TextView-->
-            <!--android:id="@+id/txt_content"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="0.25"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:paddingLeft="@dimen/margin"-->
-            <!--android:text="核桃小编"-->
-            <!--android:maxLines="1"-->
-            <!--android:ellipsize="end"-->
-            <!--android:textColor="@color/gray"-->
-            <!--android:textSize="@dimen/normal" />-->
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:padding="@dimen/padding"
-        android:orientation="vertical">
-
-        <WebView
-            android:id="@+id/img"
-            android:layout_width="@dimen/head_large"
-            android:layout_height="@dimen/head_large"
-            android:scrollbars="none"/>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

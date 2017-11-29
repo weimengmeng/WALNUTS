@@ -185,7 +185,7 @@ public class MyAnswerActivity extends BaseActivity {
                     object1=new JSONObject(gson.toJson(array.get(i)));
                     entity = new MyAnswerEntity(object1);
                     if(!entity.getArticle_id().equals("")){
-                        if(entity.getStat().equals("1.0")&&!SPUtils.get(MyAnswerActivity.this,"userId","").equals(getIntent().getStringExtra("uid"))){
+                        if(entity.getStat().equals("0.0")&&!SPUtils.get(MyAnswerActivity.this,"userId","").equals(getIntent().getStringExtra("uid"))){
 
                         }else{
                             list.add(entity);

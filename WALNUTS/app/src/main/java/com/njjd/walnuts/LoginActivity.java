@@ -77,12 +77,12 @@ public class LoginActivity extends BaseActivity {
             }
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                LogUtils.d("huan"+map.toString());
                 thirdMap = map;
                 doThirdLogin((share_media == SHARE_MEDIA.QQ ? 1 : share_media == SHARE_MEDIA.WEIXIN ? 2 : 3), map);
             }
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                LogUtils.d("huan"+throwable.toString());
                 ToastUtils.showShortToast(LoginActivity.this, "授权错误");
             }
             @Override
@@ -187,7 +187,11 @@ public class LoginActivity extends BaseActivity {
         //0 qq 1 wechat  2 sina
         Map<String, Object> map = new HashMap<>();
         map.put("logintype", "" + type);
-        map.put("uuid", result.get("uid"));
+        if(type==1||type==2) {
+            map.put("uuid", result.get("unionid"));
+        }else{
+            map.put("uuid", result.get("uid"));
+        }
         map.put("device_token", SPUtils.get(this, "deviceToken", "").toString());
         map.put("authimg",result.get("iconurl"));
         SPUtils.put(this,"authimg",result.get("iconurl").toString());

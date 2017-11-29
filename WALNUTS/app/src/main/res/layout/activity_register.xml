@@ -91,52 +91,52 @@
                         android:layout_marginRight="@dimen/margin"
                         android:alpha="0.1"
                         android:background="@color/gray" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:gravity="center_vertical"
-                        android:weightSum="1"
-                        android:layout_height="@dimen/height">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_marginLeft="@dimen/padding"
-                            android:layout_weight="0.3"
-                            android:layout_height="wrap_content"
-                            android:text="邀请码    "
-                            android:textSize="@dimen/normal"
-                            android:textColor="@color/gray"/>
-                        <EditText
-                            android:id="@+id/et_invite_code"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.7"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@null"
-                            android:hint="请输入邀请码"
-                            android:digits="0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"
-                            android:textCursorDrawable="@drawable/color_cusor"
-                            android:gravity="center_vertical"
-                            android:paddingRight="@dimen/margin_top"
-                            android:textColor="@color/gray"
-                            android:textColorHint="@color/txt_color"
-                            android:textSize="@dimen/normal"
-                            android:maxLength="6" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="@dimen/margin"
-                        android:layout_marginRight="@dimen/margin"
-                        android:alpha="0.1"
-                        android:background="@color/gray" />
-                    <TextView
-                        android:layout_marginTop="@dimen/padding"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:textColor="#bebebe"
-                        android:text="没有邀请码？请联系客服微信：heardtalk"
-                        android:textSize="@dimen/small"/>
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:weightSum="1"-->
+                        <!--android:layout_height="@dimen/height">-->
+                        <!--<TextView-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_marginLeft="@dimen/padding"-->
+                            <!--android:layout_weight="0.3"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="邀请码    "-->
+                            <!--android:textSize="@dimen/normal"-->
+                            <!--android:textColor="@color/gray"/>-->
+                        <!--<EditText-->
+                            <!--android:id="@+id/et_invite_code"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_weight="0.7"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center"-->
+                            <!--android:background="@null"-->
+                            <!--android:hint="请输入邀请码"-->
+                            <!--android:digits="0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM"-->
+                            <!--android:textCursorDrawable="@drawable/color_cusor"-->
+                            <!--android:gravity="center_vertical"-->
+                            <!--android:paddingRight="@dimen/margin_top"-->
+                            <!--android:textColor="@color/gray"-->
+                            <!--android:textColorHint="@color/txt_color"-->
+                            <!--android:textSize="@dimen/normal"-->
+                            <!--android:maxLength="6" />-->
+                    <!--</LinearLayout>-->
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:layout_marginLeft="@dimen/margin"-->
+                        <!--android:layout_marginRight="@dimen/margin"-->
+                        <!--android:alpha="0.1"-->
+                        <!--android:background="@color/gray" />-->
+                    <!--<TextView-->
+                        <!--android:layout_marginTop="@dimen/padding"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_horizontal"-->
+                        <!--android:gravity="center_horizontal"-->
+                        <!--android:textColor="#bebebe"-->
+                        <!--android:text="没有邀请码？请联系客服微信：heardtalk"-->
+                        <!--android:textSize="@dimen/small"/>-->
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

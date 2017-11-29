@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.7"
+        android:layout_weight="0.6"
         android:paddingTop="@dimen/margin"
         android:paddingBottom="@dimen/margin"
         android:background="@color/white"
@@ -66,15 +66,15 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.3"
+        android:layout_weight="0.4"
         android:padding="@dimen/margin"
         android:background="@color/white"
         android:orientation="vertical">
 
-        <WebView
+        <ImageView
             android:id="@+id/img"
-            android:layout_width="@dimen/head_large"
-            android:scrollbars="none"
-            android:layout_height="@dimen/head_large" />
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_height="90dp" />
     </LinearLayout>
 </LinearLayout>

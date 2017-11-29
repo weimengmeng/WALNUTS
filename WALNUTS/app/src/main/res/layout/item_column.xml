@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/txt_topsale"
         android:layout_width="match_parent"
-        android:text="精选专栏"
+        android:text="精选文章"
         android:drawableLeft="@drawable/line_v"
         android:drawablePadding="@dimen/margin"
         android:paddingTop="@dimen/margin_small"

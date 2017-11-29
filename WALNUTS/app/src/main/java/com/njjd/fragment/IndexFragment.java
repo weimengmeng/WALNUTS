@@ -168,7 +168,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 button.setChecked(true);
             }
             buttonGroup.addView(button);
-            final List<QuestionEntity> list1 = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{navList.get(i).getId()});
+            final List<QuestionEntity> list1 =new ArrayList<>();
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
             list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
@@ -246,14 +246,18 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         list = listViews.get(0);
         questionAdapter = adapterList.get(0);
         tempKind = navList.get(0).getId();
-//        List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
-//        for (QuestionEntity e:entities
-//             ) {
-//            tempList.add(e);
-//        }
-        getQuestion(tempKind, tempOrder);
-//        questionAdapter.notifyDataSetChanged();
-        setRefreshListener();
+        if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1||NetworkUtils.getNetworkType(context)==4){
+            ToastUtils.showShortToast(context,"网络貌似不给力哦");
+            List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
+            for (QuestionEntity e:entities
+                    ) {
+                tempList.add(e);
+            }
+        }else {
+            getQuestion(tempKind, tempOrder);
+        }
+        questionAdapter.notifyDataSetChanged();
+//        setRefreshListener();
         etSearch.setFocusable(false);
         etSearch.setOnClickListener(new View.OnClickListener() {
             @Override
