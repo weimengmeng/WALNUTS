@@ -87,15 +87,6 @@ public class RecommendArticleAdapter extends BaseAdapter {
         GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""), hodel.pic);
 //        hodel.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //        hodel.pic.loadUrl(HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""));
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context, ColumnDetailActivity.class);
-                intent.putExtra("article_id",Float.valueOf(list.get(position).getArticle_id()).intValue()+"");
-                context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.in, R.anim.out);
-            }
-        });
         return convertView;
     }
     private class ViewHodel{

@@ -28,4 +28,7 @@
     <dimen name="_top">-17dp</dimen>
     <dimen name="_margin">-12dp</dimen>
     <dimen name="post_height">170dp</dimen>
+    <dimen name="column">140dp</dimen>
+    <dimen name="column_w">280dp</dimen>
+
 </resources>

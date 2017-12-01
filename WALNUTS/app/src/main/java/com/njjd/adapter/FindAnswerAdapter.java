@@ -186,7 +186,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
             }
         } else {
-            for (int i = 0; i < bannerList.size(); i++) {
+            for (int i = 0; i < bannerList.size()&&images.size()<=1; i++) {
                 if (bannerList.get(i).getType().equals("4.0")&&images.size()<=1) {
                     images.add(bannerList.get(i).getImg());
                     titles.add(bannerList.get(i).getTitle());

@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -169,6 +170,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
                 intent.putExtra("article_id",Float.valueOf(entities.get(position).getArticle_id()).intValue()+"");
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.in, R.anim.out);
             }
         });
         mShareListener = new CustomShareListener(this);

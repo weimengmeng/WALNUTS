@@ -31,5 +31,6 @@
     <dimen name="_margin">-8dp</dimen>
     <dimen name="post_height">170dp</dimen>
     <dimen name="column_height">245dp</dimen>
-
+    <dimen name="column">170dp</dimen>
+    <dimen name="column_w">300dp</dimen>
 </resources>
