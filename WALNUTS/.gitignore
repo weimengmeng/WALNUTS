@@ -7,3 +7,9 @@
 /build
 /captures
 .externalNativeBuild
+src/main/java/com/njjd/domain/ProvinceEntity.java
+src/main/java/com/njjd/utils/MyWebView.java
+src/main/res/drawable-hdpi/resend.png
+src/main/res/layout/tag_item.xml
+src/main/res/values-hdpi/
+src/main/res/values-xxhdpi/
