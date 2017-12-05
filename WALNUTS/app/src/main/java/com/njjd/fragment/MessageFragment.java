@@ -325,6 +325,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                         break;
                     case "3.0":
+                        try {
+                            if(entities.get(position).getContent().getString("type").equals("2.0")){
+                                intent = new Intent(context, ColumnDetailActivity.class);
+                                intent.putExtra("article_id", Float.valueOf(entities.get(position).getArticle_id()).intValue() + "");
+                                context.startActivity(intent);
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         intent = new Intent(context, IndexDetailActivity.class);
                         bundle = new Bundle();
                         entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getArticle_id());
@@ -393,7 +403,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         String ids = "";
         for (MyConversation conversation : conversations)
             ids = ids + conversation.getOpenId() + ",";
-        LogUtils.d("huanid" + ids);
         Map<String, Object> map = new HashMap<>();
         map.put("uids", ids);
         map.put("uid", SPUtils.get(context, "userId", ""));

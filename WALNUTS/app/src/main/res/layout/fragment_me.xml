@@ -402,7 +402,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding"
                         android:layout_weight="0.3"
-                        android:text="我的问题"
+                        android:text="我的创作"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/normal" />
 

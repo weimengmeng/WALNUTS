@@ -3,6 +3,7 @@ package com.njjd.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,8 +91,13 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                 }
             case "3.0":
                 try {
-                    viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回答了你的问题");
-                    viewHolder.content.setText(tempEntity.getContent().getString("contents"));
+                    if(tempEntity.getContent().getString("type").equals("2.0")){
+                        viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人评论了你的文章");
+                        viewHolder.content.setText(tempEntity.getContent().getString("title"));
+                    }else{
+                        viewHolder.title.setText(tempEntity.getUname()+" 等"+Float.valueOf(tempEntity.getContent().getString("answer_num")).intValue()+"人回答了你的问题");
+                        viewHolder.content.setText(tempEntity.getContent().getString("contents"));
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

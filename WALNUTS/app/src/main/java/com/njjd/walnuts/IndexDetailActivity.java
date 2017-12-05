@@ -400,7 +400,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         map.put("comment_id", answer_id);
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("page", "1");
-        LogUtils.d("huan"+map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getCommentListener, this, false, false), map);
         HttpManager.getInstance().getCommentList(postEntity);
     }

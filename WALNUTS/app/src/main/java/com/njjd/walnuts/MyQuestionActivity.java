@@ -64,9 +64,13 @@ public class MyQuestionActivity extends BaseActivity {
     public void initView(View view) {
         back.setText("返回");
         if(getIntent().getStringExtra("uid").equals(SPUtils.get(this,"userId","").toString())) {
-            txtTitle.setText("我的问题");
+            txtTitle.setText("我的创作");
         }else{
-            txtTitle.setText("TA的问题");
+            if(getIntent().getStringExtra("type").equals("1")){
+                txtTitle.setText("TA的问题");
+            }else {
+                txtTitle.setText("TA的文章");
+            }
         }
         questionAdapter = new MyQuestionAdapter(list, this);
         listQues.setEmptyView(findViewById(R.id.empty));
@@ -81,7 +85,11 @@ public class MyQuestionActivity extends BaseActivity {
                 }
             });
         }else{
-            ((TextView) findViewById(R.id.txt_content)).setText("TA还没有提问");
+            if(getIntent().getStringExtra("type").equals("1")){
+                ((TextView) findViewById(R.id.txt_content)).setText("TA还没有提问");
+            }else {
+                ((TextView) findViewById(R.id.txt_content)).setText("TA还没有发表文章");
+            }
         }
         listQues.setAdapter(questionAdapter);
         MyQuestionAdapter.CURRENT_PAGE = 1;
@@ -125,7 +133,15 @@ public class MyQuestionActivity extends BaseActivity {
                     showToast("该问题已被删除");
                     return;
                 }
-                Intent intent = new Intent(MyQuestionActivity.this, IndexDetailActivity.class);
+                Intent intent;
+                if(list.get(position).getType().equals("2.0")){
+                    intent = new Intent(MyQuestionActivity.this, ColumnDetailActivity.class);
+                    intent.putExtra("article_id", Float.valueOf(list.get(position).getQuestionId()).intValue() + "");
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.in, R.anim.out);
+                    return;
+                }
+                intent = new Intent(MyQuestionActivity.this, IndexDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("question", list.get(position));
                 intent.putExtra("question", bundle);
@@ -168,9 +184,7 @@ public class MyQuestionActivity extends BaseActivity {
     private void getMyQuestion() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", getIntent().getStringExtra("uid"));
-//        map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", MyQuestionAdapter.CURRENT_PAGE);
-//        map.put("ouid", getIntent().getStringExtra("uid"));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidArticle(postEntity);
     }
@@ -196,8 +210,20 @@ public class MyQuestionActivity extends BaseActivity {
                     if(array.getJSONObject(i).getString("invisible").equals("1.0")&&!SPUtils.get(MyQuestionActivity.this,"userId","").equals(getIntent().getStringExtra("uid"))){
 
                     }else{
-                        entity.setIsVisiable(array.getJSONObject(i).getString("invisible"));
-                        list.add(entity);
+                        if(SPUtils.get(MyQuestionActivity.this,"userId","").equals(getIntent().getStringExtra("uid"))) {
+                            entity.setIsVisiable(array.getJSONObject(i).getString("invisible"));
+                            list.add(entity);
+                        }else{
+                            //别人的问题
+                            if(getIntent().getStringExtra("type").equals("1")&&array.getJSONObject(i).getString("type").equals("1.0")){
+                                entity.setIsVisiable(array.getJSONObject(i).getString("invisible"));
+                                list.add(entity);
+                            }else if(getIntent().getStringExtra("type").equals("2")&&array.getJSONObject(i).getString("type").equals("2.0")){
+                                //别人的文章
+                                entity.setIsVisiable(array.getJSONObject(i).getString("invisible"));
+                                list.add(entity);
+                            }
+                        }
                     }
                 }
                 questionAdapter.notifyDataSetChanged();

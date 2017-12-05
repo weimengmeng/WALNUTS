@@ -34,6 +34,7 @@ public class QuestionEntity implements Serializable{
     private String tag_id;
     private String part_num="";
     private String isVisiable="";
+    private String type="";
     public QuestionEntity(JSONObject object,String kind){
         try {
             this.questionId=object.isNull("id")?"0":object.getString("id");
@@ -49,6 +50,7 @@ public class QuestionEntity implements Serializable{
             this.isFocus=0;
             this.kind=kind;
             this.tag_id="";
+            this.type=object.isNull("type")?"1":object.getString("type");
             this.part_num=object.isNull("part_num")?"1":object.getString("part_num");
             ;
         }catch (JSONException e){
@@ -82,10 +84,11 @@ public class QuestionEntity implements Serializable{
             this.isFocus=0;
             this.tag_id="";
             this.part_num="0";
+            this.type="1";
     }
-    @Generated(hash = 1695856217)
+    @Generated(hash = 1349710419)
     public QuestionEntity(String questionId, String title, String content, String photo, String pic, String uids, String focusNum, String answerNum,
-            int isFocus, String dateTime, String tag, String kind, String tag_id, String part_num, String isVisiable) {
+            int isFocus, String dateTime, String tag, String kind, String tag_id, String part_num, String isVisiable, String type) {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
@@ -101,6 +104,7 @@ public class QuestionEntity implements Serializable{
         this.tag_id = tag_id;
         this.part_num = part_num;
         this.isVisiable = isVisiable;
+        this.type = type;
     }
 
     @Generated(hash = 98121125)
@@ -189,5 +193,13 @@ public class QuestionEntity implements Serializable{
     }
     public void setPart_num(String part_num) {
         this.part_num = part_num;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

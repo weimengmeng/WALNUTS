@@ -161,7 +161,7 @@ public class PeopleInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.btn_add_help2,R.id.lv_answer,R.id.lv_question})
+    @OnClick({R.id.back, R.id.btn_add_help2,R.id.lv_answer,R.id.lv_question,R.id.lv_article})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -188,6 +188,13 @@ public class PeopleInfoActivity extends BaseActivity {
             case R.id.lv_question:
                 intent = new Intent(this, MyQuestionActivity.class);
                 intent.putExtra("uid",tempUser);
+                intent.putExtra("type","1");
+                startActivity(intent);
+                break;
+            case R.id.lv_article:
+                intent = new Intent(this, MyQuestionActivity.class);
+                intent.putExtra("uid",tempUser);
+                intent.putExtra("type","2");
                 startActivity(intent);
                 break;
         }

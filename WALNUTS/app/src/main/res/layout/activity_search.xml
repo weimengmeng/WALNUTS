@@ -11,19 +11,6 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:weightSum="1">
-        <TextView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/selector_btn_back"
-            android:text=""
-            android:paddingLeft="@dimen/padding_left"
-            android:drawablePadding="@dimen/margin"
-            android:textColor="#000000"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/normal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
         <com.njjd.utils.IconCenterEditText
             android:id="@+id/et_search"
             android:layout_marginLeft="@dimen/margin"
@@ -32,17 +19,23 @@
             android:layout_marginBottom="@dimen/padding"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:textSize="@dimen/normal"
             style="@style/StyleEditText"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/txt_cancel"
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin"
+            android:text="取消"
+            android:paddingRight="@dimen/margin"
             android:textColor="@color/login"
-            android:textSize="@dimen/big"
-            android:text="取消"/>
+            android:gravity="center_vertical|left"
+            android:textSize="@dimen/normal"></TextView>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"></View>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,31 +44,27 @@
         android:orientation="horizontal"
         android:background="@color/white"
         android:weightSum="1">
-
         <RadioButton
             android:id="@+id/radio1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.33"
+            android:layout_weight="0.25"
             android:button="@null"
             android:drawablePadding="@dimen/padding"
             android:drawableBottom="@drawable/selector_btn_line"
             android:gravity="center"
             android:onClick="onClick"
-            android:layout_marginRight="@dimen/margin"
-            android:paddingRight="@dimen/padding"
             android:paddingTop="@dimen/margin"
-            android:text="综合"
-            android:typeface="sans"
+            android:text="问答"
             android:textColor="@drawable/selector_btn_top"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/normal" />
         <RadioButton
             android:id="@+id/radio2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.33"
+            android:layout_weight="0.25"
             android:button="@null"
             android:drawablePadding="@dimen/padding"
             android:drawableBottom="@drawable/selector_btn_line"
@@ -83,17 +72,30 @@
             android:onClick="onClick"
             android:typeface="sans"
             android:paddingTop="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
-            android:paddingRight="@dimen/padding"
+            android:text="文章"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+        <RadioButton
+            android:id="@+id/radio4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:button="@null"
+            android:drawablePadding="@dimen/padding"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingTop="@dimen/margin"
             android:text="话题"
             android:textColor="@drawable/selector_btn_top"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/normal" />
         <RadioButton
             android:id="@+id/radio3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.34"
+            android:layout_weight="0.25"
             android:button="@null"
             android:drawablePadding="@dimen/padding"
             android:drawableBottom="@drawable/selector_btn_line"
@@ -101,13 +103,58 @@
             android:onClick="onClick"
             android:typeface="sans"
             android:paddingTop="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
-            android:paddingRight="@dimen/padding"
-            android:text="专栏"
+            android:text="用户"
             android:textColor="@drawable/selector_btn_top"
-            android:textSize="@dimen/big" />
+            android:textSize="@dimen/normal" />
     </RadioGroup>
-    <android.support.v4.view.ViewPager
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+        android:layout_height="1dp"
+        android:background="@color/grey"></View>
+    <LinearLayout
+        android:id="@+id/lv_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/list_history"
+            android:layout_width="match_parent"
+            android:divider="@color/grey"
+            android:dividerHeight="1dp"
+            android:layout_height="match_parent"></ListView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"></View>
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:id="@+id/delete_history"
+            android:padding="@dimen/padding_left"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/normal"
+            android:textColor="@color/gray"
+            android:text="清除搜索历史"/>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/list_ques"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+    <ListView
+        android:id="@+id/list_article"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"></ListView>
+    <ListView
+        android:id="@+id/list_user"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+    <ListView
+        android:id="@+id/list_label"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 </LinearLayout>

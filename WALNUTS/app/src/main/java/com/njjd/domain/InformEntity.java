@@ -36,7 +36,6 @@ public class InformEntity implements Serializable {
                 if(type.equals("2.0")){
                     content=object.isNull("content")?null:object.getJSONArray("content").getJSONObject(0);
                 }else{
-                    LogUtils.d("huan"+type);
                     content=object.isNull("content")?null:object.getJSONObject("content");
                 }
                 if(type.equals("3.0")){

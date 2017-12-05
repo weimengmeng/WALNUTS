@@ -61,8 +61,8 @@ public class IconCenterEditText extends EditText implements View.OnFocusChangeLi
             Drawable[] drawables = getCompoundDrawables();
             Drawable drawableLeft = drawables[0];
             Drawable drawableRight = drawables[2];
-            translate(drawableLeft, canvas);
-            translate(drawableRight, canvas);
+//            translate(drawableLeft, canvas);
+//            translate(drawableRight, canvas);
 //            if (drawableLeft != null) {
 //                float textWidth = getPaint().measureText(getHint().toString());
 //                int drawablePadding = getCompoundDrawablePadding();
@@ -94,7 +94,7 @@ public class IconCenterEditText extends EditText implements View.OnFocusChangeLi
                 canvas.translate((getWidth() - bodyWidth - getPaddingLeft() - getPaddingRight()) / 2, 0);
             } else {
                 setPadding(getPaddingLeft(), getPaddingTop(), (int)(getWidth() - bodyWidth - getPaddingLeft()), getPaddingBottom());
-                canvas.translate((getWidth() - bodyWidth - getPaddingLeft()) / 2, 0);
+                canvas.translate(0, 0);
             }
         }
     }

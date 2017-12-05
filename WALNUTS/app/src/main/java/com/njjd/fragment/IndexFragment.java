@@ -82,8 +82,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     HorizontalScrollView scrollView;
     @BindView(R.id.index_page)
     ViewPager indexPage;
-    @BindView(R.id.et_search)
-    IconCenterEditText etSearch;
     private List<View> viewList;
     private MyPagerAdapter adapter;
     private Context context;
@@ -112,7 +110,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         myinflater = LayoutInflater.from(context);
         navList = CommonUtils.getInstance().getNavsList();
         ButterKnife.bind(this, view);
-//        ImmersedStatusbarUtils.initAfterSetContentView(getActivity(),top);
         return view;
     }
 
@@ -257,22 +254,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             getQuestion(tempKind, tempOrder);
         }
         questionAdapter.notifyDataSetChanged();
-//        setRefreshListener();
-        etSearch.setFocusable(false);
-        etSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, SearchActivity.class));
-            }
-        });
-        etSearch.setOnSearchClickListener(new IconCenterEditText.OnSearchClickListener() {
-            @Override
-            public void onSearchClick(View view) {
-//                //做搜索操作
-//                etSearch.onFocusChange(etSearch,false);
-//                etSearch.clearFocus();
-            }
-        });
     }
 
     private void setRefreshListener() {
@@ -412,7 +393,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private void initRefresh() {
     }
 
-    @OnClick({R.id.img_order})
+    @OnClick({R.id.img_order,R.id.et_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_order:
@@ -420,6 +401,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     return;
                 }
                 popupWindow.showAsDropDown(imgOrder, 0, 0);
+                break;
+            case R.id.et_search:
+                startActivity(new Intent(context, SearchActivity.class));
                 break;
         }
     }

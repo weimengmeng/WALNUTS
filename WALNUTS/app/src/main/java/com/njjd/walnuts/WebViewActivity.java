@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.mywidget.LoadingDialog;
+import com.njjd.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,7 +57,6 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setBuiltInZoomControls(true);
         web.loadUrl(getIntent().getStringExtra("url"));
-
         // 加载数据
         web.setWebChromeClient(new WebChromeClient() {
             @Override

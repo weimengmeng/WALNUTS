@@ -1,7 +1,6 @@
 package com.njjd.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.R;
 
 import java.util.List;

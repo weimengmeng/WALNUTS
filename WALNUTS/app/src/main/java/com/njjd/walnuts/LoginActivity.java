@@ -77,7 +77,6 @@ public class LoginActivity extends BaseActivity {
             }
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                LogUtils.d("huan"+map.toString());
                 thirdMap = map;
                 doThirdLogin((share_media == SHARE_MEDIA.QQ ? 1 : share_media == SHARE_MEDIA.WEIXIN ? 2 : 3), map);
             }
