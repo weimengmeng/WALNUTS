@@ -66,6 +66,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".SearchQuesDetailActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".ArticleComReplyActivity"
             android:screenOrientation="portrait">
         </activity>

@@ -158,9 +158,7 @@ public class MyAnswerActivity extends BaseActivity {
     private void getMySave() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", getIntent().getStringExtra("uid"));
-//        map.put("token", SPUtils.get(this, "token", "").toString());
         map.put("page", MyAnswerAdapter.CURRENT_PAGE);
-//        map.put("ouid", getIntent().getStringExtra("uid"));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidComment(postEntity);
     }

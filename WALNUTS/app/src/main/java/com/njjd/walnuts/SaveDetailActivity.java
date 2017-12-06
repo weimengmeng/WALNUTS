@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.njjd.domain.QuestionEntity;
 import com.njjd.domain.SaveEntity;
 import com.njjd.http.HttpManager;
@@ -101,6 +103,7 @@ public class SaveDetailActivity extends BaseActivity {
         txtTitle.setText("回答详情");
         findViewById(R.id.txt_open).setVisibility(View.GONE);
         saveEntity=(SaveEntity)getIntent().getBundleExtra("save").get("save");
+        getAnswerById();
         txtQuesTitle.setText(saveEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(saveEntity.getArticle_answer_num()).intValue());
         txtFocusNum.setText("关注 " + Float.valueOf(saveEntity.getArticle_follow_num()).intValue());
@@ -134,9 +137,6 @@ public class SaveDetailActivity extends BaseActivity {
         }
         scrollLayout.getHelper().setCurrentScrollableContainer(lvRoot);
         lvRoot.smoothScrollTo(0, 0);
-        GlideImageLoder.getInstance().displayImage(this,saveEntity.getComment_uid_headimg(), imgHead);
-        txtName.setText(saveEntity.getComment_uid_name());
-        txtMessage.setText(saveEntity.getComment_uid_introduction());
         txtAgree.setText(Float.valueOf(saveEntity.getComment_point_num()).intValue()+"");
         if(saveEntity.getPoint_comment_stat().equals("1")||saveEntity.getPoint_comment_stat().equals("1.0")){
             txtAgree.setBackgroundResource(R.drawable.background_button_div_grey);
@@ -159,6 +159,21 @@ public class SaveDetailActivity extends BaseActivity {
         ParsePosition pos = new ParsePosition(0);
         txtTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(saveEntity.getCollect_time(), pos)));
         getDetail();
+    }
+    private void getAnswerById(){
+            Map<String, Object> map = new HashMap<>();
+            map.put("comment_id", saveEntity.getComment_id());
+            map.put("uid", SPUtils.get(this, "userId", ""));
+            SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+                @Override
+                public void onNext(Object o) {
+                    JsonObject object= JSONUtils.getAsJsonObject(o);
+                    GlideImageLoder.getInstance().displayImage(SaveDetailActivity.this,object.get("headimg").getAsString(), imgHead);
+                    txtName.setText(object.get("uname").getAsString());
+                    txtMessage.setText(object.get("introduction").getAsString());
+                }
+            }, this, false, false), map);
+            HttpManager.getInstance().getAnswerById(postEntity);
     }
     private void getDetail() {
         Map<String, Object> map = new HashMap<>();

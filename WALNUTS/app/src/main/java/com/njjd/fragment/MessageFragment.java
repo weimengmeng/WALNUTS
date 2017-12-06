@@ -425,6 +425,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             }
         }, context, false, false), map);
         HttpManager.getInstance().getUserUids(postEntity);
+
     }
 
     private void getMyInform() {

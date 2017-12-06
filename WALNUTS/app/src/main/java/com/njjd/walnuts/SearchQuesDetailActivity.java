@@ -68,7 +68,7 @@ import butterknife.OnClick;
  * Created by mrwim on 17/7/12.
  */
 
-public class IndexDetailActivity extends BaseActivity implements View.OnClickListener {
+public class SearchQuesDetailActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.txt_title)
@@ -143,16 +143,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         btnAddHelp.setVisibility(View.VISIBLE);
         back.setText("返回");
         txtTitle.setText("问题详情");
-        Bundle bundle = getIntent().getBundleExtra("question");
-        questionEntity = (QuestionEntity) bundle.get("question");
-        if (getIntent().getStringExtra("type").equals("1")) {
-            findViewById(R.id.txt_sort).setVisibility(View.VISIBLE);
-        } else {
-            comment_id = getIntent().getStringExtra("comment_id");
-            findViewById(R.id.txt_sort).setVisibility(View.GONE);
-            findViewById(R.id.img_answer).setVisibility(View.GONE);
-        }
-        initData();
+        findViewById(R.id.txt_sort).setVisibility(View.VISIBLE);
     }
 
     private void initData() {
@@ -186,7 +177,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(IndexDetailActivity.this, ImagePagerActivity.class);
+                        Intent intent = new Intent(SearchQuesDetailActivity.this, ImagePagerActivity.class);
                         intent.putStringArrayListExtra(
                                 ImagePagerActivity.EXTRA_IMAGE_URLS, list1);
                         intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, finalI);
@@ -255,7 +246,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 btnCancle.setText("取消回复");
                 btnReply.setText("立即回复");
                 etContent.setHint("回复" + answerEntities.get(groupPosition).getCommentEntityList().get(childPosition).getName());
-                KeybordS.openKeybord(etContent, IndexDetailActivity.this);
+                KeybordS.openKeybord(etContent, SearchQuesDetailActivity.this);
                 tempAnswerInfo = answerEntities.get(groupPosition);
                 tempComment = answerEntities.get(groupPosition).getCommentEntityList().get(childPosition);
                 return false;
@@ -277,11 +268,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void getDetail() {
         Map<String, Object> map = new HashMap<>();
-        if (questionEntity == null) {
-            map.put("id", getIntent().getStringExtra("id"));
-        } else {
-            map.put("id", questionEntity.getQuestionId());
-        }
+        map.put("id", getIntent().getStringExtra("id"));
         map.put("uid", SPUtils.get(this, "userId", ""));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getArticleDetail(postEntity);
@@ -324,7 +311,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 tag.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(IndexDetailActivity.this, TagActivity.class);
+                        Intent intent = new Intent(SearchQuesDetailActivity.this, TagActivity.class);
                         intent.putExtra("tag_id", v.getTag().toString());
                         intent.putExtra("name", ((TextView) v).getText().toString());
                         startActivity(intent);
@@ -344,10 +331,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         AnswerReplyAdapter.CURRENT_PAGE = 1;
         getDetail();
         getAnswerList();
-        for (int i = 0, count = exListVIew
-                .getExpandableListAdapter().getGroupCount(); i < count; i++) {
-            exListVIew.collapseGroup(i);
-        }
+//        for (int i = 0, count = exListVIew
+//                .getExpandableListAdapter().getGroupCount(); i < count; i++) {
+//            exListVIew.collapseGroup(i);
+//        }
     }
 
     @Override
@@ -357,7 +344,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void getAnswerList() {
         Map<String, Object> map = new HashMap<>();
-        map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
+        map.put("article_id", getIntent().getStringExtra("id"));
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("order", tempOrder);
         map.put("page", AnswerReplyAdapter.CURRENT_PAGE);
@@ -383,22 +370,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     List<CommentEntity> commentEntities = new ArrayList<>();
                     commentEntities.add(new CommentEntity());
                     answerEntity.setCommentEntityList(commentEntities);
-                    if (getIntent().getStringExtra("type").equals("2") || getIntent().getStringExtra("type").equals("3")) {
-                        if (String.valueOf(Float.valueOf(answerEntity.getAnwerId()).intValue()).equals(String.valueOf(Float.valueOf(comment_id).intValue()))) {
-                            answerEntities.add(answerEntity);
-                        }
-                    } else {
                         answerEntities.add(answerEntity);
-                    }
                 }
                 answerReplyAdapter.notifyDataSetChanged();
-                if (answerEntities.size() >= Integer.valueOf(txtAnswerNum.getText().toString().replace("回答 ", "")) && getIntent().getStringExtra("type").equals("1")) {
-                    findViewById(R.id.nomore).setVisibility(View.VISIBLE);
-                }
-                if (getIntent().getStringExtra("type").equals("2") || getIntent().getStringExtra("type").equals("3")) {
-                    getComments(comment_id);
-                    exListVIew.expandGroup(0);
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -428,15 +402,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 for (int i = 0; i < array.length(); i++) {
                     object = array.getJSONObject(i);
                     commentEntity = new CommentEntity(object);
-                    if (getIntent().getStringExtra("type").equals("3")) {
-                        if (commentEntity.getCommentId().equals(getIntent().getStringExtra("current_commentId"))) {
-                            answerEntities.get(current_group_id).getCommentEntityList().add(1, commentEntity);
-                        } else {
-                            answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
-                        }
-                    } else {
                         answerEntities.get(current_group_id).getCommentEntityList().add(commentEntity);
-                    }
                 }
                 answerReplyAdapter.notifyDataSetChanged();
             } catch (JSONException e) {
@@ -486,7 +452,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 mask.setVisibility(View.GONE);
                 lvRply.setVisibility(View.GONE);
                 lvShare.setVisibility(View.GONE);
-                KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
+                KeybordS.closeKeybord(etContent, SearchQuesDetailActivity.this);
                 break;
             case R.id.txt_sort:
                 popupWindow.showAsDropDown(findViewById(R.id.txt_sort), 0, 0);
@@ -496,12 +462,12 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.btn_cancle:
                 mask.setVisibility(View.GONE);
-                KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
+                KeybordS.closeKeybord(etContent, SearchQuesDetailActivity.this);
                 lvRply.setVisibility(View.GONE);
                 break;
             case R.id.btn_reply:
                 if (etContent.getText().toString().trim().equals("")) {
-                    ToastUtils.showShortToast(IndexDetailActivity.this, "请输入回复内容");
+                    ToastUtils.showShortToast(SearchQuesDetailActivity.this, "请输入回复内容");
                     return;
                 }
                 if (type == 0) {
@@ -511,7 +477,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 }
                 lvRply.setVisibility(View.GONE);
                 mask.setVisibility(View.GONE);
-                KeybordS.closeKeybord(etContent, IndexDetailActivity.this);
+                KeybordS.closeKeybord(etContent, SearchQuesDetailActivity.this);
                 etContent.setText("");
                 break;
             case R.id.img_answer:
@@ -529,13 +495,13 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id=" + Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id=" +getIntent().getStringExtra("id"));
         web.setTitle(questionEntity.getTitle());//标题
         if ("".equals(questionEntity.getPhoto())) {
-            image = new UMImage(IndexDetailActivity.this, R.drawable.share);//资源文件
+            image = new UMImage(SearchQuesDetailActivity.this, R.drawable.share);//资源文件
         } else {
             String[] strings = questionEntity.getPhoto().split(",");
-            image = new UMImage(IndexDetailActivity.this, strings[0].replace("\"", ""));//资源文件
+            image = new UMImage(SearchQuesDetailActivity.this, strings[0].replace("\"", ""));//资源文件
         }
         web.setThumb(image);
         web.setDescription(questionEntity.getContent());//描述
@@ -547,7 +513,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     private void addComment(String comment) {
         this.content = comment;
         Map<String, Object> map = new HashMap<>();
-        map.put("article_id", questionEntity.getQuestionId());
+        map.put("article_id", getIntent().getStringExtra("id"));
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("content", comment);
         map.put("comment_id", answerEntities.get(currentId).getAnwerId());
@@ -564,23 +530,23 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             commentEntity = new CommentEntity();
             commentEntity.setContent(content);
             commentEntity.setCommentId(object.get("id").getAsString());
-            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
-            commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());
+            commentEntity.setHead(SPUtils.get(SearchQuesDetailActivity.this, "head", "").toString());
+            commentEntity.setName(SPUtils.get(SearchQuesDetailActivity.this, "name", "").toString());
             commentEntity.setSec_uid("sec_uid");
-            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this, "message", "").toString());
+            commentEntity.setMessage(SPUtils.get(SearchQuesDetailActivity.this, "message", "").toString());
             commentEntity.setReplyNum("0");
             commentEntity.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             answerEntities.get(currentId).getCommentEntityList().add(1, commentEntity);
             answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue() + 1) + "");
             answerReplyAdapter.notifyDataSetChanged();
-            ToastUtils.showShortToast(IndexDetailActivity.this, "评论成功");
+            ToastUtils.showShortToast(SearchQuesDetailActivity.this, "评论成功");
         }
     };
 
     private void addCommentF(String content) {
         this.content = content;
         Map<String, Object> map = new HashMap<>();
-        map.put("article_id", questionEntity.getQuestionId());
+        map.put("article_id", getIntent().getStringExtra("id"));
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("content", content);
         if ("sec_content".equals(tempComment.getSec_content())) {
@@ -602,9 +568,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             commentEntity = new CommentEntity();
             commentEntity.setCommentId(object.get("id").getAsString());
             commentEntity.setContent(content);
-            commentEntity.setHead(SPUtils.get(IndexDetailActivity.this, "head", "").toString());
-            commentEntity.setName(SPUtils.get(IndexDetailActivity.this, "name", "").toString());
-            commentEntity.setMessage(SPUtils.get(IndexDetailActivity.this, "message", "").toString());
+            commentEntity.setHead(SPUtils.get(SearchQuesDetailActivity.this, "head", "").toString());
+            commentEntity.setName(SPUtils.get(SearchQuesDetailActivity.this, "name", "").toString());
+            commentEntity.setMessage(SPUtils.get(SearchQuesDetailActivity.this, "message", "").toString());
             commentEntity.setSec_uid(tempComment.getCommentUId());
             commentEntity.setSec_content(tempComment.getContent());
             commentEntity.setSec_headimgs(tempComment.getHead());
@@ -614,7 +580,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             answerEntities.get(currentId).getCommentEntityList().add(1, commentEntity);
             answerEntities.get(currentId).setOpen((Float.valueOf(answerEntities.get(currentId).getOpen()).intValue() + 1) + "");
             answerReplyAdapter.notifyDataSetChanged();
-            ToastUtils.showShortToast(IndexDetailActivity.this, "回复成功");
+            ToastUtils.showShortToast(SearchQuesDetailActivity.this, "回复成功");
         }
     };
 
@@ -622,7 +588,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(this, "userId", ""));
         map.put("token", SPUtils.get(this, "token", ""));
-        map.put("article_id", Float.valueOf(questionEntity.getQuestionId()).intValue());
+        map.put("article_id", getIntent().getStringExtra("id"));
         //0 取消关注 1 关注
         map.put("select", questionEntity.getIsFocus() == 0 ? 1 : 0);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(focusListener, this, true, false), map);
@@ -632,7 +598,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     HttpOnNextListener focusListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            ToastUtils.showShortToast(IndexDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消关注");
+            ToastUtils.showShortToast(SearchQuesDetailActivity.this, questionEntity.getIsFocus() == 0 ? "成功关注" : "取消关注");
             if (questionEntity.getIsFocus() == 0) {
                 txtFocus.setText("取消关注");
                 txtFocus.setTextColor(getResources().getColor(R.color.txt_color));
@@ -668,7 +634,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                     etContent.requestFocus();
                     etContent.setHint("回复" + answerEntities.get(Integer.valueOf(v.getTag().toString())).getName());
-                    KeybordS.openKeybord(etContent, IndexDetailActivity.this);
+                    KeybordS.openKeybord(etContent, SearchQuesDetailActivity.this);
                     btnCancle.setText("取消评论");
                     btnReply.setText("立即评论");
                     return;
@@ -716,15 +682,15 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 currentId = Integer.valueOf(v.getTag().toString());
                 etContent.requestFocus();
                 etContent.setHint("回复" + answerEntities.get(Integer.valueOf(v.getTag().toString())).getName());
-                KeybordS.openKeybord(etContent, IndexDetailActivity.this);
+                KeybordS.openKeybord(etContent, SearchQuesDetailActivity.this);
                 break;
         }
     }
 
     private class CustomShareListener implements UMShareListener {
-        private WeakReference<IndexDetailActivity> mActivity;
+        private WeakReference<SearchQuesDetailActivity> mActivity;
 
-        private CustomShareListener(IndexDetailActivity activity) {
+        private CustomShareListener(SearchQuesDetailActivity activity) {
             mActivity = new WeakReference(activity);
         }
 
@@ -779,7 +745,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            ToastUtils.showShortToast(IndexDetailActivity.this, "分享取消");
+            ToastUtils.showShortToast(SearchQuesDetailActivity.this, "分享取消");
         }
     }
 

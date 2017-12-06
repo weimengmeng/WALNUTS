@@ -29,8 +29,8 @@ public class HttpManager {
 //    public static final String BASE_URL2 = "http://116.62.243.41/";
     public static final String BASE_URL = "http://47.96.24.179/api/";
     public static final String BASE_URL2 = "http://47.96.24.179/";
-//  public static final String BASE_URL = "http://192.168.0.112/hetao_api/public/index.php/api/";
-//  public static final String BASE_URL2 = "http://192.168.0.112/hetao_api/public/";
+//  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
+//  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
     /**
      * 设置超时时间，默认6s
      */
@@ -229,6 +229,11 @@ public class HttpManager {
         observable = httpService.getHotComment(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void getAnswerById(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getAnswerById(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void agreeOrPraise(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.agreeOrPraise(basePar.getParams()).map(basePar);
@@ -321,6 +326,24 @@ public class HttpManager {
     public void getFollowColumn(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getFollowColumn(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    /**
+     * 搜索
+     */
+    public void searchArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.searchArticle(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void searchQuest(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.searchQuest(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void searchUser(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.searchUser(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**
