@@ -31,27 +31,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:padding="@dimen/padding"
             android:orientation="vertical"
             android:gravity="center_vertical">
-
             <com.njjd.utils.TextUtil
                 android:id="@+id/search_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="通知"
                 android:textColor="@color/black"
-                android:textSize="@dimen/normal" />
+                android:textSize="@dimen/big" />
 
-            <com.njjd.utils.TextUtil
-                android:id="@+id/search_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="您的回答被评论"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/small" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,25 +48,33 @@
                 android:weightSum="1">
                 <com.njjd.utils.TextUtil
                     android:id="@+id/search_industry"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="您的回答被评论"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:textColor="@color/txt_color"
+                    android:textColor="@color/gray"
                     android:textSize="@dimen/small" />
                 <com.njjd.utils.TextUtil
-                    android:id="@+id/search_product"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
+                    android:id="@+id/search_area"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="您的回答被评论"
                     android:singleLine="true"
+                    android:paddingLeft="@dimen/margin"
                     android:ellipsize="end"
-                    android:textColor="@color/txt_color"
+                    android:textColor="@color/gray"
                     android:textSize="@dimen/small" />
             </LinearLayout>
+            <com.njjd.utils.TextUtil
+                android:id="@+id/search_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="您的回答被评论"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small" />
         </LinearLayout>
 
     </LinearLayout>

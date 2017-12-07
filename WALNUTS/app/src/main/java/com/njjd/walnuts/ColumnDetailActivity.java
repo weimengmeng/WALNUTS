@@ -553,7 +553,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
+        web = new UMWeb("http://mp.heardtalk.com/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
         web.setTitle(detailActivity.getTitle());//标题
 //        if(!detailActivity.getContent().contains("<img")){
 //            image = new UMImage(ColumnDetailActivity.this, R.drawable.share);//资源文件

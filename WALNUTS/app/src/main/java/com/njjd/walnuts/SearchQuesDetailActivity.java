@@ -495,7 +495,7 @@ public class SearchQuesDetailActivity extends BaseActivity implements View.OnCli
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://www.heardtalk.com/web/mobile/articleShare?article_id=" +getIntent().getStringExtra("id"));
+        web = new UMWeb("http://mp.heardtalk.com/web/mobile/articleShare?article_id=" +getIntent().getStringExtra("id"));
         web.setTitle(questionEntity.getTitle());//标题
         if ("".equals(questionEntity.getPhoto())) {
             image = new UMImage(SearchQuesDetailActivity.this, R.drawable.share);//资源文件

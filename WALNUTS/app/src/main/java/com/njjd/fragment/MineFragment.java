@@ -163,6 +163,9 @@ public class MineFragment extends BaseFragment {
                     if(txtMessage.getText().toString().equals("")){
                         txtMessage.setHint("待完善");
                     }
+                    if(txtProducts.getText().toString().equals("")){
+                        txtProducts.setHint("待完善");
+                    }
                     if(txtPosition.getText().toString().equals("")){
                         txtPosition.setHint("待完善");
                     }
