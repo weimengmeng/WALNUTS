@@ -358,6 +358,7 @@ public class MainActivity extends FragmentActivity {
             case R.id.img_pub:
             case R.id.radio3:
                 intent = new Intent(this, AskActivity.class);
+                intent.putExtra("type","1");
                 startActivity(intent);
                 break;
             case R.id.radio4:

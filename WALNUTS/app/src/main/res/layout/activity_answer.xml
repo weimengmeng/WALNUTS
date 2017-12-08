@@ -4,9 +4,9 @@
     style="@style/Width_m_Height_m"
     xmlns:voiceView="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
-
     <RelativeLayout
-        style="@style/Width_m_Height_m">
+        style="@style/Width_m_Height_m"
+        android:background="@color/grey">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -15,8 +15,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:orientation="vertical"
                 android:id="@+id/top">
                 <include layout="@layout/top"></include>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey"></View>
             </LinearLayout>
             <TextView
                 android:id="@+id/txt_name"
@@ -49,9 +54,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin"
                 android:textCursorDrawable="@drawable/color_cusor"
-                android:typeface="sans"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@drawable/round"
                 android:gravity="top|left"
                 android:hint="请输入回答"
                 android:textColorHint="@color/txt_color"

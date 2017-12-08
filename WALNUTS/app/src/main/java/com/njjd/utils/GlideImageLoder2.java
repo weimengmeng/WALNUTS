@@ -22,6 +22,7 @@ public class GlideImageLoder2 extends ImageLoader {
         Glide.with(AppAplication.getContext()).load(path.toString().replace("\\","/")).centerCrop()
                 .thumbnail(0.5f)
                 .placeholder(R.drawable.error)
+                .centerCrop()
                 .error(R.drawable.error)
                 .dontAnimate().into(imageView);
     }

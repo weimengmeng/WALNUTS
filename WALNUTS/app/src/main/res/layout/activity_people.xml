@@ -23,7 +23,7 @@
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             android:paddingTop="@dimen/padding_top"
-            android:paddingBottom="@dimen/padding_top"
+            android:paddingBottom="@dimen/padding"
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
@@ -84,7 +84,40 @@
                 android:textSize="@dimen/small" />
         </LinearLayout>
     </LinearLayout>
-
+    <LinearLayout
+        android:id="@+id/lv_use"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:paddingBottom="@dimen/padding"
+        android:paddingLeft="@dimen/margin_big"
+        android:paddingRight="@dimen/margin_big"
+        android:background="@color/white"
+        android:weightSum="1">
+        <TextView
+            android:id="@+id/btn_focus"
+            android:layout_margin="@dimen/margin"
+            android:layout_width="0dp"
+            android:background="@drawable/txt_shape_login"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/normal"
+            android:textColor="@color/white"
+            android:text="关注TA"/>
+        <TextView
+            android:id="@+id/btn_mess"
+            android:layout_margin="@dimen/margin"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:textSize="@dimen/normal"
+            android:padding="@dimen/padding"
+            android:background="@drawable/round_textview"
+            android:layout_height="wrap_content"
+            android:textColor="@color/login"
+            android:text="私信"/>
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

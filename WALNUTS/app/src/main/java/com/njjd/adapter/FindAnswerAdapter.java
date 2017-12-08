@@ -186,8 +186,8 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ((ContentViewHolder) holder).focus.setBackground(context.getResources().getDrawable(R.drawable.background_button_div));
             }
         } else {
-            for (int i = 0; i < bannerList.size()&&images.size()<=1; i++) {
-                if (bannerList.get(i).getType().equals("4.0")&&images.size()<=1) {
+            for (int i = 0; i < bannerList.size()&&images.size()<1; i++) {
+                if (bannerList.get(i).getType().equals("4.0")&&images.size()<1) {
                     images.add(bannerList.get(i).getImg());
                     titles.add(bannerList.get(i).getTitle());
                     urls.add(bannerList.get(i).getUrl());
@@ -331,7 +331,7 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.title.setText(columnEntity.getTitle());
             viewHolder.content.setText(columnEntity.getColumnName());
             GlideImageLoder.getInstance().displayImage(context, columnEntity.getHead(), viewHolder.head);
-            GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""), viewHolder.pic);
+            GlideImageLoder2.getInstance().displayImage(context, HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""), viewHolder.pic);
 //            viewHolder.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //            viewHolder.pic.loadUrl(HttpManager.BASE_URL2+columnEntity.getPic().split(",")[0].replace("\"",""));
             viewHolder.pic.setOnClickListener(new View.OnClickListener() {

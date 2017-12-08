@@ -485,6 +485,7 @@ public class SearchQuesDetailActivity extends BaseActivity implements View.OnCli
                 intent.putExtra("quesId", questionEntity.getQuestionId());
                 intent.putExtra("quesTitle", questionEntity.getTitle());
                 intent.putExtra("content", questionEntity.getContent());
+                intent.putExtra("type", "1");
                 startActivity(intent);
                 break;
         }

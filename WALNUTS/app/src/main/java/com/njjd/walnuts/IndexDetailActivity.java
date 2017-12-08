@@ -87,6 +87,8 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     ScrollView root;
     @BindView(R.id.txt_content)
     TextView txtContent;
+    @BindView(R.id.txt_edit)
+    TextView txtEdit;
     @BindView(R.id.txt_answerNum)
     TextView txtAnswerNum;
     @BindView(R.id.txt_focusNum)
@@ -130,7 +132,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
     private String content = "";
     private int currentId = 0, type = 0;
     private UMShareListener mShareListener;
-
+    private String authorUid="";//提问者uid
     @Override
     public int bindLayout() {
         return R.layout.activity_index_detail;
@@ -152,10 +154,6 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             findViewById(R.id.txt_sort).setVisibility(View.GONE);
             findViewById(R.id.img_answer).setVisibility(View.GONE);
         }
-        initData();
-    }
-
-    private void initData() {
         quesTitle.setText(questionEntity.getTitle());
         txtAnswerNum.setText("回答 " + Float.valueOf(questionEntity.getAnswerNum()).intValue());
         txtFocusNum.setText("关注 " + Float.valueOf(questionEntity.getFocusNum()).intValue());
@@ -169,14 +167,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         }
         inflater = LayoutInflater.from(this);
         if (!"".equals(questionEntity.getPhoto())) {
-            LogUtils.d(questionEntity.getPhoto());
             lvImg.setVisibility(View.VISIBLE);
             final String[] imgs = questionEntity.getPhoto().split(",");
             final ArrayList<String> list1 = new ArrayList<>();
             for (int i = 0; i < imgs.length; i++) {
-                if (!imgs[i].contains("http:")) {
-                    imgs[i] = HttpManager.BASE_URL2 + imgs[i];
-                }
                 list1.add(imgs[i].replace("\"", ""));
                 relativeLayout = (RelativeLayout) inflater.inflate(R.layout.layout_img, null);
                 imageView = (ImageView) relativeLayout.findViewById(R.id.img);
@@ -277,11 +271,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void getDetail() {
         Map<String, Object> map = new HashMap<>();
-        if (questionEntity == null) {
-            map.put("id", getIntent().getStringExtra("id"));
-        } else {
-            map.put("id", questionEntity.getQuestionId());
-        }
+        map.put("id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getArticleDetail(postEntity);
@@ -297,12 +287,20 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         JSONObject object;
         try {
             object = new JSONObject(gson.toJson(o));
-            questionEntity = new QuestionEntity(object, "1");
-            initData();
+            authorUid=object.getString("uid");
+            if(authorUid.equals(SPUtils.get(this,"userId",""))){
+                txtEdit.setVisibility(View.VISIBLE);
+            }else{
+                txtEdit.setVisibility(View.INVISIBLE);
+            }
             questionEntity.setIsFocus(object.getInt("stat"));
             if (object.isNull("label_name") || object.isNull("label_id")) {
                 return;
             }
+            questionEntity.setTitle(object.getString("title"));
+            questionEntity.setContent(object.getString("contents"));
+            quesTitle.setText(questionEntity.getTitle());
+            txtContent.setText(questionEntity.getContent());
             questionEntity.setTag(object.getString("label_name"));
             questionEntity.setTag_id(object.getString("label_id"));
             if (object.getInt("stat") == 1) {
@@ -445,8 +443,9 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         }
     };
 
-    @OnClick({R.id.tv_cancle, R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
+    @OnClick({R.id.tv_cancle,R.id.txt_edit,R.id.share_aili, R.id.share_qq, R.id.share_qzone, R.id.share_sina, R.id.share_wechat, R.id.share_wechat_circle1, R.id.btn_add_help, R.id.back, R.id.txt_focus, R.id.img_answer, R.id.txt_sort, R.id.btn_reply, R.id.btn_cancle, R.id.mask})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.btn_add_help:
                 mask.setVisibility(View.VISIBLE);
@@ -459,6 +458,14 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.back:
                 finish();
+                break;
+            case R.id.txt_edit:
+               intent=new Intent(this,AskActivity.class);
+               intent.putExtra("type","2");
+               Bundle bundle=new Bundle();
+               bundle.putSerializable("question",questionEntity);
+               intent.putExtra("question",bundle);
+               startActivity(intent);
                 break;
             case R.id.tv_cancle:
                 mask.setVisibility(View.GONE);
@@ -515,9 +522,10 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 etContent.setText("");
                 break;
             case R.id.img_answer:
-                Intent intent = new Intent(this, AnswerActivity.class);
+                intent = new Intent(this, AnswerActivity.class);
                 intent.putExtra("quesId", questionEntity.getQuestionId());
                 intent.putExtra("quesTitle", questionEntity.getTitle());
+                intent.putExtra("type", "1");
                 intent.putExtra("content", questionEntity.getContent());
                 startActivity(intent);
                 break;
@@ -717,6 +725,18 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 etContent.requestFocus();
                 etContent.setHint("回复" + answerEntities.get(Integer.valueOf(v.getTag().toString())).getName());
                 KeybordS.openKeybord(etContent, IndexDetailActivity.this);
+                break;
+            case R.id.txt_report:
+                AnswerEntity entity=(AnswerEntity) v.getTag();
+                Intent intent = new Intent(this, AnswerActivity.class);
+                intent.putExtra("quesId", questionEntity.getQuestionId());
+                intent.putExtra("quesTitle", questionEntity.getTitle());
+                intent.putExtra("type", "2");
+                intent.putExtra("content", questionEntity.getContent());
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("answer",entity);
+                intent.putExtra("answer",bundle);
+                startActivity(intent);
                 break;
         }
     }

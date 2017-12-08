@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.carlos.voiceline.mylibrary.VoiceLineView;
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -19,6 +20,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.sunflower.FlowerCollector;
 import com.njjd.application.ConstantsVal;
+import com.njjd.domain.AnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.FolderTextView;
@@ -70,7 +72,7 @@ public class AnswerActivity extends BaseActivity {
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
     private RecognizerListener recognizerListener;
     private String temp = "";
-
+    private AnswerEntity answerEntity=null;
     @Override
     public int bindLayout() {
         return R.layout.activity_answer;
@@ -128,6 +130,11 @@ public class AnswerActivity extends BaseActivity {
                 mIat.stopListening();
             }
         });
+        if("2".equals(getIntent().getStringExtra("type"))){
+            answerEntity=(AnswerEntity) getIntent().getBundleExtra("answer").get("answer");
+            etAnswer.setText(answerEntity.getContent());
+            etAnswer.setSelection(answerEntity.getContent().length());
+        }
     }
 
     /**
@@ -180,6 +187,11 @@ public class AnswerActivity extends BaseActivity {
                 lvVoice.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_submit:
+                if(answerEntity!=null){
+                    //修改回答
+                    editAnswer();
+                    return;
+                }
                 if (etAnswer.getText().toString().trim().equals("")) {
                     ToastUtils.showShortToast(this, "请输入回答");
                     return;
@@ -189,7 +201,20 @@ public class AnswerActivity extends BaseActivity {
                 break;
         }
     }
-
+    private void editAnswer(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("comment_id", Float.valueOf(answerEntity.getAnwerId()).intValue());
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("token", SPUtils.get(this, "token", ""));
+        map.put("content", etAnswer.getText().toString().trim());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                finish();
+            }
+        }, this, true, false), map);
+        HttpManager.getInstance().editComment(postEntity);
+    }
     private void pubAnswer() {
         Map<String, Object> map = new HashMap<>();
         map.put("article_id", Float.valueOf(getIntent().getStringExtra("quesId")).intValue());

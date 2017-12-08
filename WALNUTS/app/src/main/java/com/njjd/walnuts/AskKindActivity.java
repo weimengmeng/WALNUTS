@@ -10,10 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.listener.ProgressListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
+import com.njjd.domain.QuestionEntity;
 import com.njjd.domain.TagEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug5497Workaround;
@@ -57,7 +59,6 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
     private List<String> list = new ArrayList<>();
     private List<FlowLayout> layoutList = new ArrayList<>();
     private int current = 0;
-
     @Override
     public int bindLayout() {
         return R.layout.activity_askkind;
@@ -86,12 +87,28 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                 tv.setText(entity.getName());
                 tv.setTextColor(getResources().getColor(R.color.tag));
                 tv.setTextSize(14);
-                tv.setTag(entity.getId());
+                tv.setTag(Float.valueOf(entity.getId()).intValue()+"");
                 tv.setGravity(Gravity.CENTER_VERTICAL);
                 tv.setBackgroundResource(R.drawable.round_textview);
+                if("2".equals(getIntent().getStringExtra("type"))){
+                    String[] labelIds=getIntent().getStringExtra("ids").split(",");
+                    for (int j=0;j<labelIds.length;j++){
+                        if(Float.valueOf(labelIds[j]).intValue()==(Float.valueOf(entity.getId()).intValue())){
+                            tv.setTextColor(getResources().getColor(R.color.white));
+                            tv.setBackgroundResource(R.drawable.round_textview1);
+                            break;
+                        }
+                    }
+                }
                 tv.setPadding(25, 10, 25, 10);
                 tv.setOnClickListener(this);
                 flowLayout.addView(tv, lp);
+            }
+        }
+        if("2".equals(getIntent().getStringExtra("type"))){
+            String[] labelIds=getIntent().getStringExtra("ids").split(",");
+            for (int j=0;j<labelIds.length;j++){
+                list.add(Float.valueOf(labelIds[j]).intValue()+"");
             }
         }
     }
@@ -108,17 +125,45 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.btn_submit:
+                if("2".equals(getIntent().getStringExtra("type"))){
+                    editQuestion();
+                    return;
+                }
                 if (list.size() < 1) {
                     ToastUtils.showShortToast(this, "至少选择一个话题");
                     return;
                 }
                 MobclickAgent.onEvent(this, ConstantsVal.PUBQUESTION);
-                pubArticle();
+                pubQuesion();
                 break;
         }
     }
-
-    private void pubArticle() {
+    private void editQuestion(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(this, "userId", ""));
+        map.put("token", SPUtils.get(this, "token", ""));
+        map.put("title", bundle.getString("title"));
+        map.put("content", bundle.getString("content"));
+            String temp = "";
+            for (int i = 0; i < list.size(); i++) {
+                if (i != list.size() - 1) {
+                    temp += list.get(i) + ",";
+                } else {
+                    temp += list.get(i);
+                }
+            }
+            map.put("label_id", temp);
+        map.put("article_id", Float.valueOf(getIntent().getStringExtra("article_id")).intValue());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                AskActivity.activity.finish();
+                finish();
+            }
+        }, this, true, false), map);
+        HttpManager.getInstance().editQuestion(postEntity);
+    }
+    private void pubQuesion() {
         String temp = "";
         for (int i = 0; i < list.size(); i++) {
             if (i != list.size() - 1) {

@@ -68,7 +68,7 @@ public class FeedBackActivity extends BaseActivity {
     public void initView(View view) {
         txtTitle.setText("意见反馈");
         datas = new ArrayList<>();
-        gridViewAddImgesAdpter = new GridViewAddImgesAdpter(datas, this);
+        gridViewAddImgesAdpter = new GridViewAddImgesAdpter(datas, this,1);
         gridViewAddImgesAdpter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {

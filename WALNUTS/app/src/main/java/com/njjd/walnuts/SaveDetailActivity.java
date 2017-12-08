@@ -313,6 +313,7 @@ public class SaveDetailActivity extends BaseActivity {
                 intent = new Intent(this, AnswerActivity.class);
                 intent.putExtra("quesId", saveEntity.getArticle_id());
                 intent.putExtra("content",saveEntity.getArticle_content());
+                intent.putExtra("type", "1");
                 startActivity(intent);
                 break;
         }

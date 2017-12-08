@@ -37,7 +37,7 @@ import com.njjd.walnuts.R;
 public class FolderTextView extends TextView {
     private static final String ELLIPSIS="...";
     private static final String FOLD_TEXT = "收缩";
-    private static final String UNFOLD_TEXT = "查看详情";
+    private static final String UNFOLD_TEXT = "展开全部";
 
     /**
      * 收缩状态

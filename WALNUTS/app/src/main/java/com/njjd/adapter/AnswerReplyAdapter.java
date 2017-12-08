@@ -121,6 +121,12 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
             holder = (GroupHolder) view.getTag();
         }
         answerEntity = groupArray.get(groupPosition);
+        if(answerEntity.getAnswerUId().equals(SPUtils.get(mContext,"userId",""))){
+            holder.groupReport.setVisibility(View.VISIBLE);
+            holder.groupReport.setTag(answerEntity);
+        }else{
+            holder.groupReport.setVisibility(View.INVISIBLE);
+        }
         holder.groupName.setText(answerEntity.getName());
         holder.groupMess.setText(answerEntity.getMessage());
         if (answerEntity.getIsSave().equals("1")) {
@@ -152,7 +158,6 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
         });
         holder.groupAgree.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
         holder.groupSave.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
-        holder.groupReport.setTag("" + Float.valueOf(answerEntity.getAnwerId()).intValue());
         ParsePosition pos = new ParsePosition(0);
         holder.groupTime.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(answerEntity.getTime(), pos)));
         holder.groupContent.setText(answerEntity.getContent());
@@ -186,12 +191,6 @@ public class AnswerReplyAdapter extends BaseExpandableListAdapter implements Htt
                     //取消收藏
                     dealClickListener("collect_comment_id_not", v.getTag().toString());
                 }
-            }
-        });
-        holder.groupReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showShortToast(mContext, "举报回答" + v.getTag().toString());
             }
         });
         if (isExpanded) {

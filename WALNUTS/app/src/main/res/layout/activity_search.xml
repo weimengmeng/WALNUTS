@@ -76,21 +76,6 @@
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
         <RadioButton
-            android:id="@+id/radio4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.25"
-            android:button="@null"
-            android:drawablePadding="@dimen/padding"
-            android:drawableBottom="@drawable/selector_btn_line"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:paddingTop="@dimen/margin"
-            android:text="话题"
-            android:textColor="@drawable/selector_btn_top"
-            android:textSize="@dimen/normal" />
-        <RadioButton
             android:id="@+id/radio3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -104,6 +89,21 @@
             android:typeface="sans"
             android:paddingTop="@dimen/margin"
             android:text="用户"
+            android:textColor="@drawable/selector_btn_top"
+            android:textSize="@dimen/normal" />
+        <RadioButton
+            android:id="@+id/radio4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:button="@null"
+            android:drawablePadding="@dimen/padding"
+            android:drawableBottom="@drawable/selector_btn_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingTop="@dimen/margin"
+            android:text="话题"
             android:textColor="@drawable/selector_btn_top"
             android:textSize="@dimen/normal" />
     </RadioGroup>

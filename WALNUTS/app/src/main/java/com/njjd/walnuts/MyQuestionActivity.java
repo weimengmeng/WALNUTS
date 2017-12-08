@@ -80,7 +80,9 @@ public class MyQuestionActivity extends BaseActivity {
             findViewById(R.id.empty).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(MyQuestionActivity.this,AskActivity.class));
+                    Intent intent=new Intent(MyQuestionActivity.this,AskActivity.class);
+                    intent.putExtra("type","1");
+                    startActivity(intent);
                     finish();
                 }
             });

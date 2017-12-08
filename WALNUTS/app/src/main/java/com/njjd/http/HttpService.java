@@ -131,7 +131,12 @@ public interface HttpService {
 
     @POST("index/addComment")
     Observable<HttpResult<Object>> pubComment(@QueryMap Map<String, String> params);
-
+    @POST("index/editComment")
+    Observable<HttpResult<Object>> editComment(@QueryMap Map<String, String> params);
+    @POST("index/editArticle")
+    Observable<HttpResult<Object>> editQuestion(@QueryMap Map<String, String> params);
+    @POST("index/deleteComment")
+    Observable<HttpResult<Object>> deleteComment(@QueryMap Map<String, String> params);
     @POST("index/setNum")
     Observable<HttpResult<Object>> agreeOrPraise(@QueryMap Map<String, String> params);
 

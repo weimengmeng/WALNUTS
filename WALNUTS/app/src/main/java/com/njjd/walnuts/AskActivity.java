@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.njjd.adapter.GridViewAddImgesAdpter;
+import com.njjd.domain.QuestionEntity;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.PhotoUtil;
 import com.njjd.utils.ToastUtils;
 
@@ -49,6 +51,8 @@ public class AskActivity extends BaseActivity {
     private GridViewAddImgesAdpter gridViewAddImgesAdpter;
     private  ArrayList<String> images=new ArrayList<>();
     public static Activity activity;
+    private QuestionEntity questionEntity=null;
+
     @Override
     public int bindLayout() {
         return R.layout.activity_ask;
@@ -57,14 +61,37 @@ public class AskActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         back.setText("返回");
-        txtTitle.setText("提问");
         gw = (GridView) findViewById(R.id.gw);
         datas = new ArrayList<>();
-        gridViewAddImgesAdpter = new GridViewAddImgesAdpter(datas, this);
+        if("2".equals(getIntent().getStringExtra("type"))){
+            questionEntity=(QuestionEntity) getIntent().getBundleExtra("question").get("question");
+            txtTitle.setText("编辑问题");
+            etTitle.setText(questionEntity.getTitle());
+            etTitle.setSelection(questionEntity.getTitle().length());
+            etContent.setText(questionEntity.getContent());
+            etContent.setSelection(questionEntity.getContent().length());
+            Map<String, Object> map;
+            if(!"".equals(questionEntity.getPhoto())){
+                final String[] imgs = questionEntity.getPhoto().split(",");
+                for(int i=0;i<imgs.length;i++){
+                    map = new HashMap<>();
+                    map.put("path",imgs[i].replace("\"",""));
+                    datas.add(map);
+                }
+            }
+            gridViewAddImgesAdpter = new GridViewAddImgesAdpter(datas, this,2);
+        }else{
+            txtTitle.setText("提问");
+            gridViewAddImgesAdpter = new GridViewAddImgesAdpter(datas, this,1);
+        }
         gw.setAdapter(gridViewAddImgesAdpter);
         gw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                if(questionEntity!=null){
+                    ToastUtils.showShortToast(AskActivity.this,"不可修改图片");
+                    return;
+                }
                 Picker.from(AskActivity.this)
                         .count(10-gridViewAddImgesAdpter.getCount())
                         .enableCamera(true)
@@ -94,7 +121,7 @@ public class AskActivity extends BaseActivity {
                     return;
                 }
                 if(etTitle.getText().toString().trim().length()<5||etTitle.getText().toString().trim().length()>=50){
-                    ToastUtils.showShortToast(this,"标题字数有限制的哦");
+                    ToastUtils.showShortToast(this,"标题至少5个字");
                     return;
                 }
                 for(int i=0;i<datas.size();i++){
@@ -106,6 +133,13 @@ public class AskActivity extends BaseActivity {
                 bundle.putString("content",etContent.getText().toString().trim());
                 bundle.putStringArrayList("imgs",images);
                 intent.putExtra("question",bundle);
+                if(questionEntity!=null){
+                    intent.putExtra("type","2");
+                    intent.putExtra("ids",questionEntity.getTag_id());
+                    intent.putExtra("article_id",questionEntity.getQuestionId());
+                }else{
+                    intent.putExtra("type","1");
+                }
                 startActivity(intent);
                 break;
         }

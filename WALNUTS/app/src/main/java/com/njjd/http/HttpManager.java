@@ -27,10 +27,12 @@ import rx.schedulers.Schedulers;
 public class HttpManager {
 //    public static final String BASE_URL = "http://116.62.243.41/api/";
 //    public static final String BASE_URL2 = "http://116.62.243.41/";
-//    public static final String BASE_URL = "http://47.96.24.179/api/";
-//    public static final String BASE_URL2 = "http://47.96.24.179/";
-  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
-  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
+    public static final String BASE_URL = "http://47.96.24.179/api/";
+    public static final String BASE_URL2 = "http://47.96.24.179/";
+//        public static final String BASE_URL = "http://118.31.229.183/api/";
+//        public static final String BASE_URL2 = "http://118.31.229.183/";
+//  public static final String BASE_URL = "http://192.168.0.111/hetao_api/public/index.php/api/";
+//  public static final String BASE_URL2 = "http://192.168.0.111/hetao_api/public/";
     /**
      * 设置超时时间，默认6s
      */
@@ -202,6 +204,21 @@ public class HttpManager {
     public void pubComment(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.pubComment(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void editQuestion(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.editQuestion(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void editComment(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.editComment(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void deleteComment(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.deleteComment(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     public void getQuestionList(BaseEntity basePar) {
