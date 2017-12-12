@@ -72,7 +72,7 @@ public class AppAplication extends Application {
         /**
          * 友盟登录、分享
          */
-        Config.DEBUG = true;
+//        Config.DEBUG = true;
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxaaa88f9a47ec1f98", "35a9eef61c384087a3028686789f2900");
         PlatformConfig.setQQZone("1106091328", "7XJSCwws0c8wFtFx");

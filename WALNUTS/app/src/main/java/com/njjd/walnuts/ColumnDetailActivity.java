@@ -29,6 +29,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.ArticleCommentAdapter;
 import com.njjd.adapter.RecommendArticleAdapter;
+import com.njjd.application.ConstantsVal;
 import com.njjd.domain.ColumnArticleDetailEntity;
 import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.CommentEntity;
@@ -553,13 +554,9 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://mp.heardtalk.com/web/mobile/articleShare?article_id="+Float.valueOf(detailActivity.getArticle_id()).intValue());
+        web = new UMWeb(ConstantsVal.SHAREURL+Float.valueOf(detailActivity.getArticle_id()).intValue());
         web.setTitle(detailActivity.getTitle());//标题
-//        if(!detailActivity.getContent().contains("<img")){
-//            image = new UMImage(ColumnDetailActivity.this, R.drawable.share);//资源文件
-//        }else{
-            image = new UMImage(this,HttpManager.BASE_URL2+detailActivity.getPic().split(",")[0].replace("\"",""));//资源文件
-//        }
+        image = new UMImage(this,HttpManager.BASE_URL2+detailActivity.getPic().split(",")[0].replace("\"",""));//资源文件
         web.setThumb(image);
         web.setDescription(detailActivity.getDesci());//描述
         new ShareAction(this).setPlatform(share_media).withMedia(web).setCallback(mShareListener).share();

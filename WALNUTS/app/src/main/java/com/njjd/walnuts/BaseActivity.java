@@ -1,25 +1,18 @@
 package com.njjd.walnuts;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.github.anzewei.parallaxbacklayout.ParallaxBack;
-import com.njjd.application.AppAplication;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.ImmersedStatusbarUtils;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
-import com.njjd.utils.ToastUtils;
-import com.trycatch.mysnackbar.Prompt;
-import com.trycatch.mysnackbar.TSnackbar;
+import com.top_snackbar.BaseTransientBottomBar;
+import com.top_snackbar.TopSnackBar;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -37,8 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
     /** 日志输出标志 **/
     protected final String TAG = this.getClass().getSimpleName();
     public static final int REQUEST_CODE = 0; // 请求码
-    final public static int REQUEST_CODE_ASK_CAMER = 123;
-    private static TSnackbar tSnackbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +52,6 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
     }
     @Override
     public void onNext(Object o) {
-        if(o!=null)
-        LogUtils.d("接口返回数据"+o.toString());
     }
 
     /**
@@ -127,28 +116,15 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
      * @param msg
      */
     public static void showToast(String msg){
-//        if(tSnackbar!=null&&tSnackbar.isShown()){
-//            tSnackbar.dismiss();
-//            tSnackbar=null;
-//        }
-//        tSnackbar=TSnackbar.make(mContextView, msg, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN).setPromptThemBackground(Prompt.WARNING);
-//        tSnackbar.setBackgroundColor(Color.argb(255,255,177,41));
-//        tSnackbar.show();
-        Toast.makeText(AppAplication.getContext(),msg,Toast.LENGTH_SHORT).show();
+             TopSnackBar.make(mContextView, msg, BaseTransientBottomBar.LENGTH_SHORT).show();
     }
     /**
      * [简化Toast]
      * @param msg
      */
     public static void showToast2(View view,String msg){
-//        if(tSnackbar!=null&&tSnackbar.isShown()){
-//            tSnackbar.dismiss();
-//            tSnackbar=null;
-//        }
-//        tSnackbar=TSnackbar.make(view, msg, TSnackbar.LENGTH_SHORT, TSnackbar.APPEAR_FROM_TOP_TO_DOWN).setPromptThemBackground(Prompt.WARNING);
-//        tSnackbar.setBackgroundColor(Color.argb(255,255,177,41));
-//        tSnackbar.show();
-        Toast.makeText(AppAplication.getContext(),msg,Toast.LENGTH_SHORT).show();
+      TopSnackBar.make(view, msg, BaseTransientBottomBar.LENGTH_SHORT).show();
+
     }
     /**
      * [是否设置沉浸状态栏]

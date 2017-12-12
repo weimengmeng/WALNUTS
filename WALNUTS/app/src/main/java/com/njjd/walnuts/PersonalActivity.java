@@ -197,11 +197,19 @@ public class PersonalActivity extends BaseActivity{
                 break;
             case R.id.btn_add_help2:
                 if(TextUtils.isEmpty(txtName.getText().toString())){
-                    ToastUtils.showShortToast(this,"昵称不能为空");
+                    ToastUtils.showShortToast(this,"姓名不能为空");
+                    return;
+                }
+                if(txtName.getText().toString().trim().length()>5){
+                    ToastUtils.showShortToast(this,"姓名最多5个字");
                     return;
                 }
                 if(txtMessage.getText().length()>35){
-                    ToastUtils.showShortToast(this,"简介最多35个字哦");
+                    ToastUtils.showShortToast(this,"简介最多30个字哦");
+                    return;
+                }
+                if(txtProducts.getText().length()>50){
+                    ToastUtils.showShortToast(this," 产品最多50个字哦");
                     return;
                 }
                 completeInfo();

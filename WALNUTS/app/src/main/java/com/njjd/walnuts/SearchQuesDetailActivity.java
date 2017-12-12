@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.AnswerReplyAdapter;
+import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
@@ -331,10 +332,6 @@ public class SearchQuesDetailActivity extends BaseActivity implements View.OnCli
         AnswerReplyAdapter.CURRENT_PAGE = 1;
         getDetail();
         getAnswerList();
-//        for (int i = 0, count = exListVIew
-//                .getExpandableListAdapter().getGroupCount(); i < count; i++) {
-//            exListVIew.collapseGroup(i);
-//        }
     }
 
     @Override
@@ -496,7 +493,7 @@ public class SearchQuesDetailActivity extends BaseActivity implements View.OnCli
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://mp.heardtalk.com/web/mobile/articleShare?article_id=" +getIntent().getStringExtra("id"));
+        web = new UMWeb(ConstantsVal.SHAREURL +getIntent().getStringExtra("id"));
         web.setTitle(questionEntity.getTitle());//标题
         if ("".equals(questionEntity.getPhoto())) {
             image = new UMImage(SearchQuesDetailActivity.this, R.drawable.share);//资源文件

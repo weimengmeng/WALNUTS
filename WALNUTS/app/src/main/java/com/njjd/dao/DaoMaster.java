@@ -24,8 +24,8 @@ public class DaoMaster extends AbstractDaoMaster {
         BannerEntityDao.createTable(db, ifNotExists);
         IndexNavEntityDao.createTable(db, ifNotExists);
         QuestionEntityDao.createTable(db, ifNotExists);
-        TagEntityDao.createTable(db, ifNotExists);
         SearchHistoryDao.createTable(db, ifNotExists);
+        TagEntityDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
@@ -33,8 +33,8 @@ public class DaoMaster extends AbstractDaoMaster {
         BannerEntityDao.dropTable(db, ifExists);
         IndexNavEntityDao.dropTable(db, ifExists);
         QuestionEntityDao.dropTable(db, ifExists);
-        TagEntityDao.dropTable(db, ifExists);
         SearchHistoryDao.dropTable(db, ifExists);
+        TagEntityDao.dropTable(db, ifExists);
     }
 
     /**
@@ -56,8 +56,8 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(BannerEntityDao.class);
         registerDaoClass(IndexNavEntityDao.class);
         registerDaoClass(QuestionEntityDao.class);
-        registerDaoClass(TagEntityDao.class);
         registerDaoClass(SearchHistoryDao.class);
+        registerDaoClass(TagEntityDao.class);
     }
 
     public DaoSession newSession() {

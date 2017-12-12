@@ -143,9 +143,15 @@ public class LoginActivity extends BaseActivity {
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, authListener);
                 break;
             case R.id.btn_wx:
+                if(!umShareAPI.isInstall(this, SHARE_MEDIA.WEIXIN)){
+                    ToastUtils.showShortToast(this,"请先安装微信客户端");
+                }
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, authListener);
                 break;
             case R.id.btn_qq:
+                if(!umShareAPI.isInstall(this, SHARE_MEDIA.QQ)){
+                    ToastUtils.showShortToast(this,"请先安装QQ客户端");
+                }
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, authListener);
                 break;
         }
@@ -183,7 +189,7 @@ public class LoginActivity extends BaseActivity {
 
     private void doThirdLogin(int type, Map<String, String> result) {
         MobclickAgent.onEvent(this,ConstantsVal.THIRD_LOGIN);
-        //0 qq 1 wechat  2 sina
+        //1 qq 2 wechat  3 sina
         Map<String, Object> map = new HashMap<>();
         map.put("logintype", "" + type);
         if(type==1||type==2) {

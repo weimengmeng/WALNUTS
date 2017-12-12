@@ -307,7 +307,7 @@ public class SearchActivity extends BaseActivity {
                 listLabel.setVisibility(View.VISIBLE);
 //                map.put("page",etSearch.getText().toString());
                 //搜话题
-                ToastUtils.showShortToast(this, "搜话题");
+//                ToastUtils.showShortToast(this, "搜话题");
 //                postEntity= new SubjectPost(new ProgressSubscriber(searchLabel, this, true, false), map);
 //                HttpManager.getInstance().phoneCode(postEntity);
                 break;

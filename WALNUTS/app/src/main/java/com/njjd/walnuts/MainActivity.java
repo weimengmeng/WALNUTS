@@ -39,6 +39,7 @@ import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
+import com.njjd.utils.ToastUtils;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
@@ -106,12 +107,11 @@ public class MainActivity extends FragmentActivity {
         loginHuanxin();
         CommonUtils.setMeizuStatusBarDarkIcon(this,true);
         CommonUtils.setMiuiStatusBarDarkMode(this,true);
-        PgyUpdateManager.register(MainActivity.this, "",
+        PgyUpdateManager.register(MainActivity.this,
                 new UpdateManagerListener() {
 
                     @Override
                     public void onUpdateAvailable(final String result) {
-                        // 将新版本信息封装到AppBean中
                         final AppBean appBean = getAppBeanFromString(result);
                         try {
                             PackageInfo packageInfo = activity.getApplicationContext()

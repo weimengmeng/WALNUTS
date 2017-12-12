@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.AnswerCommentAdapter;
+import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.CommentEntity;
 import com.njjd.domain.QuestionEntity;
@@ -359,7 +360,7 @@ public class SelectAnswerDetailActivity extends BaseActivity implements View.OnC
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://mp.heardtalk.com/web/mobile/articleShare?article_id=" + Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb(ConstantsVal.SHAREURL + Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
         if ("".equals(questionEntity.getPhoto())) {
             image = new UMImage(SelectAnswerDetailActivity.this, R.drawable.logo);//资源文件

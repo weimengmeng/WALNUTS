@@ -5,6 +5,7 @@ package com.njjd.application;
  */
 
 public class ConstantsVal {
+    public static String SHAREURL="http://mp.heardtalk.com/web/mobile/articleShare?article_id=";
     public static String REFRESH="refresh";
     public static String REFRESH_FIND="refresh_find";
     public static String MESSAGE_RECEIVE="messreceive";

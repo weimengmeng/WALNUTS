@@ -203,6 +203,10 @@ public class  SuccessActivity extends BaseActivity {
                     ToastUtils.showShortToast(this, "请输入姓名");
                     return;
                 }
+                if(etName.getText().toString().trim().length()>5){
+                    ToastUtils.showShortToast(this,"姓名最多5个字");
+                    return;
+                }
                 if ("".equals(provinceId) || "".equals(cityId)) {
                     ToastUtils.showShortToast(SuccessActivity.this, "请先选择地区");
                     return;

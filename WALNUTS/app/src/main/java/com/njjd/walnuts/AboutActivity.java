@@ -43,20 +43,6 @@ public class AboutActivity extends BaseActivity {
         txtTitle.setText("关于核桃");
         txtVersion.setText(getLocalVersionName(this) + "版");
     }
-
-    public static int getLocalVersion(Context ctx) {
-        int localVersion = 0;
-        try {
-            PackageInfo packageInfo = ctx.getApplicationContext()
-                    .getPackageManager()
-                    .getPackageInfo(ctx.getPackageName(), 0);
-            localVersion = packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return localVersion;
-    }
-
     /**
      * 获取本地软件版本号名称
      */
@@ -97,7 +83,7 @@ public class AboutActivity extends BaseActivity {
     }
 
     private void checkUpdate() {
-        PgyUpdateManager.register(AboutActivity.this, "",
+        PgyUpdateManager.register(AboutActivity.this,
                 new UpdateManagerListener() {
 
                     @Override

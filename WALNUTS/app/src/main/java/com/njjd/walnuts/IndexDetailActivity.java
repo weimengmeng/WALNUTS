@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.njjd.adapter.AnswerReplyAdapter;
+import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.domain.CommentEntity;
@@ -484,9 +485,15 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
                 shareAction(SHARE_MEDIA.SINA);
                 break;
             case R.id.share_wechat:
+                if(!UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN)){
+                    ToastUtils.showShortToast(this,"请先安装微信客户端");
+                }
                 shareAction(SHARE_MEDIA.WEIXIN);
                 break;
             case R.id.share_wechat_circle1:
+                if(!UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN)){
+                    ToastUtils.showShortToast(this,"请先安装微信客户端");
+                }
                 shareAction(SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
             case R.id.mask:
@@ -537,7 +544,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         UMImage image;
         mask.setVisibility(View.GONE);
         lvShare.setVisibility(View.GONE);
-        web = new UMWeb("http://mp.heardtalk.com/web/mobile/articleShare?article_id=" + Float.valueOf(questionEntity.getQuestionId()).intValue());
+        web = new UMWeb(ConstantsVal.SHAREURL + Float.valueOf(questionEntity.getQuestionId()).intValue());
         web.setTitle(questionEntity.getTitle());//标题
         if ("".equals(questionEntity.getPhoto())) {
             image = new UMImage(IndexDetailActivity.this, R.drawable.share);//资源文件
