@@ -228,8 +228,8 @@ public class FindAnswerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public ColumnHolder(View itemView) {
             super(itemView);
-            banner = (Banner) itemView.findViewById(R.id.banner);
-            recyclerView = (BetterRecyclerView) itemView.findViewById(R.id.rec_column);
+            banner =itemView.findViewById(R.id.banner);
+            recyclerView =itemView.findViewById(R.id.rec_column);
         }
     }
 

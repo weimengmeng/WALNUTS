@@ -282,7 +282,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
-
     private void getUserInfoByOpenId(final String uid) {
         Map<String, Object> map = new HashMap<>();
         map.put("uids", uid);

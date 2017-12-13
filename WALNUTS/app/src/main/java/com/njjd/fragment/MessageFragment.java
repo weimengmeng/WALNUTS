@@ -37,7 +37,6 @@ import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ItemRemoveRecyclerView;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
@@ -242,14 +241,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         listInform.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
+                if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
+                    ToastUtils.showShortToast(context, "网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             listInform.refreshComplete();
                         }
-                    },500);
+                    }, 500);
                     return;
                 }
                 InformAdapter.CURRENT_PAGE = 1;
@@ -265,14 +264,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 
             @Override
             public void onLoadMore() {
-                if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){
-                    ToastUtils.showShortToast(context,"网络中断，请检查您的网络状态");
+                if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
+                    ToastUtils.showShortToast(context, "网络中断，请检查您的网络状态");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             listInform.loadMoreComplete();
                         }
-                    },500);
+                    }, 500);
                     return;
                 }
                 if (!loadmoe) {
@@ -302,14 +301,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
 //            0 系统通知 1 关注用户 2 关注问题 3回答问题 4 评论回答 5 收藏回答 6 点赞",
                     case "0.0":
                         try {
-                            if(entities.get(position).getContent().getString("type").equals("0.0")){
-                            }else if(entities.get(position).getContent().getString("type").equals("1.0")){
+                            if (entities.get(position).getContent().getString("type").equals("0.0")) {
+                            } else if (entities.get(position).getContent().getString("type").equals("1.0")) {
                                 intent = new Intent(context, MyQuestionActivity.class);
-                                intent.putExtra("uid",entities.get(position).getContent().getString("uid"));
+                                intent.putExtra("uid", entities.get(position).getContent().getString("uid"));
                                 startActivity(intent);
-                            }else if(entities.get(position).getContent().getString("type").equals("2.0")){
+                            } else if (entities.get(position).getContent().getString("type").equals("2.0")) {
                                 intent = new Intent(context, MyAnswerActivity.class);
-                                intent.putExtra("uid",entities.get(position).getContent().getString("uid"));
+                                intent.putExtra("uid", entities.get(position).getContent().getString("uid"));
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
@@ -326,7 +325,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         break;
                     case "3.0":
                         try {
-                            if(entities.get(position).getContent().getString("type").equals("2.0")){
+                            if (entities.get(position).getContent().getString("type").equals("2.0")) {
                                 intent = new Intent(context, ColumnDetailActivity.class);
                                 intent.putExtra("article_id", Float.valueOf(entities.get(position).getArticle_id()).intValue() + "");
                                 context.startActivity(intent);
@@ -335,59 +334,71 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        intent = new Intent(context, IndexDetailActivity.class);
-                        bundle = new Bundle();
                         entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getArticle_id());
-                        intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getComment_id())));
-                        bundle.putSerializable("question", entity);
-                        intent.putExtra("question", bundle);
-                        intent.putExtra("current_commentId", entities.get(position).getComment_id());
-                        intent.putExtra("type", "3");
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        if (entity == null) {
+                            getDetail(Float.valueOf(entities.get(position).getArticle_id()).intValue()+"",String.valueOf(Float.valueOf(entities.get(position).getComment_id())),entities.get(position).getComment_id());
+                        }else {
+                            intent = new Intent(context, IndexDetailActivity.class);
+                            bundle = new Bundle();
+                            intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getComment_id())));
+                            bundle.putSerializable("question", entity);
+                            intent.putExtra("question", bundle);
+                            intent.putExtra("current_commentId", entities.get(position).getComment_id());
+                            intent.putExtra("type", "3");
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        }
                         break;
                     case "6.0":
                         intent = new Intent(context, IndexDetailActivity.class);
                         bundle = new Bundle();
                         try {
                             entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
-                            intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))));
-                            bundle.putSerializable("question", entity);
-                            intent.putExtra("current_commentId", entities.get(position).getComment_id());
-                            intent.putExtra("question", bundle);
-                            intent.putExtra("type", "3");
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            if (entity == null) {
+                                getDetail(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()+"",String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))),entities.get(position).getComment_id());
+                            }else {
+                                intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))));
+                                bundle.putSerializable("question", entity);
+                                intent.putExtra("current_commentId", entities.get(position).getComment_id());
+                                intent.putExtra("question", bundle);
+                                intent.putExtra("type", "3");
+                                startActivity(intent);
+                                getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "4.0":
                         try {
-                            if(entities.get(position).getContent().isNull("type")||entities.get(position).getContent().getString("type").equals("1.0")) {
+                            if (entities.get(position).getContent().isNull("type") || entities.get(position).getContent().getString("type").equals("1.0")) {
                                 intent = new Intent(context, IndexDetailActivity.class);
                                 bundle = new Bundle();
                                 try {
                                     entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
-                                    intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
-                                    bundle.putSerializable("question", entity);
-                                    intent.putExtra("current_commentId", entities.get(position).getComment_id());
-                                    intent.putExtra("question", bundle);
-                                    intent.putExtra("type", "3");
-                                    startActivity(intent);
-                                    getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                                    if (entity == null) {
+                                        getDetail(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()+"",String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))),entities.get(position).getComment_id());
+                                    }else {
+                                        intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
+                                        bundle.putSerializable("question", entity);
+                                        intent.putExtra("current_commentId", entities.get(position).getComment_id());
+                                        intent.putExtra("question", bundle);
+                                        intent.putExtra("type", "3");
+                                        startActivity(intent);
+                                        getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                            }else{
-                                intent=new Intent(context,ArticleComReplyActivity.class);
-                                intent.putExtra("type","1");
-                                CommentEntity commentEntity=new CommentEntity();
+                            } else {
+                                intent = new Intent(context, ArticleComReplyActivity.class);
+                                intent.putExtra("type", "1");
+                                CommentEntity commentEntity = new CommentEntity();
                                 commentEntity.setCommentId(entities.get(position).getContent().getString("answer_id"));
-                                bundle=new Bundle();
-                                bundle.putSerializable("comment",commentEntity);
-                                intent.putExtra("comment",bundle);
-                                intent.putExtra("article_id",String.valueOf(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()));
+                                bundle = new Bundle();
+                                bundle.putSerializable("comment", commentEntity);
+                                intent.putExtra("comment", bundle);
+                                intent.putExtra("article_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()));
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
@@ -397,6 +408,37 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 }
             }
         });
+    }
+
+    private void getDetail(final String id, final String answer_id,final String current_commentId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("uid", SPUtils.get(context, "userId", ""));
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(new HttpOnNextListener() {
+            @Override
+            public void onNext(Object o) {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.serializeNulls(); //重点
+                Gson gson = gsonBuilder.create();
+                Intent intent=new Intent(context,IndexDetailActivity.class);
+                QuestionEntity entity= null;
+                try {
+                    entity = new QuestionEntity(new JSONObject(gson.toJson(o)),"1");
+                    entity.setQuestionId(Float.valueOf(id).intValue()+"");
+                    Bundle  bundle = new Bundle();
+                    intent.putExtra("comment_id", answer_id);
+                    bundle.putSerializable("question", entity);
+                    intent.putExtra("current_commentId", current_commentId);
+                    intent.putExtra("question", bundle);
+                    intent.putExtra("type", "3");
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, context, false, false), map);
+        HttpManager.getInstance().getArticleDetail(postEntity);
     }
 
     private void getUserInfoByOpenId() {

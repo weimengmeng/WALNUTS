@@ -123,7 +123,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                 }
                 break;
             case "6.0":
-                viewHolder.title.setText(tempEntity.getUname()+" 认同了你的回答");
+                viewHolder.title.setText(tempEntity.getUname()+"赞了你的回答");
                 try {
                     viewHolder.content.setText(tempEntity.getContent().getString("content"));
                 } catch (JSONException e) {

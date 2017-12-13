@@ -7,33 +7,36 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.njjd.adapter.HistoryAdapter;
 import com.njjd.adapter.SearchArticleAdapter;
 import com.njjd.adapter.SearchQuesAdapter;
 import com.njjd.adapter.SearchUserAdapter;
 import com.njjd.dao.SearchHistoryDao;
 import com.njjd.db.DBHelper;
+import com.njjd.domain.CommonEntity;
 import com.njjd.domain.SearchArticleEntity;
 import com.njjd.domain.SearchHistory;
 import com.njjd.domain.SearchQuesEntity;
 import com.njjd.domain.SearchUserEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.CommonUtils;
 import com.njjd.utils.IconCenterEditText;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
-import org.greenrobot.greendao.query.Query;
-
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,7 +63,13 @@ public class SearchActivity extends BaseActivity {
     ListView listLabel;
     @BindView(R.id.list_history)
     ListView listHistory;
-    private List<SearchHistory> historyList,templist;
+    @BindView(R.id.txt_province)
+    TextView txtProvince;
+    @BindView(R.id.txt_vocation)
+    TextView txtVocation;
+    @BindView(R.id.lv_search)
+    LinearLayout lvSearch;
+    private List<SearchHistory> historyList, templist;
     private HistoryAdapter adapter;
     private SearchHistory history;
     private int searchItem = 1;
@@ -72,6 +81,20 @@ public class SearchActivity extends BaseActivity {
     private List<SearchQuesEntity> quesEntities = new ArrayList<>();
     private List<SearchArticleEntity> articleEntities = new ArrayList<>();
     private List<SearchUserEntity> userEntities = new ArrayList<>();
+    //省份一级菜单
+    private List<String> provinces;
+    private List<CommonEntity> provinceEntities;
+    //城市二级菜单
+    private List<List<CommonEntity>> cityList;
+    private List<List<String>> cityEntities;
+    //行业一级菜单
+    private List<String> industrys1;
+    private List<CommonEntity> industryList1;
+    //行业二级菜单
+    private List<List<String>> industrys2;
+    private List<List<CommonEntity>> industryList2;
+    private OptionsPickerView<String> provincePickview, industryPickview;
+    private String cityId = "0", industryId = "0";
 
     @Override
     public int bindLayout() {
@@ -176,9 +199,9 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 etSearch.setText(historyList.get(position).getKeywords());
-                SearchUserAdapter.CURRENTPAGE=1;
-                SearchArticleAdapter.CURRENTPAGE=1;
-                SearchQuesAdapter.CURRENTPAGE=1;
+                SearchUserAdapter.CURRENTPAGE = 1;
+                SearchArticleAdapter.CURRENTPAGE = 1;
+                SearchQuesAdapter.CURRENTPAGE = 1;
                 KeybordS.closeBoard(SearchActivity.this);
             }
         });
@@ -255,7 +278,7 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchActivity.this, SearchQuesDetailActivity.class);
-                intent.putExtra("id",Float.valueOf(quesEntities.get(position).getArticleId()).intValue()+"");
+                intent.putExtra("id", Float.valueOf(quesEntities.get(position).getArticleId()).intValue() + "");
                 startActivity(intent);
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
@@ -269,6 +292,56 @@ public class SearchActivity extends BaseActivity {
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
         });
+        provinces = CommonUtils.getInstance().getProvincesList();
+        provinces.add(0,"区域不限");
+        provinceEntities = CommonUtils.getInstance().getProvinceEntities();
+        provinceEntities.add(0,new CommonEntity("0","区域不限","000"));
+        cityEntities = CommonUtils.getInstance().getCityEntities();
+        List<List<String>> a=new ArrayList<>();
+        List<String> b=new ArrayList<>();
+        b.add("区域不限");
+        a.add(b);
+        cityEntities.add(0,b);
+        cityList = CommonUtils.getInstance().getCityList();
+        List<CommonEntity> t=new ArrayList<>();
+        t.add(new CommonEntity("0","区域不限","000"));
+        cityList.add(0,t);
+        industrys1 = CommonUtils.getInstance().getIndustrys1();
+        industrys1.add(0,"行业不限");
+        industrys2 = CommonUtils.getInstance().getIndustrys2();
+        List<String> d=new ArrayList<>();
+        d.add("行业不限");
+        industrys2.add(0,d);
+        industryList1 = CommonUtils.getInstance().getIndustryList1();
+        industryList1.add(new CommonEntity("0","行业不限","000"));
+        industryList2 = CommonUtils.getInstance().getIndustryList2();
+        List<CommonEntity> c=new ArrayList<>();
+        c.add(new CommonEntity("0","行业不限","000"));
+        industryList2.add(0,c);
+        provincePickview = new OptionsPickerView.Builder(SearchActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                cityId = Float.valueOf(cityList.get(options1).get(options2).getId()).intValue()+"";
+                txtProvince.setText(cityEntities.get(options1).get(options2));
+                userEntities.clear();
+                userAdapter.notifyDataSetChanged();
+                SearchUserAdapter.CURRENTPAGE=1;
+                searchByKeyWords();
+            }
+        }).build();
+        provincePickview.setPicker(provinces, cityEntities);
+        industryPickview = new OptionsPickerView.Builder(SearchActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                txtVocation.setText(industrys2.get(options1).get(options2));
+                industryId = Float.valueOf(industryList2.get(options1).get(options2).getId()).intValue()+"";
+                userEntities.clear();
+                SearchUserAdapter.CURRENTPAGE=1;
+                userAdapter.notifyDataSetChanged();
+                searchByKeyWords();
+            }
+        }).build();
+        industryPickview.setPicker(industrys1, industrys2);
     }
 
     private void searchByKeyWords() {
@@ -298,8 +371,16 @@ public class SearchActivity extends BaseActivity {
             case 3:
                 //搜用户
                 userAdapter.setText(etSearch.getText().toString());
+                lvSearch.setVisibility(View.VISIBLE);
                 listUser.setVisibility(View.VISIBLE);
+                if(!cityId.equals("0")){
+                    map.put("city_id", Float.valueOf(cityId).intValue());
+                }
+                if(!industryId.equals("0")){
+                    map.put("industry_id", Float.valueOf(industryId).intValue());
+                }
                 map.put("page", SearchUserAdapter.CURRENTPAGE++);
+                LogUtils.d("huan"+map.toString());
                 postEntity = new SubjectPost(new ProgressSubscriber(searchUser, this, true, true), map);
                 HttpManager.getInstance().searchUser(postEntity);
                 break;
@@ -319,7 +400,7 @@ public class SearchActivity extends BaseActivity {
         public void onNext(Object o) {
             JsonArray array = JSONUtils.getAsJsonArray(o);
             SearchQuesEntity entity;
-            if(SearchQuesAdapter.CURRENTPAGE==1){
+            if (SearchQuesAdapter.CURRENTPAGE == 1) {
                 quesEntities.clear();
             }
             for (int i = 0; i < array.size(); i++) {
@@ -334,7 +415,7 @@ public class SearchActivity extends BaseActivity {
         public void onNext(Object o) {
             JsonArray array = JSONUtils.getAsJsonArray(o);
             SearchArticleEntity entity;
-            if(SearchArticleAdapter.CURRENTPAGE==1){
+            if (SearchArticleAdapter.CURRENTPAGE == 1) {
                 articleEntities.clear();
             }
             for (int i = 0; i < array.size(); i++) {
@@ -349,7 +430,7 @@ public class SearchActivity extends BaseActivity {
         public void onNext(Object o) {
             JsonArray array = JSONUtils.getAsJsonArray(o);
             SearchUserEntity entity;
-            if(SearchUserAdapter.CURRENTPAGE==1){
+            if (SearchUserAdapter.CURRENTPAGE == 1) {
                 userEntities.clear();
             }
             for (int i = 0; i < array.size(); i++) {
@@ -396,12 +477,23 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.back, R.id.radio1, R.id.radio2, R.id.radio3, R.id.radio4, R.id.delete_history})
+    @OnClick({R.id.back, R.id.radio1, R.id.radio2, R.id.radio3, R.id.radio4, R.id.delete_history, R.id.txt_province,R.id.txt_vocation,})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 KeybordS.closeBoard(this);
                 finish();
+                break;
+            case R.id.txt_province:
+                if (provincePickview != null) {
+                    provincePickview.show();
+                }
+                break;
+            case R.id.txt_vocation:
+                if (industryPickview != null) {
+                    industryPickview.show();
+                }
+                industryPickview.show();
                 break;
             case R.id.radio1:
                 searchItem = 1;
@@ -413,6 +505,7 @@ public class SearchActivity extends BaseActivity {
                 listQues.setVisibility(View.VISIBLE);
                 listArticle.setVisibility(View.GONE);
                 listUser.setVisibility(View.GONE);
+                lvSearch.setVisibility(View.GONE);
                 listLabel.setVisibility(View.GONE);
                 searchByKeyWords();
                 break;
@@ -426,6 +519,7 @@ public class SearchActivity extends BaseActivity {
                 listQues.setVisibility(View.GONE);
                 listArticle.setVisibility(View.VISIBLE);
                 listUser.setVisibility(View.GONE);
+                lvSearch.setVisibility(View.GONE);
                 listLabel.setVisibility(View.GONE);
                 searchByKeyWords();
                 break;
@@ -438,6 +532,7 @@ public class SearchActivity extends BaseActivity {
                 SearchUserAdapter.CURRENTPAGE = 1;
                 listQues.setVisibility(View.GONE);
                 listArticle.setVisibility(View.GONE);
+                lvSearch.setVisibility(View.VISIBLE);
                 listUser.setVisibility(View.VISIBLE);
                 listLabel.setVisibility(View.GONE);
                 searchByKeyWords();
@@ -450,6 +545,7 @@ public class SearchActivity extends BaseActivity {
                 listQues.setVisibility(View.GONE);
                 listArticle.setVisibility(View.GONE);
                 listUser.setVisibility(View.GONE);
+                lvSearch.setVisibility(View.GONE);
                 listLabel.setVisibility(View.VISIBLE);
                 searchByKeyWords();
                 break;

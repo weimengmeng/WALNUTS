@@ -112,10 +112,58 @@
         android:layout_height="1dp"
         android:background="@color/grey"></View>
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:id="@+id/lv_search"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+        <TextView
+            android:id="@+id/txt_province"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:hint="区域不限"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
+            android:textColorHint="@color/txt_color"
+            android:drawableRight="@drawable/select"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/small" />
+        <TextView
+            android:id="@+id/txt_vocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:hint="行业不限"
+            android:paddingTop="@dimen/padding"
+            android:paddingBottom="@dimen/padding"
+            android:textColorHint="@color/txt_color"
+            android:drawableRight="@drawable/select"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/small" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"></View>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/lv_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"></View>
         <ListView
             android:id="@+id/list_history"
             android:layout_width="match_parent"
