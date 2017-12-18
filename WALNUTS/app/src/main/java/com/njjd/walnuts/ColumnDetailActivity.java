@@ -3,6 +3,7 @@ package com.njjd.walnuts;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -310,7 +311,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
 
     private void getRecommendArticle() {
         Map<String, Object> map = new HashMap<>();
-        map.put("article_id", getIntent().getStringExtra("article_id"));
+        map.put("article_id",getIntent().getStringExtra("article_id"));
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getRecommendListener, this, true, false), map);
         HttpManager.getInstance().getRecommendArticle(postEntity);
     }
@@ -432,7 +433,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
     private class JavascriptInterface {
 
         private Context context;
-
+        final ArrayList<String> list1 = new ArrayList<>();
 
         public JavascriptInterface(Context context) {
             this.context = context;
@@ -440,7 +441,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
 
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
-            final ArrayList<String> list1 = new ArrayList<>();
+            list1.clear();
             list1.add(img);
             Intent intent = new Intent(ColumnDetailActivity.this, ImagePagerActivity.class);
             intent.putStringArrayListExtra(
@@ -570,7 +571,6 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         }
         @Override
         public void onStart(SHARE_MEDIA platform) {
-//            loadingDialog.show();
         }
         @Override
         public void onResult(SHARE_MEDIA platform) {

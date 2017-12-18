@@ -160,7 +160,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             final List<QuestionEntity> list1 =new ArrayList<>();
             lists.add(list1);
             currentView = view.inflate(context, R.layout.layout_common_index, null);
-            list = (MyXRecyclerView) currentView.findViewById(R.id.list_index);
+            list = currentView.findViewById(R.id.list_index);
             final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, navList.get(i).getId());
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview

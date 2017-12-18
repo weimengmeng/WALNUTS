@@ -17,14 +17,13 @@ import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.njjd.adapter.MSGLAdapter;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
-import com.njjd.utils.LogUtils;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 import com.voice.AudioRecoderUtils;
@@ -125,15 +124,13 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
                 sendVoice();
             }
         });
-
         //PopupWindow的布局文件
         final View view1 = View.inflate(this, R.layout.layout_microphone, null);
 
         mPop = new PopupWindowFactory(this,view1);
-
         //PopupWindow布局文件里面的控件
-        mImageView = (ImageView) view1.findViewById(R.id.iv_recording_icon);
-        mTextView = (TextView) view1.findViewById(R.id.tv_recording_time);
+        mImageView = view1.findViewById(R.id.iv_recording_icon);
+        mTextView =view1.findViewById(R.id.tv_recording_time);
         //Button的touch监听
         btnVoice.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -150,7 +147,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
                     case MotionEvent.ACTION_UP:
 
                         mAudioRecoderUtils.stopRecord();        //结束录音（保存录音文件）
-//                        mAudioRecoderUtils.cancelRecord();    //取消录音（不保存录音文件）
                         mPop.dismiss();
                         break;
                 }
@@ -203,7 +199,8 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
                 finish();
                 break;
             case R.id.btn_micro:
-             lvVoice.setVisibility(lvVoice.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
+                KeybordS.closeBoard(this);
+                lvVoice.setVisibility(lvVoice.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
                 break;
             case R.id.btn_img:
                 Picker.from(this)
@@ -277,7 +274,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             List<Uri> mSelected = PicturePickerUtils.obtainResult(data);
-//            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
             imagePath = CommonUtils.getRealPathFromUri(this,mSelected.get(0));
             sendImageMessage();
         }

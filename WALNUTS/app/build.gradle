@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.neenbedankt.android-apt'//增加这一句
 apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 26
@@ -72,7 +71,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:+'
     compile 'com.google.code.gson:gson:+'
     compile 'com.jakewharton:butterknife:8.1.0'
-//    apt 'com.jakewharton:butterknife-compiler:8.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.isseiaoki:simplecropview:1.0.13'

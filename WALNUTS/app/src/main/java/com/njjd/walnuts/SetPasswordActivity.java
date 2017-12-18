@@ -133,8 +133,6 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
                     return;
                 }
                 verifyPhone();
-//                Intent intent = new Intent(this, SuccessActivity.class);
-//                startActivity(intent);
                 break;
         }
     }

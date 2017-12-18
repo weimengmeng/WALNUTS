@@ -380,7 +380,6 @@ public class SearchActivity extends BaseActivity {
                     map.put("industry_id", Float.valueOf(industryId).intValue());
                 }
                 map.put("page", SearchUserAdapter.CURRENTPAGE++);
-                LogUtils.d("huan"+map.toString());
                 postEntity = new SubjectPost(new ProgressSubscriber(searchUser, this, true, true), map);
                 HttpManager.getInstance().searchUser(postEntity);
                 break;
@@ -446,7 +445,6 @@ public class SearchActivity extends BaseActivity {
 
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -563,9 +561,9 @@ public class SearchActivity extends BaseActivity {
         super.onDestroy();
         KeybordS.closeBoard(this);
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        KeybordS.closeBoard(this);
     }
 }

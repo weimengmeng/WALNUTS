@@ -40,10 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(getResources().getColor(R.color.white));
-//            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-//        int statusBarHeight = ImmersedStatusbarUtils.getStatusBarHeight(this);
-//        mContextView.setPadding(0, statusBarHeight, 0,0);
         MyActivityManager.getInstance().pushOneActivity(this);
         initView(mContextView);
         PushAgent.getInstance(this).onAppStart();

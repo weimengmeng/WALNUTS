@@ -10,6 +10,11 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <include layout="@layout/top"></include>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txt_color"
+            android:alpha="0.15"></View>
     </LinearLayout>
     <com.njjd.utils.VpSwipeRefreshLayout
         android:id="@+id/refresh"

@@ -174,7 +174,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             for (int i = 0; i < imgs.length; i++) {
                 list1.add(imgs[i].replace("\"", ""));
                 relativeLayout = (RelativeLayout) inflater.inflate(R.layout.layout_img, null);
-                imageView = (ImageView) relativeLayout.findViewById(R.id.img);
+                imageView = relativeLayout.findViewById(R.id.img);
                 imageView.setId(i);
                 GlideImageLoder.getInstance().displayImage(this, imgs[i].replace("\"", ""), imageView);
                 final int finalI = i;
