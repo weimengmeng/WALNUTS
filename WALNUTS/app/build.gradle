@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.njjd.walnuts"
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 22
         versionName "1.2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
