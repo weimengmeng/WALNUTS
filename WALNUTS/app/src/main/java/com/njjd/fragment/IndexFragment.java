@@ -218,7 +218,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 list = listViews.get(position);
                 questionAdapter = adapterList.get(position);
                 tempKind = navList.get(position).getId();
-                setRefreshListener();
                 if (tempList.size() == 0) {
                     getQuestion(tempKind, tempOrder);
                 }
@@ -246,6 +245,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             getQuestion(tempKind, tempOrder);
         }
         questionAdapter.notifyDataSetChanged();
+        setRefreshListener();
     }
 
     private void setRefreshListener() {
@@ -263,7 +263,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     return;
                 }
                 questionAdapter.setCurrentPage(1);
-                CommonUtils.init(context);
+//                CommonUtils.init(context);
                 getQuestion(tempKind, tempOrder);
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -272,7 +272,6 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     }
                 },6000);
             }
-
             @Override
             public void onLoadMore() {
                 if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1){

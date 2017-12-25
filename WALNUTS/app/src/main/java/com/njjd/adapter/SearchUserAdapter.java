@@ -66,21 +66,25 @@ public class SearchUserAdapter extends BaseAdapter {
         if(convertView==null){
             holder = new ViewHolder();
             convertView=inflater.inflate(R.layout.item_search_user,null);
-            holder.uname=(TextUtil) convertView.findViewById(R.id.search_name);
-            holder.area=(TextUtil) convertView.findViewById(R.id.search_area);
-            holder.head=(CircleImageView) convertView.findViewById(R.id.img_head);
-            holder.industry=(TextUtil) convertView.findViewById(R.id.search_industry);
-            holder.product=(TextUtil) convertView.findViewById(R.id.search_product);
+            holder.uname= convertView.findViewById(R.id.search_name);
+            holder.area=convertView.findViewById(R.id.search_area);
+            holder.head= convertView.findViewById(R.id.img_head);
+            holder.industry= convertView.findViewById(R.id.search_industry);
+            holder.product= convertView.findViewById(R.id.search_product);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder) convertView.getTag();
         }
         userEntity=list.get(position);
-        holder.uname.setSpecifiedTextsColor(userEntity.getUname(), text, Color.parseColor("#ffb129"));
-        holder.area.setSpecifiedTextsColor(userEntity.getArea(), text, Color.parseColor("#ffb129"));
+        holder.uname.setText(userEntity.getUname());
+        holder.area.setText(userEntity.getArea());
+//        holder.uname.setSpecifiedTextsColor(userEntity.getUname(), text, Color.parseColor("#ffb129"));
+//        holder.area.setSpecifiedTextsColor(userEntity.getArea(), text, Color.parseColor("#ffb129"));
         GlideImageLoder.getInstance().displayImage(context,userEntity.getHeadimg(),holder.head);
-        holder.industry.setSpecifiedTextsColor(userEntity.getIndustry1()+"-"+userEntity.getIndustry2(), text, Color.parseColor("#ffb129"));
-        holder.product.setSpecifiedTextsColor(userEntity.getProduct(), text, Color.parseColor("#ffb129"));
+//        holder.industry.setSpecifiedTextsColor(userEntity.getIndustry1()+"-"+userEntity.getIndustry2(), text, Color.parseColor("#ffb129"));
+//        holder.product.setSpecifiedTextsColor(userEntity.getProduct(), text, Color.parseColor("#ffb129"));
+        holder.industry.setText(userEntity.getIndustry1()+"-"+userEntity.getIndustry2());
+        holder.product.setText(userEntity.getProduct());
         return convertView;
     }
     private class ViewHolder{

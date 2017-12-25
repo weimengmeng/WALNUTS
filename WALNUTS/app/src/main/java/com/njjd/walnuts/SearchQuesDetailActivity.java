@@ -209,8 +209,8 @@ public class SearchQuesDetailActivity extends BaseActivity implements View.OnCli
             }
         });
         mainView = LayoutInflater.from(this).inflate(R.layout.layout_pop, null);
-        layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
-        layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
+        layoutTop = mainView.findViewById(R.id.rb_hot);
+        layoutTime =mainView.findViewById(R.id.rb_time);
         layoutTop.setOnClickListener(this);
         layoutTime.setOnClickListener(this);
         popupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

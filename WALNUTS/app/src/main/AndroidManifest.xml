@@ -167,6 +167,17 @@
             android:name=".MyFocusActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".AdvancedSearchActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".AdvancedSearchResultActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ProductActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".MyQuestionActivity"
             android:screenOrientation="portrait"></activity>
         <activity
@@ -256,8 +267,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="walnuts"></meta-data>
-
-         设置环信应用的AppKey
         <meta-data android:name="EASEMOB_APPKEY"  android:value="847443371#walnuts" />
         <!-- 声明SDK所需的service SDK核心功能-->
         <service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>

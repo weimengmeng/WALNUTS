@@ -11,4 +11,32 @@
     <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="nomore_data">没有数据了</string>
     <string name="app_id">59df0a58</string>
+    <array name="positions">
+        <item>销售经理</item>
+        <item>高级客户经理</item>
+        <item>销售副总裁</item>
+        <item>地区销售经理</item>
+        <item>采购经理</item>
+        <item>销售助理</item>
+        <item>批发采购员</item>
+        <item>电话调查员</item>
+        <item>房地产评估师</item>
+        <item>市场顾问</item>
+        <item>市场与销售总监</item>
+        <item>厂家代表</item>
+        <item>市场总监</item>
+        <item>保险代理人</item>
+        <item>客户经理</item>
+        <item>市场副总裁</item>
+        <item>地区客户经理</item>
+        <item>销售主管</item>
+        <item>电话销售总监</item>
+        <item>广告经理</item>
+        <item>旅行代办员</item>
+        <item>电话销售员</item>
+        <item>销售员</item>
+        <item>销售执行者</item>
+        <item>部门经理</item>
+        <item>零售经理</item>
+    </array>
 </resources>

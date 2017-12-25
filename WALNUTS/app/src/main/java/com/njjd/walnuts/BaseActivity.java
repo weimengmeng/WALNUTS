@@ -10,6 +10,7 @@ import android.view.Window;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.github.anzewei.parallaxbacklayout.ParallaxBack;
 import com.njjd.utils.CommonUtils;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.MyActivityManager;
 import com.top_snackbar.BaseTransientBottomBar;
 import com.top_snackbar.TopSnackBar;

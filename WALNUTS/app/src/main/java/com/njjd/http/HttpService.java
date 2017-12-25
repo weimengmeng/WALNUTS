@@ -187,6 +187,10 @@ public interface HttpService {
     Observable<HttpResult<Object>> searchQuest(@QueryMap Map<String, String> params);
     @POST("search/searchArticle")
     Observable<HttpResult<Object>> searchArticle(@QueryMap Map<String, String> params);
+    @POST("search/searchUserDetail")
+    Observable<HttpResult<Object>> searchUserAdvanced(@QueryMap Map<String, String> params);
+    @POST("user/getProduct")
+    Observable<HttpResult<Object>> getProductOrAdd(@QueryMap Map<String, String> params);
     /**
      *  个人中心模块
      */

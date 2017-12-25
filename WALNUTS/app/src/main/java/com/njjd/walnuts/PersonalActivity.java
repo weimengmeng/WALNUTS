@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,6 +78,7 @@ public class PersonalActivity extends BaseActivity{
     private OptionsPickerView<String> provincePickview, salePickview, industryPickview, sexPickview;
     private String provinceId = "", cityId = "", industryId = "", modelId = "";
     private String provinceName="",cityName="";
+    String productsId="";
     @Override
     public int bindLayout() {
         return R.layout.activity_personal;
@@ -86,7 +90,7 @@ public class PersonalActivity extends BaseActivity{
         txtName.setText(SPUtils.get(this,"name","").toString());
         txtName.setSelection(txtName.length());
         txtMessage.setText(SPUtils.get(this,"message","").toString());
-        txtProducts.setText(SPUtils.get(this,"product","").toString());
+        txtProducts.setText(SPUtils.get(this,"product","").toString().replace(","," "));
         txtPosition.setText(SPUtils.get(this,"position","").toString());
         txtProvince.setText(SPUtils.get(this,"province","").toString()+" "+SPUtils.get(this,"city","").toString());
         txtVocation.setText(SPUtils.get(this,"industry","").toString());
@@ -105,6 +109,7 @@ public class PersonalActivity extends BaseActivity{
         if(txtCompany.getText().toString().equals("")){
             txtCompany.setHint("完善公司详细名称");
         }
+        productsId=SPUtils.get(this,"productsId","").toString();
         txtSale.setText(SPUtils.get(this,"sales","").toString());
         provinceName=SPUtils.get(this,"province","").toString();
         cityName=SPUtils.get(this,"city","").toString();
@@ -167,7 +172,7 @@ public class PersonalActivity extends BaseActivity{
         btnAddHelp.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.txt_position,R.id.back,R.id.btn_add_help2,R.id.txt_name,R.id.txt_message,R.id.txt_company,R.id.txt_province, R.id.txt_sale, R.id.txt_vocation, R.id.txt_sex})
+    @OnClick({R.id.txt_position,R.id.txt_products,R.id.back,R.id.btn_add_help2,R.id.txt_name,R.id.txt_message,R.id.txt_company,R.id.txt_province, R.id.txt_sale, R.id.txt_vocation, R.id.txt_sex})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.back:
@@ -194,6 +199,9 @@ public class PersonalActivity extends BaseActivity{
             case R.id.txt_sex:
                 KeybordS.closeBoard(this);
                 sexPickview.show();
+                break;
+            case R.id.txt_products:
+               startActivityForResult(new Intent(this,ProductActivity.class).putExtra("type","1"),1);
                 break;
             case R.id.btn_add_help2:
                 if(TextUtils.isEmpty(txtName.getText().toString())){
@@ -231,7 +239,7 @@ public class PersonalActivity extends BaseActivity{
             map.put("sales_id", modelId);
         map.put("sex", txtSex.getText().toString().equals("男") ? "1" : "0");
         map.put("message", txtMessage.getText().toString().trim());
-        map.put("product", txtProducts.getText().toString().trim());
+        map.put("product", productsId);
         map.put("position", txtPosition.getText().toString().trim());
         map.put("company", txtCompany.getText().toString().trim());
         map.put("upload_stat",1);
@@ -260,4 +268,14 @@ public class PersonalActivity extends BaseActivity{
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                txtProducts.setText(data.getExtras().getString("result").replace(","," "));
+                productsId=data.getExtras().getString("productIds");
+            }
+        }
+    }
 }

@@ -39,7 +39,6 @@ import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.NotificationUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.TipButton;
-import com.njjd.utils.ToastUtils;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;

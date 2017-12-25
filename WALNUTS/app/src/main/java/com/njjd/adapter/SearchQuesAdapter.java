@@ -60,9 +60,9 @@ public class SearchQuesAdapter extends BaseAdapter {
         if(convertView==null){
             holder = new ViewHolder();
             convertView=inflater.inflate(R.layout.item_search_ques,null);
-            holder.title=(TextUtil) convertView.findViewById(R.id.search_title);
-            holder.content=(TextUtil) convertView.findViewById(R.id.search_content);
-            holder.answerNum=(TextView) convertView.findViewById(R.id.search_answer);
+            holder.title=convertView.findViewById(R.id.search_title);
+            holder.content= convertView.findViewById(R.id.search_content);
+            holder.answerNum=convertView.findViewById(R.id.search_answer);
             convertView.setTag(holder);
         }else{
             holder=(ViewHolder) convertView.getTag();

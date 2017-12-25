@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/selector_btn_back"
+            android:drawablePadding="@dimen/margin"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/normal" />
+
+        <com.njjd.utils.IconCenterEditText
+            android:id="@+id/et_search"
+            style="@style/StyleEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginTop="@dimen/padding"
+            android:layout_weight="1"
+            android:hint="请输入搜索关键字"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:padding="@dimen/margin"
+        android:text="选择您的搜索条件"
+        android:textSize="@dimen/small" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/padding_top"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="产品服务"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/txt_products"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:drawablePadding="@dimen/padding"
+            android:drawableRight="@drawable/icon_npg"
+            android:gravity="center|right"
+            android:text=""
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.15"
+        android:background="@color/grey"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/padding_top"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="所属行业"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/txt_vocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:drawablePadding="@dimen/padding"
+            android:drawableRight="@drawable/icon_npg"
+            android:gravity="center|right"
+            android:text=""
+
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.15"
+        android:background="@color/grey"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/padding_top"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="省份地区"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/txt_province"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:drawablePadding="@dimen/padding"
+            android:drawableRight="@drawable/icon_npg"
+            android:gravity="center|right"
+            android:text=""
+            android:textColor="@color/gray"
+
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.15"
+        android:background="@color/grey"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/padding_top"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="公司简称"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+
+        <EditText
+            android:id="@+id/txt_company"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:background="@drawable/background_layout_et"
+            android:drawablePadding="@dimen/padding"
+            android:drawableRight="@drawable/icon_npg"
+            android:gravity="center|right"
+            android:text=""
+            android:textColor="@color/gray"
+
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.15"
+        android:background="@color/grey"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/padding_top"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="职位信息"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+
+        <EditText
+            android:id="@+id/txt_position"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:background="@drawable/background_layout_et"
+            android:drawablePadding="@dimen/padding"
+            android:drawableRight="@drawable/icon_npg"
+            android:gravity="center|right"
+            android:text=""
+            android:textColor="@color/gray"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginRight="@dimen/margin_big"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@drawable/txt_shape_login"
+        android:padding="@dimen/padding"
+        android:text="立即搜索"
+        android:textColor="@color/white"
+        android:textSize="@dimen/normal" />
+</LinearLayout>

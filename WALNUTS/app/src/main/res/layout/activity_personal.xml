@@ -237,6 +237,7 @@
                 android:gravity="center|right"
                 android:paddingRight="@dimen/margin"
                 android:background="@null"
+                android:focusable="false"
                 android:text=""
                 android:textCursorDrawable="@drawable/color_cusor"
                 android:textColorHint="@color/txt_color"

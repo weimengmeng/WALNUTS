@@ -79,7 +79,7 @@ public class AskKindActivity extends BaseActivity implements View.OnClickListene
             if (entity.getCode().equals("1.0")) {
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.item_tag_list, null);
                 ((TextView) linearLayout.findViewById(R.id.label_name)).setText(entity.getName());
-                flowLayout = (FlowLayout) linearLayout.findViewById(R.id.flowlayout);
+                flowLayout = linearLayout.findViewById(R.id.flowlayout);
                 tagLayout.addView(linearLayout);
                 layoutList.add(flowLayout);
             } else {

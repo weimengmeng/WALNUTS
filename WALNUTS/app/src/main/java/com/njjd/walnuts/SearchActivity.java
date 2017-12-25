@@ -115,6 +115,12 @@ public class SearchActivity extends BaseActivity {
             public void onSearchClick(View view) {
                 etSearch.onFocusChange(etSearch, false);
                 if (!"".equals(etSearch.getText().toString())) {
+                    SearchUserAdapter.CURRENTPAGE = 1;
+                    SearchArticleAdapter.CURRENTPAGE = 1;
+                    SearchQuesAdapter.CURRENTPAGE = 1;
+                    quesEntities.clear();
+                    userEntities.clear();
+                    articleEntities.clear();
                     searchByKeyWords();
                 } else {
                     ToastUtils.showShortToast(SearchActivity.this, "请输入搜索内容");
@@ -127,74 +133,79 @@ public class SearchActivity extends BaseActivity {
                 etSearch.onFocusChange(etSearch, hasFocus);
             }
         });
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                HttpManager.getInstance().cancle();
-                switch (searchItem) {
-                    case 1:
-                        SearchQuesAdapter.CURRENTPAGE = 1;
-                        break;
-                    case 2:
-                        SearchArticleAdapter.CURRENTPAGE = 1;
-                        break;
-                    case 3:
-                        SearchUserAdapter.CURRENTPAGE = 1;
-                        break;
-                    case 4:
+//        etSearch.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                HttpManager.getInstance().cancle();
+//                switch (searchItem) {
+//                    case 1:
+//                        SearchQuesAdapter.CURRENTPAGE = 1;
+//                        break;
+//                    case 2:
+//                        SearchArticleAdapter.CURRENTPAGE = 1;
+//                        break;
+//                    case 3:
+//                        SearchUserAdapter.CURRENTPAGE = 1;
+//                        break;
+//                    case 4:
+////                        listLabel.setVisibility(View.GONE);
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (etSearch.getText().toString().equals("")) {
+//                    if(historyList.size()==0){
+//                        findViewById(R.id.lv_history).setVisibility(View.GONE);
+//                    }else{
+//                        findViewById(R.id.lv_history).setVisibility(View.VISIBLE);
+//                        listHistory.setVisibility(View.VISIBLE);
+//                    }
+//                    switch (searchItem) {
+//                        case 1:
+//                            listQues.setVisibility(View.GONE);
+//                            break;
+//                        case 2:
+//                            listArticle.setVisibility(View.GONE);
+//                            break;
+//                        case 3:
+//                            findViewById(R.id.lv_history).setVisibility(View.GONE);
+//                            listUser.setVisibility(View.VISIBLE);
+//                            break;
+//                        case 4:
+//                            listLabel.setVisibility(View.GONE);
+//                            break;
+//                    }
+//                    return;
+//                }
+//                //做搜索操作
+//                etSearch.setSelection(etSearch.getText().toString().length());
+//                switch (searchItem) {
+//                    case 1:
+//                        quesEntities.clear();
+//                        quesAdapter.notifyDataSetChanged();
+//                        break;
+//                    case 2:
+//                        articleEntities.clear();
+//                        articleAdapter.notifyDataSetChanged();
+//                        break;
+//                    case 3:
+//                        userEntities.clear();
+//                        userAdapter.notifyDataSetChanged();
+//                        break;
+//                    case 4:
 //                        listLabel.setVisibility(View.GONE);
-                        break;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (etSearch.getText().toString().equals("")) {
-                    findViewById(R.id.lv_history).setVisibility(View.VISIBLE);
-                    listHistory.setVisibility(View.VISIBLE);
-                    switch (searchItem) {
-                        case 1:
-                            listQues.setVisibility(View.GONE);
-                            break;
-                        case 2:
-                            listArticle.setVisibility(View.GONE);
-                            break;
-                        case 3:
-                            listUser.setVisibility(View.GONE);
-                            break;
-                        case 4:
-                            listLabel.setVisibility(View.GONE);
-                            break;
-                    }
-                    return;
-                }
-                //做搜索操作
-                etSearch.setSelection(etSearch.getText().toString().length());
-                switch (searchItem) {
-                    case 1:
-                        quesEntities.clear();
-                        quesAdapter.notifyDataSetChanged();
-                        break;
-                    case 2:
-                        articleEntities.clear();
-                        articleAdapter.notifyDataSetChanged();
-                        break;
-                    case 3:
-                        userEntities.clear();
-                        userAdapter.notifyDataSetChanged();
-                        break;
-                    case 4:
-                        listLabel.setVisibility(View.GONE);
-                        break;
-                }
-                searchByKeyWords();
-            }
-        });
+//                        break;
+//                }
+//                searchByKeyWords();
+//            }
+//        });
         listHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -203,6 +214,8 @@ public class SearchActivity extends BaseActivity {
                 SearchArticleAdapter.CURRENTPAGE = 1;
                 SearchQuesAdapter.CURRENTPAGE = 1;
                 KeybordS.closeBoard(SearchActivity.this);
+                searchByKeyWords();
+                etSearch.setSelection(etSearch.getText().toString().length());
             }
         });
         quesAdapter = new SearchQuesAdapter(this, quesEntities);
@@ -293,39 +306,39 @@ public class SearchActivity extends BaseActivity {
             }
         });
         provinces = CommonUtils.getInstance().getProvincesList();
-        provinces.add(0,"区域不限");
+        provinces.add(0, "区域不限");
         provinceEntities = CommonUtils.getInstance().getProvinceEntities();
-        provinceEntities.add(0,new CommonEntity("0","区域不限","000"));
+        provinceEntities.add(0, new CommonEntity("0", "区域不限", "000"));
         cityEntities = CommonUtils.getInstance().getCityEntities();
-        List<List<String>> a=new ArrayList<>();
-        List<String> b=new ArrayList<>();
+        List<List<String>> a = new ArrayList<>();
+        List<String> b = new ArrayList<>();
         b.add("区域不限");
         a.add(b);
-        cityEntities.add(0,b);
+        cityEntities.add(0, b);
         cityList = CommonUtils.getInstance().getCityList();
-        List<CommonEntity> t=new ArrayList<>();
-        t.add(new CommonEntity("0","区域不限","000"));
-        cityList.add(0,t);
+        List<CommonEntity> t = new ArrayList<>();
+        t.add(new CommonEntity("0", "区域不限", "000"));
+        cityList.add(0, t);
         industrys1 = CommonUtils.getInstance().getIndustrys1();
-        industrys1.add(0,"行业不限");
+        industrys1.add(0, "行业不限");
         industrys2 = CommonUtils.getInstance().getIndustrys2();
-        List<String> d=new ArrayList<>();
+        List<String> d = new ArrayList<>();
         d.add("行业不限");
-        industrys2.add(0,d);
+        industrys2.add(0, d);
         industryList1 = CommonUtils.getInstance().getIndustryList1();
-        industryList1.add(new CommonEntity("0","行业不限","000"));
+        industryList1.add(new CommonEntity("0", "行业不限", "000"));
         industryList2 = CommonUtils.getInstance().getIndustryList2();
-        List<CommonEntity> c=new ArrayList<>();
-        c.add(new CommonEntity("0","行业不限","000"));
-        industryList2.add(0,c);
+        List<CommonEntity> c = new ArrayList<>();
+        c.add(new CommonEntity("0", "行业不限", "000"));
+        industryList2.add(0, c);
         provincePickview = new OptionsPickerView.Builder(SearchActivity.this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                cityId = Float.valueOf(cityList.get(options1).get(options2).getId()).intValue()+"";
+                cityId = Float.valueOf(cityList.get(options1).get(options2).getId()).intValue() + "";
                 txtProvince.setText(cityEntities.get(options1).get(options2));
                 userEntities.clear();
                 userAdapter.notifyDataSetChanged();
-                SearchUserAdapter.CURRENTPAGE=1;
+                SearchUserAdapter.CURRENTPAGE = 1;
                 searchByKeyWords();
             }
         }).build();
@@ -334,9 +347,9 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 txtVocation.setText(industrys2.get(options1).get(options2));
-                industryId = Float.valueOf(industryList2.get(options1).get(options2).getId()).intValue()+"";
+                industryId = Float.valueOf(industryList2.get(options1).get(options2).getId()).intValue() + "";
                 userEntities.clear();
-                SearchUserAdapter.CURRENTPAGE=1;
+                SearchUserAdapter.CURRENTPAGE = 1;
                 userAdapter.notifyDataSetChanged();
                 searchByKeyWords();
             }
@@ -345,7 +358,14 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void searchByKeyWords() {
-        updateHistory();
+        if (etSearch.getText().toString().equals("")) {
+            if (searchItem != 3) {
+                return;
+            }
+
+        } else {
+            updateHistory();
+        }
         findViewById(R.id.lv_history).setVisibility(View.GONE);
         listHistory.setVisibility(View.GONE);
         Map<String, Object> map = new HashMap<>();
@@ -373,10 +393,10 @@ public class SearchActivity extends BaseActivity {
                 userAdapter.setText(etSearch.getText().toString());
                 lvSearch.setVisibility(View.VISIBLE);
                 listUser.setVisibility(View.VISIBLE);
-                if(!cityId.equals("0")){
+                if (!cityId.equals("0")) {
                     map.put("city_id", Float.valueOf(cityId).intValue());
                 }
-                if(!industryId.equals("0")){
+                if (!industryId.equals("0")) {
                     map.put("industry_id", Float.valueOf(industryId).intValue());
                 }
                 map.put("page", SearchUserAdapter.CURRENTPAGE++);
@@ -445,6 +465,7 @@ public class SearchActivity extends BaseActivity {
 
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -475,7 +496,7 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.back, R.id.radio1, R.id.radio2, R.id.radio3, R.id.radio4, R.id.delete_history, R.id.txt_province,R.id.txt_vocation,})
+    @OnClick({R.id.back, R.id.radio1, R.id.radio2, R.id.radio3, R.id.radio4, R.id.delete_history, R.id.txt_province, R.id.txt_vocation, R.id.txt_advanced})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -486,16 +507,23 @@ public class SearchActivity extends BaseActivity {
                 if (provincePickview != null) {
                     provincePickview.show();
                 }
+                KeybordS.closeBoard(this);
+                break;
+            case R.id.txt_advanced:
+                startActivity(new Intent(this, AdvancedSearchActivity.class));
+                KeybordS.closeBoard(this);
                 break;
             case R.id.txt_vocation:
                 if (industryPickview != null) {
                     industryPickview.show();
                 }
                 industryPickview.show();
+                KeybordS.closeBoard(this);
                 break;
             case R.id.radio1:
                 searchItem = 1;
                 if (listHistory.getVisibility() == View.VISIBLE) {
+                    lvSearch.setVisibility(View.GONE);
                     return;
                 }
                 SearchQuesAdapter.CURRENTPAGE = 1;
@@ -510,6 +538,7 @@ public class SearchActivity extends BaseActivity {
             case R.id.radio2:
                 searchItem = 2;
                 if (listHistory.getVisibility() == View.VISIBLE) {
+                    lvSearch.setVisibility(View.GONE);
                     return;
                 }
                 SearchArticleAdapter.CURRENTPAGE = 1;
@@ -523,9 +552,6 @@ public class SearchActivity extends BaseActivity {
                 break;
             case R.id.radio3:
                 searchItem = 3;
-                if (listHistory.getVisibility() == View.VISIBLE) {
-                    return;
-                }
                 userEntities.clear();
                 SearchUserAdapter.CURRENTPAGE = 1;
                 listQues.setVisibility(View.GONE);
@@ -538,6 +564,7 @@ public class SearchActivity extends BaseActivity {
             case R.id.radio4:
                 searchItem = 4;
                 if (listHistory.getVisibility() == View.VISIBLE) {
+                    lvSearch.setVisibility(View.GONE);
                     return;
                 }
                 listQues.setVisibility(View.GONE);
@@ -560,7 +587,16 @@ public class SearchActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         KeybordS.closeBoard(this);
+        provinces.remove(0);
+        cityEntities.remove(0);
+        cityList.remove(0);
+        provinceEntities.remove(0);
+        industrys1.remove(0);
+        industryList1.remove(0);
+        industrys2.remove(0);
+        industryList2.remove(0);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

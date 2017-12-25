@@ -133,7 +133,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         AndroidBug5497Workaround.assistActivity(this);
         footView=LayoutInflater.from(this).inflate(R.layout.footer,null);
         txtTitle.setText("文章详情");
-//        btnAddHelp.setVisibility(View.VISIBLE);
+        btnAddHelp.setVisibility(View.VISIBLE);
         root.smoothScrollTo(0, 0);
         madapter=new ArticleCommentAdapter(this,list);
         list.add(new CommentEntity());

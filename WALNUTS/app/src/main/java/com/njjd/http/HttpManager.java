@@ -363,6 +363,16 @@ public class HttpManager {
         observable = httpService.searchUser(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void searchUserAdvanced(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.searchUserAdvanced(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getProductOrAdd(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getProductOrAdd(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      *  公共模块
      * @param basePar

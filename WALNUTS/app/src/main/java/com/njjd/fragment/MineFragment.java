@@ -150,6 +150,7 @@ public class MineFragment extends BaseFragment {
                     SPUtils.put(context, "sales", object.getString("sales_name"));
                     SPUtils.put(context, "message", object.isNull("introduction") ? "" : object.getString("introduction"));
                     SPUtils.put(context, "focus", Float.valueOf(object.getString("follow_numm")).intValue());
+                    SPUtils.put(context, "productsId", object.isNull("product_id") ? "" : object.getString("product_id"));
                     SPUtils.put(context, "focused", Float.valueOf(object.getString("be_follow_numm")).intValue());
                     txtName.setText(SPUtils.get(context, "name", "").toString());
                     txtProducts.setText(SPUtils.get(context, "product", "").toString());

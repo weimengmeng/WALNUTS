@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/selector_btn_back"
+            android:drawablePadding="@dimen/margin"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/normal" />
+
+        <com.njjd.utils.IconCenterEditText
+            android:id="@+id/et_search"
+            style="@style/StyleEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginTop="@dimen/padding"
+            android:layout_weight="1"
+            android:hint="请输入产品服务"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/padding"
+    android:background="@color/grey"></View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.67"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <cn.lankton.flowlayout.FlowLayout
+            android:id="@+id/flow_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></cn.lankton.flowlayout.FlowLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:id="@+id/lv_nodata">
+            <include
+                layout="@layout/layout_nodata"></include>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.08"
+        android:gravity="center"
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:padding="@dimen/padding"
+            android:text="已选择(点击可删除)"
+            android:textColor="@color/txt_color"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/txt_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="right|center"
+            android:padding="@dimen/padding"
+            android:text="确定选择"
+            android:textColor="@color/login"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25"
+        android:orientation="horizontal">
+
+        <cn.lankton.flowlayout.FlowLayout
+            android:id="@+id/flowlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+        </cn.lankton.flowlayout.FlowLayout>
+    </LinearLayout>
+</LinearLayout>
