@@ -45,6 +45,7 @@ public class AdvancedSearchResultActivity extends BaseActivity {
 
     @Override
     public void initView(View view) {
+        SearchUserAdapter.CURRENTPAGE=1;
         txtTitle.setText("搜索结果");
         listUser.setEmptyView(txtResult);
         userAdapter = new SearchUserAdapter(this, userEntities);
@@ -89,6 +90,7 @@ public class AdvancedSearchResultActivity extends BaseActivity {
             map.put("industry_id", Float.valueOf(getIntent().getStringExtra("industry_id")).intValue());
         map.put("company", getIntent().getStringExtra("company"));
         map.put("position", getIntent().getStringExtra("position"));
+        map.put("page", SearchUserAdapter.CURRENTPAGE);
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, true), map);
         HttpManager.getInstance().searchUserAdvanced(postEntity);
     }

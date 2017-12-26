@@ -21,7 +21,7 @@ public class SearchUserEntity implements Serializable{
         this.uname = object.get("uname").getAsString();
         this.area = object.get("city_name").getAsString();
         this.headimg = object.get("headimg").getAsString();
-        this.product = object.get("product").getAsString();
+        this.product = object.get("product_name").getAsString();
         this.industry1 = object.get("f_insdustry_name").getAsString();
         this.industry2 = object.get("industry_name").getAsString();
     }
