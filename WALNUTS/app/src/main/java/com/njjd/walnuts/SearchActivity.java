@@ -2,8 +2,6 @@ package com.njjd.walnuts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -16,6 +14,8 @@ import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.njjd.adapter.HistoryAdapter;
 import com.njjd.adapter.SearchArticleAdapter;
@@ -32,11 +32,12 @@ import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.IconCenterEditText;
 import com.njjd.utils.KeybordS;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
 
-import java.nio.channels.FileLock;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -222,7 +223,7 @@ public class SearchActivity extends BaseActivity {
         listQues.setAdapter(quesAdapter);
         articleAdapter = new SearchArticleAdapter(this, articleEntities);
         listArticle.setAdapter(articleAdapter);
-        userAdapter = new SearchUserAdapter(this, userEntities);
+        userAdapter = new SearchUserAdapter(this, userEntities,false);
         listUser.setAdapter(userAdapter);
         listQues.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -447,14 +448,22 @@ public class SearchActivity extends BaseActivity {
     HttpOnNextListener searchUser = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            JsonArray array = JSONUtils.getAsJsonArray(o);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONArray array = null;
             SearchUserEntity entity;
             if (SearchUserAdapter.CURRENTPAGE == 1) {
                 userEntities.clear();
             }
-            for (int i = 0; i < array.size(); i++) {
-                entity = new SearchUserEntity(array.get(i).getAsJsonObject());
-                userEntities.add(entity);
+            try {
+                array = new JSONArray(gson.toJson(o));
+                for (int i = 0; i < array.length(); i++) {
+                    entity = new SearchUserEntity(array.getJSONObject(i));
+                    userEntities.add(entity);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
             userAdapter.notifyDataSetChanged();
         }
@@ -559,6 +568,9 @@ public class SearchActivity extends BaseActivity {
                 lvSearch.setVisibility(View.VISIBLE);
                 listUser.setVisibility(View.VISIBLE);
                 listLabel.setVisibility(View.GONE);
+                if(etSearch.getText().toString().equals("")){
+                    return;
+                }
                 searchByKeyWords();
                 break;
             case R.id.radio4:

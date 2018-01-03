@@ -221,6 +221,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 if (tempList.size() == 0) {
                     getQuestion(tempKind, tempOrder);
                 }
+                setRefreshListener();
             }
 
             @Override

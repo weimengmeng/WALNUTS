@@ -11,11 +11,17 @@ import android.widget.TextView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.example.retrofit.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.njjd.adapter.SearchUserAdapter;
 import com.njjd.domain.SearchUserEntity;
 import com.njjd.http.HttpManager;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +54,7 @@ public class AdvancedSearchResultActivity extends BaseActivity {
         SearchUserAdapter.CURRENTPAGE=1;
         txtTitle.setText("搜索结果");
         listUser.setEmptyView(txtResult);
-        userAdapter = new SearchUserAdapter(this, userEntities);
+        userAdapter = new SearchUserAdapter(this, userEntities,true);
         listUser.setAdapter(userAdapter);
         search();
         listUser.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -97,15 +103,22 @@ public class AdvancedSearchResultActivity extends BaseActivity {
 
     @Override
     public void onNext(Object o) {
-        super.onNext(o);
-        JsonArray array = JSONUtils.getAsJsonArray(o);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls(); //重点
+        Gson gson = gsonBuilder.create();
+        JSONArray array = null;
         SearchUserEntity entity;
         if (SearchUserAdapter.CURRENTPAGE == 1) {
             userEntities.clear();
         }
-        for (int i = 0; i < array.size(); i++) {
-            entity = new SearchUserEntity(array.get(i).getAsJsonObject());
-            userEntities.add(entity);
+        try {
+            array = new JSONArray(gson.toJson(o));
+            for (int i = 0; i < array.length(); i++) {
+                entity = new SearchUserEntity(array.getJSONObject(i));
+                userEntities.add(entity);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         userAdapter.notifyDataSetChanged();
     }

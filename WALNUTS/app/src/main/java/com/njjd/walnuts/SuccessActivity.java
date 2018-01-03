@@ -154,7 +154,7 @@ public class  SuccessActivity extends BaseActivity {
         txtSex.setText(sex.get(0));
         modelId = saleList.get(0).getId();
         txtSale.setText(sales.get(0));
-        etName.setText("用户"+SPUtils.get(this, "userId", "").toString());
+        etName.setText("用户"+SPUtils.get(this, "userId", "").toString().substring(0,3));
         etName.setSelection(etName.getText().toString().length());//将光标移至文字末
     }
 

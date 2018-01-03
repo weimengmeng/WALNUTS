@@ -40,6 +40,8 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     FlowLayout productLayout;
     @BindView(R.id.txt_content)
     TextView txtContent;
+    @BindView(R.id.txt_result)
+    TextView txtResult;
     @BindView(R.id.lv_nodata)
     LinearLayout lvNodata;
     @BindView(R.id.txt_add)
@@ -60,6 +62,11 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
             public void onSearchClick(View view) {
                 //搜索数据库中已有的产品服务
                 doSearch();
+                if(etSearch.getText().toString().equals("")){
+                    txtResult.setText("热门产品服务");
+                }else{
+                    txtResult.setText("搜索结果");
+                }
                 productLayout.removeAllViews();
                 productLayout.setVisibility(View.GONE);
                 lvNodata.setVisibility(View.VISIBLE);

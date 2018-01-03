@@ -31,8 +31,10 @@ public class SearchUserAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private SearchUserEntity userEntity;
     private String text="";
-    public SearchUserAdapter(Context context,List<SearchUserEntity> list){
+    private boolean isShow=false;
+    public SearchUserAdapter(Context context,List<SearchUserEntity> list,boolean isShow){
         this.context=context;
+        this.isShow=isShow;
         this.list=list;
         inflater=LayoutInflater.from(context);
     }
@@ -70,6 +72,7 @@ public class SearchUserAdapter extends BaseAdapter {
             holder.area=convertView.findViewById(R.id.search_area);
             holder.head= convertView.findViewById(R.id.img_head);
             holder.industry= convertView.findViewById(R.id.search_industry);
+            holder.company= convertView.findViewById(R.id.search_company);
             holder.product= convertView.findViewById(R.id.search_product);
             convertView.setTag(holder);
         }else{
@@ -85,6 +88,13 @@ public class SearchUserAdapter extends BaseAdapter {
 //        holder.product.setSpecifiedTextsColor(userEntity.getProduct(), text, Color.parseColor("#ffb129"));
         holder.industry.setText(userEntity.getIndustry1()+"-"+userEntity.getIndustry2());
         holder.product.setText(userEntity.getProduct());
+        if("".equals(userEntity.getProduct())){
+            holder.product.setVisibility(View.GONE);
+        }
+        if(isShow){
+            holder.company.setVisibility(View.VISIBLE);
+            holder.company.setText(userEntity.getCompany()+"  "+userEntity.getPosition());
+        }
         return convertView;
     }
     private class ViewHolder{
@@ -93,5 +103,6 @@ public class SearchUserAdapter extends BaseAdapter {
         CircleImageView head;
         TextUtil industry;
         TextUtil product;
+        TextUtil company;
     }
 }

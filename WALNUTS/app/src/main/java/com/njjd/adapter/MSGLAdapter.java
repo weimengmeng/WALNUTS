@@ -85,7 +85,7 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 		if (vo.direct() == EMMessage.Direct.RECEIVE) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.layout_chat_receive, null);
-			ImageView img_avatar = (ImageView) convertView
+			ImageView img_avatar = convertView
 					.findViewById(R.id.img_head);
 				GlideImageLoder.getInstance().displayImage(context,avatar,img_avatar);
 			img_avatar.setOnClickListener(new OnClickListener() {
@@ -99,18 +99,18 @@ public class MSGLAdapter extends BaseAdapter implements OnClickListener {
 		} else {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.layout_chat_send, null);
-			ImageView img_avatar = (ImageView) convertView
+			ImageView img_avatar = convertView
 					.findViewById(R.id.img_head);
 				GlideImageLoder.getInstance().displayImage(context, SPUtils.get(context,"head",""),img_avatar);
 		}
-		TextView text_msg = (TextView) convertView.findViewById(R.id.chat_content);
-		TextView text_time = (TextView) convertView.findViewById(R.id.txt_time);
+		TextView text_msg =  convertView.findViewById(R.id.chat_content);
+		TextView text_time =  convertView.findViewById(R.id.txt_time);
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time=format.format(new Date(vo.getMsgTime()));
 		ParsePosition pos = new ParsePosition(0);
 		text_time.setText(DateUtils.formationDate(format.parse(time, pos)));
-		final ImageView img_msg = (ImageView) convertView.findViewById(R.id.chat_img_pic);
-		TextView voice_msg = (TextView) convertView
+		final ImageView img_msg = convertView.findViewById(R.id.chat_img_pic);
+		TextView voice_msg =  convertView
 				.findViewById(R.id.chat_voice);
 		text_msg.setVisibility(View.GONE);
 		img_msg.setVisibility(View.GONE);

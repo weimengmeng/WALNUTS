@@ -2,6 +2,9 @@ package com.njjd.domain;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -16,14 +19,38 @@ public class SearchUserEntity implements Serializable{
     private String product;
     private String industry1;
     private String industry2;
-    public SearchUserEntity(JsonObject object) {
-        this.uid = object.get("uid").getAsString();
-        this.uname = object.get("uname").getAsString();
-        this.area = object.get("city_name").getAsString();
-        this.headimg = object.get("headimg").getAsString();
-        this.product = object.get("product_name").getAsString();
-        this.industry1 = object.get("f_insdustry_name").getAsString();
-        this.industry2 = object.get("industry_name").getAsString();
+    private String company;
+    private String position;
+    public SearchUserEntity(JSONObject object) {
+        try {
+            this.uid = object.getString("uid");
+            this.uname = object.getString("uname");
+            this.area = object.getString("city_name");
+            this.headimg = object.getString("headimg");
+            this.product = object.isNull("product_name")?"":object.getString("product_name");
+            this.industry1 =object.isNull("f_insdustry_name")?"": object.getString("f_insdustry_name");
+            this.industry2 = object.isNull("industry_name")?"":object.getString("industry_name");
+            this.company =object.isNull("company")?"": object.getString("company");
+            this.position = object.isNull("position")?"":object.getString("position");
+        }catch (JSONException e){
+
+        }
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getArea() {

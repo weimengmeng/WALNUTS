@@ -70,7 +70,17 @@
                 android:id="@+id/search_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="您的回答被评论"
+                android:text=""
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/txt_color"
+                android:textSize="@dimen/small" />
+            <com.njjd.utils.TextUtil
+                android:id="@+id/search_company"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="@color/txt_color"
