@@ -59,6 +59,8 @@ public class AppAplication extends Application {
     protected static Context context;
     protected static String appName = "核桃";
     private PushAgent pushAgent;
+    private  boolean isLogin=false;
+    private static AppAplication aplication;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -106,7 +108,19 @@ public class AppAplication extends Application {
     public static Context getContext() {
         return context;
     }
+    public static AppAplication getInstance(){
+        if(aplication==null){
+            aplication=new AppAplication();
+        }
+        return aplication;
+    }
+    public void setLogin(boolean isLogin){
+        this.isLogin=isLogin;
+    }
 
+    public boolean getIsLogin(){
+        return isLogin;
+    }
     @Override
     public Resources getResources() {
         Resources resources=super.getResources();

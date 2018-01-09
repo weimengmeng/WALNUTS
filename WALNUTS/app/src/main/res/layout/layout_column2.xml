@@ -1,80 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingTop="@dimen/margin_small"
-    android:weightSum="1">
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.6"
-        android:paddingTop="@dimen/margin"
-        android:paddingBottom="@dimen/margin"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:weightSum="1">
-            <TextView
-                android:id="@+id/txt_title"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.45"
-                android:paddingLeft="@dimen/margin"
-                android:textStyle="bold"
-                android:text="核桃小编"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:textSize="@dimen/big"
-                android:typeface="sans" />
-        <TextView
-            android:id="@+id/txt_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            android:paddingLeft="@dimen/margin"
-            android:text="核桃小编"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/normal" />
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/txt_topsale"
+        android:layout_width="match_parent"
+        android:text="专栏文章"
+        android:visibility="gone"
+        android:drawableLeft="@drawable/line_v"
+        android:drawablePadding="@dimen/margin"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin"
+        android:textSize="@dimen/small"
+        android:textColor="@color/txt_color"
+        android:layout_height="wrap_content"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/margin_small"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.25"
-            android:gravity="center|left"
-            android:paddingLeft="@dimen/margin">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:paddingTop="@dimen/margin"
+                android:paddingBottom="@dimen/margin"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:weightSum="1">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_head"
-                android:layout_width="@dimen/head"
-                android:layout_height="@dimen/head"
-                android:src="@drawable/head" />
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.7"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:lineSpacingMultiplier="1.1"
+                    android:paddingLeft="@dimen/margin"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/big"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/txt_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.05"
+                    android:paddingLeft="@dimen/margin"
+                    android:text=""
+                    android:visibility="invisible"
+                    android:lineSpacingMultiplier="1.2"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/small" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.25"
+                    android:gravity="center|left"
+                    android:paddingLeft="@dimen/margin">
 
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin"
-                android:text="核桃小编"
-                android:textColor="@color/txt_color"
-                android:textSize="@dimen/small"
-                android:typeface="sans" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_head"
+                        android:layout_width="@dimen/head"
+                        android:layout_height="@dimen/head"
+                        />
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/margin"
+                        android:text=""
+                        android:textColor="@color/txt_color"
+                        android:textSize="@dimen/small" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:padding="@dimen/margin"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_height="110dp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:padding="@dimen/margin"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/img"
-            android:layout_width="match_parent"
-            android:scaleType="centerCrop"
-            android:layout_height="90dp" />
-    </LinearLayout>
+        <com.github.czy1121.view.CornerLabelView
+            android:id="@+id/label_select"
+            style="@style/CornerLabelView.Default"
+            android:layout_gravity="right"
+            app:clvFillColor="@color/login"
+            app:clvFlags="right"
+            app:clvText1="精选"
+            app:clvPaddingBottom="@dimen/margin_small"/>
+    </FrameLayout>
 </LinearLayout>
+

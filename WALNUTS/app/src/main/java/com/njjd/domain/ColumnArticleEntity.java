@@ -12,7 +12,8 @@ import java.io.Serializable;
  */
 
 public class ColumnArticleEntity implements Serializable {
-    public String article_id;//文章ID或者专栏ID
+    public String article_id;//文章ID
+    public String column_id;//专栏ID
     public String uid;//用户ID
     public String head;//作者头像
     public String name;//作者名称
@@ -24,6 +25,7 @@ public class ColumnArticleEntity implements Serializable {
     public String pointNum;
     public String time;
     public String columnName;
+    public String is_select;
     public ColumnArticleEntity(){
 
     }
@@ -41,9 +43,27 @@ public class ColumnArticleEntity implements Serializable {
             this.uid=object.isNull("uid")?"":object.getString("uid");
             this.time=object.isNull("add_time")?"":object.getString("add_time");
             this.columnName=object.isNull("column_name")?"":object.getString("column_name");
+            this.is_select=object.isNull("is_select")?"0":object.getString("is_select");
+            this.column_id=object.isNull("column_id")?"1":object.getString("column_id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getColumn_id() {
+        return column_id;
+    }
+
+    public void setColumn_id(String column_id) {
+        this.column_id = column_id;
+    }
+
+    public String getIs_select() {
+        return is_select;
+    }
+
+    public void setIs_select(String is_select) {
+        this.is_select = is_select;
     }
 
     public String getColumnName() {

@@ -104,19 +104,19 @@ public class IndexQuestionAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView answerNum;
         public ContentViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.txt_title);
-            imageView = (ImageView) itemView
+            title =  itemView.findViewById(R.id.txt_title);
+            imageView =  itemView
                     .findViewById(R.id.img1);
-            lvHead = (LinearLayout) itemView
+            lvHead =  itemView
                     .findViewById(R.id.lv_head);
-            content= (TextView) itemView
+            content= itemView
                     .findViewById(R.id.txt_content);
-            total = (TextView) itemView.findViewById(R.id.txt_total);
-            createTime = (TextView) itemView
+            total =  itemView.findViewById(R.id.txt_total);
+            createTime = itemView
                     .findViewById(R.id.txt_time);
-            focusNum = (TextView) itemView
+            focusNum =  itemView
                     .findViewById(R.id.txt_focusNum);
-            answerNum = (TextView) itemView
+            answerNum =  itemView
                     .findViewById(R.id.txt_answerNum);
         }
     }

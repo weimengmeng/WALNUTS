@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.github.anzewei.parallaxbacklayout.ParallaxBack;
@@ -114,14 +115,16 @@ public abstract class BaseActivity extends AppCompatActivity implements HttpOnNe
      * @param msg
      */
     public static void showToast(String msg){
-             TopSnackBar.make(mContextView, msg, BaseTransientBottomBar.LENGTH_SHORT).show();
+        Toast.makeText(mContextView.getContext(),msg,Toast.LENGTH_SHORT).show();
+//             TopSnackBar.make(mContextView, msg, BaseTransientBottomBar.LENGTH_SHORT).show();
     }
     /**
      * [简化Toast]
      * @param msg
      */
     public static void showToast2(View view,String msg){
-      TopSnackBar.make(view, msg, BaseTransientBottomBar.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(),msg,Toast.LENGTH_SHORT).show();
+//      TopSnackBar.make(view, msg, BaseTransientBottomBar.LENGTH_SHORT).show();
 
     }
     /**

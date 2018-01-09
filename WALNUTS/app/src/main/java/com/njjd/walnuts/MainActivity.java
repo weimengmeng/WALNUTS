@@ -1,6 +1,7 @@
 package com.njjd.walnuts;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -73,6 +78,7 @@ public class MainActivity extends FragmentActivity {
     private LoginPassReceiver passReceiver;
     private JSONObject object;
     private String message = "";
+    Dialog dia;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -153,6 +159,27 @@ public class MainActivity extends FragmentActivity {
                     public void onNoUpdateAvailable() {
                     }
                 });
+        if("1".equals(SPUtils.get(this,"firstUse","0").toString())){
+            dia = new Dialog(this, R.style.edit_AlertDialog_style);
+            dia.setContentView(R.layout.activity_start_dialog);
+            ImageView mClose_btn =dia.findViewById(R.id.btn_close);
+            mClose_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dia.cancel();// 关闭弹出框
+                }
+            });
+            dia.show();
+            dia.setCanceledOnTouchOutside(false); // Sets whether this dialog is
+            // canceled when touched outside
+            // the window's bounds.
+            Window w = dia.getWindow();
+            WindowManager.LayoutParams lp = w.getAttributes();
+            lp.x = 0;
+            lp.y = 40;
+            dia.onWindowAttributesChanged(lp);
+            SPUtils.put(this,"firstUse","0");
+        }
     }
     private static void loginHuanxin() {
         EMClient.getInstance().login(SPUtils.get(activity, "userId", "").toString(), "Walnut2017", new EMCallBack() {

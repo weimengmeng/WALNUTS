@@ -65,7 +65,7 @@
                         android:layout_marginTop="@dimen/padding_top"
                         android:layout_marginLeft="@dimen/margin"
                         android:textCursorDrawable="@drawable/color_cusor"
-
+                        android:lines="1"
                         android:textColorHint="@color/txt_color"
                         android:background="@null"
                         android:gravity="center|bottom"

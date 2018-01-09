@@ -19,6 +19,7 @@ public class ColumnEntity implements Serializable {
     private String uhead;
     private String desc;//专栏描述
     private String pic;//专栏大图
+    private String crousel_img;
     public ColumnEntity(JSONObject object){
         try {
             this.id=object.getString("id");
@@ -28,12 +29,22 @@ public class ColumnEntity implements Serializable {
             this.uhead=object.isNull("img")?"":object.getString("img").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.pic=object.isNull("bg_img")?"":object.getString("bg_img").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
             this.desc=object.getString("desc");
-            this.follow_num=object.getString("follow_num");
+            this.follow_num=object.getString("follow_numm");
             this.is_follow=object.getString("is_follow");
+            this.crousel_img=object.isNull("crousel_img")?"":object.getString("crousel_img").replace("[","").replace("]","").replace("\\/","/").replace("\\\\","/");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    public String getCrousel_img() {
+        return crousel_img;
+    }
+
+    public void setCrousel_img(String crousel_img) {
+        this.crousel_img = crousel_img;
+    }
+
     public String getId() {
         return id;
     }

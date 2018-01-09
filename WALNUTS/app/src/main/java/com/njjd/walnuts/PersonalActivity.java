@@ -208,8 +208,8 @@ public class PersonalActivity extends BaseActivity{
                     ToastUtils.showShortToast(this,"姓名不能为空");
                     return;
                 }
-                if(txtName.getText().toString().trim().length()>5){
-                    ToastUtils.showShortToast(this,"姓名最多5个字");
+                if(txtName.getText().toString().trim().length()>10){
+                    ToastUtils.showShortToast(this,"姓名最多10个字");
                     return;
                 }
                 if(txtMessage.getText().length()>35){

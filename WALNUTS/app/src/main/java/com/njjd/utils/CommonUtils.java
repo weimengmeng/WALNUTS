@@ -287,6 +287,7 @@ public class CommonUtils {
             SPUtils.put(mContext, "name", json.isNull("uname") ? "" : json.getString("uname"));
             SPUtils.put(mContext, "token", json.getString("token"));
             SPUtils.put(AppAplication.getContext(),"isLogin","1");
+            AppAplication.getInstance().setLogin(true);
         } catch (JSONException e) {
             e.printStackTrace();
         }

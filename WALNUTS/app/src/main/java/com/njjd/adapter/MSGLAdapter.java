@@ -22,6 +22,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chat.EMVoiceMessageBody;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.SpaceImageDetailActivity;
 import com.njjd.walnuts.PeopleInfoActivity;

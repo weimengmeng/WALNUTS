@@ -76,6 +76,11 @@ public class HttpManager {
         observable = httpService.userLogin(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void loginOut(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.loginOut(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     public void thirdLogin(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.thirdLogin(basePar.getParams()).map(basePar);
@@ -303,6 +308,11 @@ public class HttpManager {
     public void getColumnArticleDetail(BaseEntity basePar) {
         baseBar = basePar;
         observable = httpService.getColumnArticleDetail(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void getAllArticle(BaseEntity basePar) {
+        baseBar = basePar;
+        observable = httpService.getAllArticle(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     public void getColumnArticle(BaseEntity basePar) {

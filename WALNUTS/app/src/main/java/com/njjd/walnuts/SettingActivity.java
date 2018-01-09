@@ -7,14 +7,21 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.mywidget.LoadingDialog;
+import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.hyphenate.chat.EMClient;
 import com.ios.dialog.AlertDialog;
+import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.CleanMessageUtil;
 import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -121,20 +128,34 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void alert() {
-        new AlertDialog(this).builder().setTitle("退出当前账号").setMsg("退出后无法收到任何消息")
+        new AlertDialog(this).builder().setTitle("退出当前账号").setMsg("退出后无法您将无法收到任何消息")
                 .setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                     }
                 }).setPositiveButton("退出", new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                EMClient.getInstance().logout(true);
-                SPUtils.put(SettingActivity.this, ConstantsVal.AUTOLOGIN,"false");
-                MyActivityManager.getInstance().finishAllActivity();
+                loginOut();
             }
         }).setCancelable(false).show();
+    }
+    private void loginOut(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(SettingActivity.this, "userId", ""));
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        HttpManager.getInstance().loginOut(postEntity);
+    }
+
+    @Override
+    public void onNext(Object o) {
+        super.onNext(o);
+        AppAplication.getInstance().setLogin(false);
+        EMClient.getInstance().logout(true);
+        SPUtils.put(SettingActivity.this, ConstantsVal.AUTOLOGIN,"false");
+        MyActivityManager.getInstance().finishAllActivity();
     }
 
     @Override

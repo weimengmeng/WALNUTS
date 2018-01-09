@@ -120,6 +120,14 @@ public class MySaveActivity extends BaseActivity {
         listArticle.setEmptyView(findViewById(R.id.empty));
         articleAdapter = new RecommendArticleAdapter(this, articleEntities);
         listArticle.setAdapter(articleAdapter);
+        listArticle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(MySaveActivity.this, ColumnDetailActivity.class);
+                intent.putExtra("article_id",Float.valueOf(articleEntities.get(i).getArticle_id()).intValue()+"");
+                startActivity(intent);
+            }
+        });
         listArticle.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override

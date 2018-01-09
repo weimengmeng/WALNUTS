@@ -118,6 +118,7 @@ public class TagActivity extends BaseActivity  {
         JSONObject object=null;
         JSONArray array = null;
         QuestionEntity entity;
+
         try {
             object = new JSONObject(gson.toJson(o));
             array=object.getJSONArray("article");

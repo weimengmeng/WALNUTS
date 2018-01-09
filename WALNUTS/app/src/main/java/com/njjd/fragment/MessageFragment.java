@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -142,9 +143,14 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         filter1.addAction(ConstantsVal.NEW_INFORM);
         context.registerReceiver(informReceive, filter1);
         LinearLayout linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_chat, null);
-        listMes = (ItemRemoveRecyclerView) linearLayout.findViewById(R.id.list_mes);
+        listMes = linearLayout.findViewById(R.id.list_mes);
         listMes.setEmptyView(linearLayout.findViewById(R.id.empty));
+        ((ImageView) linearLayout.findViewById(R.id.img_nodata)).setImageDrawable(getResources().getDrawable(R.drawable.no_news));
         ((TextView) linearLayout.findViewById(R.id.txt_content)).setText("暂无新消息");
+        if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
+            ((ImageView) linearLayout.findViewById(R.id.img_nodata)).setImageDrawable(getResources().getDrawable(R.drawable.no_net));
+            ((TextView) linearLayout.findViewById(R.id.txt_content)).setText("请检查网络设置");
+        }
         adapter = new ConversationAdapter(getContext(), conversations);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         listMes.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
@@ -153,7 +159,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         viewList = new ArrayList<>();
         viewList.add(linearLayout);
         linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_inform, null);
-        listInform = (XRecyclerView) linearLayout.findViewById(R.id.list_inform);
+        listInform =  linearLayout.findViewById(R.id.list_inform);
         listInform.setEmptyView(linearLayout.findViewById(R.id.empty));
         ((TextView) linearLayout.findViewById(R.id.txt_content)).setText("暂无新通知");
         viewList.add(linearLayout);

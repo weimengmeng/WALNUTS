@@ -40,7 +40,8 @@ public interface HttpService {
 
     @POST("user/login")
     Observable<HttpResult<Object>> userLogin(@QueryMap Map<String, String> params);
-
+    @POST("user/loginOut")
+    Observable<HttpResult<Object>> loginOut(@QueryMap Map<String, String> params);
     @POST("user/sendSms")
     Observable<HttpResult<Object>> phoneCode(@QueryMap Map<String, String> params);
 
@@ -162,6 +163,8 @@ public interface HttpService {
     Observable<HttpResult<Object>> getColumnDetail(@QueryMap Map<String, String> params);
     @POST("index/getColumnArticle")
     Observable<HttpResult<Object>> getColumnArticle(@QueryMap Map<String, String> params);
+    @POST("index/getColumnArticleAll")
+    Observable<HttpResult<Object>> getAllArticle(@QueryMap Map<String, String> params);
     @POST("index/getColumnArticles")
     Observable<HttpResult<Object>> getColumnArticles(@QueryMap Map<String, String> params);
     @POST("index/getColumnArticleDetail")

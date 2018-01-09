@@ -11,15 +11,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
@@ -29,11 +32,14 @@ import com.google.gson.GsonBuilder;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.IndexQuestionAdapter;
+import com.njjd.adapter.IndexSelectAdapter;
 import com.njjd.adapter.MyPagerAdapter;
+import com.njjd.adapter.SelectAdapter;
 import com.njjd.application.ConstantsVal;
 import com.njjd.db.DBHelper;
 import com.njjd.domain.IndexNavEntity;
 import com.njjd.domain.QuestionEntity;
+import com.njjd.domain.SelectedAnswerEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.LogUtils;
@@ -45,6 +51,7 @@ import com.njjd.walnuts.BaseActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.R;
 import com.njjd.walnuts.SearchActivity;
+import com.njjd.walnuts.SelectAnswerDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,6 +102,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     private String tempOrder = "time";
     private MyReceiver receiver;
     private boolean loadmoe=true;
+    private List<SelectedAnswerEntity> selectedAnswerEntities = new ArrayList<>();
+    private SelectedAnswerEntity entity;
+    private IndexSelectAdapter indexSelectAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -123,9 +133,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         filter.addAction(ConstantsVal.REFRESH);
         context.registerReceiver(receiver, filter);
         mainView = LayoutInflater.from(context).inflate(R.layout.layout_pop, null);
-        layoutTop = ((RadioButton) mainView.findViewById(R.id.rb_hot));
+        layoutTop =  mainView.findViewById(R.id.rb_hot);
         layoutTop.setText("按热度排序");
-        layoutTime = (RadioButton) mainView.findViewById(R.id.rb_time);
+        layoutTime =  mainView.findViewById(R.id.rb_time);
         layoutTop.setOnClickListener(this);
         layoutTime.setOnClickListener(this);
         popupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -147,41 +157,77 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
     }
     private void initTop(View view) {
         viewList = new ArrayList<>();
-        for (int i = 0; i < navList.size(); i++) {
+        for (int i = 0; i < navList.size()+1; i++) {
             RadioButton button = (RadioButton) myinflater.inflate(R.layout.item_radiobutton, null);
-            button.setText(navList.get(i).getName());
-            button.setTag(navList.get(i).getId());
-            button.setId(i);
-            button.setOnClickListener(this);
-            if (i == 0) {
-                button.setChecked(true);
-            }
-            buttonGroup.addView(button);
-            final List<QuestionEntity> list1 =new ArrayList<>();
-            lists.add(list1);
-            currentView = view.inflate(context, R.layout.layout_common_index, null);
-            list = currentView.findViewById(R.id.list_index);
-            final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, navList.get(i).getId());
-            final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
-            adapterList.add(questionAdapter);
-            list.setAdapter(questionAdapter);
-            list.setEmptyView(currentView.findViewById(R.id.empty));
-            list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
-            list.setRefreshProgressStyle(ProgressStyle.BallPulse);
-            listViews.add(list);
-            questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(context, IndexDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("question", list1.get(position));
-                    intent.putExtra("question", bundle);
-                    intent.putExtra("type", "1");
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+            if(i==0){
+                button.setText("精选");
+                button.setTag("0");
+                button.setId(i);
+                button.setOnClickListener(this);
+                buttonGroup.addView(button);
+                currentView = view.inflate(context, R.layout.layout_common_index, null);
+                list = currentView.findViewById(R.id.list_index);
+                indexSelectAdapter = new IndexSelectAdapter(context, selectedAnswerEntities);
+                final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
+                list.setAdapter(indexSelectAdapter);
+                if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
+                    ((ImageView) currentView.findViewById(R.id.empty).findViewById(R.id.img_nodata)).setImageDrawable(getResources().getDrawable(R.drawable.no_net));
+                    ((TextView) currentView.findViewById(R.id.empty).findViewById(R.id.txt_content)).setText("请检查网络设置");
                 }
-            });
+                list.setEmptyView(currentView.findViewById(R.id.empty));
+                list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+                list.setRefreshProgressStyle(ProgressStyle.BallPulse);
+                listViews.add(list);
+                indexSelectAdapter.setOnItemClickListener(new IndexSelectAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent;
+                        entity = selectedAnswerEntities.get(position);
+                        intent = new Intent(context, SelectAnswerDetailActivity.class);
+                        intent.putExtra("questionId", entity.getArticle_id());
+                        intent.putExtra("questionTitle", entity.getTitle());
+                        intent.putExtra("answer_id", entity.getAnswer_id());
+                        intent.putExtra("contents",entity.getContents());
+                        startActivity(intent);
+                    }
+                });
+            }else{
+                button.setText(navList.get(i-1).getName());
+                button.setTag(navList.get(i-1).getId());
+                button.setId(i);
+                button.setOnClickListener(this);
+                buttonGroup.addView(button);
+                final List<QuestionEntity> list1 =new ArrayList<>();
+                lists.add(list1);
+                currentView = view.inflate(context, R.layout.layout_common_index, null);
+                list = currentView.findViewById(R.id.list_index);
+                final IndexQuestionAdapter questionAdapter = new IndexQuestionAdapter(context, list1, navList.get(i-1).getId());
+                final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                list.setLayoutManager(layoutManager);//这里用线性显示 类似于listview
+                adapterList.add(questionAdapter);
+                list.setAdapter(questionAdapter);
+                if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
+                    ((ImageView) currentView.findViewById(R.id.empty).findViewById(R.id.img_nodata)).setImageDrawable(getResources().getDrawable(R.drawable.no_net));
+                    ((TextView) currentView.findViewById(R.id.empty).findViewById(R.id.txt_content)).setText("请检查网络设置");
+                }
+                list.setEmptyView(currentView.findViewById(R.id.empty));
+                list.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
+                list.setRefreshProgressStyle(ProgressStyle.BallPulse);
+                listViews.add(list);
+                questionAdapter.setOnItemClickListener(new IndexQuestionAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(context, IndexDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("question", list1.get(position));
+                        intent.putExtra("question", bundle);
+                        intent.putExtra("type", "1");
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                    }
+                });
+            }
             viewList.add(currentView);
         }
         Display d = getActivity().getWindowManager().getDefaultDisplay();
@@ -208,18 +254,34 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
             @Override
             public void onPageSelected(int position) {
-                if(position==0){
+                if(position==0||position==1){
                     imgOrder.setVisibility(View.INVISIBLE);
                 }else{
                     imgOrder.setVisibility(View.VISIBLE);
                 }
                 buttonGroup.check(position);
-                tempList = lists.get(position);
                 list = listViews.get(position);
-                questionAdapter = adapterList.get(position);
-                tempKind = navList.get(position).getId();
-                if (tempList.size() == 0) {
-                    getQuestion(tempKind, tempOrder);
+                if(position!=0) {
+                    tempList = lists.get(position-1);
+                    questionAdapter = adapterList.get(position-1);
+                    tempKind = navList.get(position-1).getId();
+                    if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1||NetworkUtils.getNetworkType(context)==4){
+                        ToastUtils.showShortToast(context,"网络貌似不给力哦");
+                        List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
+                        for (QuestionEntity e:entities
+                                ) {
+                            tempList.add(e);
+                        }
+                        questionAdapter.notifyDataSetChanged();
+                    }else {
+                        if (tempList.size() == 0) {
+                            getQuestion(tempKind, tempOrder);
+                        }
+                    }
+                }else{
+                    if(selectedAnswerEntities.size()==0){
+                        getSelectedAnswerList();
+                    }
                 }
                 setRefreshListener();
             }
@@ -229,24 +291,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
 
             }
         });
-        indexPage.setCurrentItem(0);
-        imgOrder.setVisibility(View.INVISIBLE);
-        tempList = lists.get(0);
-        list = listViews.get(0);
-        questionAdapter = adapterList.get(0);
-        tempKind = navList.get(0).getId();
-        if(NetworkUtils.getNetworkType(context)==0||NetworkUtils.getNetworkType(context)==1||NetworkUtils.getNetworkType(context)==4){
-            ToastUtils.showShortToast(context,"网络貌似不给力哦");
-            List<QuestionEntity> entities=DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().queryRaw("where kind = ?",new String[]{tempKind});
-            for (QuestionEntity e:entities
-                    ) {
-                tempList.add(e);
-            }
-        }else {
-            getQuestion(tempKind, tempOrder);
-        }
-        questionAdapter.notifyDataSetChanged();
-        setRefreshListener();
+        indexPage.setCurrentItem(1);
     }
 
     private void setRefreshListener() {
@@ -263,9 +308,14 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     },500);
                     return;
                 }
-                questionAdapter.setCurrentPage(1);
+                if(indexPage.getCurrentItem()==0){
+                    indexSelectAdapter.setCurrentPage(1);
+                    getSelectedAnswerList();
+                }else{
+                    questionAdapter.setCurrentPage(1);
 //                CommonUtils.init(context);
-                getQuestion(tempKind, tempOrder);
+                    getQuestion(tempKind, tempOrder);
+                }
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -295,8 +345,13 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                     }, 500);
                     return;
                 }
-                questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
-                getQuestion(tempKind, tempOrder);
+                if(indexPage.getCurrentItem()==0){
+                    indexSelectAdapter.setCurrentPage(indexSelectAdapter.getCurrentPage() + 1);
+                    getSelectedAnswerList();
+                }else{
+                    questionAdapter.setCurrentPage(questionAdapter.getCurrentPage() + 1);
+                    getQuestion(tempKind, tempOrder);
+                }
                 list.loadMoreComplete();
             }
         });
@@ -309,11 +364,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
         Map<String, Object> map = new HashMap<>();
         map.put("cate_article_id", Float.valueOf(id).intValue());
         map.put("page", questionAdapter.getCurrentPage());
-        if (questionAdapter.getCurrentPage() == 1 && indexPage.getCurrentItem() == 0) {
+        if (questionAdapter.getCurrentPage() ==1 && indexPage.getCurrentItem() ==1) {
             map.put("refresh", "1");
             map.put("article_id", ids);
         } else {
-            if (indexPage.getCurrentItem() == 0) {
+            if (indexPage.getCurrentItem() == 1) {
                 map.put("article_id", ids);
             }
             map.put("refresh", "0");
@@ -339,7 +394,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             array = object.getJSONArray("article");
             if (questionAdapter.getCurrentPage() == 1) {
                 list.refreshComplete();
-                if (indexPage.getCurrentItem() == 0)
+                if (indexPage.getCurrentItem() == 1)
                     ids = "";
                 tempList.clear();
             } else {
@@ -353,7 +408,7 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             }
             for (int i = 0; i < array.length(); i++) {
                 entity = new QuestionEntity(array.getJSONObject(i), tempKind);
-                if (indexPage.getCurrentItem() == 0 && questionAdapter.getCurrentPage() == 1) {
+                if (indexPage.getCurrentItem() == 1 && questionAdapter.getCurrentPage() ==1) {
                     if(i==(array.length()-1)){
                         ids += Float.valueOf(entity.getQuestionId()).intValue();
                     }else {
@@ -381,7 +436,48 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
             LogUtils.d(e.toString());
         }
     }
-
+    private void getSelectedAnswerList() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(context, "userId", "").toString());
+        map.put("token", SPUtils.get(context, "token", "").toString());
+        map.put("page", indexSelectAdapter.getCurrentPage());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(selectListener, context, false, false), map);
+        HttpManager.getInstance().getHotComment(postEntity);
+    }
+    private HttpOnNextListener selectListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls(); //重点
+            Gson gson = gsonBuilder.create();
+            JSONObject object = null;
+            JSONArray array = null;
+            SelectedAnswerEntity answerEntity;
+            try {
+                object = new JSONObject(gson.toJson(o));
+                array = object.getJSONArray("comment");
+                if (indexSelectAdapter.getCurrentPage() == 1) {
+                    selectedAnswerEntities.clear();
+                    list.refreshComplete();
+                } else {
+                    list.loadMoreComplete();
+                }
+                if (array.length() < 20) {
+                    loadmoe = false;
+                } else {
+                    loadmoe = true;
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    object = array.getJSONObject(i);
+                    answerEntity = new SelectedAnswerEntity(object);
+                    selectedAnswerEntities.add(answerEntity);
+                }
+                indexSelectAdapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     private void initRefresh() {
     }
 
@@ -416,6 +512,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 popupWindow.dismiss();
                 break;
             default:
+                if(v.getId()==0){
+                    buttonGroup.check(0);
+                    indexPage.setCurrentItem(0);
+                    return;
+                }
                 buttonGroup.check(v.getId());
                 indexPage.setCurrentItem(v.getId());
                 break;
@@ -433,8 +534,13 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener,
                 list.smoothScrollToPosition(0);
                 list.setPullRefreshEnabled(true);
                 list.refresh();
-                questionAdapter.setCurrentPage(1);
-                getQuestion(tempKind, tempOrder);
+                if(indexPage.getCurrentItem()==0){
+                    indexSelectAdapter.setCurrentPage(1);
+                    getSelectedAnswerList();
+                }else{
+                    questionAdapter.setCurrentPage(1);
+                    getQuestion(tempKind, tempOrder);
+                }
             }
         }
     }

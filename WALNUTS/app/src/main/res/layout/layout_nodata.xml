@@ -7,15 +7,16 @@
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/img_nodata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/nodata"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_content"/>
     <TextView
         android:id="@+id/txt_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin"
-        android:text="呀!网络信号可能不好\n数据正在赶来..."
+        android:text="暂无内容"
         android:lineSpacingMultiplier="1.2"
         android:gravity="center_horizontal"
         android:textSize="@dimen/normal"

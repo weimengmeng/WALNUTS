@@ -171,6 +171,7 @@ public class InterestActivity extends BaseActivity{
             gsonBuilder.serializeNulls(); //重点
             Gson gson = gsonBuilder.create();
             try {
+                SPUtils.put(InterestActivity.this,"firstUse","1");
                 CommonUtils.initData(new JSONObject(gson.toJson(o)));
                 Intent intent = new Intent(InterestActivity.this, MainActivity.class);
                 startActivity(intent);

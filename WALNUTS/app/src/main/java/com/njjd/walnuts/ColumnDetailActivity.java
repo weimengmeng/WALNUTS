@@ -1,9 +1,7 @@
 package com.njjd.walnuts;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -487,7 +485,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.txt_column_name:
                 Intent intent = new Intent(this, ColumnActivity.class);
-                intent.putExtra("column_id", Float.valueOf(detailActivity.getArticle_id()).intValue() + "");
+                intent.putExtra("column_id", Float.valueOf(detailActivity.getColumn_id()).intValue() + "");
                 startActivity(intent);
                 break;
         }
@@ -551,6 +549,7 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         HttpManager.getInstance().pointArticle(postEntity);
     }
     private void  shareAction(SHARE_MEDIA share_media){
+        LogUtils.d("huan"+detailActivity.getArticle_id());
         UMWeb web;
         UMImage image;
         mask.setVisibility(View.GONE);
@@ -625,5 +624,32 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         /** attention to this below ,must add this**/
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(webView!=null) {
+            webView.onPause();
+            webView.pauseTimers();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(webView!=null){
+            webView.resumeTimers();
+            webView.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(webView!=null){
+            webView.destroy();
+            webView=null;
+        }
     }
 }

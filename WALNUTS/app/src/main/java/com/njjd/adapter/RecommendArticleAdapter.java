@@ -1,23 +1,17 @@
 package com.njjd.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.czy1121.view.CornerLabelView;
 import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.utils.LogUtils;
-import com.njjd.utils.ToastUtils;
-import com.njjd.walnuts.ColumnDetailActivity;
-import com.njjd.walnuts.MySaveActivity;
 import com.njjd.walnuts.R;
 
 import java.util.List;
@@ -66,24 +60,31 @@ public class RecommendArticleAdapter extends BaseAdapter {
         if(convertView==null){
             hodel=new ViewHodel();
             convertView=inflater.inflate(R.layout.layout_column2,parent,false);
-            hodel.head = (ImageView) convertView
+            hodel.head = convertView
                     .findViewById(R.id.img_head);
-            hodel.name = (TextView) convertView
+            hodel.name =  convertView
                     .findViewById(R.id.txt_name);
-            hodel.content = (TextView) convertView
+            hodel.content =convertView
                     .findViewById(R.id.txt_content);
-            hodel.title = (TextView) convertView.findViewById(R.id.txt_title);
-            hodel.pic = (ImageView) convertView
+            hodel.title =  convertView.findViewById(R.id.txt_title);
+            hodel.pic =  convertView
                     .findViewById(R.id.img);
+            hodel.label_select =  convertView
+                    .findViewById(R.id.label_select);
             convertView.setTag(hodel);
         }else{
             hodel=(ViewHodel)convertView.getTag();
         }
         entity=list.get(position);
+        if(entity.getIs_select().equals("1.0")){
+            hodel.label_select.findViewById(R.id.label_select).setVisibility(View.VISIBLE);
+        }else{
+            hodel.label_select.findViewById(R.id.label_select).setVisibility(View.GONE);
+        }
         GlideImageLoder.getInstance().displayImage(context, entity.getHead(), hodel.head);
         hodel.name.setText(entity.getName());
         hodel.title.setText(entity.getTitle());
-        hodel.content.setText(entity.getColumnName());
+        hodel.content.setText(entity.getDesci());
         GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""), hodel.pic);
 //        hodel.pic.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //        hodel.pic.loadUrl(HttpManager.BASE_URL2+entity.getPic().split(",")[0].replace("\"",""));
@@ -95,5 +96,6 @@ public class RecommendArticleAdapter extends BaseAdapter {
         TextView content;
         TextView name;
         ImageView pic;
+        CornerLabelView label_select;
     }
 }

@@ -65,15 +65,15 @@ public class ArticleCommentAdapter extends BaseAdapter {
         if (view == null) {
             holder = new ChildHolder();
             view = LayoutInflater.from(context).inflate(R.layout.item_group_child, null);
-            holder.editText = (EditText) view.findViewById(R.id.et_comment);
-            holder.childHead = (ImageView) view.findViewById(R.id.img_answer_head);
-            holder.childName = (TextView) view.findViewById(R.id.txt_answer_name);
-            holder.childTime = (TextView) view.findViewById(R.id.txt_time);
-            holder.childMess = (TextView) view.findViewById(R.id.txt_answer_message);
-            holder.childContent = (TextView) view.findViewById(R.id.txt_answer_content);
-            holder.childReplyNum = (TextView) view.findViewById(R.id.txt_replyNum);
-            holder.childReport = (TextView) view.findViewById(R.id.txt_report);
-            holder.childReply = (TextView) view.findViewById(R.id.txt_reply);
+            holder.editText = view.findViewById(R.id.et_comment);
+            holder.childHead =  view.findViewById(R.id.img_answer_head);
+            holder.childName = view.findViewById(R.id.txt_answer_name);
+            holder.childTime = view.findViewById(R.id.txt_time);
+            holder.childMess = view.findViewById(R.id.txt_answer_message);
+            holder.childContent =  view.findViewById(R.id.txt_answer_content);
+            holder.childReplyNum =  view.findViewById(R.id.txt_replyNum);
+            holder.childReport = view.findViewById(R.id.txt_report);
+            holder.childReply = view.findViewById(R.id.txt_reply);
             view.setTag(holder);
         } else {
             holder = (ChildHolder) view.getTag();

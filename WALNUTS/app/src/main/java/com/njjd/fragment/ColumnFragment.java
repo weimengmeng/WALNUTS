@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,10 +22,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.njjd.adapter.FindAnswerAdapter;
+import com.njjd.adapter.SelectAdapter;
 import com.njjd.application.ConstantsVal;
 import com.njjd.domain.ColumnArticleEntity;
-import com.njjd.domain.SelectedAnswerEntity;
+import com.njjd.domain.ColumnEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
@@ -32,8 +33,9 @@ import com.njjd.utils.MyXRecyclerView;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.njjd.walnuts.BaseActivity;
+import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.R;
-import com.njjd.walnuts.SelectAnswerDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,23 +53,25 @@ import butterknife.ButterKnife;
  * Created by mrwim on 17/9/14.
  */
 
-public class SelectFragment extends BaseFragment implements HttpOnNextListener {
+public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.list_find)
     MyXRecyclerView listFind;
+    @BindView(R.id.lv_root)
+    View root;
     @BindView(R.id.back)
     TextView back;
     @BindView(R.id.top)
     LinearLayout top;
     private Context context;
-    private FindAnswerAdapter adapter;
-    private List<ColumnArticleEntity> columnEntities = new ArrayList<>();
-    private List<SelectedAnswerEntity> selectedAnswerEntities = new ArrayList<>();
-    private SelectedAnswerEntity entity;
+    private SelectAdapter adapter;
+    private List<ColumnEntity> columnEntities = new ArrayList<>();
+    private List<ColumnArticleEntity> columnArticleEntities = new ArrayList<>();
+    private ColumnArticleEntity entity;
     private MyReceiver receiver;
     private boolean loadmoe = true;
-    ColumnArticleEntity columnArticleEntity;
+    ColumnEntity columnArticleEntity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,27 +90,26 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
         filter.addAction(ConstantsVal.REFRESH_FIND);
         context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
-        txtTitle.setText("精选");
-        adapter = new FindAnswerAdapter(context, selectedAnswerEntities, columnEntities);
+        txtTitle.setText("专栏");
+        adapter = new SelectAdapter(context, columnArticleEntities, columnEntities);
         listFind.setLayoutManager(new LinearLayoutManager(context));
         listFind.setAdapter(adapter);
+        if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
+            ((ImageView) view.findViewById(R.id.img_nodata)).setImageDrawable(getResources().getDrawable(R.drawable.no_net));
+            ((TextView) view.findViewById(R.id.txt_content)).setText("请检查网络设置");
+        }
         listFind.setEmptyView(view.findViewById(R.id.empty));
         listFind.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
         listFind.setRefreshProgressStyle(ProgressStyle.BallPulse);
-        adapter.setOnItemClickListener(new FindAnswerAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new SelectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent;
-                entity = selectedAnswerEntities.get(position);
-                intent = new Intent(context, SelectAnswerDetailActivity.class);
-                intent.putExtra("questionId", entity.getArticle_id());
-                intent.putExtra("questionTitle", entity.getTitle());
-                intent.putExtra("answer_id", entity.getAnswer_id());
-                intent.putExtra("contents",entity.getContents());
+                Intent intent=new Intent(context, ColumnDetailActivity.class);
+                intent.putExtra("article_id",Float.valueOf(columnArticleEntities.get(position).getArticle_id()).intValue()+"");
                 startActivity(intent);
             }
         });
-        getSelectedAnswerList();
+        getSelectArticle();
         getIndexColumn();
         listFind.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -123,7 +126,7 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
                 }
                 adapter.setCurrentPage(1);
                 getIndexColumn();
-                getSelectedAnswerList();
+                getSelectArticle();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         listFind.refreshComplete();
@@ -154,25 +157,29 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
                     return;
                 }
                 adapter.setCurrentPage(adapter.getCurrentPage() + 1);
-                getSelectedAnswerList();
+                getAllArticle();
             }
         });
     }
 
-    private void getSelectedAnswerList() {
+    private void getSelectArticle() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(context, "userId", "").toString());
-        map.put("token", SPUtils.get(context, "token", "").toString());
-        map.put("page", adapter.getCurrentPage());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
-        HttpManager.getInstance().getHotComment(postEntity);
+        HttpManager.getInstance().getColumnArticle(postEntity);
     }
-
+    private void getAllArticle() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", SPUtils.get(context, "userId", "").toString());
+        map.put("page", adapter.getCurrentPage()==1?1:adapter.getCurrentPage()-1);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, context, false, false), map);
+        HttpManager.getInstance().getAllArticle(postEntity);
+    }
     private void getIndexColumn() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(context, "userId", "").toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getColumnListener, context, false, false), map);
-        HttpManager.getInstance().getColumnArticle(postEntity);
+        HttpManager.getInstance().getIndexColumn(postEntity);
     }
 
     HttpOnNextListener getColumnListener = new HttpOnNextListener() {
@@ -187,7 +194,7 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
                 JSONArray array = object.getJSONArray("column");
                 for (int i = 0; i < array.length(); i++) {
                     object = array.getJSONObject(i);
-                    columnArticleEntity = new ColumnArticleEntity(object);
+                    columnArticleEntity = new ColumnEntity(object);
                     columnEntities.add(columnArticleEntity);
                 }
                 adapter.setColumnEntities(columnEntities);
@@ -203,27 +210,30 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.serializeNulls(); //重点
         Gson gson = gsonBuilder.create();
-        JSONObject object = null;
-        JSONArray array = null;
-        SelectedAnswerEntity answerEntity;
         try {
-            object = new JSONObject(gson.toJson(o));
-            array = object.getJSONArray("comment");
-            if (adapter.getCurrentPage() == 1) {
-                selectedAnswerEntities.clear();
+            JSONObject object = new JSONObject(gson.toJson(o));
+            JSONArray array = object.getJSONArray("column");
+            LogUtils.d("huan"+array.length());
+            ColumnArticleEntity entity;
+            if(adapter.getCurrentPage()==1){
+                columnArticleEntities.clear();
                 listFind.refreshComplete();
-            } else {
+            }else{
                 listFind.loadMoreComplete();
             }
-            if (array.length() < 20) {
-                loadmoe = false;
-            } else {
-                loadmoe = true;
+            if(array.length()==0){
+                BaseActivity.showToast2(root,"已加载全部数据");
+                return;
             }
             for (int i = 0; i < array.length(); i++) {
-                object = array.getJSONObject(i);
-                answerEntity = new SelectedAnswerEntity(object);
-                selectedAnswerEntities.add(answerEntity);
+                entity = new ColumnArticleEntity(array.getJSONObject(i));
+                if(adapter.getCurrentPage()==1){
+                    columnArticleEntities.add(entity);
+                }else{
+                    if(array.getJSONObject(i).getString("is_select").equals("0.0")){
+                        columnArticleEntities.add(entity);
+                    }
+                }
             }
             adapter.notifyDataSetChanged();
         } catch (JSONException e) {
@@ -237,7 +247,6 @@ public class SelectFragment extends BaseFragment implements HttpOnNextListener {
             listFind.setPullRefreshEnabled(true);
             adapter.setCurrentPage(1);
             listFind.refresh();
-//            getSelectedAnswerList();
         }
     }
 

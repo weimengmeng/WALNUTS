@@ -37,7 +37,7 @@
             android:gravity="center"
             android:typeface="sans"
             android:textCursorDrawable="@drawable/color_cusor"
-
+            android:lines="1"
             android:hint="请输入验证码"
             android:textColorHint="@color/txt_color"
             android:textColor="@color/gray"
@@ -58,6 +58,7 @@
             android:background="@null"
             android:typeface="sans"
             android:textCursorDrawable="@drawable/color_cusor"
+            android:lines="1"
 
             android:gravity="center"
             android:textColorHint="@color/txt_color"
@@ -78,6 +79,7 @@
             android:layout_height="@dimen/height"
             android:background="@null"
             android:textCursorDrawable="@drawable/color_cusor"
+            android:lines="1"
 
             android:textColorHint="@color/txt_color"
             android:typeface="sans"

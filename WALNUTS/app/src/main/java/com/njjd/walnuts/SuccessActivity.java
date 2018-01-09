@@ -154,8 +154,6 @@ public class  SuccessActivity extends BaseActivity {
         txtSex.setText(sex.get(0));
         modelId = saleList.get(0).getId();
         txtSale.setText(sales.get(0));
-        etName.setText("用户"+SPUtils.get(this, "userId", "").toString().substring(0,3));
-        etName.setSelection(etName.getText().toString().length());//将光标移至文字末
     }
 
     @Override
@@ -203,8 +201,8 @@ public class  SuccessActivity extends BaseActivity {
                     ToastUtils.showShortToast(this, "请输入姓名");
                     return;
                 }
-                if(etName.getText().toString().trim().length()>5){
-                    ToastUtils.showShortToast(this,"姓名最多5个字");
+                if(etName.getText().toString().trim().length()>10){
+                    ToastUtils.showShortToast(this,"姓名最多10个字");
                     return;
                 }
                 if ("".equals(provinceId) || "".equals(cityId)) {

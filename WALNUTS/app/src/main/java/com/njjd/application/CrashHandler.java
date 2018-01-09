@@ -1,10 +1,14 @@
 package com.njjd.application;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.LoginActivity;
+import com.njjd.walnuts.WelcomeActivity;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -37,6 +41,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
            return;
         }
         MobclickAgent.reportError(context,arg1);
+        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("crash", true);
+        PendingIntent restartIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 500, restartIntent); // 0.5秒钟后重启应用
         android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
+        System.gc();
     }
 }

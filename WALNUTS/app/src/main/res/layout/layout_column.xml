@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/column_w"
     android:layout_height="@dimen/column"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_marginTop="@dimen/padding"
     android:layout_marginLeft="@dimen/margin"
@@ -10,19 +10,20 @@
     android:background="@drawable/background_layout_div_radius"
     android:weightSum="1">
     <RelativeLayout
-        android:layout_width="@dimen/column_w"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/column">
         <com.njjd.utils.CustomImageView
             android:id="@+id/img"
-            android:layout_width="@dimen/column_w"
+            android:layout_width="match_parent"
             android:scaleType="centerCrop"
             app:radius="4dp"
             android:layout_height="@dimen/column"
             android:src="@drawable/demo"/>
         <com.njjd.utils.CustomImageView
-            android:layout_width="@dimen/column_w"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/column"
             android:scaleType="centerCrop"
+            android:visibility="gone"
             app:radius="4dp"
             android:src="@drawable/shadow"/>
         <TextView
@@ -31,18 +32,23 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/head_large"
             android:text=""
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_centerInParent="true"
             android:maxLines="2"
             android:ellipsize="end"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal" />
+            android:textSize="@dimen/big" />
         <LinearLayout
-            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/txt_title"
+            android:padding="@dimen/margin"
+            android:visibility="gone"
             android:layout_marginBottom="@dimen/padding_left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center|left"
+            android:gravity="center"
             android:paddingLeft="@dimen/margin">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
