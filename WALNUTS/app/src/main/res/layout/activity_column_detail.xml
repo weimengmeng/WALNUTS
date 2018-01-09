@@ -232,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/padding"
-                android:background="@color/grey"
+                android:background="@color/white"
                 android:text="相关推荐"
                 android:textColor="@color/txt_color"
                 android:textSize="@dimen/normal" />

@@ -549,7 +549,6 @@ public class ColumnDetailActivity extends BaseActivity implements View.OnClickLi
         HttpManager.getInstance().pointArticle(postEntity);
     }
     private void  shareAction(SHARE_MEDIA share_media){
-        LogUtils.d("huan"+detailActivity.getArticle_id());
         UMWeb web;
         UMImage image;
         mask.setVisibility(View.GONE);
