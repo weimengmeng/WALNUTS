@@ -52,10 +52,10 @@ public class BindActivity extends BaseActivity {
     EditText etPhone;
     @BindView(R.id.et_phone_code)
     EditText etPhoneCode;
-    @BindView(R.id.et_invite_code)
-    EditText etInviteCode;
-    @BindView(R.id.lv_invite)
-    LinearLayout lvInvite;
+//    @BindView(R.id.et_invite_code)
+//    EditText etInviteCode;
+//    @BindView(R.id.lv_invite)
+//    LinearLayout lvInvite;
     @BindView(R.id.lv_phonecode)
     LinearLayout lvPhone;
     @BindView(R.id.btn_get_code)
@@ -83,9 +83,9 @@ public class BindActivity extends BaseActivity {
         popupWindow = new BasePopupWindow(this);
         popupWindow.setContentView(lvImgcode);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        etVerify = (EditText) lvImgcode.findViewById(R.id.et_verify);
-        web = (WebView) lvImgcode.findViewById(R.id.web);
-        imageView = (ImageView) lvImgcode.findViewById(R.id.btn_resend);
+        etVerify =  lvImgcode.findViewById(R.id.et_verify);
+        web = lvImgcode.findViewById(R.id.web);
+        imageView =  lvImgcode.findViewById(R.id.btn_resend);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,12 +108,12 @@ public class BindActivity extends BaseActivity {
                     code = etVerify.getText().toString().trim();
                     popupWindow.dismiss();
                     etVerify.setText("");
-                    if (lvInvite.getVisibility() == View.VISIBLE) {
-                        //判断是否邀请
-                        checkInvitation();
-                    } else {
+//                    if (lvInvite.getVisibility() == View.VISIBLE) {
+//                        //判断是否邀请
+//                        checkInvitation();
+//                    } else {
                         getPhoneCode();
-                    }
+//                    }
                 }
             }
         });
@@ -148,22 +148,23 @@ public class BindActivity extends BaseActivity {
         public void onNext(Object o) {
             JsonObject object = JSONUtils.getAsJsonObject(o);
             if (object.get("code").getAsString().equals("1.0")) {
-                lvInvite.setVisibility(View.GONE);
+//                lvInvite.setVisibility(View.GONE);
                 btnGetCode.setTag("1");//有账号
             } else {
-                lvInvite.setVisibility(View.VISIBLE);
+//                lvInvite.setVisibility(View.VISIBLE);
                 btnGetCode.setTag("0");//没有账号
             }
+            btnGetCode.performClick();
         }
     };
 
-    private void checkInvitation() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("invitation_code", etInviteCode.getText().toString().trim());
-        LogUtils.d(map.toString());
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(checkInvitation, this, true, false), map);
-        HttpManager.getInstance().checkInvitation(postEntity);
-    }
+//    private void checkInvitation() {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("invitation_code", etInviteCode.getText().toString().trim());
+//        LogUtils.d(map.toString());
+//        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(checkInvitation, this, true, false), map);
+//        HttpManager.getInstance().checkInvitation(postEntity);
+//    }
 
     HttpOnNextListener checkInvitation = new HttpOnNextListener() {
         @Override
@@ -181,7 +182,6 @@ public class BindActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("phone", etPhone.getText().toString().trim());
         map.put("imgcode", code);
-        LogUtils.d(map.toString());
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().phoneCode(postEntity);
     }
@@ -261,10 +261,10 @@ public class BindActivity extends BaseActivity {
                 }
                 if (btnGetCode.getTag().equals("0")) {
                     //no account
-                    if (etInviteCode.getText().toString().trim().equals("")) {
-                        ToastUtils.showShortToast(this, "请输入邀请码");
-                        return;
-                    }
+//                    if (etInviteCode.getText().toString().trim().equals("")) {
+//                        ToastUtils.showShortToast(this, "请输入邀请码");
+//                        return;
+//                    }
                 } else if (btnGetCode.getTag().equals("2")) {
                     if (etPhoneCode.getText().toString().trim().equals("")) {
                         ToastUtils.showShortToast(this, "请输入短信验证码");
@@ -290,7 +290,6 @@ public class BindActivity extends BaseActivity {
     HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            LogUtils.d(o.toString());
             SPUtils.put(BindActivity.this, "phoneNumber", etPhone.getText().toString().trim());
             authBind();
         }
