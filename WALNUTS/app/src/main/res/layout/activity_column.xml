@@ -71,6 +71,8 @@
                         android:gravity="center_horizontal"
                         android:lineSpacingMultiplier="1.1"
                         android:padding="@dimen/margin"
+                        android:lines="2"
+                        android:ellipsize="end"
                         android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/small" />

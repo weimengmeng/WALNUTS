@@ -130,6 +130,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                     e.printStackTrace();
                 }
                 break;
+            case "7.0":
+                viewHolder.title.setText(tempEntity.getUname()+"关注了你的专栏");
+                try {
+                    viewHolder.content.setText(tempEntity.getContent().getString("column_name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
         ParsePosition pos = new ParsePosition(0);
         viewHolder.time.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(tempEntity.getAdd_time(), pos)));

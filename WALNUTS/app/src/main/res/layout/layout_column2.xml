@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/txt_topsale"
         android:layout_width="match_parent"
-        android:text="专栏文章"
+        android:text="文章推荐"
         android:visibility="gone"
         android:drawableLeft="@drawable/line_v"
         android:drawablePadding="@dimen/margin"

@@ -4,9 +4,19 @@
     android:layout_height="wrap_content">
     <com.youth.banner.Banner xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/banner"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/column" />
+    <TextView
+        android:id="@+id/txt_topsale"
+        android:layout_width="match_parent"
+        android:text="精选专栏"
+        android:drawableLeft="@drawable/line_v"
+        android:drawablePadding="@dimen/margin"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin"
+        android:textSize="@dimen/small"
+        android:textColor="@color/txt_color"
+        android:layout_height="wrap_content"/>
     <com.njjd.utils.BetterRecyclerView
         android:id="@+id/rec_column"
         android:layout_width="match_parent"

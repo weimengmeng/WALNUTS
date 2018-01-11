@@ -1,5 +1,6 @@
 package com.njjd.walnuts;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -8,12 +9,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.PermissionChecker;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -181,6 +185,31 @@ public class MainActivity extends FragmentActivity {
             SPUtils.put(this,"firstUse","0");
         }
     }
+    public boolean selfPermissionGranted(String permission) {
+        // For Android < Android M, self permissions are always granted.
+        boolean result = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                final PackageInfo info = getPackageManager().getPackageInfo(
+                        getPackageName(), 0);
+                if (info.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.M) {
+                    // targetSdkVersion >= Android M, we can
+                    // use Context#checkSelfPermission
+                    result = this.checkSelfPermission(permission)
+                            == PackageManager.PERMISSION_GRANTED;
+                } else {
+                    // targetSdkVersion < Android M, we have to use PermissionChecker
+                    result = PermissionChecker.checkSelfPermission(this, permission)
+                            == PermissionChecker.PERMISSION_GRANTED;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
     private static void loginHuanxin() {
         EMClient.getInstance().login(SPUtils.get(activity, "userId", "").toString(), "Walnut2017", new EMCallBack() {
             @Override
@@ -421,6 +450,10 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (!selfPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    100);
+        }
         MobclickAgent.onResume(this);
     }
     @Override

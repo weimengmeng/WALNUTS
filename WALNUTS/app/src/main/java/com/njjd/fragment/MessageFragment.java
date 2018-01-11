@@ -38,6 +38,7 @@ import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ItemRemoveRecyclerView;
+import com.njjd.utils.LogUtils;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
@@ -45,6 +46,7 @@ import com.njjd.utils.TipButton;
 import com.njjd.utils.ToastUtils;
 import com.njjd.walnuts.ArticleComReplyActivity;
 import com.njjd.walnuts.ChatActivity;
+import com.njjd.walnuts.ColumnActivity;
 import com.njjd.walnuts.ColumnDetailActivity;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.MainActivity;
@@ -407,6 +409,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                                 intent.putExtra("article_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()));
                                 startActivity(intent);
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "7.0":
+                        intent = new Intent(context, ColumnActivity.class);
+                        try {
+                                intent.putExtra("column_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("id"))));
+                                startActivity(intent);
+                                getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

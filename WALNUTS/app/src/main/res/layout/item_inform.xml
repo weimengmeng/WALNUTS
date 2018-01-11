@@ -17,7 +17,6 @@
             android:padding="2dp"
             android:gravity="center">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:src="@drawable/head"
                 android:layout_width="@dimen/height"
                 android:layout_height="@dimen/height"
                 android:id="@+id/img_head"/>
@@ -33,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.3"
-                android:text="王老二...   等5人赞了你的回答"
+                android:text=""
                 android:textColor="@color/txt_color"
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -48,7 +47,7 @@
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
                 android:layout_weight="0.5"
-                android:text="我认为开车不能喝酒。。。"
+                android:text=""
                 android:lines="1"
                 android:typeface="sans"
                 android:ellipsize="end"

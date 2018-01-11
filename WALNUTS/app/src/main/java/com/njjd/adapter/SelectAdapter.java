@@ -124,31 +124,31 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((ContentViewHolder) holder).content.setText(columnArticleEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2 + columnArticleEntity.getPic().split(",")[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
         } else {
-//            images.clear();
-//            titles.clear();
-//            for (int i = 0; i < columnEntities.size(); i++) {
-//                images.add(columnEntities.get(i).getPic());
-//                titles.add(columnEntities.get(i).getName());
-////                    urls.add(bannerList.get(i).get);
-//            }
-//            ((ColumnHolder) holder).banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-//            ((ColumnHolder) holder).banner.setIndicatorGravity(BannerConfig.RIGHT);
-//            ((ColumnHolder) holder).banner.isAutoPlay(true);
-//            ((ColumnHolder) holder).banner.setDelayTime(3000);
-//            ((ColumnHolder) holder).banner.setBannerTitles(titles);
-//            ((ColumnHolder) holder).banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
-//            ((ColumnHolder) holder).banner.setOnBannerListener(new OnBannerListener() {
-//                @Override
-//                public void OnBannerClick(int position) {
-//                    Intent intent = new Intent(context, ColumnActivity.class);
-//                    intent.putExtra("column_id", Float.valueOf(columnEntities.get(position).getId()).intValue() + "");
-//                    context.startActivity(intent);
-////                        Intent intent = new Intent(context, WebViewActivity.class);
-////                        intent.putExtra("title", titles.get(position));
-////                        intent.putExtra("url", urls.get(position));
-////                        context.startActivity(intent);
-//                }
-//            });
+            images.clear();
+            titles.clear();
+            for (int i = 0; i < columnEntities.size(); i++) {
+                images.add(columnEntities.get(i).getCrousel_img());
+                titles.add(columnEntities.get(i).getName());
+//                    urls.add(bannerList.get(i).get);
+            }
+            ((ColumnHolder) holder).banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+            ((ColumnHolder) holder).banner.setIndicatorGravity(BannerConfig.RIGHT);
+            ((ColumnHolder) holder).banner.isAutoPlay(true);
+            ((ColumnHolder) holder).banner.setDelayTime(3000);
+            ((ColumnHolder) holder).banner.setBannerTitles(titles);
+            ((ColumnHolder) holder).banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
+            ((ColumnHolder) holder).banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+                    Intent intent = new Intent(context, ColumnActivity.class);
+                    intent.putExtra("column_id", Float.valueOf(columnEntities.get(position).getId()).intValue() + "");
+                    context.startActivity(intent);
+//                        Intent intent = new Intent(context, WebViewActivity.class);
+//                        intent.putExtra("title", titles.get(position));
+//                        intent.putExtra("url", urls.get(position));
+//                        context.startActivity(intent);
+                }
+            });
             //设置布局管理器
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
