@@ -128,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding"
                         android:layout_weight="0.2"
-                        android:text="简介"
+                        android:text="签名"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/normal" />
 

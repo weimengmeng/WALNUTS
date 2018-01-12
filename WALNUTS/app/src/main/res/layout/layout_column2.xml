@@ -7,18 +7,20 @@
     <TextView
         android:id="@+id/txt_topsale"
         android:layout_width="match_parent"
-        android:text="文章推荐"
+        android:text="精选文章"
         android:visibility="gone"
-        android:drawableLeft="@drawable/line_v"
+        android:drawableLeft="@drawable/sel_article"
         android:drawablePadding="@dimen/margin"
         android:paddingTop="@dimen/margin_small"
         android:paddingLeft="@dimen/margin"
+        android:gravity="center_vertical"
+        android:background="@color/white"
         android:textSize="@dimen/small"
         android:textColor="@color/txt_color"
         android:layout_height="wrap_content"/>
     <FrameLayout
         android:layout_width="match_parent"
-        android:paddingTop="@dimen/margin_small"
+        android:layout_marginBottom="1dp"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,6 +80,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/margin"
+                        android:lines="1"
+                        android:ellipsize="end"
                         android:text=""
                         android:textColor="@color/txt_color"
                         android:textSize="@dimen/small" />

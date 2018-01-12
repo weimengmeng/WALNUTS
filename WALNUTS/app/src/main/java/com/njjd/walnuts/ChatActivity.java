@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,14 +58,14 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     ListView listChat;
     @BindView(R.id.et_content)
     EditText etContent;
-    @BindView(R.id.lv_voice)
-    LinearLayout lvVoice;
     @BindView(R.id.btn_img)
     ImageView btnImg;
     @BindView(R.id.lv_root)
     LinearLayout lvRoot;
     @BindView(R.id.btn_voice)
-    ImageView btnVoice;
+    TextView btnVoice;
+    @BindView(R.id.btn_micro)
+    ImageView btnMicro;
     private MSGLAdapter adapter;
     private List<EMMessage> messagesList;
     private String imagePath = "", tempFilePath = "";
@@ -74,7 +75,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     private ImageView mImageView;
     private TextView mTextView;
     EMConversation conversation;
-
+    private boolean flag=false;
     @Override
     public int bindLayout() {
         return R.layout.activity_chat;
@@ -143,19 +144,18 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
         btnVoice.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 switch (event.getAction()) {
-
                     case MotionEvent.ACTION_DOWN:
-
                         mPop.showAtLocation(lvRoot, Gravity.CENTER, 0, 0);
                         mAudioRecoderUtils.startRecord();
+                        btnVoice.setText("松开发送");
+                        btnVoice.setBackground(getResources().getDrawable(R.drawable.background_layout_et2));
                         break;
-
                     case MotionEvent.ACTION_UP:
-
                         mAudioRecoderUtils.stopRecord();        //结束录音（保存录音文件）
                         mPop.dismiss();
+                        btnVoice.setText("按住说话");
+                        btnVoice.setBackground(getResources().getDrawable(R.drawable.background_layout_et));
                         break;
                 }
                 return true;
@@ -264,8 +264,19 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 100);
                     return;
                 }
-                KeybordS.closeBoard(this);
-                lvVoice.setVisibility(lvVoice.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                if(!flag){
+                    btnMicro.setImageResource(R.drawable.btn_jp);
+                    btnVoice.setVisibility(View.VISIBLE);
+                    etContent.setVisibility(View.GONE);
+                    KeybordS.closeBoard(this);
+                    flag=true;
+                }else{
+                    btnMicro.setImageResource(R.drawable.btn_micro);
+                    btnVoice.setVisibility(View.GONE);
+                    etContent.setVisibility(View.VISIBLE);
+                    KeybordS.openKeybord(etContent,this);
+                    flag=false;
+                }
                 break;
             case R.id.btn_img:
                 Picker.from(this)

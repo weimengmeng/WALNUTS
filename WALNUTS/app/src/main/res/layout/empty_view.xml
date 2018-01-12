@@ -6,9 +6,9 @@
     android:layout_marginBottom="@dimen/margin"
     android:layout_height="match_parent">
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_empty"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/no_content"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

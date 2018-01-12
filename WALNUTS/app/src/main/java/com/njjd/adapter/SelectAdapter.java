@@ -119,7 +119,7 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.itemView.findViewById(R.id.label_select).setVisibility(View.GONE);
             }
             GlideImageLoder.getInstance().displayImage(context, columnArticleEntity.getHead(), ((ContentViewHolder) holder).head);
-            ((ContentViewHolder) holder).name.setText(columnArticleEntity.getName());
+            ((ContentViewHolder) holder).name.setText(columnArticleEntity.getName()+" • "+columnArticleEntity.getColumnName());
             ((ContentViewHolder) holder).title.setText(columnArticleEntity.getTitle());
             ((ContentViewHolder) holder).content.setText(columnArticleEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2 + columnArticleEntity.getPic().split(",")[0].replace("\"", ""), ((ContentViewHolder) holder).pic);

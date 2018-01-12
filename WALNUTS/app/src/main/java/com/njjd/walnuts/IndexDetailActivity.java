@@ -274,7 +274,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
         Map<String, Object> map = new HashMap<>();
         map.put("id", questionEntity.getQuestionId());
         map.put("uid", SPUtils.get(this, "userId", ""));
-        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, true, false), map);
         HttpManager.getInstance().getArticleDetail(postEntity);
     }
 
@@ -317,7 +317,7 @@ public class IndexDetailActivity extends BaseActivity implements View.OnClickLis
             TextView tag;
             for (int i = 0; i < strings.length; i++) {
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.tag_item, null);
-                tag = (TextView) linearLayout.findViewById(R.id.txt_tag);
+                tag =  linearLayout.findViewById(R.id.txt_tag);
                 tag.setText(strings[i]);
                 tag.setTag(tags[i]);
                 tag.setOnClickListener(new View.OnClickListener() {

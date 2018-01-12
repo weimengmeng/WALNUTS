@@ -213,7 +213,6 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
         try {
             JSONObject object = new JSONObject(gson.toJson(o));
             JSONArray array = object.getJSONArray("column");
-            LogUtils.d("huan"+array.length());
             ColumnArticleEntity entity;
             if(adapter.getCurrentPage()==1){
                 columnArticleEntities.clear();

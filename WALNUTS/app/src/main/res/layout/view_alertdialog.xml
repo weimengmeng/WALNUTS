@@ -52,7 +52,7 @@
             android:typeface="sans"
             android:background="@drawable/alertdialog_left_selector"
             android:gravity="center"
-            android:textColor="@color/actionsheet_blue"
+            android:textColor="@color/txt_color"
             android:textSize="@dimen/normal" />
 
         <ImageView
@@ -69,7 +69,7 @@
             android:background="@drawable/alertdialog_right_selector"
             android:gravity="center"
             android:typeface="sans"
-            android:textColor="@color/actionsheet_blue"
+            android:textColor="@color/login"
             android:textSize="@dimen/normal"
             android:textStyle="bold" />
     </LinearLayout>

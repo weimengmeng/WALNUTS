@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="wrap_content">
     <com.youth.banner.Banner xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/banner"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/column" />
     <TextView
         android:id="@+id/txt_topsale"
         android:layout_width="match_parent"
         android:text="精选专栏"
-        android:drawableLeft="@drawable/line_v"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/sel_column"
         android:drawablePadding="@dimen/margin"
         android:paddingTop="@dimen/margin_small"
         android:paddingLeft="@dimen/margin"
+        android:background="@color/white"
         android:textSize="@dimen/small"
         android:textColor="@color/txt_color"
         android:layout_height="wrap_content"/>
