@@ -161,7 +161,10 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
             }
         });
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
     private void getSelectArticle() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(context, "userId", "").toString());

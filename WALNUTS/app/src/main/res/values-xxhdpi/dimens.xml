@@ -31,5 +31,5 @@
     <dimen name="column_height">265dp</dimen>
     <dimen name="column">180dp</dimen>
     <dimen name="column_w">300dp</dimen>
-
+    <dimen name="live_height">200dp</dimen>
 </resources>

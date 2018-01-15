@@ -19,6 +19,7 @@ import com.njjd.utils.CommonUtils;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.GlideImageLoder2;
 import com.njjd.walnuts.ColumnActivity;
+import com.njjd.walnuts.LiveActivity;
 import com.njjd.walnuts.R;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -41,7 +42,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private OnItemClickListener mOnItemClickListener = null;
     private int currentPage = 1;
     private int mHeaderCount = 1;//头部View个数
-    private boolean isfirst=true;
     private List<ColumnEntity> columnEntities;
     private LayoutInflater inflater;
     private List<BannerEntity> bannerList = CommonUtils.getInstance().getBannerList();
@@ -72,22 +72,47 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
         if (ONE_ITEM == viewType) {
-            View layout = LayoutInflater.from(context).inflate(R.layout.layout_column2, parent, false);
+            View layout =inflater.inflate(R.layout.layout_column2, parent, false);
             holder = new ContentViewHolder(layout);
             layout.setOnClickListener(this);
         } else {
-            View layout = LayoutInflater.from(context).inflate(R.layout.item_column, parent, false);
-            holder = new ColumnHolder(layout);
-            layout.setOnClickListener(this);
+            View layout =inflater.inflate(R.layout.item_column, parent, false);
+//            holder = new ColumnHolder(layout);
+            BetterRecyclerView recyclerView = layout.findViewById(R.id.rec_column);
+//            layout.setOnClickListener(this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+           recyclerView.setLayoutManager(linearLayoutManager);
+            //设置适配器
+            GalleryAdapter mAdapter = new GalleryAdapter(context, columnEntities);
+            recyclerView.setAdapter(mAdapter);
+            images.clear();
+            titles.clear();
+            for (int i = 0; i < columnEntities.size(); i++) {
+                images.add(columnEntities.get(i).getCrousel_img());
+                titles.add(columnEntities.get(i).getName());
+//                    urls.add(bannerList.get(i).get);
+            }
+            Banner banner=layout.findViewById(R.id.banner);
+           banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+            banner.setIndicatorGravity(BannerConfig.RIGHT);
+            banner.isAutoPlay(true);
+           banner.setDelayTime(3000);
+            banner.setBannerTitles(titles);
+           banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
+           banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+                    context.startActivity(new Intent(context, LiveActivity.class));
+                }
+            });
+            return new HeaderViewHolder(layout);
         }
         return holder;
     }
 
     @Override
     public int getItemViewType(int position) {
-//        if (mHeaderCount != 0 && position < mHeaderCount) {
-//            return ITEM_TYPE_HEADER;
-//        }else
         if (mHeaderCount != 0 && position < mHeaderCount) {
             return TWO_ITEM;
         } else {
@@ -123,39 +148,39 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((ContentViewHolder) holder).title.setText(columnArticleEntity.getTitle());
             ((ContentViewHolder) holder).content.setText(columnArticleEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2 + columnArticleEntity.getPic().split(",")[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
-        } else {
-            images.clear();
-            titles.clear();
-            for (int i = 0; i < columnEntities.size(); i++) {
-                images.add(columnEntities.get(i).getCrousel_img());
-                titles.add(columnEntities.get(i).getName());
-//                    urls.add(bannerList.get(i).get);
-            }
-            ((ColumnHolder) holder).banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-            ((ColumnHolder) holder).banner.setIndicatorGravity(BannerConfig.RIGHT);
-            ((ColumnHolder) holder).banner.isAutoPlay(true);
-            ((ColumnHolder) holder).banner.setDelayTime(3000);
-            ((ColumnHolder) holder).banner.setBannerTitles(titles);
-            ((ColumnHolder) holder).banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
-            ((ColumnHolder) holder).banner.setOnBannerListener(new OnBannerListener() {
-                @Override
-                public void OnBannerClick(int position) {
-                    Intent intent = new Intent(context, ColumnActivity.class);
-                    intent.putExtra("column_id", Float.valueOf(columnEntities.get(position).getId()).intValue() + "");
-                    context.startActivity(intent);
-//                        Intent intent = new Intent(context, WebViewActivity.class);
-//                        intent.putExtra("title", titles.get(position));
-//                        intent.putExtra("url", urls.get(position));
-//                        context.startActivity(intent);
-                }
-            });
-            //设置布局管理器
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            ((ColumnHolder) holder).recyclerView.setLayoutManager(linearLayoutManager);
-            //设置适配器
-            GalleryAdapter mAdapter = new GalleryAdapter(context, columnEntities);
-            ((ColumnHolder) holder).recyclerView.setAdapter(mAdapter);
+        } else if(holder instanceof HeaderViewHolder) {
+//            images.clear();
+//            titles.clear();
+//            for (int i = 0; i < columnEntities.size(); i++) {
+//                images.add(columnEntities.get(i).getCrousel_img());
+//                titles.add(columnEntities.get(i).getName());
+////                    urls.add(bannerList.get(i).get);
+//            }
+//            ((ColumnHolder) holder).banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+//            ((ColumnHolder) holder).banner.setIndicatorGravity(BannerConfig.RIGHT);
+//            ((ColumnHolder) holder).banner.isAutoPlay(true);
+//            ((ColumnHolder) holder).banner.setDelayTime(3000);
+//            ((ColumnHolder) holder).banner.setBannerTitles(titles);
+//            ((ColumnHolder) holder).banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
+//            ((ColumnHolder) holder).banner.setOnBannerListener(new OnBannerListener() {
+//                @Override
+//                public void OnBannerClick(int position) {
+//                    Intent intent = new Intent(context, ColumnActivity.class);
+//                    intent.putExtra("column_id", Float.valueOf(columnEntities.get(position).getId()).intValue() + "");
+//                    context.startActivity(intent);
+////                        Intent intent = new Intent(context, WebViewActivity.class);
+////                        intent.putExtra("title", titles.get(position));
+////                        intent.putExtra("url", urls.get(position));
+////                        context.startActivity(intent);
+//                }
+//            });
+////            设置布局管理器
+//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+//            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//            ((ColumnHolder) holder).recyclerView.setLayoutManager(linearLayoutManager);
+//            //设置适配器
+//            GalleryAdapter mAdapter = new GalleryAdapter(context, columnEntities);
+//            ((ColumnHolder) holder).recyclerView.setAdapter(mAdapter);
         }
     }
 
@@ -163,7 +188,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemCount() {
         return list.size() + mHeaderCount;
     }
-
     class ColumnHolder extends RecyclerView.ViewHolder {
         Banner banner;
         BetterRecyclerView recyclerView;
@@ -174,7 +198,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             recyclerView = itemView.findViewById(R.id.rec_column);
         }
     }
-
     //内容 ViewHolder
     public class ContentViewHolder extends RecyclerView.ViewHolder {
         ImageView head;
@@ -196,7 +219,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .findViewById(R.id.img);
         }
     }
-
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
@@ -204,15 +226,12 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mOnItemClickListener.onItemClick(v, (int) v.getTag());
         }
     }
-
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
-
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
-
     public class GalleryAdapter extends
             RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         private LayoutInflater mInflater;
@@ -222,14 +241,12 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mInflater = LayoutInflater.from(context);
             mDatas = datats;
         }
-
         public class ViewHolder extends RecyclerView.ViewHolder {
             ImageView head;
             TextView title;
             TextView content;
             TextView name;
             ImageView pic;
-
             public ViewHolder(View itemView) {
                 super(itemView);
                 head = itemView
@@ -243,12 +260,10 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .findViewById(R.id.img);
             }
         }
-
         @Override
         public int getItemCount() {
             return mDatas.size();
         }
-
         /**
          * 创建ViewHolder
          */
@@ -259,7 +274,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ViewHolder viewHolder = new ViewHolder(view);
             return viewHolder;
         }
-
         /**
          * 设置值
          */
@@ -282,6 +296,5 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
         }
-
     }
 }

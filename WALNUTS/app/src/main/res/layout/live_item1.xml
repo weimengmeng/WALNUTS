@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<WebView
+    android:id="@+id/web"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"></WebView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding"
+        android:paddingTop="@dimen/padding"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.12"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/btn_micro"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/btn_micro" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="0.76">
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="2dp"
+                android:textCursorDrawable="@drawable/color_cusor"
+                android:background="@drawable/background_layout_et"
+                android:hint="输入文字"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
+                android:padding="@dimen/padding"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/txt_color"
+                android:textSize="@dimen/small" />
+            <TextView
+                android:id="@+id/btn_voice"
+                android:layout_margin="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                android:background="@drawable/background_layout_et"
+                android:text="按住说话"
+                android:gravity="center"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/small"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.12"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/btn_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/btn_img" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

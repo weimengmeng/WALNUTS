@@ -308,11 +308,13 @@ public class MainActivity extends FragmentActivity {
                 EMClient.getInstance().chatManager().getConversation(messages.get(0).getFrom());
                 EMClient.getInstance().chatManager().importMessages(messages);
                 EMClient.getInstance().chatManager().loadAllConversations();
-                Intent intent = new Intent();
-                intent.setAction(ConstantsVal.MESSAGE_RECEIVE);
-                sendBroadcast(intent);
-                if (temp != 2) {
-                    handler3.sendEmptyMessage(0);
+                if(messages.get(0).getChatType()!= EMMessage.ChatType.ChatRoom) {
+                    Intent intent = new Intent();
+                    intent.setAction(ConstantsVal.MESSAGE_RECEIVE);
+                    sendBroadcast(intent);
+                    if (temp != 2) {
+                        handler3.sendEmptyMessage(0);
+                    }
                 }
             }
 

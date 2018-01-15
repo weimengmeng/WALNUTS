@@ -91,6 +91,10 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.txt_add:
+                if(flowlayout.getChildCount()>4){
+                    ToastUtils.showShortToast(this,"最多可以填写5个");
+                    return;
+                }
                 addNewProduct();
                 break;
             case R.id.txt_ok:
@@ -131,6 +135,10 @@ public class ProductActivity extends BaseActivity implements View.OnClickListene
     private class MyListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
+            if(flowlayout.getChildCount()>4){
+                ToastUtils.showShortToast(ProductActivity.this,"最多可以填写5个");
+                return;
+            }
             addSelected(((TextView)view).getText().toString(),view.getTag().toString());
             productLayout.removeView(view);
         }

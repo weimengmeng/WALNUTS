@@ -40,7 +40,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         this.context = context;
         this.list = list;
     }
-
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {

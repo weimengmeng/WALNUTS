@@ -2,210 +2,230 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Width_m_Height_m"
     android:background="@color/white">
+
     <ImageView
-    android:id="@+id/btn_close"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/btn_close_wel"
-    android:paddingLeft="@dimen/shadow"
-    android:paddingTop="@dimen/padding_top"/>
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/shadow"
+        android:paddingTop="@dimen/padding_top"
+        android:src="@drawable/btn_close" />
+
     <TextView
         android:id="@+id/btn_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:paddingRight="@dimen/shadow"
+        android:paddingTop="@dimen/padding_top"
         android:text="全选"
         android:textColor="@color/txt_color"
-        android:textSize="@dimen/big"
-        android:paddingTop="@dimen/padding_top"/>
+        android:textSize="@dimen/big" />
+
     <LinearLayout
         style="@style/Width_m_Height_m"
         android:layout_centerInParent="true"
         android:padding="@dimen/margin_big">
-        <TextView
-            android:layout_marginTop="@dimen/padding_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="您已注册成功"
-            android:gravity="left"
-            android:typeface="sans"
-            android:textColor="@color/login"
-            android:textSize="@dimen/large_big"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_height="wrap_content"
-            android:text="选取您感兴趣的话题："
-            android:gravity="left"
-            android:textColor="@color/login"
-            android:textSize="@dimen/big"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="(可多选)"
+            android:layout_marginTop="@dimen/padding_top"
             android:gravity="left"
-            android:typeface="sans"
-            android:textColor="@color/txt_color"
-            android:textSize="@dimen/normal"/>
-        <ScrollView
-            android:scrollbars="none"
+            android:text="您已注册成功"
+            android:textColor="@color/login"
+            android:textSize="@dimen/large_big"
+            android:typeface="sans" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
-            style="@style/Width_m_Height_m">
+            android:gravity="left"
+            android:text="选取您感兴趣的话题："
+            android:textColor="@color/login"
+            android:textSize="@dimen/big" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="(可多选)"
+            android:textColor="@color/txt_color"
+            android:textSize="@dimen/normal"
+            android:typeface="sans" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin"
-                android:layout_marginBottom="@dimen/margin"
-                android:weightSum="1">
-                <RadioButton
-                    android:id="@+id/btn_one"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:button="@null"
-                    android:tag="0"
-                    android:gravity="center"
+                style="@style/Width_m_Height_m"
+                android:layout_marginTop="@dimen/margin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/padding"
-                    android:drawableTop="@drawable/selector_btn_xzkh"
-                    android:background="@null"
-                    android:text="销售线索"
-                    android:textColor="@drawable/selector_btn_xzkh"
-                    android:textSize="@dimen/normal"/>
-                <RadioButton
-                    android:id="@+id/btn_two"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:tag="0"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_cwsk"
-                    android:background="@null"
-                    android:text="财务回款"
-                    android:drawablePadding="@dimen/padding"
-                    android:textColor="@drawable/selector_btn_cwsk"
-                    android:textSize="@dimen/normal"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin"
-                android:layout_marginBottom="@dimen/margin"
-                android:weightSum="1">
-                <RadioButton
-                    android:id="@+id/btn_three"
-                    android:layout_width="0dp"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:tag="0"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_gttp"
-                    android:background="@null"
-                    android:drawablePadding="@dimen/padding"
-                    android:text="沟通说服"
-                    android:textColor="@drawable/selector_btn_gttp"
-                    android:textSize="@dimen/normal"/>
-                <RadioButton
-                    android:id="@+id/btn_four"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_bjtb"
-                    android:background="@null"
-                    android:text="报价投标"
-                    android:button="@null"
-                    android:drawablePadding="@dimen/padding"
-                    android:tag="0"
-                    android:gravity="center"
-                    android:textColor="@drawable/selector_btn_bjtb"
-                    android:textSize="@dimen/normal"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin"
-                android:layout_marginBottom="@dimen/margin"
-                android:weightSum="1">
-                <RadioButton
-                    android:button="@null"
-                    android:gravity="center"
-                    android:id="@+id/btn_five"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:drawablePadding="@dimen/padding"
-                    android:tag="0"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_khgl"
-                    android:background="@null"
-                    android:text="客户管理"
-                    android:textColor="@drawable/selector_btn_khgl"
-                    android:textSize="@dimen/normal"/>
-                <RadioButton
-                    android:button="@null"
-                    android:gravity="center"
-                    android:id="@+id/btn_six"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_fljf"
-                    android:background="@null"
-                    android:drawablePadding="@dimen/padding"
-                    android:tag="0"
-                    android:text="法律纠纷"
-                    android:textColor="@drawable/selector_btn_fljf"
-                    android:textSize="@dimen/normal"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin"
-                android:layout_marginBottom="@dimen/margin"
-                android:weightSum="1">
-                <RadioButton
-                    android:button="@null"
-                    android:gravity="center"
-                    android:id="@+id/btn_seven"
-                    android:tag="0"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_zcjh"
-                    android:background="@null"
-                    android:text="投诉处理"
-                    android:drawablePadding="@dimen/padding"
                     android:layout_marginBottom="@dimen/margin"
-                    android:textColor="@drawable/selector_btn_zcjh"
-                    android:textSize="@dimen/normal"/>
-                <RadioButton
-                    android:button="@null"
-                    android:gravity="center"
-                    android:id="@+id/btn_eight"
-                    android:layout_width="0dp"
-                    android:tag="0"
-                    android:layout_weight="0.5"
+                    android:padding="@dimen/margin"
+                    android:weightSum="1">
+
+                    <RadioButton
+                        android:id="@+id/btn_one"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_xzkh"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="销售线索"
+                        android:textColor="@drawable/selector_btn_xzkh"
+                        android:textSize="@dimen/normal" />
+
+                    <RadioButton
+                        android:id="@+id/btn_two"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_cwsk"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="财务回款"
+                        android:textColor="@drawable/selector_btn_cwsk"
+                        android:textSize="@dimen/normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/selector_btn_shzt"
-                    android:background="@null"
-                    android:text="客情维护"
-                    android:drawablePadding="@dimen/padding"
-                    android:textColor="@drawable/selector_btn_shzt"
-                    android:textSize="@dimen/normal"/>
+                    android:layout_marginBottom="@dimen/margin"
+                    android:padding="@dimen/margin"
+                    android:weightSum="1">
+
+                    <RadioButton
+                        android:id="@+id/btn_three"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_gttp"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="沟通说服"
+                        android:textColor="@drawable/selector_btn_gttp"
+                        android:textSize="@dimen/normal" />
+
+                    <RadioButton
+                        android:id="@+id/btn_four"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_bjtb"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="报价投标"
+                        android:textColor="@drawable/selector_btn_bjtb"
+                        android:textSize="@dimen/normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:padding="@dimen/margin"
+                    android:weightSum="1">
+
+                    <RadioButton
+                        android:id="@+id/btn_five"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_khgl"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="客户管理"
+                        android:textColor="@drawable/selector_btn_khgl"
+                        android:textSize="@dimen/normal" />
+
+                    <RadioButton
+                        android:id="@+id/btn_six"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_fljf"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="法律纠纷"
+                        android:textColor="@drawable/selector_btn_fljf"
+                        android:textSize="@dimen/normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:padding="@dimen/margin"
+                    android:weightSum="1">
+
+                    <RadioButton
+                        android:id="@+id/btn_seven"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_zcjh"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="投诉处理"
+                        android:textColor="@drawable/selector_btn_zcjh"
+                        android:textSize="@dimen/normal" />
+
+                    <RadioButton
+                        android:id="@+id/btn_eight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawablePadding="@dimen/padding"
+                        android:drawableTop="@drawable/selector_btn_shzt"
+                        android:gravity="center"
+                        android:tag="0"
+                        android:text="客情维护"
+                        android:textColor="@drawable/selector_btn_shzt"
+                        android:textSize="@dimen/normal" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
     <Button
         android:id="@+id/btn_skip"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:background="@color/login"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/login"
         android:text="确认"
         android:textColor="#ffffff"
         android:textSize="@dimen/big" />

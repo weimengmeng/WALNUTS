@@ -148,7 +148,6 @@ public class SetPasswordActivity extends BaseActivity implements TimeCountDown.O
     HttpOnNextListener verifyPhoneListener = new HttpOnNextListener() {
         @Override
         public void onNext(Object o) {
-            LogUtils.d(o.toString());
             SPUtils.put(SetPasswordActivity.this, "phoneNumber", getIntent().getStringExtra("phone"));
             userRegister();
         }

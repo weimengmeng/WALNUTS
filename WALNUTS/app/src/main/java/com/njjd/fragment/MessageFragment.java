@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.ConversationAdapter;
@@ -112,13 +114,15 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         conversationsMap = EMClient.getInstance().chatManager().getAllConversations();
         if (conversationsMap != null)
             for (EMConversation conversation1 : conversationsMap.values()) {
-                MyConversation conversation = new MyConversation(conversation1);
-                if (conversation1.getLatestMessageFromOthers() != null) {
-                    conversation.setOpenId(conversation1.getLatestMessageFromOthers().getFrom());
-                } else {
-                    conversation.setOpenId(conversation1.getLastMessage().getTo());
+                if (conversation1.getLastMessage().getChatType() != EMMessage.ChatType.ChatRoom) {
+                    MyConversation conversation = new MyConversation(conversation1);
+                    if (conversation1.getLatestMessageFromOthers() != null) {
+                        conversation.setOpenId(conversation1.getLatestMessageFromOthers().getFrom());
+                    } else {
+                        conversation.setOpenId(conversation1.getLastMessage().getTo());
+                    }
+                    conversations.add(conversation);
                 }
-                conversations.add(conversation);
             }
         adapter.notifyDataSetChanged();
         if (conversations.size() > 0) {
@@ -161,7 +165,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         viewList = new ArrayList<>();
         viewList.add(linearLayout);
         linearLayout = (LinearLayout) view.inflate(context, R.layout.mess_inform, null);
-        listInform =  linearLayout.findViewById(R.id.list_inform);
+        listInform = linearLayout.findViewById(R.id.list_inform);
         listInform.setEmptyView(linearLayout.findViewById(R.id.empty));
         ((TextView) linearLayout.findViewById(R.id.txt_content)).setText("暂无新通知");
         viewList.add(linearLayout);
@@ -344,8 +348,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         }
                         entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getArticle_id());
                         if (entity == null) {
-                            getDetail(Float.valueOf(entities.get(position).getArticle_id()).intValue()+"",String.valueOf(Float.valueOf(entities.get(position).getComment_id())),entities.get(position).getComment_id());
-                        }else {
+                            getDetail(Float.valueOf(entities.get(position).getArticle_id()).intValue() + "", String.valueOf(Float.valueOf(entities.get(position).getComment_id())), entities.get(position).getComment_id());
+                        } else {
                             intent = new Intent(context, IndexDetailActivity.class);
                             bundle = new Bundle();
                             intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getComment_id())));
@@ -363,8 +367,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         try {
                             entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
                             if (entity == null) {
-                                getDetail(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()+"",String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))),entities.get(position).getComment_id());
-                            }else {
+                                getDetail(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue() + "", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))), entities.get(position).getComment_id());
+                            } else {
                                 intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("comment_id"))));
                                 bundle.putSerializable("question", entity);
                                 intent.putExtra("current_commentId", entities.get(position).getComment_id());
@@ -385,8 +389,8 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                                 try {
                                     entity = DBHelper.getInstance().getmDaoSession().getQuestionEntityDao().load(entities.get(position).getContent().getString("article_id"));
                                     if (entity == null) {
-                                        getDetail(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue()+"",String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))),entities.get(position).getComment_id());
-                                    }else {
+                                        getDetail(Float.valueOf(entities.get(position).getContent().getString("article_id")).intValue() + "", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))), entities.get(position).getComment_id());
+                                    } else {
                                         intent.putExtra("comment_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("answer_id"))));
                                         bundle.putSerializable("question", entity);
                                         intent.putExtra("current_commentId", entities.get(position).getComment_id());
@@ -416,9 +420,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                     case "7.0":
                         intent = new Intent(context, ColumnActivity.class);
                         try {
-                                intent.putExtra("column_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("id"))));
-                                startActivity(intent);
-                                getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            intent.putExtra("column_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("id"))));
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -428,7 +432,7 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
         });
     }
 
-    private void getDetail(final String id, final String answer_id,final String current_commentId) {
+    private void getDetail(final String id, final String answer_id, final String current_commentId) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("uid", SPUtils.get(context, "userId", ""));
@@ -438,12 +442,12 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.serializeNulls(); //重点
                 Gson gson = gsonBuilder.create();
-                Intent intent=new Intent(context,IndexDetailActivity.class);
-                QuestionEntity entity= null;
+                Intent intent = new Intent(context, IndexDetailActivity.class);
+                QuestionEntity entity = null;
                 try {
-                    entity = new QuestionEntity(new JSONObject(gson.toJson(o)),"1");
-                    entity.setQuestionId(Float.valueOf(id).intValue()+"");
-                    Bundle  bundle = new Bundle();
+                    entity = new QuestionEntity(new JSONObject(gson.toJson(o)), "1");
+                    entity.setQuestionId(Float.valueOf(id).intValue() + "");
+                    Bundle bundle = new Bundle();
                     intent.putExtra("comment_id", answer_id);
                     bundle.putSerializable("question", entity);
                     intent.putExtra("current_commentId", current_commentId);

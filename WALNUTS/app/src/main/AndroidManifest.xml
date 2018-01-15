@@ -166,6 +166,9 @@
             android:name=".MyFocusActivity"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".LiveActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".AdvancedSearchActivity"
             android:screenOrientation="portrait">
         </activity>
