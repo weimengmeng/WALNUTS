@@ -198,9 +198,8 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onError(int code, String error) {
-                LogUtils.d("环信即时登陆失败");
+                LogUtils.d("huan",error);
             }
-
             @Override
             public void onProgress(int progress, String status) {
 
@@ -216,7 +215,6 @@ public class MainActivity extends FragmentActivity {
     private static class MyConnectionListener implements EMConnectionListener {
         @Override
         public void onConnected() {
-            LogUtils.d("huanxin connect");
         }
 
         @Override

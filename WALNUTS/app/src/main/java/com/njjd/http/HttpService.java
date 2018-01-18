@@ -182,7 +182,7 @@ public interface HttpService {
     @POST("index/getFollowColumn")
     Observable<HttpResult<Object>> getFollowColumn(@QueryMap Map<String, String> params);
     /**
-     * 搜索
+     * 搜索模块
      */
     @POST("search/searchUser")
     Observable<HttpResult<Object>> searchUser(@QueryMap Map<String, String> params);
@@ -195,8 +195,10 @@ public interface HttpService {
     @POST("user/getProduct")
     Observable<HttpResult<Object>> getProductOrAdd(@QueryMap Map<String, String> params);
     /**
-     *  个人中心模块
+     *  直播模块
      */
+    @POST("live/getLiveList")
+    Observable<HttpResult<Object>> getLiveList(@QueryMap Map<String, String> params);
     /**
      * 公共模块 获取地址、销售模式、行业信息、上传图片、轮播图
      *

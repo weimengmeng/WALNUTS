@@ -384,6 +384,14 @@ public class HttpManager {
         toSubscribeOn(observable, basePar.getSubscirber());
     }
     /**
+     * 直播模块
+     */
+    public void getLiveRoomList(BaseEntity basePar){
+        baseBar = basePar;
+        observable = httpService.getLiveList(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    /**
      *  公共模块
      * @param basePar
      */

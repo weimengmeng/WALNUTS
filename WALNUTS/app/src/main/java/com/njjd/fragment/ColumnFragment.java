@@ -19,14 +19,18 @@ import android.widget.TextView;
 import com.example.retrofit.entity.SubjectPost;
 import com.example.retrofit.listener.HttpOnNextListener;
 import com.example.retrofit.subscribers.ProgressSubscriber;
+import com.example.retrofit.util.JSONUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.njjd.adapter.SelectAdapter;
 import com.njjd.application.ConstantsVal;
 import com.njjd.domain.ColumnArticleEntity;
 import com.njjd.domain.ColumnEntity;
+import com.njjd.domain.LiveRoom;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.LogUtils;
@@ -72,7 +76,7 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
     private MyReceiver receiver;
     private boolean loadmoe = true;
     ColumnEntity columnArticleEntity;
-    private RecyclerView.RecycledViewPool viewPool;
+    private List<LiveRoom> liveRooms=new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -91,9 +95,7 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
         context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
         txtTitle.setText("专栏");
-        viewPool= new RecyclerView.RecycledViewPool();
-        adapter = new SelectAdapter(context, columnArticleEntities, columnEntities,viewPool);
-        listFind.setRecycledViewPool(viewPool);
+        adapter = new SelectAdapter(context, columnArticleEntities, columnEntities,liveRooms);
         listFind.setLayoutManager(new LinearLayoutManager(context));
         listFind.setAdapter(adapter);
         if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {
@@ -113,6 +115,7 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
         });
         getSelectArticle();
         getIndexColumn();
+        getLiveRoom();
         listFind.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -129,6 +132,7 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
                 adapter.setCurrentPage(1);
                 getIndexColumn();
                 getSelectArticle();
+                getLiveRoom();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         listFind.refreshComplete();
@@ -167,6 +171,23 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
     public void onResume() {
         super.onResume();
     }
+    private void getLiveRoom(){
+        Map<String, Object> map = new HashMap<>();
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(getLiveRoomListener, context, false, false), map);
+        HttpManager.getInstance().getLiveRoomList(postEntity);
+    }
+    HttpOnNextListener getLiveRoomListener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
+            JsonObject object=JSONUtils.getAsJsonObject(o);
+            liveRooms.clear();
+            JsonArray jsonArray=object.getAsJsonArray("live");
+            for(int i=0;i<jsonArray.size();i++){
+                liveRooms.add(new LiveRoom(jsonArray.get(i).getAsJsonObject()));
+            }
+            adapter.notifyDataSetChanged();
+        }
+    };
     private void getSelectArticle() {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", SPUtils.get(context, "userId", "").toString());

@@ -192,7 +192,6 @@ public class AppAplication extends Application {
 
             @Override
             public void launchApp(Context context, UMessage msg) {
-                LogUtils.d("huan"+msg.getRaw().toString());
                 if (!isRunning()) {
                     Intent intent = new Intent(context, WelcomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

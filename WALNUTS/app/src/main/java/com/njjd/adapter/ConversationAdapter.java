@@ -115,12 +115,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         public TextView delete;
         public ViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.txt_name);
-            head = (ImageView) view.findViewById(R.id.img_head);
-            content = (TextView) view.findViewById(R.id.txt_content);
-            date =(TextView) view.findViewById(R.id.txt_date);
-            badge =(BGABadgeTextView) view.findViewById(R.id.txt_badge);
-            delete =(TextView) view.findViewById(R.id.item_delete);
+            name =  view.findViewById(R.id.txt_name);
+            head = view.findViewById(R.id.img_head);
+            content = view.findViewById(R.id.txt_content);
+            date = view.findViewById(R.id.txt_date);
+            badge = view.findViewById(R.id.txt_badge);
+            delete =view.findViewById(R.id.item_delete);
         }
     }
     @Override

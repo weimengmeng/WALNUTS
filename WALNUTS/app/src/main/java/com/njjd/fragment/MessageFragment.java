@@ -95,7 +95,6 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
     private InformReceive informReceive;
     private InformAdapter adapterInform;
     private List<InformEntity> entities = new ArrayList<>();
-    private int temp = 0;
     private boolean loadmoe = true;
 
     @Override
@@ -228,9 +227,9 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
             public void onItemClick(View view, int position) {
                 //删除和某个user会话，如果需要保留聊天记录，传false
                 if (conversations.get(position - 1).getConversation().getLatestMessageFromOthers() != null) {
-                    EMClient.getInstance().chatManager().deleteConversation(conversations.get(position - 1).getConversation().getLatestMessageFromOthers().getFrom(), true);
+                    EMClient.getInstance().chatManager().deleteConversation(conversations.get(position - 1).getConversation().getLatestMessageFromOthers().getFrom(), false);
                 } else {
-                    EMClient.getInstance().chatManager().deleteConversation(conversations.get(position - 1).getConversation().getLastMessage().getTo(), true);
+                    EMClient.getInstance().chatManager().deleteConversation(conversations.get(position - 1).getConversation().getLastMessage().getTo(), false);
                 }
                 adapter.remove(position - 1);
             }

@@ -61,7 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="倒计时:2017-2-04"
+                android:text="距离开播:2017-2-04"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal" />
             <TextView
@@ -127,6 +127,7 @@
             android:alpha="0.15"
             android:background="@color/txt_color"></View>
         <TextView
+            android:id="@+id/txt_members"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:gravity="center"
