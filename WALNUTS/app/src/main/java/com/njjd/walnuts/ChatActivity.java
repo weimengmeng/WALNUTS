@@ -2,20 +2,15 @@ package com.njjd.walnuts;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,8 +22,8 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.ios.dialog.AlertDialog;
 import com.njjd.adapter.MSGLAdapter;
+import com.njjd.application.AppAplication;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.CommonUtils;
 import com.njjd.utils.KeybordS;
@@ -166,35 +161,6 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!selfPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
-                    100);
-        }
-    }
-
-    public boolean selfPermissionGranted(String permission) {
-        // For Android < Android M, self permissions are always granted.
-        boolean result = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                final PackageInfo info = getPackageManager().getPackageInfo(
-                        getPackageName(), 0);
-                if (info.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.M) {
-                    // targetSdkVersion >= Android M, we can
-                    // use Context#checkSelfPermission
-                    result = this.checkSelfPermission(permission)
-                            == PackageManager.PERMISSION_GRANTED;
-                } else {
-                    // targetSdkVersion < Android M, we have to use PermissionChecker
-                    result = PermissionChecker.checkSelfPermission(this, permission)
-                            == PermissionChecker.PERMISSION_GRANTED;
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return result;
     }
 
     private void initConversionLitener() {
@@ -236,31 +202,7 @@ public class ChatActivity extends BaseActivity implements TextView.OnEditorActio
                 finish();
                 break;
             case R.id.btn_micro:
-                if (!selfPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
-                    AlertDialog dialog = new AlertDialog(this).builder();
-                    dialog.setTitle("权限提示").setCancelable(false).setPositiveButton("去设置", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent localIntent = new Intent();
-                            localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            if (Build.VERSION.SDK_INT >= 9) {
-                                localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                                localIntent.setData(Uri.fromParts("package", getPackageName(), null));
-                            } else if (Build.VERSION.SDK_INT <= 8) {
-                                localIntent.setAction(Intent.ACTION_VIEW);
-                                localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-                                localIntent.putExtra("com.android.settings.ApplicationPkgName", getPackageName());
-                            }
-                            startActivity(localIntent);
-                        }
-                    });
-                    dialog.setMsg("录音需要权限开启后方可使用").setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-                    dialog.setCancelable(false).show();
+                if (!AppAplication.selfPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 100);
                     return;
                 }

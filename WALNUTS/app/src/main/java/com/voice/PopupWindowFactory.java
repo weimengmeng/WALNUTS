@@ -44,7 +44,7 @@ public class PopupWindowFactory {
 
         // PopupWindow(布局，宽度，高度)
         mPop = new PopupWindow(view,width,heigth,true);
-        mPop.setFocusable(true);
+        mPop.setFocusable(false);
 
         // 重写onKeyListener,按返回键消失
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -58,16 +58,16 @@ public class PopupWindowFactory {
             }
         });
 
-        //点击其他地方消失
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (mPop != null && mPop.isShowing()) {
-                    mPop.dismiss();
-                    return true;
-                }
-                return false;
-            }});
+//        //点击其他地方消失
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (mPop != null && mPop.isShowing()) {
+//                    mPop.dismiss();
+//                    return true;
+//                }
+//                return false;
+//            }});
 
 
     }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,11 +69,10 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
     private SelectAdapter adapter;
     private List<ColumnEntity> columnEntities = new ArrayList<>();
     private List<ColumnArticleEntity> columnArticleEntities = new ArrayList<>();
-    private ColumnArticleEntity entity;
     private MyReceiver receiver;
     private boolean loadmoe = true;
     ColumnEntity columnArticleEntity;
-
+    private RecyclerView.RecycledViewPool viewPool;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -91,7 +91,9 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
         context.registerReceiver(receiver, filter);
         back.setVisibility(View.GONE);
         txtTitle.setText("专栏");
-        adapter = new SelectAdapter(context, columnArticleEntities, columnEntities);
+        viewPool= new RecyclerView.RecycledViewPool();
+        adapter = new SelectAdapter(context, columnArticleEntities, columnEntities,viewPool);
+        listFind.setRecycledViewPool(viewPool);
         listFind.setLayoutManager(new LinearLayoutManager(context));
         listFind.setAdapter(adapter);
         if (NetworkUtils.getNetworkType(context) == 0 || NetworkUtils.getNetworkType(context) == 1) {

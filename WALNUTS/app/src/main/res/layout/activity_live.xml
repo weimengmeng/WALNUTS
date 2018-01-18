@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/lv_root">
     <RelativeLayout
         android:id="@+id/lv_header"
         android:layout_width="match_parent"
@@ -130,9 +131,10 @@
             android:layout_weight="0.2"
             android:gravity="center"
             android:text="200"
+            android:background="@color/login"
             android:padding="@dimen/margin"
             android:drawableLeft="@drawable/people"
-            android:textColor="@color/login"
+            android:textColor="@color/white"
             android:textSize="@dimen/mini"
             android:layout_height="match_parent" />
     </LinearLayout>

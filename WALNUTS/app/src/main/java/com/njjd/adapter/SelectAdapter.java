@@ -48,12 +48,14 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<String> images = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
+    private RecyclerView.RecycledViewPool viewPool;
 
-    public SelectAdapter(Context context, List<ColumnArticleEntity> list, List<ColumnEntity> columnEntities) {
+    public SelectAdapter(Context context, List<ColumnArticleEntity> list, List<ColumnEntity> columnEntities, RecyclerView.RecycledViewPool viewPool) {
         this.context = context;
         this.list = list;
         this.columnEntities = columnEntities;
         inflater = LayoutInflater.from(context);
+       this.viewPool=viewPool;
     }
 
     public void setColumnEntities(List<ColumnEntity> columnEntities) {
@@ -72,17 +74,16 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
         if (ONE_ITEM == viewType) {
-            View layout =inflater.inflate(R.layout.layout_column2, parent, false);
+            View layout = inflater.inflate(R.layout.layout_column2, parent, false);
             holder = new ContentViewHolder(layout);
             layout.setOnClickListener(this);
         } else {
-            View layout =inflater.inflate(R.layout.item_column, parent, false);
-//            holder = new ColumnHolder(layout);
+            View layout = inflater.inflate(R.layout.item_column, parent, false);
             BetterRecyclerView recyclerView = layout.findViewById(R.id.rec_column);
-//            layout.setOnClickListener(this);
+            recyclerView.setRecycledViewPool(viewPool);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-           recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setLayoutManager(linearLayoutManager);
             //设置适配器
             GalleryAdapter mAdapter = new GalleryAdapter(context, columnEntities);
             recyclerView.setAdapter(mAdapter);
@@ -93,14 +94,14 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 titles.add(columnEntities.get(i).getName());
 //                    urls.add(bannerList.get(i).get);
             }
-            Banner banner=layout.findViewById(R.id.banner);
-           banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+            Banner banner = layout.findViewById(R.id.banner);
+            banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
             banner.setIndicatorGravity(BannerConfig.RIGHT);
             banner.isAutoPlay(true);
-           banner.setDelayTime(3000);
+            banner.setDelayTime(3000);
             banner.setBannerTitles(titles);
-           banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
-           banner.setOnBannerListener(new OnBannerListener() {
+            banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
+            banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
                     context.startActivity(new Intent(context, LiveActivity.class));
@@ -132,9 +133,9 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (holder instanceof ContentViewHolder) {
             holder.itemView.setTag(position - 1);
             columnArticleEntity = list.get(position - 1);
-            if((position-1==0)){
+            if ((position - 1 == 0)) {
                 holder.itemView.findViewById(R.id.txt_topsale).setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 holder.itemView.findViewById(R.id.txt_topsale).setVisibility(View.GONE);
 
             }
@@ -144,11 +145,11 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.itemView.findViewById(R.id.label_select).setVisibility(View.GONE);
             }
             GlideImageLoder.getInstance().displayImage(context, columnArticleEntity.getHead(), ((ContentViewHolder) holder).head);
-            ((ContentViewHolder) holder).name.setText(columnArticleEntity.getName()+" • "+columnArticleEntity.getColumnName());
+            ((ContentViewHolder) holder).name.setText(columnArticleEntity.getName() + " • " + columnArticleEntity.getColumnName());
             ((ContentViewHolder) holder).title.setText(columnArticleEntity.getTitle());
             ((ContentViewHolder) holder).content.setText(columnArticleEntity.getDesci());
             GlideImageLoder.getInstance().displayImage(context, HttpManager.BASE_URL2 + columnArticleEntity.getPic().split(",")[0].replace("\"", ""), ((ContentViewHolder) holder).pic);
-        } else if(holder instanceof HeaderViewHolder) {
+        } else if (holder instanceof HeaderViewHolder) {
 //            images.clear();
 //            titles.clear();
 //            for (int i = 0; i < columnEntities.size(); i++) {
@@ -188,16 +189,17 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemCount() {
         return list.size() + mHeaderCount;
     }
-    class ColumnHolder extends RecyclerView.ViewHolder {
-        Banner banner;
-        BetterRecyclerView recyclerView;
 
-        public ColumnHolder(View itemView) {
-            super(itemView);
-            banner = itemView.findViewById(R.id.banner);
-            recyclerView = itemView.findViewById(R.id.rec_column);
-        }
-    }
+    //    class ColumnHolder extends RecyclerView.ViewHolder {
+//        Banner banner;
+//        BetterRecyclerView recyclerView;
+//
+//        public ColumnHolder(View itemView) {
+//            super(itemView);
+//            banner = itemView.findViewById(R.id.banner);
+//            recyclerView = itemView.findViewById(R.id.rec_column);
+//        }
+//    }
     //内容 ViewHolder
     public class ContentViewHolder extends RecyclerView.ViewHolder {
         ImageView head;
@@ -219,6 +221,7 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .findViewById(R.id.img);
         }
     }
+
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
@@ -226,12 +229,15 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mOnItemClickListener.onItemClick(v, (int) v.getTag());
         }
     }
+
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
+
     public class GalleryAdapter extends
             RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         private LayoutInflater mInflater;
@@ -241,12 +247,14 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mInflater = LayoutInflater.from(context);
             mDatas = datats;
         }
+
         public class ViewHolder extends RecyclerView.ViewHolder {
             ImageView head;
             TextView title;
             TextView content;
             TextView name;
             ImageView pic;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 head = itemView
@@ -255,15 +263,17 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .findViewById(R.id.txt_name);
                 content = itemView
                         .findViewById(R.id.txt_content);
-                title =  itemView.findViewById(R.id.txt_title);
-                pic =  itemView
+                title = itemView.findViewById(R.id.txt_title);
+                pic = itemView
                         .findViewById(R.id.img);
             }
         }
+
         @Override
         public int getItemCount() {
             return mDatas.size();
         }
+
         /**
          * 创建ViewHolder
          */
@@ -274,6 +284,7 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ViewHolder viewHolder = new ViewHolder(view);
             return viewHolder;
         }
+
         /**
          * 设置值
          */

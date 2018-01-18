@@ -24,8 +24,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/height"
-                android:layout_height="@dimen/height"
-                android:src="@drawable/head"/>
+                android:layout_height="@dimen/height" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/msgView"
@@ -51,12 +50,10 @@
                     android:layout_height="200dp"
                     android:maxHeight="200dp"
                     android:gravity="center"
-                    android:src="@drawable/head"
                     android:visibility="gone"/>
                 <TextView
                     android:id="@+id/chat_voice"
                     android:layout_width="wrap_content"
-                    android:src="@drawable/head"
                     android:textSize="@dimen/normal"
                     android:drawableRight="@drawable/pic_voice_right_03"
                     android:visibility="gone"

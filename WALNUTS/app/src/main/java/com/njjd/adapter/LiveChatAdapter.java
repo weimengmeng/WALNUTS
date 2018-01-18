@@ -14,7 +14,6 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 

@@ -1,18 +1,27 @@
 package com.njjd.walnuts;
 
+import android.Manifest;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,14 +36,20 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.ios.dialog.AlertDialog;
 import com.njjd.adapter.LiveChatAdapter;
 import com.njjd.adapter.MSGLAdapter;
 import com.njjd.adapter.MyPagerAdapter;
+import com.njjd.application.AppAplication;
 import com.njjd.utils.AndroidBug5497Workaround;
 import com.njjd.utils.ImmersedStatusbarUtils;
+import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.ToastUtils;
+import com.voice.AudioRecoderUtils;
+import com.voice.PopupWindowFactory;
+import com.voice.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +59,14 @@ import butterknife.OnClick;
 
 /**
  * Created by mrwim on 18/1/15.
+ * 定时获取直播间状态信息
  */
 
-public class LiveActivity extends BaseActivity{
+public class LiveActivity extends BaseActivity implements View.OnClickListener{
     @BindView(R.id.txt_time)
     TextView txtTime;
+    @BindView(R.id.lv_root)
+    LinearLayout lvRoot;
     @BindView(R.id.txt_focus)
     TextView txtFocus;
     @BindView(R.id.live_page)
@@ -68,7 +86,16 @@ public class LiveActivity extends BaseActivity{
     private LiveChatAdapter chatAdapter;
     private List<EMMessage> messagesList;
     EMConversation conversation;
-    private EditText userEt;
+    private ImageView masterMicro;
+    private EditText userEt,masterEt;
+    private TextView masterTxt;
+    private boolean flag=false;
+    private int length = 0;
+    private AudioRecoderUtils mAudioRecoderUtils;
+    private PopupWindowFactory mPop;
+    private ImageView mImageView;
+    private TextView mTextView;
+    private String imagePath = "", tempFilePath = "";
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -112,6 +139,11 @@ public class LiveActivity extends BaseActivity{
         viewList = new ArrayList<>();
         myinflater = LayoutInflater.from(this);
         currentView = myinflater.inflate(R.layout.live_item1, null);
+        masterEt=currentView.findViewById(R.id.et_content);
+
+        masterMicro=currentView.findViewById(R.id.btn_micro);
+        masterMicro.setOnClickListener(this);
+        masterTxt=currentView.findViewById(R.id.btn_voice);
         webView=currentView.findViewById(R.id.web);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -179,6 +211,74 @@ public class LiveActivity extends BaseActivity{
                 userEt.setVisibility(View.GONE);
             }
         });
+        mAudioRecoderUtils = new AudioRecoderUtils();
+        //录音回调
+        mAudioRecoderUtils.setOnAudioStatusUpdateListener(new AudioRecoderUtils.OnAudioStatusUpdateListener() {
+
+            //录音中....db为声音分贝，time为录音时长
+            @Override
+            public void onUpdate(double db, long time) {
+                mImageView.getDrawable().setLevel((int) (3000 + 6000 * db / 100));
+                mTextView.setText(TimeUtils.long2String(time));
+                length = (int) time / 1000;
+            }
+            //录音结束，filePath为保存路径
+            @Override
+            public void onStop(String filePath) {
+                mTextView.setText(TimeUtils.long2String(0));
+                tempFilePath = filePath;
+                if (length < 1) {
+                    ToastUtils.showShortToast(LiveActivity.this, "语音时间过短");
+                    return;
+                }
+                new AlertDialog(LiveActivity.this).builder().setCancelable(false).setMsg("录音发送后不可撤销或撤回，您确定发送吗").setTitle("发送提示").setPositiveButton("发送", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtils.showShortToast(LiveActivity.this,tempFilePath);
+                        sendVoice();
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+            }
+        });
+        //PopupWindow的布局文件
+        final View view1 = View.inflate(this, R.layout.layout_microphone, null);
+
+        mPop = new PopupWindowFactory(this, view1);
+        //PopupWindow布局文件里面的控件
+        mImageView = view1.findViewById(R.id.iv_recording_icon);
+        mTextView = view1.findViewById(R.id.tv_recording_time);
+        //Button的touch监听
+        masterTxt.setTag("0");
+        masterTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(masterTxt.getTag().toString().equals("0")){
+                    mPop.showAtLocation(lvRoot, Gravity.CENTER, 0, 0);
+                    mAudioRecoderUtils.startRecord();
+                    masterTxt.setText("发送/取消");
+                    masterTxt.setBackground(getResources().getDrawable(R.drawable.background_layout_et2));
+                    masterTxt.setTag("1");
+                }else{
+                    mAudioRecoderUtils.stopRecord();        //结束录音（保存录音文件）
+                    mPop.dismiss();
+                    masterTxt.setText("点击录音");
+                    masterTxt.setBackground(getResources().getDrawable(R.drawable.background_layout_et));
+                    masterTxt.setTag("0");
+                }
+            }
+        });
+        masterEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                sendMasterTxt();
+                return true;
+            }
+        });
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +302,32 @@ public class LiveActivity extends BaseActivity{
                 break;
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        if(!flag){
+            if (!AppAplication.selfPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 100);
+                return;
+            }
+            masterMicro.setImageResource(R.drawable.btn_jp);
+            masterTxt.setVisibility(View.VISIBLE);
+            masterEt.setVisibility(View.GONE);
+            KeybordS.closeBoard(this);
+            flag=true;
+        }else{
+            if(masterTxt.getTag().toString().equals("1")){
+                ToastUtils.showShortToast(LiveActivity.this,"当前正在录音");
+                return;
+            }
+            masterMicro.setImageResource(R.drawable.btn_micro);
+            masterTxt.setVisibility(View.GONE);
+            masterEt.setVisibility(View.VISIBLE);
+            KeybordS.openKeybord(masterEt,this);
+            flag=false;
+        }
+    }
+
     private void initConversionLitener() {
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             @Override
@@ -236,7 +362,15 @@ public class LiveActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        EMClient.getInstance().chatroomManager().leaveChatRoom("38379021467649");
+    }
+    private void sendVoice(){
+
+    }
+    private void sendMasterTxt(){
+        if(masterTxt.getText().toString().trim().equals("")){
+            BaseActivity.showToast("请输入内容");
+            return;
+        }
     }
     private void sendChatMessage(){
         if(userEt.getText().toString().trim().equals("")){
@@ -257,7 +391,6 @@ public class LiveActivity extends BaseActivity{
     private EMCallBack emCallBack = new EMCallBack() {
         @Override
         public void onSuccess() {
-            LogUtils.d("huan","succeedMsg");
             EMClient.getInstance().chatManager().importMessages(messagesList);
         }
 
@@ -271,5 +404,4 @@ public class LiveActivity extends BaseActivity{
 
         }
     };
-
 }

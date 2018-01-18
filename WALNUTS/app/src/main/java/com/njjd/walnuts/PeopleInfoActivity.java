@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.GlideImageLoder;
 import com.njjd.utils.LogUtils;
+import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.utils.SpaceImageDetailActivity;
 import com.njjd.utils.ToastUtils;
@@ -174,6 +175,7 @@ public class PeopleInfoActivity extends BaseActivity {
                 intent.putExtra("name", txtName.getText().toString().trim());
                 intent.putExtra("avatar", tempHead);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.lv_answer:
                 intent = new Intent(this, MyAnswerActivity.class);

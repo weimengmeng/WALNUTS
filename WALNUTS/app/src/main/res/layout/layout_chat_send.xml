@@ -32,7 +32,7 @@
             <TextView
                 android:id="@+id/chat_content"
                 android:layout_width="wrap_content"
-                android:text="你你好好你好好你好你好你好"
+                android:text=""
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:visibility="gone"
@@ -45,12 +45,10 @@
                 android:layout_height="200dp"
                 android:gravity="center"
                 android:maxHeight="200dp"
-                android:src="@drawable/head"
                 android:visibility="gone"/>
             <TextView
                 android:id="@+id/chat_voice"
                 android:layout_width="wrap_content"
-                android:src="@drawable/head"
                 android:background="@drawable/off"
                 android:drawableLeft="@drawable/pic_voice_left_01"
                 android:visibility="gone"
@@ -67,8 +65,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_head"
                 android:layout_width="@dimen/height"
-                android:layout_height="@dimen/height"
-                android:src="@drawable/head"/>
+                android:layout_height="@dimen/height" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

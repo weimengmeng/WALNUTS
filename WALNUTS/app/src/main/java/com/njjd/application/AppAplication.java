@@ -6,14 +6,16 @@ import android.app.Notification;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
-import android.support.v7.app.AppCompatDelegate;
+import android.support.v4.content.PermissionChecker;
 import android.view.View;
 
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
@@ -30,9 +32,7 @@ import com.njjd.utils.MyActivityManager;
 import com.njjd.utils.SPUtils;
 import com.njjd.walnuts.IndexDetailActivity;
 import com.njjd.walnuts.LoginActivity;
-import com.njjd.walnuts.MainActivity;
 import com.njjd.walnuts.PeopleInfoActivity;
-import com.njjd.walnuts.R;
 import com.njjd.walnuts.WelcomeActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
@@ -40,7 +40,6 @@ import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
-import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -332,4 +331,29 @@ public class AppAplication extends Application {
         }
         return isAppRunning;
     }
+    public static boolean selfPermissionGranted(String permission) {
+        // For Android < Android M, self permissions are always granted.
+        boolean result = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                final PackageInfo info =context. getPackageManager().getPackageInfo(
+                        context.getPackageName(), 0);
+                if (info.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.M) {
+                    // targetSdkVersion >= Android M, we can
+                    // use Context#checkSelfPermission
+                    result = context.checkSelfPermission(permission)
+                            == PackageManager.PERMISSION_GRANTED;
+                } else {
+                    // targetSdkVersion < Android M, we have to use PermissionChecker
+                    result = PermissionChecker.checkSelfPermission(context, permission)
+                            == PermissionChecker.PERMISSION_GRANTED;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
 }

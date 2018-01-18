@@ -32,8 +32,9 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingRight="@dimen/margin"
             android:orientation="horizontal"
-            android:layout_weight="0.76">
+            android:layout_weight="0.88">
             <EditText
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
@@ -55,21 +56,10 @@
                 android:layout_height="40dp"
                 android:visibility="gone"
                 android:background="@drawable/background_layout_et"
-                android:text="按住说话"
+                android:text="点击录音"
                 android:gravity="center"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/small"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.12"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/btn_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/btn_img" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
