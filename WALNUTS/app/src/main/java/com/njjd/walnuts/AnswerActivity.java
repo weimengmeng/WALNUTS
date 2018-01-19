@@ -1,6 +1,8 @@
 package com.njjd.walnuts;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.sunflower.FlowerCollector;
+import com.njjd.application.AppAplication;
 import com.njjd.application.ConstantsVal;
 import com.njjd.domain.AnswerEntity;
 import com.njjd.http.HttpManager;
@@ -178,6 +181,10 @@ public class AnswerActivity extends BaseActivity {
                 }
                 break;
             case R.id.txt_voice:
+                if (!AppAplication.selfPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 100);
+                    return;
+                }
                 KeybordS.closeBoard(this);
                 // 移动数据分析，收集开始听写事件
                 FlowerCollector.onEvent(this, "iat_recognize");
