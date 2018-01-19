@@ -199,6 +199,12 @@ public interface HttpService {
      */
     @POST("live/getLiveList")
     Observable<HttpResult<Object>> getLiveList(@QueryMap Map<String, String> params);
+    @POST("live/addMsg")
+    Observable<HttpResult<Object>> sendLiveMsg(@QueryMap Map<String, String> params);
+    @POST("live/addMsg")
+    @Multipart
+    Observable<HttpResult<Object>> sendLiveVoice(@PartMap Map<String, RequestBody> file,
+                                              @Query("uid") String uid,@Query("room_id") String room_id, @Query("token") String token,@Query("type") String type);
     /**
      * 公共模块 获取地址、销售模式、行业信息、上传图片、轮播图
      *

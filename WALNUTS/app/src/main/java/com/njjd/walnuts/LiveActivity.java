@@ -1,21 +1,17 @@
 package com.njjd.walnuts;
 
 import android.Manifest;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
@@ -28,8 +24,11 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.retrofit.entity.SubjectPost;
+import com.example.retrofit.listener.HttpOnNextListener;
+import com.example.retrofit.listener.ProgressListener;
+import com.example.retrofit.subscribers.ProgressSubscriber;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMValueCallBack;
@@ -37,15 +36,16 @@ import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.exceptions.HyphenateException;
 import com.ios.dialog.AlertDialog;
 import com.njjd.adapter.LiveChatAdapter;
-import com.njjd.adapter.MSGLAdapter;
 import com.njjd.adapter.MyPagerAdapter;
 import com.njjd.application.AppAplication;
 import com.njjd.domain.LiveRoom;
+import com.njjd.fragment.MineFragment;
+import com.njjd.http.HttpManager;
 import com.njjd.utils.AndroidBug5497Workaround;
+import com.njjd.utils.GlideImageLoder2;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.KeybordS;
 import com.njjd.utils.LogUtils;
@@ -54,20 +54,22 @@ import com.njjd.utils.ToastUtils;
 import com.voice.AudioRecoderUtils;
 import com.voice.PopupWindowFactory;
 import com.voice.TimeUtils;
+import com.youth.banner.Banner;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * Created by mrwim on 18/1/15.
- * 定时获取直播间状态信息
  */
 
 public class LiveActivity extends BaseActivity implements View.OnClickListener {
@@ -75,8 +77,8 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
     TextView txtTime;
     @BindView(R.id.lv_root)
     LinearLayout lvRoot;
-    @BindView(R.id.txt_focus)
-    TextView txtFocus;
+    @BindView(R.id.txt_appoint)
+    TextView txtAppoint;
     @BindView(R.id.txt_members)
     TextView txtMembers;
     @BindView(R.id.live_page)
@@ -87,6 +89,10 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
     RadioButton radio1;
     @BindView(R.id.radio2)
     RadioButton radio2;
+    @BindView(R.id.banner)
+    Banner banner;
+    @BindView(R.id.txt_position)
+    TextView txtPosition;
     private List<View> viewList;
     private MyPagerAdapter adapter;
     private LayoutInflater myinflater;
@@ -109,8 +115,8 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
     private String tempFilePath = "";
     private String chatRoomId = "";
     private String masterUid = "";
-    private EMChatRoom room;
     private LiveRoom liveRoom;
+    private File file;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -135,9 +141,7 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
                     customLlv.setVisibility(View.VISIBLE);
                 }
                 initConversionLitener();
-            } else if (msg.what == 2) {
-                txtMembers.setText(room.getMemberList().size() + "");
-            } else {
+            }else {
                 chatAdapter.notifyDataSetChanged();
                 chatListView.setSelection(chatAdapter.getCount());
             }
@@ -151,24 +155,53 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void initView(View view) {
-        liveRoom=(LiveRoom) getIntent().getBundleExtra("liveRoom").get("liveRoom");
-        chatRoomId=liveRoom.getChatRoomId();
-        masterUid=liveRoom.getUid();
-        long time=new Date().getTime();
+        liveRoom = (LiveRoom) getIntent().getBundleExtra("liveRoom").get("liveRoom");
+        chatRoomId = liveRoom.getChatRoomId();
+        masterUid = liveRoom.getUid();
+        txtMembers.setText(liveRoom.getMembers());
+        final String[] img = liveRoom.getBannerImg().split(",");
+        List<String> images = new ArrayList<>();
+        for (int i = 0; i < img.length; i++) {
+            images.add(img[i]);
+        }
+        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position<=1){
+                    txtPosition.setText(1+"/"+img.length);
+                }else if(position>=img.length){
+                    txtPosition.setText(img.length+"/"+img.length);
+                }else{
+                    txtPosition.setText(position+"/"+img.length);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        banner.isAutoPlay(false);
+        banner.setImages(images).setImageLoader(GlideImageLoder2.getInstance()).start();
+        long time = new Date().getTime();
         try {
-            time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(liveRoom.getStartTime()).getTime();
+            time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(liveRoom.getStartTime()).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if((time-new Date().getTime())<0){
+        if ((time - new Date().getTime()) < 0) {
             txtTime.setText("直播已结束");
-        }else{
-            new CountDownTimer(time-new Date().getTime(), 1000) {
+        } else {
+            new CountDownTimer(time - new Date().getTime(), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     // (millisUntilFinished / (1000 * 60 * 60 * 24))+"天"+
-                    txtTime.setText(Html.fromHtml("距离开播:<font color='#ffb129'>" + trans((millisUntilFinished % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) + "</font>时<font color='#ffb129'>" + trans((millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)) + "</font>分<font color='#ffb129'>" + trans((millisUntilFinished % (1000 * 60)) / 1000) + "</font>秒"));
+                    txtTime.setText(Html.fromHtml("距离开播:<font color='#ffb129'>" +trans((millisUntilFinished / (1000 * 60 * 60 * 24)))+ "</font>天<font color='#ffb129'>"+ trans((millisUntilFinished % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) + "</font>时<font color='#ffb129'>" + trans((millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60)) + "</font>分<font color='#ffb129'>" + trans((millisUntilFinished % (1000 * 60)) / 1000) + "</font>秒"));
                 }
+
                 @Override
                 public void onFinish() {
                     txtTime.setText("正在直播");
@@ -244,17 +277,6 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    room = EMClient.getInstance().chatroomManager().fetchChatRoomFromServer(chatRoomId, true);
-                    handler.sendEmptyMessage(2);
-                } catch (HyphenateException e) {
-                    LogUtils.d("huan", e.toString());
-                }
-            }
-        }).start();
         //roomId为聊天室ID
         EMClient.getInstance().chatroomManager().joinChatRoom(chatRoomId, new EMValueCallBack<EMChatRoom>() {
 
@@ -293,7 +315,6 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
                 new AlertDialog(LiveActivity.this).builder().setCancelable(false).setMsg("录音发送后不可撤销或撤回，您确定发送吗").setTitle("发送提示").setPositiveButton("发送", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtils.showShortToast(LiveActivity.this, tempFilePath);
                         sendVoice();
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
@@ -345,7 +366,7 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
     }
 
-    @OnClick({R.id.back, R.id.btn_add_help, R.id.radio1, R.id.radio2})
+    @OnClick({R.id.back, R.id.btn_add_help, R.id.radio1, R.id.radio2,R.id.txt_appoint})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -359,6 +380,9 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.radio2:
                 livePage.setCurrentItem(1);
+                break;
+            case R.id.txt_appoint:
+                BaseActivity.showToast("预约直播");
                 break;
         }
     }
@@ -426,7 +450,10 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void sendVoice() {
-
+        file = new File(tempFilePath);
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(sendLiveMsgLstener, this, true, false), file);
+        HttpManager.getInstance().sendLiveVoice(postEntity, new MyUploadListener(),
+                SPUtils.get(this, "userId", "").toString(), liveRoom.getId(),SPUtils.get(this, "token", "").toString(),"2");
     }
 
     private void sendMasterTxt() {
@@ -434,8 +461,21 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
             BaseActivity.showToast("请输入内容");
             return;
         }
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid",SPUtils.get(this,"userId","").toString());
+        map.put("token",SPUtils.get(this,"token","").toString());
+        map.put("msg",masterEt.getText().toString().trim());
+        map.put("type",1);
+        map.put("room_id",liveRoom.getId());
+        SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(sendLiveMsgLstener, this, false, false), map);
+        HttpManager.getInstance().sendLiveMsg(postEntity);
     }
+    HttpOnNextListener sendLiveMsgLstener=new HttpOnNextListener() {
+        @Override
+        public void onNext(Object o) {
 
+        }
+    };
     private void sendChatMessage() {
         if (userEt.getText().toString().trim().equals("")) {
             BaseActivity.showToast("请输入内容");
@@ -475,6 +515,11 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
             return "0" + n;
         } else {
             return n + "";
+        }
+    }
+    class MyUploadListener implements ProgressListener {
+        @Override
+        public void onProgress(long progress, long total, boolean done) {
         }
     }
 }

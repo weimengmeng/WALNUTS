@@ -10,9 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/live_height"
         android:orientation="vertical">
-        <ImageView
+        <com.youth.banner.Banner
             android:id="@+id/banner"
-            android:src="@drawable/demo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"/>
@@ -26,7 +25,8 @@
             android:weightSum="1">
             <TextView
                 android:id="@+id/back"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/btn_back_white"
                 android:drawablePadding="@dimen/margin"
@@ -35,8 +35,18 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal" />
             <TextView
+                android:id="@+id/txt_position"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_height="wrap_content"
+                android:text="1/4"
+                android:gravity="center"
+                android:textColor="@color/login"
+                android:textSize="@dimen/normal" />
+            <TextView
                 android:id="@+id/btn_add_help"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/btn_share_white"
                 android:gravity="center_horizontal"
@@ -61,11 +71,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="距离开播:2017-2-04"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal" />
             <TextView
-                android:id="@+id/txt_focus"
+                android:id="@+id/txt_appoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/txt_shape_login"

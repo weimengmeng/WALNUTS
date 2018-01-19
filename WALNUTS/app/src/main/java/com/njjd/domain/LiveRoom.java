@@ -18,8 +18,11 @@ public class LiveRoom implements Serializable{
     private String startTime;//开播时间
     private String headimg;//主讲人头像
     private String name;//主讲人姓名
-    private String coverImg;//封面
-    private String bannerImg;//轮播图
+    private String coverImg="https://img.qlchat.com/qlLive/temp/MBJCY9YR-D8P2-PC4O-1516176855035-28N6DM5KF3AG.JPG?x-oss-process=image/resize,h_1600,w_1600";//封面
+    private String bannerImg="https://img.qlchat.com/qlLive/temp/FDJIJ8D9-1FJX-8K4B-1516176855125-31UNHQGYKVQQ.JPG,https://img.qlchat.com/qlLive/temp/DESDDOWE-J2AE-RYFN-1516176855228-5HC6A7TI71JR.JPG,https://img.qlchat.com/qlLive/temp/8U68QJ3U-4ZUP-6TGA-1516176855304-5YJAXXFOTJNY.JPG,https://img.qlchat.com/qlLive/temp/7LVDUMOP-JX8W-VA2H-1516176855481-K7A8Q3GB8Q59.JPG";//轮播图
+    private String shareUrl;//直播分享地址
+    private String members;//历史人数进出次数
+    private String currentNum;//当前在线人数
     public LiveRoom(JsonObject object){
         this.id=object.get("id").getAsString().replace(".0","");
         this.chatRoomId=object.get("h_id").getAsString();
@@ -30,9 +33,36 @@ public class LiveRoom implements Serializable{
         this.startTime=object.get("start_time").getAsString();
         this.headimg=object.get("headimgs").getAsString();
         this.name=object.get("uname").getAsString();
-        this.coverImg=object.get("headimgs").getAsString();//
-//        this.bannerImg=object.get("bg_img").getAsString();
+        this.members=object.get("num").getAsString().replace(".0","");
+//        this.coverImg=object.get("cover_img").isJsonNull()?"":object.get("cover_img").getAsString();
+//        this.bannerImg=object.get("bg_img").isJsonNull()?"":object.get("bg_img").getAsString();
+//        this.shareUrl=object.get("url").isJsonNull()?"":object.get("url").getAsString();
     }
+
+    public String getMembers() {
+        return members;
+    }
+
+    public void setMembers(String members) {
+        this.members = members;
+    }
+
+    public String getCurrentNum() {
+        return currentNum;
+    }
+
+    public void setCurrentNum(String currentNum) {
+        this.currentNum = currentNum;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
     public String getId() {
         return id;
     }

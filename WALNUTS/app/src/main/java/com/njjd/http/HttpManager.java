@@ -391,6 +391,21 @@ public class HttpManager {
         observable = httpService.getLiveList(basePar.getParams()).map(basePar);
         toSubscribeOn(observable, basePar.getSubscirber());
     }
+    public void sendLiveMsg(BaseEntity basePar){
+        baseBar = basePar;
+        observable = httpService.sendLiveMsg(basePar.getParams()).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
+    public void sendLiveVoice(BaseEntity basePar, ProgressListener listener,String uid,String roomId,String token,String type) {
+        baseBar = basePar;
+        Map<String, RequestBody> map = new HashMap<>();
+        if (basePar.getFile() != null) {
+            UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(basePar.getFile(),listener );
+            map.put("audio\"; filename=\""+basePar.getFile().getName()+"", fileRequestBody);
+        }
+        observable = httpService.sendLiveVoice(map,uid,roomId,token,type).map(basePar);
+        toSubscribeOn(observable, basePar.getSubscirber());
+    }
     /**
      *  公共模块
      * @param basePar
