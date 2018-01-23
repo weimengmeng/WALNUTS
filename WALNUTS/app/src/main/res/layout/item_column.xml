@@ -40,7 +40,7 @@
         android:textSize="@dimen/small"
         android:drawableLeft="@drawable/live"
         android:textColor="@color/txt_color"
-        android:text="Live直播"/>
+        android:text="核桃Live"/>
     <com.youth.banner.Banner
         android:layout_marginTop="@dimen/margin_small"
         android:id="@+id/banner"

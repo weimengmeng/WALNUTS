@@ -2,8 +2,8 @@ package com.njjd.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.njjd.domain.InformEntity;
 import com.njjd.utils.DateUtils;
 import com.njjd.utils.GlideImageLoder;
-import com.njjd.utils.LogUtils;
 import com.njjd.walnuts.PeopleInfoActivity;
 import com.njjd.walnuts.R;
 
@@ -69,11 +68,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                 viewHolder.image_head.setImageResource(R.drawable.logo);
                 try {
                     viewHolder.title.setText(tempEntity.getContent().getString("msg_tip"));
-//                    if(tempEntity.getContent().getString("type").equals("0.0")){
-//                    }else if(tempEntity.getContent().getString("type").equals("1.0")){
-//                    }else if(tempEntity.getContent().getString("type").equals("2.0")){
-//                    }
-                        viewHolder.content.setText(tempEntity.getContent().isNull("content")?tempEntity.getContent().getString("contents"):tempEntity.getContent().getString("content"));
+                    if(tempEntity.getContent().getString("type").equals("0.0")){
+                    }else if(tempEntity.getContent().getString("type").equals("1.0")){
+                        viewHolder.title.setText("您的问题或文章涉及违规内容,被删除");
+                        viewHolder.content.setText(tempEntity.getContent().getString("title"));
+                    }else if(tempEntity.getContent().getString("type").equals("2.0")){
+                        viewHolder.title.setText("您的回答或评论涉及违规内容,被删除");
+                        viewHolder.content.setText(tempEntity.getContent().getString("content"));
+                    }
                 } catch (JSONException e) {
                     viewHolder.content.setText("未知通知内容");
                 }
@@ -138,6 +140,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
                     e.printStackTrace();
                 }
                 break;
+            case "8.0":
+                viewHolder.title.setText(tempEntity.getUname()+"点赞或收藏了你的文章");
+                try {
+                    viewHolder.content.setText(tempEntity.getContent().getString("title"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
         ParsePosition pos = new ParsePosition(0);
         viewHolder.time.setText(DateUtils.formationDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(tempEntity.getAdd_time(), pos)));
@@ -158,10 +168,10 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
 
         public ViewHolder(View view) {
             super(view);
-            image_head=(CircleImageView) view.findViewById(R.id.img_head);
-            title=(TextView) view.findViewById(R.id.txt_name);
-            content=(TextView) view.findViewById(R.id.txt_content);
-            time=(TextView) view.findViewById(R.id.txt_time);
+            image_head=view.findViewById(R.id.img_head);
+            title= view.findViewById(R.id.txt_name);
+            content=view.findViewById(R.id.txt_content);
+            time= view.findViewById(R.id.txt_time);
         }
     }
     @Override

@@ -187,6 +187,10 @@ public class MyQuestionActivity extends BaseActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("uid", getIntent().getStringExtra("uid"));
         map.put("page", MyQuestionAdapter.CURRENT_PAGE);
+        if(getIntent().getStringExtra("uid").equals(SPUtils.get(this,"userId","").toString())) {
+        }else{
+            map.put("type", getIntent().getStringExtra("type"));
+        }
         SubjectPost postEntity = new SubjectPost(new ProgressSubscriber(this, this, false, false), map);
         HttpManager.getInstance().getUidArticle(postEntity);
     }

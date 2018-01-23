@@ -193,7 +193,6 @@ public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
-            //注意这里使用getTag方法获取position
             mOnItemClickListener.onItemClick(v, (int) v.getTag());
         }
     }

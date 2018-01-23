@@ -77,6 +77,7 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
     private boolean loadmoe = true;
     ColumnEntity columnArticleEntity;
     private List<LiveRoom> liveRooms=new ArrayList<>();
+    private boolean isfristShow=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
@@ -102,6 +103,14 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
             ((ImageView) view.findViewById(R.id.img_nodata)).setImageDrawable(getResources().getDrawable(R.drawable.no_net));
             ((TextView) view.findViewById(R.id.txt_content)).setText("请检查网络设置");
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getIndexColumn();
+                getSelectArticle();
+//                getLiveRoom();
+            }
+        },1000);
         listFind.setEmptyView(view.findViewById(R.id.empty));
         listFind.setLoadingMoreProgressStyle(ProgressStyle.SquareSpin);
         listFind.setRefreshProgressStyle(ProgressStyle.BallPulse);
@@ -113,9 +122,6 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
                 startActivity(intent);
             }
         });
-        getSelectArticle();
-        getIndexColumn();
-        getLiveRoom();
         listFind.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -132,7 +138,7 @@ public class ColumnFragment extends BaseFragment implements HttpOnNextListener {
                 adapter.setCurrentPage(1);
                 getIndexColumn();
                 getSelectArticle();
-                getLiveRoom();
+//                getLiveRoom();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         listFind.refreshComplete();

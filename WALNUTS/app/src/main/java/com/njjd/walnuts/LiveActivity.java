@@ -135,11 +135,6 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
                 chatAdapter = new LiveChatAdapter(LiveActivity.this, messagesList);
                 chatListView.setAdapter(chatAdapter);
                 chatListView.setSelection(chatAdapter.getCount());
-                if (masterUid.equals(SPUtils.get(LiveActivity.this, "userId", "").toString())) {
-                    masterLlv.setVisibility(View.VISIBLE);
-                } else {
-                    customLlv.setVisibility(View.VISIBLE);
-                }
                 initConversionLitener();
             }else {
                 chatAdapter.notifyDataSetChanged();
@@ -359,6 +354,11 @@ public class LiveActivity extends BaseActivity implements View.OnClickListener {
                 return true;
             }
         });
+        if (masterUid.equals(SPUtils.get(LiveActivity.this, "userId", "").toString())) {
+            masterLlv.setVisibility(View.VISIBLE);
+        } else {
+            customLlv.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

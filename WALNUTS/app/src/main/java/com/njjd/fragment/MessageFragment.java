@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.retrofit.entity.SubjectPost;
@@ -40,7 +39,6 @@ import com.njjd.domain.QuestionEntity;
 import com.njjd.http.HttpManager;
 import com.njjd.utils.ImmersedStatusbarUtils;
 import com.njjd.utils.ItemRemoveRecyclerView;
-import com.njjd.utils.LogUtils;
 import com.njjd.utils.NetworkUtils;
 import com.njjd.utils.RecycleViewDivider;
 import com.njjd.utils.SPUtils;
@@ -420,6 +418,16 @@ public class MessageFragment extends BaseFragment implements HttpOnNextListener 
                         intent = new Intent(context, ColumnActivity.class);
                         try {
                             intent.putExtra("column_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("id"))));
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "8.0":
+                        intent = new Intent(context, ColumnDetailActivity.class);
+                        try {
+                            intent.putExtra("article_id", String.valueOf(Float.valueOf(entities.get(position).getContent().getString("id"))));
                             startActivity(intent);
                             getActivity().overridePendingTransition(R.anim.in, R.anim.out);
                         } catch (JSONException e) {
